@@ -1,0 +1,107 @@
+﻿@model IEnumerable<VgSalud.Models.E_Roles>
+
+@{
+    ViewBag.Title = "ListarRoles";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Roles</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Roles</a></li>
+            <li class="active">Roles</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarRoles.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Roles/RegistrarRoles" class="btn btn-danger">Registrar Nuevo Roles &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Roles</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>Descripcion</th>
+                                    <th>Observacion</th> 
+                                    <th>Estado</th>
+
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.DescRoles)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ObsRoles)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstRoles)</td>
+
+                                        
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarRoles.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarRoles/@item.CodRoles"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarRoles.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        if (item.EstRoles == true)
+                                                        {
+                                                            <a title="Eliminar" href="Eliminar/@item.CodRoles"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Activar" href="Activar/@item.CodRoles"><i class="fa fa-plus-square"></i></a>
+                                                        }
+                                                    }
+
+                                                }
+
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>

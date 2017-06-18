@@ -1,0 +1,216 @@
+﻿@model VgSalud.Models.E_Ficha_Electronica
+
+@{
+    ViewBag.Title = "RegistroDeExAuxiliares";
+}
+
+@{
+    ViewBag.Title = "RegistroDeProcedimientosMedicos";
+    var listaDiagnostico = "";
+    var activaTab = "class=active";
+    var activaVista = "in active";
+    var perfil = (SelectList)ViewBag.perfil;
+    
+    var contenido = ViewBag.contenido;
+}
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Examen Auxiliar
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Examen Auxiliar</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <h3 style="color:#fff">
+                    @ViewBag.historia - @ViewBag.nombrePac -  @ViewBag.edad AÑOS<br />
+                    @ViewBag.servicio - @ViewBag.tarifa
+                </h3>
+
+                <ul class="nav nav-tabs">
+                    <li @if (ViewBag.tab == "1") { @activaTab   }><a data-toggle="tab" href="#procedimiento">Examen Auxiliar</a></li>
+                </ul>
+
+
+
+
+                <form action="" method="post" id="formulario">
+
+                    <input type="hidden" name="evento" id="evento" />
+                    <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                    <input type="hidden" name="Item" value="@ViewBag.item" />
+                    <input type="hidden" name="Asistente" value="@ViewBag.Asistente" />
+                    <input type="hidden" name="idExAux" value="@ViewBag.idAux" />
+                    <input type="hidden" name="FecRegAsist" value="@ViewBag.FecRegAsist" />
+
+                    <div class="tab-content">
+
+
+
+                        <div id="procedimiento" class="tab-pane fade  @if (ViewBag.tab == "1") { @activaVista; }">
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Examen Fisico</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                </div>
+
+
+                                <div class="box-body">
+
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FC</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FC, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "FC" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>PA</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.PA, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "PA" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FR</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FR, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "FR" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Ax.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "Tax" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Rectal.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tanal, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "Tanal" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <br />
+                                            <div class="col-md-12">
+                                                <div class="btn btn-info" id="TraerDatosAhora">Cargar ultimo registro del paciente</div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group col-md-12">
+                                            <div class="col-md-12">
+                                                <label>Perfil</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.DropDownList("idPFA", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "idPFA", @style = "width:100%;" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-info" id="CambiarPerfil"><i class="fa fa-refresh"></i></button>
+                                            </div>
+                                        </div>*@
+
+                                        <div class="form-group col-md-12">
+                                            <div class="col-md-12">
+                                                <label>Relato del procedimiento</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="box-body pad">
+                                                    @Html.TextArea("DescripcionProc", new { @class = "textarea", @id = "contenido", @style = "width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div align="center">
+                            <input type="button" id="RegistraTodo" value="Registar Ficha Electronica" class="btn btn-info" />
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<script>
+
+
+
+    $(document).ready(function () {
+
+        $('#idPFA option[value=@ViewBag.CodPerf]').prop('selected', 'selected').change();
+
+        $("#RegistraTodo").click(function () {
+            $("#evento").val("1");
+            $("#formulario").submit();
+        });
+
+        $("#CambiarPerfil").click(function () {
+            $("#evento").val("2");
+            $("#formulario").submit();
+        });
+
+        $("textarea#contenido").html("@ViewBag.contenido");
+
+        var historia = "@ViewBag.historia";
+        var servicio = "@ViewBag.CodServMed";
+
+        $('#TraerDatosAhora').click(function (event) {
+            $.get('@Url.Action("TraerDatos", "FichaElectronica")', {
+                Historia: historia, CodServ: servicio
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $('#FC').val(value.FC);
+                    $('#PA').val(value.PA);
+                    $('#FR').val(value.FR);
+                    $('#Tax').val(value.Tax);
+                    $('#Tanal').val(value.Tanal);
+                });
+            });
+        });
+
+
+    });
+
+</script>

@@ -1,0 +1,266 @@
+﻿@model VgSalud.Models.E_Carnet_Sanitario
+
+@{
+    ViewBag.Title = "RegistroCarnet";
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    var listadoServicios = (SelectList)ViewBag.listadoServicios;
+    var listadoMedico = (SelectList)ViewBag.listadoMedico;
+    var listadoTarifa = (SelectList)ViewBag.listadoTarifa;
+    var listadoDetalleAtencion = (List<VgSalud.Models.E_AtencionVarias_Detalle>)ViewBag.listadoDetalleAtencion;
+    var cuenta = ViewBag.cuenta;
+    var listadoCuenta = (SelectList)ViewBag.listadoCuenta;
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+
+    var esp = (List<VgSalud.Models.E_Especialidades>)ViewBag.esp;
+    var ser = (List<VgSalud.Models.E_Servicios>)ViewBag.ser;
+    var tar = (List<VgSalud.Models.E_Tarifario>)ViewBag.tar;
+    var med = (List<VgSalud.Models.E_Medico>)ViewBag.med;
+    var tiptar = (List<VgSalud.Models.E_Tipo_Tarifa>)ViewBag.tiptar;
+
+    var listadoTipCarnet = (SelectList)ViewBag.listadoTipCarnet;
+
+
+
+    var listadoTari = (SelectList)ViewBag.listadoTari;
+
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        @*var mensajito = '@ViewBag.activaAlerta';
+        var historia = '@ViewBag.historia';
+        var cuenta = '@ViewBag.cuenta';
+        $('#boton').attr("disabled", false);
+        if (mensajito == 1) {
+            $("#yaRegistro").css("display", "none");
+            Command: toastr["success"]("¿Desea seguir agregando mas atenciones?<br /><br /><a href='../../AtencionVarias/RegistroAtenciones/?historia=" + historia + "&cuenta=" + cuenta + "' class='btn clear'>Si</a> <a href='../../Cuentas/VerificaCuenta/" + cuenta + "' class='btn clear'>No</a>", "Registro exitoso")
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000000",
+                "hideDuration": "1000000",
+                "timeOut": 0,
+                "extendedTimeOut": 0,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false
+            }
+        }*@
+
+    });
+
+</script>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Carnet Sanitario </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
+            <li class="active">Registrar Carnet</li>
+        </ol>
+    </section>
+    <section class="content" id="yaRegistro">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Carnet</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                @{
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="~/Pacientes/ListaPacientes">
+                            <center style="MARGIN-LEFT: 28PX;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                }
+            </div>
+
+
+            <div class="box-body">
+
+                <form method="post" action="~/Carnet/RegistroCarnet" enctype="multipart/form-data">
+                    <input type="hidden" name="Historia" value="@Model.Historia" />
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodTar", listadoTari, "[NO SELECCIONADO]", new { @class = "form-control select2", @style = "width:100%" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de carnet</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("TipoCarnet", listadoTipCarnet, "[NO SELECCIONADO]", new { @class = "form-control select2", @style = "width:100%" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Fecha de recojo</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control datepicker" name="FecRecojo" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Empresa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="Empresa" />
+
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Foto de carnet</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="FotoCarnet" />
+
+                                    </div>
+                                </div>*@
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>QR</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="QR" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Campaña</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="Campana" style="width:400px;height:35px;">
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Manipulador</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="Manipulador" style="width:400px;height:35px;">
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado de carnet</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="EstadoCarnet" style="width:400px;height:35px;">
+                                        <option value="TRAMITE">TRAMITE</option>
+                                        <option value="ENTREGADO">ENTREGADO</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Fecha de vencimiento</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control datepicker" name="FecVencimiento" />
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Foto de Carnet</label>
+                                </div>
+                      
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.FotoCarnet, new { type = "file", @id = "file-input" })
+                                    @Html.ValidationMessageFor(model => model.FotoCarnet, "", new { @class = "text-danger" })
+                                    <br />
+                                    <img id="imgSalida" width="50%" height="50%" src="" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top:2%;">
+                        <center>
+                            <input type="submit" class="btn btn-danger" value="Registrar" style="background-color:#13D003;border:0px" />
+                        </center>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+
+        </div>
+
+
+    </section>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    $(window).load(function () {
+
+        $(function () {
+            $('#file-input').change(function (e) {
+                addImage(e);
+            });
+
+            function addImage(e) {
+                var file = e.target.files[0],
+                imageType = /image.*/;
+
+                if (!file.type.match(imageType))
+                    return;
+
+                var reader = new FileReader();
+                reader.onload = fileOnload;
+                reader.readAsDataURL(file);
+            }
+
+            function fileOnload(e) {
+                var result = e.target.result;
+                $('#imgSalida').attr("src", result);
+            }
+        });
+    });
+</script>

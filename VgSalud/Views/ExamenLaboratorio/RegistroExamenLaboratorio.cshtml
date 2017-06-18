@@ -1,0 +1,149 @@
+﻿@model VgSalud.Models.E_Examen_Laboratorio
+
+@{
+    ViewBag.Title = "RegistroExamenLaboratorio";
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    var listadoServicios = (SelectList)ViewBag.listadoServicios;
+    var listadoMedico = (SelectList)ViewBag.listadoMedico;
+    var listadoTarifa = (SelectList)ViewBag.listadoTarifa;
+    var listadoDetalleAtencion = (List<VgSalud.Models.E_AtencionVarias_Detalle>)ViewBag.listadoDetalleAtencion;
+    var cuenta = ViewBag.cuenta;
+    var listadoCuenta = (SelectList)ViewBag.listadoCuenta;
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+
+    var esp = (List<VgSalud.Models.E_Especialidades>)ViewBag.esp;
+    var ser = (List<VgSalud.Models.E_Servicios>)ViewBag.ser;
+    var tar = (List<VgSalud.Models.E_Tarifario>)ViewBag.tar;
+    var med = (List<VgSalud.Models.E_Medico>)ViewBag.med;
+    var tiptar = (List<VgSalud.Models.E_Tipo_Tarifa>)ViewBag.tiptar;
+    var listatipoexamenlaboratorio = (SelectList)ViewBag.ListaTipoExamenLaboratorio;
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var mensajito = '@ViewBag.activaAlerta';
+        var historia = '@ViewBag.historia';
+        var cuenta = '@ViewBag.cuenta';
+        $('#boton').attr("disabled", false);
+        if (mensajito == 1) {
+            $("#yaRegistro").css("display", "none");
+            Command: toastr["success"]("¿Desea seguir agregando mas atenciones?<br /><br /><a href='../../AtencionVarias/RegistroAtenciones/?historia=" + historia + "&cuenta=" + cuenta + "' class='btn clear'>Si</a> <a href='../../Cuentas/VerificaCuenta/" + cuenta + "' class='btn clear'>No</a>", "Registro exitoso")
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000000",
+                "hideDuration": "1000000",
+                "timeOut": 0,
+                "extendedTimeOut": 0,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false
+            }
+        }
+
+    });
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+   <div class="content-wrapper">
+       <section class="content-header">
+           <h1>Examen Laboratorio</h1>
+           <ol class="breadcrumb">
+               <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+               <li class="active">Registrar Examen</li>
+           </ol>     
+       </section>
+       <section><!--aqui va  class="content" id="yaRegistro"-->
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Examen</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                @{ 
+                    <div style="float:left;padding:0% 1% 0 1%">
+                        <a href="~/Pacientes/ListaPacientes">
+                            <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                }
+
+            </div>
+
+            <div class="box-body">
+                <input type="hidden" name="Historia" value="@Model.Historia" />
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tipo Examen</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DropDownList("idTipoExamen", listatipoexamenlaboratorio, "[NO SELECCIONADO]", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.idTipoExamen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label> Resultado</label>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea name="Resultado" id="resultado" rows="5" cols="100"></textarea>
+                            </div>
+                        </div>
+                      <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div class="col-md-12" style="margin-top:2%;">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Registrar" class="btn btn-default" style="background-color:#13D003;border:0px" />
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label> Estado</label>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.estexa)
+                                    @Html.ValidationMessageFor(model => model.estexa, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       </section>
+   </div>
+
+        
+    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

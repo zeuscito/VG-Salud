@@ -1,0 +1,202 @@
+﻿@model VgSalud.Models.E_Caja
+
+@{
+    ViewBag.Title = "FacturacionXUsuario";
+    var listado = (List<VgSalud.Models.E_Caja>)ViewBag.listado;
+    var ListaUsuario = (SelectList)ViewBag.ListaUsuario;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Reportes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de facturacion por usuario</li>
+        </ol>
+    </section>
+        <section class="content">
+            
+                <div class="box box-default">
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Generar Reporte de facturacion por usuario</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+
+                        <fieldset>
+                            <div class="box-body">
+                                <div class="col-md-12">
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Usuario</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2", @id="CodUsu" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Fecha Inicio</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control  datepicker" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Fecha Final</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" name="FechaF" value="@ViewBag.FechaFinal" maxlength="10" class="form-control  datepicker" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Hora Inicio</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="bootstrap-timepicker">
+                                                    <div class="input-group">
+                                                        <input type="text" id="HoraI" name="HoraI" value="@ViewBag.HoraInicio" class="form-control timepicker">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-clock-o"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Hora Final</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="bootstrap-timepicker">
+                                                    <div class="input-group">
+                                                        <input type="text" id="HoraF" name="HoraF" value="@ViewBag.HoraFinal" class="form-control timepicker">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-clock-o"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-top:2%">
+                                        <div class="form-group">
+                                            <center>
+                                                <input type="submit" value="Consultar" class="btn btn-danger" />
+                                            </center>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    }
+
+                        <br /><br /><br />
+
+                        @if (listado != null)
+                        {
+
+                            <div class="box-body">
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Cuenta</th>
+                                            <th>Cod. Doc.</th>
+                                            <th>Serie</th>
+                                            <th>Secuencia</th>
+                                            <th>Fecha de emision</th>
+                                            <th>Historia</th>
+                                            <th>Nombre Paciente</th>
+                                            <th>RUC</th>
+                                            <th>SubTotal</th>
+                                            <th>IGV</th>
+                                            <th>Total</th>
+                                            <th>Tipo Pago</th>
+                                            <th>Taza IGV</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item1 in listado)
+                                        {
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item1.CodCaja)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.CodCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.AliasCodDoc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Serie)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.NumDoc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.FechaEmision)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Historia)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.NomPac)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Ruc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.SubTotal)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Igv)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Total)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.TipoPago)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.TazaIgv)</td>
+                                            </tr>
+
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <h4 style="padding:2%">
+                                Exportar:
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=PDF&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=Word&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=Excel&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                            </h4>
+                        }
+
+                </div>
+                <br /><br /><br />
+
+            
+
+        </section>
+    }
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#CodUsu option[value=@ViewBag.CodUsu]').prop('selected', 'selected').change();
+
+    });
+
+</script>

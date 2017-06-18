@@ -1,0 +1,138 @@
+﻿@model IEnumerable<VgSalud.Models.E_Caja>
+
+@{
+    ViewBag.Title = "ListadoCaja";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Caja</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Caja</a></li>
+            <li class="active">Consultar Caja</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <br />
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Caja</h3>
+                    </div>
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "AutorizarAnulacion.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Caja/AutorizarAnulacion" class="btn btn-danger">Autorizar eliminar caja &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                        }
+                       
+
+                    }
+
+
+
+                    <div class="box-body">
+
+                        <form action="" method="post">
+
+                            <div class="col-md-3" style="margin-top:2%; margin-bottom:2%">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Fecha de emision</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" name="fecha" id="fecha" maxlength="10" class="form-control  datepicker" value="@ViewBag.fecha" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" style="margin-top:2%; margin-bottom:2%">
+                                <input type="submit" value="Buscar" class="btn btn-danger" />
+                            </div>
+
+
+                        </form>
+
+
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Cuenta</th>
+                                    <th>Tip. Doc.</th>
+                                    <th>Serie</th>
+                                    <th>Nro.</th>
+                                    <th>Fecha de emision</th>
+                                    <th>Historia</th>
+                                    <th>Paciente</th>
+                                    <th>Cate. Pac.</th>
+                                    <th>Sub Total</th>
+                                    <th>IGV</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-trash"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodCaja)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescCodDoc)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Serie)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Historia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescCatPac)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.SubTotal)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Igv)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td>
+                                            <div class="tools">
+                                                
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCaja.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        if (item.PorAnular == true)
+                                                        {
+
+                                                            <a title="Eliminar" href="~/Caja/EliminarCaja/@item.CodCaja"><i class="fa fa-trash"></i></a>
+
+                                                        }
+                                                    }
+
+
+                                                }
+
+                                            </div>                                         
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>

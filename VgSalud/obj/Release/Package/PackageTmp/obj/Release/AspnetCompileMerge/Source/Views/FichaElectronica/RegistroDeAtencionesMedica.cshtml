@@ -1,0 +1,961 @@
+﻿@model VgSalud.Models.E_Ficha_Electronica
+
+@{
+    ViewBag.Title = "RegistroDeAtencionesMedica";
+    var listaDiagnostico ="";
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Ficha Electronica
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Ficha Electronica</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Formularios de Ficha</h3>
+                        <div class="box-tools">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a data-toggle="tab" href="#fichaElectronica"><i class="fa fa-inbox"></i> Ficha Electronica</a></li>
+                            <li><a data-toggle="tab" href="#antecedentes"><i class="fa fa-envelope-o"></i> Antecedentes</a></li>
+                            <li><a data-toggle="tab" href="#diagnostico"><i class="fa fa-file-text-o"></i> Diagnostico</a></li>
+                            <li><a data-toggle="tab" href="#examenAuxiliar"><i class="fa fa-filter"></i> Examen Axiliares </a></li>
+                            <li><a data-toggle="tab" href="#recetas"><i class="fa fa-trash-o"></i> Recetas</a></li>
+                        </ul>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="col-md-9">
+
+                <div class="tab-content">
+
+                    <div id="fichaElectronica" class="tab-pane fade in active">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"></h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+
+
+                                <div class="box-body">
+
+
+                                        <fieldset>
+                                            <legend>Ficha Electronica</legend>
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>FC</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.FC, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.FC, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>PA</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.PA, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.PA, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>FR</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.FR, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.FR, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Tax</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                                                                
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Tanal</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Tanal, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Tanal, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Peso</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Peso, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Talla</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.talla, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.talla, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>IMC</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.IMC, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.IMC, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>FUR</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.FUR, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                                        @Html.ValidationMessageFor(model => model.FUR, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Tiepo de enfermedad</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.TiempoEnfermedad, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.TiempoEnfermedad, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Inicio</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Inicio, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Inicio, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Curso</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Curso, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Curso, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Sed</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.sed, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.sed, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Sueño</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.sueño, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.sueño, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Orina</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Orina, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Orina, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Paridad</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.paridad, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.paridad, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>FPP</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.FPP, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                                        @Html.ValidationMessageFor(model => model.FPP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Edad Gestacional</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.EdadGestacional, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.EdadGestacional, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>PIG</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.PIG, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.PIG, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Ultimo Papanicolau</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.UltimoPap, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                                        @Html.ValidationMessageFor(model => model.UltimoPap, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Resultado Papanicolau</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.ResultPap, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.ResultPap, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>MACtipTime</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.MACtipTime, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.MACtipTime, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Otrosginec</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Otrosginec, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Otrosginec, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>ProxCita</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.ProxCita, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                                        @Html.ValidationMessageFor(model => model.ProxCita, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>ExaGeneral</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.ExaGeneral, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.ExaGeneral, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>UbicEspTampa</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.UbicEspTampa, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.UbicEspTampa, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>EstNutricion</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.EstNutricion, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.EstNutricion, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>EstHidratacion</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.EstHidratacion, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.EstHidratacion, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>PielFanerasTejido</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.PielFanerasTejido, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.PielFanerasTejido, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Mamas</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Mamas, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Mamas, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>SisRespiratorio</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.SisRespiratorio, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.SisRespiratorio, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>SisCardiovascular</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.SisCardiovascular, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.SisCardiovascular, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>AbdomenPelvis</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.AbdomenPelvis, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.AbdomenPelvis, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>ExaObstetrico</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.ExaObstetrico, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.ExaObstetrico, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>SisGenitourinario</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.SisGenitourinario, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.SisGenitourinario, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>SisNervioso</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.SisNervioso, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.SisNervioso, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Estado</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="col-md-12">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Motivo de consulta</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="box-body pad">
+                                                            <textarea class="textarea" placeholder="Ingrese el motivo" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Relato</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="box-body pad">
+                                                            <textarea class="textarea1" placeholder="Ingrese el Relato" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </fieldset>
+
+                                </div>
+                        </div>
+
+                    </div>
+
+
+                    <div id="antecedentes" class="tab-pane fade">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Antecedentes</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+
+
+                                <div class="box-body">
+                                        <fieldset>
+                                            <legend></legend>
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Cancer pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.CancerP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.CancerP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Diabetes pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.DiabetesP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.DiabetesP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>ACV pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.ACVP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.ACVP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Alergia pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.AlergiaP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.AlergiaP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>HipertArt pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.HipertArtP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.HipertArtP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Otros pac.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.OtrosP, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.OtrosP, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Observaciones pac.</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control" name="ObservacionP" rows="10"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Cancer fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.CancerF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.CancerF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Diabetes fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.DiabetesF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.DiabetesF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>ACV fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.ACVF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.ACVF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Alergia fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.AlergiaF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.AlergiaF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>HipertArt fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.HipertArtF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.HipertArtF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Otros fam.</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.CheckBoxFor(model => model.OtrosF, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.OtrosF, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Observaciones familiar</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <textarea class="form-control" name="ObservacionF"  rows="10"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </fieldset>
+                                </div>
+                        </div>
+
+                    </div>
+
+
+                    <div id="diagnostico" class="tab-pane fade">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Diagnostico</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+                                <div class="box-body">
+
+
+
+                                        <fieldset>
+                                            <legend></legend>
+
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>CI10</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <select class="form-control select2" name="Cie10" style="width:100%">
+                                                            <option>Neumonia</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Descripcion</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-md-12" align="center" style="margin-top:3%">
+
+                                                <input type="submit" class="btn btn-danger" value="Agregar" />
+
+                                            </div>
+
+                                            <div class="col-md-12" style="margin-top:3%">
+
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Lista de Diagnosticos</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <table id="example4" class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>CIE10</th>
+                                                                <th>Descripcion</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+
+                                                            @foreach (var item in listaDiagnostico)
+                                                            {
+
+                                                                <tr>
+                                                                    <td>Neumonia</td>
+                                                                    <td>Esta grave</td>
+                                                                </tr>
+
+                                                                                }
+
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+                             </div>
+
+                    </div>
+
+
+                    <div id="examenAuxiliar" class="tab-pane fade">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Registrar Paciente</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+
+                            <form method="post" action="">
+
+                                <div class="box-body">
+
+
+
+                                    <fieldset>
+                                        <legend></legend>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Especialidad</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <select class="form-control select2" name="Especialidad" style="width:100%">
+                                                        <option>Ginecologia</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Servicio</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <select class="form-control select2" name="ServicioExamen" style="width:100%">
+                                                        <option>Ginecologia</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Tarifa</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <select class="form-control select2" name="TarifaExamen" style="width:100%">
+                                                        <option>Consulta Ginecologia</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Medico</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <select class="form-control select2" name="MedicoExamen" style="width:100%">
+                                                        <option>ALAN BRITO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Cantidad</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.EditorFor(model => model.cant, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.cant, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Otros</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.EditorFor(model => model.Otros, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Otros, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="col-md-12" align="center" style="margin-top:3%">
+
+                                            <input type="submit" class="btn btn-danger" value="Agregar" />
+
+                                        </div>
+
+                                        <div class="col-md-12" style="margin-top:3%">
+
+                                            <div class="box-header">
+                                                <h3 class="box-title">Lista de Examenes auxiliares</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="example4" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Especialida</th>
+                                                            <th>Servicio</th>
+                                                            <th>Tarifa</th>
+                                                            <th>Medico</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Otros</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                        @foreach (var item in listaDiagnostico)
+                                                        {
+
+                                                            <tr>
+                                                                <td>Ginecologoca</td>
+                                                                <td>Ginecologoca</td>
+                                                                <td>Consulta ginecologica</td>
+                                                                <td>ALAN BRITO</td>
+                                                                <td>1</td>
+                                                                <td>Ninguno</td>
+                                                            </tr>
+
+                                                        }
+
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div id="recetas" class="tab-pane fade">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Registrar Paciente</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                </div>
+                            </div>
+
+                            <form method="post" action="">
+
+                                <div class="box-body">
+
+
+
+                                    <div id="fichaElectronica" class="tab-pane fade in active">
+
+                                        <fieldset>
+                                            <legend></legend>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Apellido Paterno</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.AbdomenPelvis, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                                        @Html.ValidationMessageFor(model => model.AbdomenPelvis, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Email</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        @Html.EditorFor(model => model.AbdomenPelvis, new { htmlAttributes = new { @class = "form-control" } })
+                                                        @Html.ValidationMessageFor(model => model.AbdomenPelvis, "", new { @class = "text-danger" })
+
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </fieldset>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

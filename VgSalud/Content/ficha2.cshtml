@@ -1,0 +1,231 @@
+@{
+    Layout = null;
+
+    var listaFe = (List<VgSalud.Models.E_Ficha_Electronica>
+    )ViewBag.listaFe;
+    var listaExamen = (List<VgSalud.Models.E_Ficha_Electronica>
+        )ViewBag.listaExamen;
+        var listaReceta = (List<VgSalud.Models.E_Ficha_Electronica>
+            )ViewBag.listaReceta;
+            var listaDiagnostico = (List<VgSalud.Models.E_Ficha_Electronica>
+                )ViewBag.listaDiagnostico;
+
+                }
+                <html>
+                <head>
+                    <title> </title>
+                    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+                    <style type="text/css">
+                        body, td, th {
+                            font-size: 8px;
+                            font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        }
+
+                        table {
+                            border-collapse: collapse;
+                        }
+
+                        th {
+                            -webkit-print-color-adjust: exact;
+                            background-color: #0099FF;
+                            color: #006;
+                        }
+
+                        .Tit1 {
+                            font-style: italic;
+                            font-variant: small-caps;
+                            font-weight: bolder;
+                            color: #006;
+                        }
+                    </style>
+
+                </head>
+                <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+                    <div id="Area">
+
+                        <table width="100%" border="0" cellpadding="1" cellspacing="0">
+                            <tr>
+                                <th height="20" colspan="5" align="center">FILIACION</th>
+                            </tr>
+                            <tr>
+                                <td height="20" colspan="3" align="left"><span class="Tit1">Paciente :</span> JUAN ANTONIO ALVARADO DE LA CRUZ</td>
+                                <td width="10%" align="right" class="Tit1">N&deg; Historia :</td>
+                                <td width="15%">156</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" height="20"><span class="Tit1">Sexo :</span> MASCULINO</td>
+                                <td width="25%"><span class="Tit1">Edad :</span> 25 A&Ntilde;OS</td>
+                                <td width="25%"><span class="Tit1">DNI: </span>42130995</td>
+                                <td align="right" class="Tit1">Cuenta / Item :</td>
+                                <td>54875 / 2</td>
+                            </tr>
+                            <tr>
+                                <td height="20"><span class="Tit1">Fecha / Hora :</span> 21/02/2017 5:33 P.M.</td>
+                                <td colspan="4"><span class="Tit1">Atenci&oacute;n : </span>CURACION DE HERIDA</td>
+                            </tr>
+                        </table><br>
+                        <table width="100%" border="1" cellspacing="0" cellpadding="3">
+                            <tr>
+                                <th height="20" colspan="3" align="center">ANAMNESIS</th>
+                            </tr>
+                            <tr>
+                                <td width="35" height="20" valign="top" class="Tit1">Tiempo Enferm.:</td>
+                                <td width="30%" valign="top" class="Tit1">Inicio :</td>
+                                <td width="35%" class="Tit1">Curso :</td>
+                            </tr>
+                            <tr>
+                                <td height="100" colspan="3" valign="top">
+                                    <span class="Tit1">Enfermedad Actual :</span><br>
+                                    Paciente que relata que aproximadamente hace cinco horas comenzó con una molestia en epigastrio que se fue acrecentando hasta hacerse francamente dolorosa, de tipo cólico que duró dos horas para luego localizarse en fosa ilíaca derecha haciéndose de tipo punzante. No se acompaño de nauseas, vómitos ni diarrea. Presenta además fiebre objetivada por el paciente de aproximadamente 38oC.
+                                    El paciente relata haber tomado AAS con lo cual no cedió el dolor.
+                                    Hace cinco días atrás el paciente relata haber tenido episodios similares en FID pero menos intensos que cedían con reposo.Paciente que relata que aproximadamente hace cinco horas comenzó con una molestia en epigastrio que se fue acrecentando hasta hacerse francamente dolorosa, de tipo cólico que duró dos horas para luego localizarse en fosa ilíaca derecha haciéndose de tipo punzante. No se acompaño de nauseas, vómitos ni diarrea. Presenta además fiebre objetivada por el paciente de aproximadamente 38oC.
+                                    El paciente relata haber tomado AAS con lo cual no cedió el dolor.
+                                    Hace cinco días atrás el paciente relata haber tenido episodios similares en FID pero menos intensos que cedían con reposo.Paciente que relata que aproximadamente hace cinco horas comenzó con una molestia en epigastrio que se fue acrecentando hasta hacerse francamente dolorosa, de tipo cólico que duró dos horas para luego localizarse en fosa ilíaca derecha haciéndose de tipo punzante. No se acompaño de nauseas, vómitos ni diarrea. Presenta además fiebre objetivada por el paciente de aproximadamente 38oC.
+                                    El paciente relata haber tomado AAS con lo cual no cedió el dolor.
+                                    Hace cinco días atrás el paciente relata haber tenido episodios similares en FID pero menos intensos que cedían con reposo.
+                                    XASDA
+                                </td>
+                            </tr>
+                        </table><br>
+                        <table width="100%" border="1" cellspacing="0" cellpadding="3">
+                            <tr>
+                                <th height="20" colspan="6" align="center" bgcolor="#0099FF">ANTENCEDENTES</th>
+                            </tr>
+                            <tr>
+                                <td width="10%" height="20" align="right" valign="top" class="Tit1">Personales :</td>
+                                <td colspan="5"></td>
+                            </tr>
+                            <tr>
+                                <td height="20" align="right" valign="top" class="Tit1">Familiares :</td>
+                                <td colspan="5"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" align="right" valign="top" class="Tit1">Ginecolog. :</td>
+                                <td width="18%" height="20" class="Tit1">Paridad :</td>
+                                <td width="18%" class="Tit1">PIG :</td>
+                                <td width="18%" class="Tit1">FUR :</td>
+                                <td width="18%" class="Tit1">FPP :</td>
+                                <td width="18%" class="Tit1">Edad Gestac. :</td>
+                            </tr>
+                            <tr>
+                                <td height="20" class="Tit1">Ultim. PAP :</td>
+                                <td colspan="2" class="Tit1">Resultado :</td>
+                                <td class="Tit1">MAC TIPTIME :</td>
+                                <td></td>
+                            </tr>
+                        </table><br>
+                        <table width="100%" border="1" cellspacing="0" cellpadding="3">
+                            <tr>
+                                <th height="20" colspan="8" align="center">EXAMEN FISICO</th>
+                            </tr>
+                            <tr>
+                                <td width="10%" height="20"><span class="Tit1">FC :</span> 95 LPM</td>
+                                <td width="10%"><span class="Tit1">FR :</span> 30 RPM</td>
+                                <td width="12%"><span class="Tit1">PA :</span> 100/50 mmHg</td>
+                                <td width="12%"><span class="Tit1">T&deg; Axilar :</span> 37.5 &deg;C</td>
+                                <td width="12%" class="Tit1">T&deg; Anal :</td>
+                                <td width="10%"><span class="Tit1">Peso :</span> 95 Kg</td>
+                                <td width="10%"><span class="Tit1">Talla :</span> 1.85 M</td>
+                                <td width="24%"><span class="Tit1">IMC : </span>27.76 - SOBRE PESO</td>
+                            </tr>
+                            <tr>
+                                <td height="80" colspan="8" valign="top">
+                                    <span class="Tit1">Examen General :</span> Paciente que relata que aproximadamente hace cinco horas comenzó con una molestia en epigastrio que se fue acrecentando hasta hacerse francamente dolorosa, de tipo cólico que duró dos horas para luego localizarse en fosa ilíaca derecha haciéndose de tipo punzante. No se acompaño de nauseas, vómitos ni diarrea. Presenta además fiebre objetivada por el paciente de aproximadamente 38oC.
+                                    El paciente relata haber tomado AAS con lo cual no cedió el dolor.
+                                    Hace cinco días atrás el paciente relata haber tenido episodios similares en FID pero menos intensos que cedían con reposo.
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+
+                        <table width="100%%" border="1" cellspacing="0" cellpadding="3">
+                            <tr>
+                                <th width="50%" height="20">IMPRESION DIAGNOSTICA</th>
+                                <th width="50%">EXAMENES  AUXILIARES Y PROCEDIMIENTOS</th>
+                            </tr>
+                            <tr>
+                                <td height="140" valign="top">
+                                    1.- K10.2 DIABETES MELLITUS<br>
+                                    2.- K10.2 DIABETES MELLITUS<br>
+                                    3.- K10.2 DIABETES MELLITUS<br>
+                                    4.- K10.2 DIABETES MELLITUS<br>
+                                    5.- K10.2 DIABETES MELLITUS1.- K10.2 DIABETES MELLITUS<br>
+                                    6.- K10.2 DIABETES MELLITUS<br>
+                                    7.- K10.2 DIABETES MELLITUS<br>
+                                    8.- K10.2 DIABETES MELLITUS<br>
+                                    9.- K10.2 DIABETES MELLITUS1.- K10.2 DIABETES MELLITUS<br>
+                                    10.- K10.2 DIABETES MELLITUS<br>
+                                    11.- K10.2 DIABETES MELLITUS<br>
+                                    12.- K10.2 DIABETES MELLITUS<br>
+                                    13.- K10.2 DIABETES MELLITUS<br>
+                                    14.- K10.2 DIABETES MELLITUS
+                                </td>
+                                <td height="70" valign="top">
+                                    1.- K10.2 DIABETES MELLITUS<br>
+                                    2.- K10.2 DIABETES MELLITUS<br>
+                                    3.- K10.2 DIABETES MELLITUS<br>
+                                    4.- K10.2 DIABETES MELLITUS<br>
+                                    5.- K10.2 DIABETES MELLITUS1.- K10.2 DIABETES MELLITUS<br>
+                                    6.- K10.2 DIABETES MELLITUS<br>
+                                    7.- K10.2 DIABETES MELLITUS<br>
+                                    8.- K10.2 DIABETES MELLITUS<br>
+                                    9.- K10.2 DIABETES MELLITUS1.- K10.2 DIABETES MELLITUS<br>
+                                    10.- K10.2 DIABETES MELLITUS<br>
+                                    11.- K10.2 DIABETES MELLITUS<br>
+                                    12.- K10.2 DIABETES MELLITUS<br>
+                                    13.- K10.2 DIABETES MELLITUS<br>
+                                    14.- K10.2 DIABETES MELLITUS
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table width="100%" border="1" cellpadding="3" cellspacing="0">
+                            <col width="95">
+                            <col width="87">
+                            <col width="83">
+                            <col width="74">
+                            <col width="71">
+                            <col width="83">
+                            <col width="73">
+                            <col width="83" span="2">
+                            <tr>
+                                <th width="85%" height="20" align="center">TRATAMIENTO</th>
+                                <th width="15%" align="center">PROXI. CITA :</th>
+                            </tr>
+                            <tr>
+                                <td height="20" align="center"><strong>Medicamento / Forma Farmaceu. / Conecntración. / Dosis / Frecuencia / Vía / Duración / Observaciones</strong></td>
+                                <td align="center">20/02/2017</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" valign="top">
+                                    1.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    1.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    2.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    3.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    4.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    5.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -<br>
+                                    6.- ENOXAPARINA / AMPOLLA / 60 MG / 1 / CADA 12 HORAS / VIA SUBCUTANEA / 1 SEMANA / -
+                                </td>
+                                <th height="20" align="center">INTERCONSULTA :</th>
+                            </tr>
+                            <tr>
+                                <td width="10%" height="35" align="center">CIRUGIA    DE TORAX Y CARDIOVASCULAR</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                            <tr>
+                                <td width="75%" height="110" align="center">&nbsp;</td>
+                                <td width="25%" align="center" valign="bottom" class="Tit1">
+                                    MED. JUAN ROJAS SANDOVAL<br>
+                                    SERVICIO DE DERMATOLOGIA
+                                </td>
+                            </tr>
+                            </
+                        </table>
+
+
+                    </div>
+                </body>
+            </html>

@@ -1,0 +1,449 @@
+﻿@model VgSalud.Models.E_Gastos
+
+@{
+    ViewBag.Title = "DetalleGastos";
+    var lista = (List<VgSalud.Models.E_Gastos>)ViewBag.detalle;
+    decimal importe = 0;
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Gastos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Gastos</a></li>
+            <li class="active">Registrar </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="box box-default">
+            <fieldset>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos de Gastos</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+
+            </fieldset>
+            <div class="box-body">
+                <div class="col-md-12">
+                    <form action="" method="post">
+
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>N° Operacion</label>
+                                    <input type="text" class="form-control" value="@Model.NroOperacion" name="NroOperacion" id="NroOperacion" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Centro de Costo</label>
+
+                                    <input type="text" name="" class="form-control" readonly value="@Model.DescripcionCentroCosto" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Sub Centro de Costo</label>
+                                    <input type="text" name="" class="form-control" readonly value="@Model.DescripcionSubCentroCosto" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Proveedor</label>
+                                    <input type="text" name="IdPro" class="form-control" readonly value="@Model.RazonS" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <label>RUC</label>
+                                        <input type="text" name="Ruc" class="form-control" readonly value="@Model.Ruc" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Tipo Persona</label>
+
+                                    <input type="text" name="TipoPersona" class="form-control" readonly value="@Model.TipoPersona" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <label>Observacion</label>
+                                        <textarea class="form-control" name="Observ" id="observacion" readonly value="@Model.Observ"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Tipo Venta (detraccion)</label>
+                                    <input type="text" name="IDbs" class="form-control" readonly value="@Model.Titulo" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label>Moneda</label>
+                                            <input type="text" name="CodTipMon" class="form-control" readonly value="@Model.DescTipMon" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label>Tipo Cambio</label>
+                                            <input type="text" name="TipoCambio" class="form-control" readonly id="TipoCambio1" value="@Model.TipoCambio" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <label>Fecha Proxima Pago</label>
+                                        <input type="text" name="FechaProxPago" class="form-control" readonly value="@Model.FechaProxPago.ToShortDateString()" />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                            <br />
+                                            <button type="button" class="btn btn-info alerta" data-container="body" value="@Model.IdgastosC" style="margin-top: 4px;margin-left: 0px;"><i class="glyphicon glyphicon-align-justify"></i></button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Total</label>
+                                            <input type="text" name=""  class="form-control" id="" value="@ViewBag.totalAcuenta"  readonly />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Saldo</label>
+                                            <input type="text" name="saldo" class="form-control" id="saldo" value="@ViewBag.saldo" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hidden acuenta col-md-12" style="height:5px;width:30px">
+                                <table class="table table-hover table-striped table-bordered">
+                                    <thead>
+                                        <tr class="headTabla" style="height:5px;width:30px">
+                                            <th>Fecha</th>
+                                            <th>Tipo Pago</th>
+                                            <th>Monto</th>
+                                         
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="tbody"></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                                        <label>Tipo Documento</label>
+                                        <input type="text" name="tipodocumento" value="@Model.DescripcionTipoDocumento" readonly class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="margin:0px;padding:0px;">
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="margin:0px;padding-left:0px;">
+                                                <label>Serie</label>
+                                                <input type="text" name="Serie" value="@Model.Serie" readonly class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin:0px;padding:0px;">
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="margin:0px;padding-right:0px;">
+                                                <label>Nº</label>
+                                                <input type="text" name="Documento" value="@Model.Documento" readonly class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Tipo Pago</label>
+                                        <input type="text" class="form-control" readonly name="" value="@Model.TipoPago" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Emision</label>
+                                            <input type="text" class="form-control" style="width:159px;" disabled value="@Model.FechaEmision.ToShortDateString()" name="FechaEmision" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Pago</label>
+                                            @Html.EditorFor(model => model.FechaPago, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaPago", @disabled = "disabled" } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Glosa</label>
+                                    <textarea class="form-control" name="glosa" id="glosa" readonly>@Model.glosa</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Observacion</label>
+                                    <textarea class="form-control" name="ObservacionC" id="ObservacionC" readonly>@Model.Observ</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-6" style="margin:0px;padding:0px;">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Nro Detraccion</label>
+                                            @Html.EditorFor(model => model.NroDetraccion, new { htmlAttributes = new { @class = "form-control", @id = "NroDetraccion", @disabled = "disabled" } })
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6" style="margin:0px;padding:0px;">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Detraccion</label>
+                                            @Html.EditorFor(model => model.FechaDetraccion, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaDetraccion", @disabled = "disabled" } })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            @*<div class="col-md-3">
+
+                                <form action="" method="post" enctype="multipart/form-data">
+
+                                    <div class="form-group">
+                                        @Html.Label("Selecciona la Imagen", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(model => model.foto, new { type = "file", @id = "file-input" })
+                                            @Html.ValidationMessageFor(model => model.urlimagen, "", new { @class = "text-danger" })
+                                            <br />
+                                            <img id="imgSalida" width="50%" height="50%" src="" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" value="1" name="Evento" class="btn btn-danger">Registrar</button>
+                                    </div>
+
+                                </form>
+
+                            </div>*@
+                        </div>
+
+                    </form>
+
+                    <br /><br />
+                    <div class="box-body">
+
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Descripcion</th>
+
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Importe</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (lista != null)
+                                {
+                                    foreach (var item in lista)
+                                    {
+                                <tr>
+                                    <td>@item.IdCtaCont - @item.DescripcionCtaContable</td>
+                                    <td>@item.Item</td>
+                                    <td>@item.PrecioU</td>
+                                    <td>@item.Cant</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                                        importe += item.Total;
+                                    }
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                        <br /><br />
+                        <div class="col-md-12">
+
+                            <br />
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Subtotal</label>
+                                    <input type="text" class="form-control" name="Total" value="@importe" id="bruto" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>I.G.V</label>
+                                    <input type="text" class="form-control" name="IgvC" value="@Model.igv" id="igv" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Retencion</label>
+                                    <input type="text" class="form-control" name="Retencion" value="@Model.Retencion" id="retencion" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Detraccion&nbsp</label><label id="errorMessage" style="display:none;color:red" class="ocultar"></label>
+                                    <input type="text" class="form-control" name="Detraccion" id="detraccion" value="@Model.Detraccion" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultarRenta">
+                                    <label>Renta</label>
+                                    <input type="text" class="form-control" name="Renta" id="Renta" value="@Model.Renta" readonly />
+                                    <label id="errorMessage" style="display:none;color:red"></label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-12">
+                                    <label>Total</label>
+                                    <input type="text" class="form-control" name="Total" id="neto" value="@Model.Total" readonly />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <br />
+
+    <br />
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".alerta").mouseover(function () {
+            var valor = this.value ;
+            $.get('@Url.Action("ListaAcuenta", "Gastos")', { id: valor },
+                function (response) {
+                    $("#tbody").empty();
+                    $("#tbody").append(response); 
+            }); 
+
+            $(".alerta").popover(
+    {
+
+        content: function () {
+            return $('.acuenta').html();
+        },
+        html: true,
+        placement: 'top',
+        trigger: 'hover',
+        title: 'DETALLE DE ACUENTA'
+
+    });
+        });
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    $(window).load(function () {
+
+        $(function () {
+            $('#file-input').change(function (e) {
+                addImage(e);
+            });
+
+            function addImage(e) {
+                var file = e.target.files[0],
+                imageType = /image.*/;
+
+                if (!file.type.match(imageType))
+                    return;
+
+                var reader = new FileReader();
+                reader.onload = fileOnload;
+                reader.readAsDataURL(file);
+            }
+
+            function fileOnload(e) {
+                var result = e.target.result;
+                $('#imgSalida').attr("src", result);
+            }
+        });
+    });
+</script>

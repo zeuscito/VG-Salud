@@ -1,0 +1,130 @@
+﻿@model IEnumerable<VgSalud.Models.E_Empresa_Tercero>
+
+@{
+    ViewBag.Title = "ListaEmpresaTercero";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Empresa Tercero</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Empresa Tercero</a></li>
+            <li class="active">Consultar Empresa Tercero</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarEmpresaTercero.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/EmpresaTercero/RegistrarEmpresaTercero" class="btn btn-danger">Registrar nueva Empresa Tercero &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+
+                        var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarSedesEmpresa.cshtml");
+                        if (abc2 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/SedesEmpresa/RegistrarSedesEmpresa" class="btn btn-danger">Asignar Sedes / Empresa &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Empresas Terceros</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                   @* <th>Codigo</th>*@
+                                    <th>Razón Social</th>
+                                    <th>RUC</th>
+                                    <th>Contacto</th>
+                                    <th>Teléfono</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                       @* <td> @Html.DisplayFor(modelItem => item.CodEmp) </td>*@
+                                        <td> @Html.DisplayFor(modelItem => item.RazonEmp)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.RucEmp)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.NomContacto)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.Tel1)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.Correo1)</td>
+                                        <td> @Html.DisplayFor(modelItem => item.EstEmp) </td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarEmpresaTercero.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarEmpresaTercero/@item.CodEmp"><i class="fa fa-edit"></i></a>
+                                                    }
+
+
+                                                    var abc4 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarEmpresaTercero.cshtml");
+                                                    if (abc4 != null)
+                                                    {
+                                                        if (item.EstEmp == true)
+                                                        {
+                                                            <a title="Eliminar" href="EliminarEmpresaTercero/@item.CodEmp"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Activar" href="ActivarEmpresaTercero/@item.CodEmp"><i class="fa fa-angle-down"></i></a>
+                                                        }
+                                                    }
+
+
+                                                }
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+
+
+
+
+

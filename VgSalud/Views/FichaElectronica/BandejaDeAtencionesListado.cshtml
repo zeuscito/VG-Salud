@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+    var cita = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.cita;
+    var atenciones = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.atenciones;
+    VgSalud.Controllers.UtilitarioController u = new VgSalud.Controllers.UtilitarioController();
+    VgSalud.Models.E_Master ho = u.ListadoHoraServidor().FirstOrDefault();
+
+    var colorAtendido = "style=background-color:#298A08;color:#fff";
+    var colorAtendidoAsistente = "style=background-color:#F5DA81;color:#000";
+    var tipoMed = ViewBag.TipoMed;
+}
+@if (cita != null)
+{
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">ATENCIONES PROGRAMADAS</h3>
+            </div>
+            <div class="box-body no-padding">
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover table-striped">
+                        <tbody>
+
+                            <tr class="headTabla" style="background-color:#999">
+                                <td><b>CUENTA</b></td>
+                                <td><b>PACIENTE</b></td>
+                                <td><b>ATENCION(TARIFA)</b></td>
+                                <td><b>CANT</b></td>
+                                <td><b>COSTO</b></td>
+                                <td><b>F. PROGRAMADA</b></td>
+                                <td><b>F. DE ATENCION</b></td>
+                                <td><b>HORA</b></td>
+                                <td><b>MEDICO</b></td>
+                                <td><b>TIPO DE TARIFA</b></td>
+                                <td><b><i class="fa fa-edit"></i></b></td>
+                            </tr>
+
+                            @foreach (var item in cita)
+                            {
+
+                                <tr @if (item.EstDet == "A") { @colorAtendido        ; } else if (item.FEL != -1) { @colorAtendidoAsistente       ; }>
+                                    <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FechaAtencion)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FechaAtenReg)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.HoraInicio)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DescTipTar)</td>
+                                    @if (item.EstDet == "A")
+                                    {
+                                        <td>
+                                            @if (item.FechaAtenReg == ho.HoraServidor.ToShortDateString())
+                                            {
+                                                <a style="color:#fff" href="~/@item.urlImprime/?fe=@item.FEL&procedencia=@item.Procedencia&CodCue=@item.CodCue&turno=@item.Turno"><i class="fa fa-print"></i></a>
+                                            }
+                                            @if (item.urlImprimeReceta != "")
+                                            {
+                                                <a target="_blank" title="REPORTE DE RECETA" style="color:#fff" href="@item.urlImprimeReceta/?id=PDF&procedencia=@item.Procedencia&fe=@item.FEL&pac=@item.Paciente&med=@item.NomMed"><i class="fa fa-print"></i></a>
+                                            }
+                                        </td>
+
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.TipoMed == true)
+                                        {
+                                            if (item.FEL != -1)
+                                            {
+                                                <td><a href="~/@item.url/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia&FE=@item.FEL"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a href="~/@item.url/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.FEL != -1)
+                                            {
+                                                <td></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a href="~/FichaElectronica/RegistroDeAtencionesBasica/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia&Tipo=@item.Modulo"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                        }
+                                    }
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="box-footer no-padding">
+            </div>
+        </div>
+    </div>
+
+}
+@if (atenciones != null)
+{
+
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">ATENCIONES DEL DIA</h3>
+            </div>
+            <div class="box-body no-padding">
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover table-striped">
+                        <tbody>
+
+                            <tr class="headTabla" style="background-color:#999">
+                                <td><b>CUENTA</b></td>
+                                <td><b>PACIENTE</b></td>
+                                <td><b>ATENCION(TARIFA)</b></td>
+                                <td><b>CANT</b></td>
+                                <td><b>COSTO</b></td>
+                                <td><b>F. PROGRAMADA</b></td>
+                                <td><b>F. DE ATENCION</b></td>
+                                <td><b>MEDICO</b></td>
+                                <td><b>TIPO DE TARIFA</b></td>
+                                <td><b><i class="fa fa-edit" /></b></td>
+
+                            </tr>
+
+                            @foreach (var item in atenciones)
+                            {
+                                <tr @if (item.EstDet == "A") { @colorAtendido  ; } else if (item.FEL != -1) { @colorAtendidoAsistente        ; }>
+                                    <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FechaAtencion)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FechaAtenReg)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DescTipTar)</td>
+                                    @if (item.EstDet == "A")
+                                    {
+                                        <td>
+                                            @if (item.FechaAtenReg == ho.HoraServidor.ToShortDateString())
+                                            {
+                                                <a style="color:#fff" href="~/@item.urlImprime/?fe=@item.FEL&procedencia=@item.Procedencia&CodCue=@item.CodCue&turno=@item.Turno"><i class="fa fa-print"></i></a>
+                                            }
+                                            @if (item.urlImprimeReceta != "")
+                                            {
+                                                <a target="_blank" title="REPORTE DE RECETA" style="color:#fff" href="@item.urlImprimeReceta/?id=PDF&procedencia=@item.Procedencia&fe=@item.FEL&pac=@item.Paciente&med=@item.NomMed"><i class="fa fa-print"></i></a>
+                                            }
+                                        </td>
+
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.TipoMed == true)
+                                        {
+                                            if (item.FEL != -1)
+                                            {
+                                                <td><a href="~/@item.url/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia&FE=@item.FEL"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a href="~/@item.url/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.FEL != -1)
+                                            {
+                                                <td></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a href="~/FichaElectronica/RegistroDeAtencionesBasica/?CodCue=@item.CodCue&Item=@item.Item&Historia=@item.Historia&Tipo=@item.Modulo"><i class="fa fa-edit"></i></a></td>
+                                            }
+                                        }
+                                    }
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="box-footer no-padding">
+            </div>
+        </div>
+    </div>
+
+}

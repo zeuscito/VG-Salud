@@ -1,0 +1,190 @@
+﻿@model IEnumerable<VgSalud.Models.E_HorarioMedico>
+
+@{
+    ViewBag.Title = "ListaHorarioMedico";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+    int dimension = int.Parse(ViewBag.dimension.ToString());
+    var md3 = "class=col-md-3";
+    var md2 = "class=col-md-2";
+    var verde = "bg-green-gradient";
+    var azul = "bg-gray-active";
+    var rojo = "bg-red-gradient";
+    var naranja = "bg-yellow-gradient";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Lista de Horarios de: <span style="color:coral">@ViewBag.CodNom</span></h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Consultar Médico</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%;;margin-left:5px;" title="ALT + A">
+                            <a href="./ListarMedico">
+                                <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                            </a>
+                        </div>
+                        @{
+
+                            var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "HorarioMedico.cshtml");
+                            if (abc1 != null)
+                            {
+                                <div style="float:left;margin-left:5px;" title="ALT + F7">
+                                    <a href="~/Medicos/HorarioMedico/@ViewBag.codigo">
+                                        <center><i class="fa fa-address-card-o" style="font-size:25px;color:#13D003;"></i><br><strong style="color:black">Registrar horario</strong></center>
+                                    </a>
+                                </div>
+                            }
+
+                        }
+                 
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        <fieldset>
+                            <legend style="margin-left:30px;">Filtro</legend>
+                            <div class="box-body">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-2">
+                                    <select name="mes" id="mes" class="form-control select2">
+                                        <option value="1">ENERO</option>
+                                        <option value="2">FEBRERO</option>
+                                        <option value="3">MARZO</option>
+                                        <option value="4">ABRIL</option>
+                                        <option value="5">MAYO</option>
+                                        <option value="6">JUNIO</option>
+                                        <option value="7">JULIO</option>
+                                        <option value="8">AGOSTO</option>
+                                        <option value="9">SETIEMBRE</option>
+                                        <option value="10">OCTUBRE</option>
+                                        <option value="11">NOVIEMBRE</option>
+                                        <option value="12">DICIEMBRE</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="anio" id="anioCombo" class="form-control select2">
+                                        <option value="@ViewBag.anioActual">@ViewBag.anioActual</option>
+                                        <option value="@ViewBag.anioSiguiente">@ViewBag.anioSiguiente</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="submit" style="background-color:#13D003; border:#13D003;" class="btn btn-danger" value="Buscar" />
+                                </div>
+                                <div class="col-md-3">
+                                 
+                                </div>
+                            </div>
+                        </fieldset>
+                
+
+                    }
+
+
+                    <fieldset>
+                        <legend style="margin-left:30px;">Lista</legend>
+                        <div class="box-body">
+                            @foreach (var item in Model)
+                            {
+                                if (item.Estado)
+                                {
+                                    DateTime d1 = DateTime.Parse(item.horaInicio.ToString());
+                                    string horI = d1.ToString("hh:mm tt").ToUpper();
+                                    DateTime d2 = DateTime.Parse(item.horaFin.ToString());
+                                    string horF = d2.ToString("hh:mm tt").ToUpper();
+                                    <div @if (dimension <= 1270) { @md3      } else { @md2      }>
+                                        <div class="small-box @if (item.Asistencia.Equals("NO ESPECIFICADO"))
+                            { @azul;
+                            }
+                            else if (item.Asistencia.Equals("ASISTIO"))
+                            { @verde;
+                            }
+                            else if (item.Asistencia.Equals("NO ASISTIO"))
+                            { @rojo;
+                            }
+                            else if (item.Asistencia.Equals("TARDE"))
+                            { @naranja;
+                            } ">
+                                            <div class="inner">
+                                                <div class="col-md-12">
+                                                    <center>
+                                                        <p style="font-size:14.9px;"><b>@item.nombreDia</b><br /><b>(@item.dia.ToShortDateString())</b></p>
+
+                                                    </center>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <center>
+                                                        <p style="font-size:14.9px;"><b>@item.Turno</b></p>
+
+                                                    </center>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <center>
+                                                        <div class="col-md-6">
+                                                            <p style="font-size:14.9px;"><b>H.Entrada: &nbsp</b>@horI</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <p style="font-size:14.9px;"><b>H.Salida: &nbsp</b>@horF</p>
+                                                        </div>
+                                                    </center>
+
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <center>
+                                                        <label><b>Consultorio: &nbsp</b></label>
+                                                        <p style="font-size:14.9px;">@item.NomCons</p>
+                                                    </center>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <center>
+                                                        <label><b>Asistencia: &nbsp</b></label>
+                                                        <p style="font-size:14.9px;">@item.Asistencia</p>
+                                                    </center>
+                                                </div>
+
+                                                <p style="line-height:5px"><b> &nbsp</b></p>
+                                            </div>
+
+                                            <div class="icon">
+                                                <i class="fa fa-sticky-note"></i>
+                                            </div>
+
+                                            <a href="~/Medicos/Elimina?id=@item.CodHor&CodMed=@ViewBag.codigo&accion=@dimension" class="small-box-footer" style="height: 48px;padding: 5px;font-size: 25px;">
+                                                Cancelar <i class="glyphicon glyphicon-remove"></i>
+                                            </a>
+                                     
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                    </fieldset>
+           
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#mes option[value="@ViewBag.mesSelect"]').attr("selected", true);
+        $('#anio option[value="@ViewBag.anioSelect"]').attr("selected", true);
+
+    });
+
+</script>

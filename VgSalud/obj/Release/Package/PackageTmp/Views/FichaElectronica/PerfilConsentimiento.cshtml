@@ -1,0 +1,204 @@
+﻿@model VgSalud.Models.E_Ficha_Electronica
+
+@{
+    ViewBag.Title = "PerfilConsentimiento";
+    var lista = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.lista;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Perfil de Ficha electronica</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tarifario</a></li>
+            <li class="active">Perfil de Ficha electronica</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Consultorio</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="" id="formulario">
+
+                <div class="box-body">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Nombre</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.Estado, new { @checked = true })
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <div class="col-md-12">
+                            <label>Relato del procedimiento</label>
+                            <h4>Palabras claves</h4>
+                            <div class="col-md-3">
+                                <p><b>Nombre Completo: </b> [nombreCompleto] </p>
+                                <p><b>Tipo Doc: </b>  [NomDocIdent]</p>
+                                <p><b>Nro Doc: </b>  [NumDoc]</p>
+                                <p><b>Fecha Hoy: </b>  [fecha]</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p><b>Direccion: </b>  [Direcc]</p>
+                                <p><b>Distrito: </b>  [NomDist]</p>
+                                <p><b>Lista de atenciones: </b>  [array]</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="box-body pad">
+                                @Html.TextArea("contenido", new { @class = "textarea", @style = "width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" })
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <center>
+
+                                @if (ViewBag.modificar == "1")
+                                {
+                                    <button type="button" id="Registrar" value="Registrar" class="btn btn-danger">Registrar</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="Modificar" value="Modificar" class="btn btn-danger">Modificar</button>
+                                }
+
+                                <a href="~/Master/Index" class="btn btn-info">Cancelar</a>
+
+                            </center>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="evento" id="evento" />
+                    <input type="hidden" name="idPFA" value="@ViewBag.idPFA" />
+
+                </div>
+
+
+                <br /><br /><br />
+
+                @if (lista != null)
+                {
+
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Tarifas</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="headTabla">
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in lista)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td>
+                                            <div class="tools">
+                                                <button class="EditaPerfil" name="EditaPerfil" value="@item.idPFA"><i class="fa fa-edit"></i></button> /
+                                                @if (item.Estado == true)
+                                                {
+                                                    <button class="EliminaPerfil" name="EliminaPerfil" value="@item.idPFA"><i class="fa fa-trash"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="ActivaPerfil" name="EliminaPerfil" value="@item.idPFA"><i class="fa fa-trash"></i></button>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                }
+
+
+            </form>
+        </div>
+    </section>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+
+        $("#Registrar").click(function () {
+            $("#evento").val("1");
+            $("#formulario").submit();
+        });
+
+        $("#Modificar").click(function () {
+            $("#evento").val("2");
+            $("#formulario").submit();
+        });
+
+        $(".EliminaPerfil").click(function () {
+            $("#evento").val("3");
+            $("#formulario").submit();
+        });
+
+        $(".EditaPerfil").click(function () {
+            $("#evento").val("4");
+            $("#formulario").submit();
+        });
+
+        $(".ActivaPerfil").click(function () {
+            $("#evento").val("5");
+            $("#formulario").submit();
+        });
+
+
+    });
+
+</script>

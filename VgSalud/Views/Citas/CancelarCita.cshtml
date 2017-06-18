@@ -1,0 +1,222 @@
+﻿@model VgSalud.Models.E_Citas
+
+@{
+    ViewBag.Title = "CancelarCita";
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Citas</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Cita</a></li>
+            <li class="active">Cancelar Cita</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Cancelar de cita</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-body">
+                    <div style="padding:1%; background-color:red; color:white; margin-bottom:2%">
+
+                        ¿Ustede desea cancelar la cita?<br />
+                        Ingrese una observación.
+
+                    </div>
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Paciente</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="NombrePaciente" value="@Model.NombrePaciente" readonly />
+                                @Html.ValidationMessageFor(model => model.NombrePaciente, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Especialidad</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="@Model.NomEspec" readonly />
+                                @Html.ValidationMessageFor(model => model.NomEspec, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Servicio</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="@Model.NomServ" readonly />
+                                @Html.ValidationMessageFor(model => model.NomServ, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tipo de paciente</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="TipoPac" class="form-control" value="@Model.TipoPac" readonly />
+                                @Html.ValidationMessageFor(model => model.TipoPac, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Obeservacion</label>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea name="Obser" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Categoria de paciente</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="@Model.NombreCatePaciente" readonly />
+                                @Html.ValidationMessageFor(model => model.NombreCatePaciente, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tarifa</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="@Model.DescTar" readonly />
+                                @Html.ValidationMessageFor(model => model.DescTar, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tipo de tarifa</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="NomTar" value="@Model.DescTipoTar" readonly />
+                                @Html.ValidationMessageFor(model => model.DescTipoTar, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Medico</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.NomMed, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.NomMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Hora de inicio</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.horaI, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.horaI, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Hora Final</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.horaF, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.horaF, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Fecha de cita</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.fechaCitas, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.fechaCitas, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Turno</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.Turno, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.Turno, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Consultorio</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.Consultorio, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.ValidationMessageFor(model => model.Consultorio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Sub Total</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="precio" class="form-control" value="@Model.precio" readonly />
+                                @Html.ValidationMessageFor(model => model.precio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>IGV</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="igv" class="form-control" value="@Model.igv" readonly />
+                                @Html.ValidationMessageFor(model => model.igv, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Total</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="total" class="form-control" value="@Model.total" readonly />
+                                @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                       
+                       <input type="hidden" name="Historia" value="@Model.Historia" />  
+                       <input type="hidden" name="cadena" value="@ViewBag.cadena"/>
+                       <input type="hidden" name="CodCita" value="@Model.CodCita" />
+                       <input type="hidden" name="CodCue" value="@Model.CodCue" />
+
+                    </div>
+
+
+                    <label></label>
+                    <div class="col-md-12" style="margin-top:5%">
+                        <div class="form-group">
+                            <center>
+                                <input type="submit" class="btn btn-danger" value="Cancelar Cita">
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

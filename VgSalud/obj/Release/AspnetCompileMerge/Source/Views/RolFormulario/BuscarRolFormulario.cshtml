@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "BuscarRolFormulario";
+    var lista = ( List<VgSalud.Models.E_RolFormulario>)ViewBag.lista;
+    var perfil = (SelectList)ViewBag.perfil;
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Rol Formulario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Rol Formulario</a></li>
+            <li class="active">Consultar Rol Formulario</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">De</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+
+            <div class="box-body" style="margin-bottom:3%">
+
+                <form action="" method="post">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label>Descripcion de Perfil</label>
+                            </div>
+                            <div class="col-md-8">
+                                @Html.DropDownList("CodPerf", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodPerf" })
+                              
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3"> 
+                        <input class="btn btn-danger" type="submit" value="Buscar" id="buscar" />
+                    </div>
+                    <div class="col-md-3">
+                        <a href="~/RolFormulario/RegistrarRolFormulario" class="btn btn-danger">Registrar<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                    </div>
+                </form>
+            </div>
+               
+             @if(lista != null) { 
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Alias Formulario</th>
+                            <th>Descripcion Perfil</th>
+                            <th><i class="fa fa-trash"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in lista)
+                        {
+
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.AliasForm)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DescPerf)</td>
+                                <td>
+                                    <div class="tools">
+                                        <a title="Eliminar" href="~/RolFormulario/Eliminar/?id=@item.CodPerf&id2=@item.IdForm&id3=@ViewBag.cod"><i class="fa fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+             }
+
+    </section>
+
+</div>
+

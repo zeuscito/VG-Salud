@@ -1,0 +1,195 @@
+﻿@model IEnumerable<VgSalud.Models.E_Tarifario>
+
+@{
+    ViewBag.Title = "ListarTarifario";
+    VgSalud.Controllers.EspecialidadController e = new VgSalud.Controllers.EspecialidadController();
+    VgSalud.Controllers.TipoTarifaController tt = new VgSalud.Controllers.TipoTarifaController();
+    VgSalud.Controllers.STipoTarifaController st = new VgSalud.Controllers.STipoTarifaController();
+    VgSalud.Controllers.TipoMonedaController tm = new VgSalud.Controllers.TipoMonedaController();
+    var especialidad = (List<VgSalud.Models.E_Especialidades>)e.ListadoEspecialidades();
+    var tipoTarifa = (List<VgSalud.Models.E_Tipo_Tarifa>)tt.ListadoTipoTarifa();
+    var subTipoTarifa = (List<VgSalud.Models.E_Sub_Tipo_Tarifa>)st.ListadoSTipoTarifa();
+    var tipoMoneda = (List<VgSalud.Models.E_TipoMoneda>)tm.ListadoTipoMoneda();
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<script type="text/javascript">
+
+    function getVarsUrl() {
+        var url = location.search.replace("?", "");
+        var arrUrl = url.split("&");
+        var urlObj = {};
+        for (var i = 0; i < arrUrl.length; i++) {
+            var x = arrUrl[i].split("=");
+            urlObj[x[0]] = x[1]
+        }
+        return urlObj;
+    }
+
+    var misVariablesGet = getVarsUrl();
+    if (misVariablesGet.mensaje == "mal") {
+        location.href = "../RegistrarTarifario";
+        alert("¡ERROR! No se inserto todos los datos correctamente.");
+    }
+    if (misVariablesGet.mensaje == "mal1") {
+        location.href = "../RegistrarTarifario";
+        alert("¡ERROR! No se inserto todos datos de tarifa.");
+    }
+    if (misVariablesGet.mensaje == "mal2") {
+        location.href = "../RegistrarTarifario";
+        alert("¡ERROR! Asigne un precio a todas las categorias de cliente.");
+    }
+    if (misVariablesGet.mensaje == "bien") {
+        alert("Se registro correctamente");
+    }
+
+</script>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tarifario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tarifa</a></li>
+            <li class="active">Consultar Tarifa</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarTarifario.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Tarifario/RegistrarTarifario" class="btn btn-danger">Registrar nueva Tarifa &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Tarifas</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Descripción</th>
+                                    <th>Afecta IGV</th>
+                                    <th>Requiere Pago a DR.</th>
+                                    <th>Especialidad</th>
+                                    <th>Tipo de tarifa</th>
+                                    <th>Sub tipo tarifa</th>
+                                    <th>Moneda</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodTar)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                        @if (item.AfecIgcv == true) {
+                                        <td>Si</td>
+                                        } else {
+                                        <td>No</td>            
+                                        }
+                                        @if (item.ModPrecTar == true)
+                                        {
+                                            <td>Si</td>
+                                        }
+                                        else
+                                        {
+                                            <td>No</td>
+                                        }
+                                        @foreach (var es in especialidad)
+                                        {
+                                            if (es.CodEspec == item.CodEspec)
+                                            {
+                                                <td>@es.NomEspec</td>
+                                            }
+                                        }
+                                        @foreach (var ttl in tipoTarifa)
+                                        {
+                                            if (ttl.CodTipTar == item.CodTipTar)
+                                            {
+                                                <td>@ttl.DescTipTar</td>
+                                            }
+                                           
+                                        }
+                                        @foreach (var stl in subTipoTarifa)
+                                        {
+                                            if (stl.CodSTipTar == item.CodSTipTar)
+                                            {
+                                                <td>@stl.DescSTipTar</td>
+                                            }
+                                            if (item.CodSTipTar.Equals("     "))
+                                            {
+                                                <td>Ninguno</td>
+                                                break;
+                                            }
+                                        }
+                                        @foreach (var tml in tipoMoneda)
+                                        {
+                                            if (tml.CodTipMon == item.CodTipMon)
+                                            {
+                                                <td>@tml.DescTipMon</td>
+                                            }
+                                        }                                        
+                                        <td>@Html.DisplayFor(modelItem => item.EstTar)</td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarTarifa.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="~/Tarifario/ModificarTarifa/@item.CodTar"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarTarifario.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        if (item.EstTar == true)
+                                                        {
+                                                            <a title="Eliminar" href="~/Tarifario/Eliminar/@item.CodTar"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Activar" href="~/Tarifario/Activar/@item.CodTar"><i class="fa fa-plus-square"></i></a>
+                                                        }
+                                                    }
+
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+

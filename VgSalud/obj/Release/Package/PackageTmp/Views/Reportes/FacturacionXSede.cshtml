@@ -1,0 +1,270 @@
+﻿@model VgSalud.Models.E_Caja
+
+@{
+    ViewBag.Title = "FacturacionXSede";
+    var listado = (List<VgSalud.Models.E_Caja>)ViewBag.listado;
+    var ListaSede = (SelectList)ViewBag.ListaSede;
+    var ListaDoc = (SelectList)ViewBag.ListaDoc;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Facturacion por Sede</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de facturacion por sede</li>
+        </ol>
+    </section>
+    <section class="content">
+
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+             
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center style="margin-left:10px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <fieldset>
+                            <legend style="margin-left: 28px;">Filtro</legend>
+                            <div class="col-md-12" style="padding-left: 0px;">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Sede</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.DropDownList("CodSede", ListaSede, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodSede", @readonly = true })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Documento Contable</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.DropDownList("CodDoc", ListaDoc, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodDoc", @readonly = true })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Serie</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2" id="serie" name="serie"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Fecha Inicio</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control  datepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Fecha Final</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="FechaF" value="@ViewBag.FechaFinal" maxlength="10" class="form-control  datepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Hora Inicio</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="bootstrap-timepicker">
+                                                <div class="input-group">
+                                                    <input type="text" id="HoraI" name="HoraI" class="form-control timepicker">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Hora Final</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="bootstrap-timepicker">
+                                                <div class="input-group">
+                                                    <input type="text" id="HoraF" name="HoraF" class="form-control timepicker">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" style="margin-top:2%">
+                                    <div class="form-group">
+                                        <center> 
+                                            <input type="submit" style="background-color:#13D003;border:0" value="Consultar" class="btn btn-danger" />
+                                        </center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+               
+
+                    </div>
+
+
+            }
+
+            @if (listado != null)
+            {
+               
+                    <h4 style="text-align:right;padding:0%;margin-right:40px;margin-bottom:0px">
+                       <b>Exportar:</b> 
+                        <a href="~/Reportes/GeneraFacturacionXSede/?id=PDF&CodSede=@ViewBag.CodSede&CodDoc=@ViewBag.CodDoc&serie=@ViewBag.Serie&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                        <a href="~/Reportes/GeneraFacturacionXSede/?id=Word&CodSede=@ViewBag.CodSede&CodDoc=@ViewBag.CodDoc&serie=@ViewBag.Serie&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                        <a href="~/Reportes/GeneraFacturacionXSede/?id=Excel&CodSede=@ViewBag.CodSede&CodDoc=@ViewBag.CodDoc&serie=@ViewBag.Serie&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                    </h4>
+              
+           
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left:20px;">Lista</legend>
+
+                        <div class="col-md-12">
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Codigo</th>
+                                        <th>Cuenta</th>
+                                        <th>Secuencia</th>
+                                        <th>Fecha de emision</th>
+                                        <th>Paciente</th>
+                                        <th>Cate. Pac.</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @foreach (var item in listado)
+                                {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.CodCaja)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                            <td>@item.AliasCodDoc @item.Serie-@item.NumDoc</td>
+                                            <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DescCatPac)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                            <td>
+                                                @if (item.Estado == true)
+                                            {
+                                                    @(new HtmlString("ACTIVO"))
+                                            }
+                                            else
+                                            {
+                                                    @(new HtmlString("ANULADO"))
+                                            }
+                                            </td>
+
+                                        </tr>
+
+                                }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+                            
+            }
+
+        </div>
+        <br /><br /><br />
+
+
+
+    </section>
+    }
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#HoraI").val("07:00 AM");
+        $("#HoraF").val("07:59 PM");
+
+        $('#CodSede option[value=@ViewBag.CodSede]').prop('selected', 'selected').change();
+
+        var serieA = "@ViewBag.Serie";
+
+
+
+        $('#CodDoc').change(function (event) {
+            var codDoc = $("select#CodDoc").val();
+            $.get('@Url.Action("ObtenerSerie", "Reportes")', {
+                CodDoc: codDoc
+            }, function (response) {
+
+                $('#select2-serie-container').empty();
+                var select = $('#serie');
+                select.find('option').remove();
+                $('<option>').val("T").text("[TODOS]").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.Serie).text(value.Serie).appendTo(select);
+                    if (value.Serie == serieA) {
+                        $('#serie option[value="' + value.Serie + '"]').attr('selected', true);
+                        $("#select2-serie-container").text(value.Serie);
+                    }
+                });
+            });
+        });
+
+            @if (ViewBag.CodDoc != 0 ) { <text> $('#CodDoc option[value=@ViewBag.CodDoc]').prop('selected', 'selected').change(); </text>   }
+
+        
+    });
+
+</script>

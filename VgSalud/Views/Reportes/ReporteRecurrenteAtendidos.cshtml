@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "ReporteRecurrenteAtendidos";
+    var diagnostico = (SelectList)ViewBag.diagnostico;
+    var servicio = (SelectList)ViewBag.servicio;
+    var vista = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.vista;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Pacientes Atendidos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reporte de Recurrentes Atendidos</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%">
+                        <a href="~/Master/Index"><center style="margin-left: 30px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
+                    </div>
+                </div>
+
+                <fieldset>
+                    <legend style="margin-left: 55px;">Filtro</legend>
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Fecha Inicio</label>
+                                        <input type="text" name="FechaI" value="@ViewBag.fechaI" maxlength="10" class="form-control datepicker" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Fecha Final</label>
+                                        <input type="text" name="FechaF" value="@ViewBag.fechaF" maxlength="10" class="form-control datepicker" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>CIE 10</label>
+                                        @Html.DropDownList("CIe10", diagnostico, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "cie10" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Servicio</label>
+                                        @Html.DropDownList("CodServ", servicio, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "codserv" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin-top:2%">
+                                <div class="form-group">
+                                    <center>
+                                        <input type="submit" value="Consultar"  style="background-color:#13D003;border:0" class="btn btn-danger" />
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+            }
+            @if (vista != null)
+            {
+                <h4 style="padding:0%;text-align:right;padding-right:60px">
+                    Exportar:
+                    <a href="~/Reportes/GeneraRecurrentesAtendidos/?id=PDF&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.fechaF&CIe10=@ViewBag.cie10&CodServ=@ViewBag.codser" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                    <a href="~/Reportes/GeneraRecurrentesAtendidos/?id=Word&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.fechaF&CIe10=@ViewBag.cie10&CodServ=@ViewBag.codser" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                    <a href="~/Reportes/GeneraRecurrentesAtendidos/?id=Excel&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.fechaF&CIe10=@ViewBag.cie10&CodServ=@ViewBag.codser" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                </h4>
+
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left: 50px;">Lista</legend>
+                        <div class="col-md-12" style="margin-left:31px;padding-right: 78px;">
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Nro Cuenta</th>
+                                        <th>Cie 10</th>
+                                        <th>Servicio</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in vista)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.cant)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CIe10)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </fieldset>
+     
+              
+                </div>
+
+            }
+
+        </div>
+        <br /><br /><br />
+
+
+
+    </section>
+
+</div>

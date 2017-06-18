@@ -1,0 +1,247 @@
+﻿
+@model IEnumerable<VgSalud.Models.E_HorarioMedico>
+
+@{
+    ViewBag.Title = "Asistencia";
+    int contador = 1;
+    var listaServicio = (SelectList)ViewBag.listaServicio;
+    var verde = "bg-green-gradient";
+    var azul = "bg-aqua-gradient";
+    var rojo = "bg-red-gradient";
+    var naranja = "bg-yellow-gradient";
+    int cuenta = 0;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Asistencia de medicos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Medicos</a></li>
+            <li class="active">Asistencia de medicos</li>
+        </ol>
+    </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body">
+                            @using (Html.BeginForm())
+                            {
+
+                                <div class="col-md-1" align="right">Fecha: </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="fecha" value="@ViewBag.fecha" class="form-control datepicker"  id="fecha" />
+                                </div>
+
+                                <div class="col-md-1" align="right">Turno: </div>
+                                <div class="col-md-2">
+                                    <select name="turno" class="form-control select2" id="turno" >
+                                        <option value="MAÑANA">MAÑANA</option>
+                                        <option value="TARDE">TARDE</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-1" align="right">Servicio: </div>
+                                <div class="col-md-2">
+                                    @Html.DropDownList("servicio", listaServicio, "[NO SELECCIONADO]", new { @class = "form-control select2" , @id="servicio" })
+                                </div>
+
+                                <div class="col-md-2"><input type="submit" value="Buscar" class="btn btn-danger" /></div>
+
+                            }
+                        </div>
+
+                            @if (Model != null)
+                            {
+                                <div class="box-body">
+                                    <h3 style="color:coral">Lista de asistencia @ViewBag.fecha</h3>
+                                    @if (Model.Count()!=0) { 
+                                    <form action="~/Medicos/RegistraAsistencia" method="post">
+                                        
+                                       
+                                       
+                                                                                 
+                                        @foreach (var e in Model)
+                                        {
+
+                                            <div class="col-md-3">
+                                                <div class="small-box 
+                                                     @if (e.Asistencia.Equals("NO ESPECIFICADO")) { 
+                                                         @azul;
+                                                         cuenta++;
+                                                     }
+                                                     else if (e.Asistencia.Equals("ASISTIO")) { @verde; }
+                                                     else if (e.Asistencia.Equals("NO ASISTIO")) { @rojo; }
+                                                     else if (e.Asistencia.Equals("TARDE")) { @naranja; } ">
+                                                    <div class="inner">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-3">
+                                                                <h3>@contador</h3>
+                                                            </div>
+                                                            <div class="col-md-9">
+
+                                                            </div>
+                                                        </div>
+                                                        <table style="font-size:16px">
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Doctor: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @e.NomMed
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Servicio: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @e.NomServ
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Hora Inicio: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @e.horaInicio
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Hora Fin: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @e.horaFin
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Dia: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @ViewBag.fecha
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Turno: &nbsp</b>
+                                                                </td>
+                                                                <td>
+                                                                    @e.Turno
+                                                                </td>
+                                                            </tr>
+                                                            @if (e.Asistencia.Equals("NO ESPECIFICADO"))
+                                                            {
+                                                                <tr style="border-top:1px #ffffff solid">
+                                                                    <td>
+                                                                        <b>Asistió: &nbsp</b>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input name="evalua" value="@e.CodHor,ASISTIO" class="flat-red" type="radio" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <b>No Asistió: &nbsp</b>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input name="evalua" value="@e.CodHor,NO ASISTIO" class="flat-red" type="radio" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <b>Tarde: &nbsp</b>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input name="evalua" value="@e.CodHor,TARDE" class="flat-red" type="radio" />
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr style="border-top:1px #ffffff solid">
+                                                                    <td>
+                                                                        <br />
+                                                                        <b>Asitencia: &nbsp</b>
+                                                                        <br />&nbsp
+                                                                    </td>
+                                                                    <td>
+                                                                        <br />
+                                                                        @e.Asistencia
+                                                                        <br />&nbsp
+                                                                    </td>
+                                                                </tr>                                                                
+                                                            }
+                                                            
+                                                        </table>
+
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+
+                                            contador++;
+                                        } 
+
+                                        <input type="hidden" name="fecha" value="@ViewBag.fecha" /> 
+                                        <input type="hidden" name="turno" value="@ViewBag.turno" /> 
+                                        <input type="hidden" name="servicio" value="@ViewBag.servicio" />
+
+                                        <div class="col-md-12" align="center" style="margin:3% 0% 3% 0%">
+                                            @if (cuenta>0) {
+                                            <input type="submit" value="Registrar Asistencia" class="btn btn-danger" id="registrar" />
+                                            }
+                                        </div>
+
+                                       
+                                    </form>
+                                    }
+                              </div>
+                            }
+                        </div>
+                </div>
+            </div>
+        </section>
+
+</div>
+
+
+<script>
+    $(document).on("ready",function () {
+
+        $('#turno option[value=@ViewBag.turno]').prop('selected', 'selected').change();
+
+        @*$("#registrar").click(function() {
+
+        @ViewBag.t = $("#turno").val() ;
+        @ViewBag.s = $("#servicio").val() ;
+        @ViewBag.f = $("#fecha").val() ;
+        
+        }) ;*@
+        
+
+        @*$("#registrar").on("click", function () {
+            var fecha = $("#fecha").val();
+            var turno = $("#turno").val();
+            var servicio = $("#servicio").val();
+            $.get('@Url.Action("Asistencia", "Medicos")', {
+                fecha: fecha,
+                turno: turno,
+                servicio: servicio
+            }, function () {
+
+            });*@
+
+
+
+        })
+
+   
+</script>

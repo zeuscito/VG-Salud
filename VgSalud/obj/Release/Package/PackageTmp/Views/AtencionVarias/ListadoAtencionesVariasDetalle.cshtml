@@ -1,0 +1,106 @@
+﻿@model IEnumerable<VgSalud.Models.E_AtencionVarias_Detalle>
+
+@{
+    ViewBag.Title = "ListadoAtencionesVariasDetalle";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Atenciones Varias Detalle</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atenciones Varias Detalle</a></li>
+            <li class="active">Listado de Atenciones Varias Detalle</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Listado de Atenciones Varias Detalle</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+
+
+            <div class="box-body">
+                
+
+                    <div class="col-md-12">
+
+                        <br />
+                        <div class="box-header">
+                            <h3 class="box-title">Lista de Citas</h3>
+                        </div>
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr  class="headTabla">
+                                        <th>Codigo Atencion</th>
+                                        <th>Item</th>
+                                        <th>Especialidad</th>
+                                        <th>Servicio</th>
+                                        <th>Medico</th>
+                                        <th>Tarifario</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>IGV</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th><i class="fa fa-trash"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @foreach (var item in Model)
+                                    {
+
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.CodAten)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.item)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CodEspec)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CodServ)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CodMed)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.CodTar)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cantida)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.SubTotal)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Igv)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                            <td>
+                                                <div class="tools">
+                                                    @{
+
+                                                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarAtencionesVariasDetalle.cshtml");
+                                                        if (abc1 != null)
+                                                        {
+                                                            if (item.Estado == "G")
+                                                            {
+                                                                <text>
+                                                                    <a title="Eliminar" href="~/AtencionVarias/EliminarAtencionVariaDetalle/@item.CodAtenDet"><i class="fa fa-trash"></i></a>
+                                                                </text>
+                                                            }
+                                                        }
+                                                                                                                
+
+                                                    }                                                    
+                                                                                                       
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+</div>

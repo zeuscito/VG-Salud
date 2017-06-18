@@ -1,0 +1,119 @@
+﻿@model IEnumerable<VgSalud.Models.E_Medico_TipoTarifa>
+
+@{
+    ViewBag.Title = "ListarMedicoTipoTarifas";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Medico / Tipo Tarifa</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Roles</a></li>
+            <li class="active">Medico Tipo Tarifa</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    @{
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarMedicoTipoTarifa.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/MedicoTipoTarifa/RegistrarMedicoTipoTarifa"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+                                
+                            </div><br />
+                        }
+                    }
+                    <div class="box-body">
+                        <fieldset>
+                            <legend style="margin-left: 18px;">Lista</legend>
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Tipo Tarifa </th>
+                                            <th>Medico</th>
+                                            <th>Porcentaje</th>
+
+
+                                            <th><i class="fa fa-edit"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.nomTip)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.porcentaje) <i> %</i></td>
+                                                <td>
+                                                    <div class="tools">
+                                                        @{
+
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarMedicoTipoTarifa.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                <a title="Editar" href="ModificarMedicoTipoTarifa?id=@item.CodTipTar&id1=@item.CodMed"><i class="fa fa-edit"></i></a>
+                                                            }
+
+                                                            var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarMedicoTipoTarifa.cshtml");
+                                                            if (abc3 != null)
+                                                            {
+                                                                <a title="Eliminar" href="Eliminar/?id=@item.CodTipTar&id1=@item.CodMed"><i class="fa fa-trash-o"></i></a>
+                                                            }
+
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                        
+                   
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+    var ALT = 18; var G = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        if (presiono2 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarMedicoTipoTarifa");
+        }
+        else if (presiono2 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+    $(document).keyup(function (e) {
+
+        if (e.keyCode == G) {
+            presiono2 = false;
+        }
+    });
+</script>

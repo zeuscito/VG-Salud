@@ -1,0 +1,96 @@
+﻿@model VgSalud.Models.E_Tipo_Filiacion
+
+@{
+    ViewBag.Title = "RegistrarTipoFiliacion";
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tipo Filiación</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tipo Filiación</a></li>
+            <li class="active">Registrar Tipo Filiación</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Tipo Filiación</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-body">
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @*<div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Código</label>
+                                </div>
+                                <div class="col-md-9">
+                                   @Html.EditorFor(model => model.CodEspec, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tipo Filiación</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DescTipFil, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DescTipFil, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Estado</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="checkbox" name="Estado" id="Estado" value="" checked />
+                              
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                      
+
+
+                    </div>
+
+
+                    <label></label>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <center>
+                                <button type="submit" value="Registrar" class="btn btn-danger">Registrar</button> 
+                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+
+
+                            </center>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </form>
+
+</div>
+    </section>
+</div>
+
+
+
+
+

@@ -1,0 +1,302 @@
+﻿@model VgSalud.Models.E_Servicios
+
+@{
+    ViewBag.Title = "ModificarServicios";
+
+    var listadoEsp = (SelectList)ViewBag.ListaEspecialidad;
+    var listadoEmp = (SelectList)ViewBag.ListaEmpresaTercero;
+
+    var listadoSede = (SelectList)ViewBag.ListaSedes;
+
+    var ListitaSedes = (List<VgSalud.Models.E_Sede>)ViewBag.Sedes;
+    var Tarifa = (List<VgSalud.Models.E_Servicio_TipoTarifa>)ViewBag.tarifa;
+    var listatipotarifa = (SelectList)ViewBag.tipotarifa;
+    var select = " selected ";
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#IntMin").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+                else {
+                    if (event.keyCode < 96 || event.keyCode > 105) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+
+        //$("#IntMin").keypress(function (e) {
+        //    if ($("#IntMin").val().length == 11) {
+        //        return false;
+        //    }
+        //});
+
+    });
+
+
+</script>
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Servicios</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Servicios</a></li>
+            <li class="active">Modificar Servicio</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Servicios/ListaServicios">
+                        <center style="margin-left:18px;margin-left: 43px;">
+                            <i class="fa fa-arrow-circle-left" style="font-size:25px;color:#13D003;"></i><br><strong style="color:black">Atrás</strong>
+                        </center>
+                    </a>
+                </div>
+            </div>
+
+            <div class="box-body">
+
+                    <div class="col-md-6">
+                        <form method="post" action="">
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <legend style="color:black;margin-left: 28px;">Datos a Modificar <strong style="color:coral;margin-left:27px"></strong> </legend>
+
+                                    <div class="col-md-12">
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <input type="hidden" name="CodServ" id="CodServ" value="@Model.CodServ" />
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Servicio</label>
+                                                @Html.EditorFor(model => model.NomServ, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.NomServ, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Especialidad</label>
+                                                @Html.DropDownList("CodEspec", listadoEsp, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Empresa</label>
+                                                @Html.DropDownList("CodEmp", listadoEmp, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodEmp" })
+                                                @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Estado</label>
+                                                @Html.EditorFor(model => model.EstServ)
+                                                @Html.ValidationMessageFor(model => model.EstServ, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <br /><br /><br />
+
+
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <legend style="margin-left: 18px;">Filtro<strong style="color:coral;margin-left:27px"></strong></legend>
+                                    <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                                        <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                                            <div class="col-md-7">
+                                                <label>Tarifa por Servicio</label>
+                                                @Html.DropDownList("CodTipTar", listatipotarifa, new { @class = "form-control select2" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>Porcentaje</label>
+                                                <input type="text" name="porcentaje" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <br />
+                                                <button class="btn btn-info" style="padding:8px 14px;background-color:#13D003; border:0" type="submit" name="Evento" value="1"><i class="fa fa-plus"></i></button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <center>
+                                    <br /><br />
+                                    <button type="submit" value="Modificar" style="background-color:#13D003; border:0" class="btn btn-danger" id="modificar">Modificar</button>
+                                </center>
+                            </div>
+                        </form>
+                    </div>
+               
+
+                <div class="col-md-6">
+
+
+
+                    <div class="col-md-12" style="margin-left: 18px;">
+                       
+                        <fieldset>
+                            <legend margin-left 16px;>Lista</legend>
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tarifa</th>
+                                        <th>Porcentaje</th>
+                                        <th><i class="fa fa-trash-o"></i></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Tarifa)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.DescTipTar)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.porcentaje)</td>
+                                            <td>
+                                                <div class="tools">
+
+                                                    <form action="~/Servicios/Eliminar" method="post">
+                                                        <input type="hidden" name="CodServ" class="CodServ" value="@item.codserv" />
+                                                        <input type="hidden" name="CodTipTar" class="CodTipTar" value="@item.CodtipoTar" />
+                                                        <button type="submit" id="eliminar" class="btn btn-danger" name="Evento" value="2"><i class="glyphicon glyphicon-refresh"></i></button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </fieldset>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+
+
+    </section>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        // $('<option>').val("").text("[NO SELECCIONADO]").appendTo('#CodSede');
+
+        //  $('#CodEmp').change(function (event) {
+
+
+        var sports = $("select#CodEmp").val();
+        $.get('@Url.Action("ListaSede_CodEmp", "Utilitario")', {
+            id: sports
+
+        }, function (response) {
+
+            var select = $('#CodSede');
+            select.find('option').remove();
+            $('<option>').val("").text("[NO SELECCIONADO]").appendTo(select);
+            $.each(response, function (index, value) {
+                $('<option>').val(value.CodSede).text(value.NomSede).appendTo(select);
+            });
+            $('#CodSede option[value="@Model.CodSede"]').attr('selected', true);
+        });
+
+
+        $('#CodEmp').change(function (event) {
+            var sports = $("select#CodEmp").val();
+            $.get('@Url.Action("ListaSede_CodEmp", "Utilitario")', {
+                id: sports
+
+            }, function (response) {
+
+                var select = $('#CodSede');
+                select.find('option').remove();
+                $('<option>').val("").text("[NO SELECCIONADO]").appendTo(select);
+                $('#select2-CodSede-container').text("[NO SELECCIONADO]");
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodSede).text(value.NomSede).appendTo(select);
+                });
+            });
+        });
+
+
+
+
+    });
+
+</script>
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            $(location).attr("href", "../ListaServicios");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../ListaServicios";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

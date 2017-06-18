@@ -1,0 +1,127 @@
+﻿@model IEnumerable<VgSalud.Models.E_DocumentoSerie>
+
+@{
+    ViewBag.Title = "ListaDocumentoSerie";
+    VgSalud.Controllers.LoginController a = new VgSalud.Controllers.LoginController();
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+
+}
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Documento Serie</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario</a></li>
+            <li class="active">Documento Serie</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarDocumentoSerie.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/DocumentoSerie/RegistrarDocumentoSerie"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="box-body">
+                        <fieldset>
+                            <legend style="margin-left: 18px;">Lista</legend>
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>CodigoSerie</th>
+                                            <th>Documento</th>
+                                            <th>Serie</th>
+                                            <th>Numero Documento</th>
+                                            <th>Estado</th>
+
+
+                                            <th><i class="fa fa-edit"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.CodDocSerie)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.DescCodDoc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Serie)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.EstDocSerie)</td>
+
+                                                <td>
+                                                    <div class="tools">
+                                                        @{
+
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarDocumentoSerie.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                <a title="Editar" href="ModificarDocumentoSerie?id=@item.CodDocSerie"><i class="fa fa-edit"></i></a>
+                                                            }
+
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                                            }
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarDocumentoSerie");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>

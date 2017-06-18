@@ -1,0 +1,223 @@
+﻿@model IEnumerable<VgSalud.Models.E_Pacientes>
+
+@{
+    ViewBag.Title = "ListaPacientes";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Pacientes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+            <li class="active">Consultar Pacientes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarPaciente.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Pacientes/RegistrarPaciente"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+
+                            </div>
+                            <br />
+                        }
+
+                    }
+                    @using (Html.BeginForm())
+                    {
+
+                        <fieldset>
+                            <legend style="margin-left:3%; width:96%">Filtro</legend>
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Nombre y Apellido:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" name="nombre" value="@ViewBag.nombre" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>DNI:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" name="dni" value="@ViewBag.dni" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Fecha Afil:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control datepicker" name="fecha" value="@ViewBag.fecha" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="margin-top:1%">
+                                        <div class="form-group">
+                                            <center>
+                                                <input style="background-color:#13D003; border:#13D003;margin-top: 11px;"  type="submit" value="Consultar" class="btn btn-danger" />
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    }
+
+                    <br />
+
+                    <fieldset>
+
+                        <legend style="margin-left:3%; width:96%">Lista</legend>
+
+                        <div class="box-body">
+                            <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th width="10%" style="text-align:center">Historia</th>
+                                            <th width="20%" style="text-align:center">Apellido Paterno</th>
+                                            <th width="20%" style="text-align:center">Apellido Materno</th>
+                                            <th width="30%" style="text-align:center">Nombres</th>
+                                            <th width="10%" style="text-align:center">Doc. Iden.</th>
+                                            <th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Historia)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.ApePat)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.ApeMat)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomPac)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                                <td style="text-align:center;">
+                                                    <form method="get" action="HistoriaPacienteXespecialidad">
+                                                        <div class="tools">
+                                                            @{
+
+                                                                var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarPacientes.cshtml");
+                                                                if (abc2 != null)
+                                                                {
+                                                                    <a title="Editar" style="color:#F7B620" href="RegistroPaciente?id=@item.Historia"><i class="fa fa-edit"></i></a>
+                                                                }
+
+                                                                @*var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
+                                        if (abc3 != null)
+                                        {
+                                            <a title="Citas" href="~/Citas/ConsultaCita?id=@item.Historia"><i class="fa fa-ticket"></i></a>
+                                        }
+
+                                        var abc4 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistroAtenciones.cshtml");
+                                        if (abc4 != null)
+                                        {
+                                            <a title="Atencion Varias"  href="~/AtencionVarias/RegistroAtenciones?historia=@item.Historia"><i class="fa fa-blind"></i></a>
+                                        }*@
+
+                                                            var abc5 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Reportes/GeneraReporte_Atenciones");
+                                                            if (abc5 != null)
+                                                            {
+                                                                <a title="Reporte" style="color:#F7B620" href="~/Reportes/GeneraReporte_Atenciones?id=PDF&historia=@item.Historia"><i class="fa fa-area-chart"></i></a>
+                                                                }
+
+
+
+                                                                var abc6 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Pacientes/HistoriaPacienteXespecialidad");
+                                                                if (abc6 != null)
+                                                                {
+                                                                    <input type="hidden" name="id" value="@item.Historia" />
+                                                                    <button type="submit" title="Historia de Paciente" style="background-color:transparent; border:0" class="enlace"><a><i style="color:#F7B620" class="fa fa-book"></i></a> </button>
+                                                                }
+
+                                                                <a title="Cuentas" style="color:#F7B620" href="../Cuentas/ListaCuentaEstado?id=@item.Historia"><i class="fa fa-id-card"></i></a>
+                                                            }
+
+
+
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+
+                                                                }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+
+
+        $(".enlace").click(function () {
+            $(this).val($(window).width());
+        });
+
+        var ALT = 18; var N = 78; var presiono2 = false;
+        $(document).keydown(function (e) {
+            if (e.keyCode == ALT) {
+                presiono2 = true;
+            }
+            if (presiono2 && (e.keyCode == 116)) {
+                $(location).attr("href", "RegistrarPaciente");
+            }
+            else if (presiono2 && (e.keyCode == 112)) {
+                $(location).attr("href", "../Master/Index");
+            }
+        });
+        $(document).keyup(function (e) {
+
+            if (e.keyCode == N) {
+                presiono2 = false;
+            }
+        });
+
+    });
+
+</script>

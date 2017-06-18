@@ -1,0 +1,340 @@
+﻿@if (Session["UserID"] == null) { 
+<html>
+<head>
+<meta http-equiv="Refresh" content="0;url=../Login">
+</head>
+<body style="display:none">
+    @RenderBody()
+</body>
+</html>
+
+} else {
+    string CodUsu = Session["UserID"].ToString();
+    VgSalud.Controllers.AccesoController ma = new VgSalud.Controllers.AccesoController();
+    var listaModulo = ma.ListaModulos(CodUsu).ToList();
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - VG Salud</title>
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+    <link href="~/Content/Styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/ionicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Styles/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="~/Content/Styles/all.css">
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap-colorpicker.min.css">
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap-timepicker.css">
+    <link rel="stylesheet" href="~/Content/Styles/all.css">
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Styles/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/Content/Styles/_all-skins.min.css">
+    <link rel="stylesheet" href="dist/css/modal.css">
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="~/plugins/iCheck/all.css">
+    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <link rel="stylesheet" href="~/plugins/timepicker/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.print.css" media="print">
+    <!--<script src="~/Content/Scripts/html5shiv.min.js"></script>-->
+    <!--<script src="~/Content/Scripts/respond.min.js"></script>-->
+    @*<script src="~/Content/Scripts/jQuery-2.2.0.min.js"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/bootstrap.min.js"></script>
+    <script src="~/Content/Scripts/select2.full.min.js"></script>
+    <script src="~/Content/Scripts/jquery.inputmask.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+    <script src="~/Content/Scripts/moment.min.js"></script>
+    <script src="~/Content/Scripts/daterangepicker.js"></script>
+    <!--<script src="~/Content/Scripts/bootstrap-colorpicker.min.js"></script>-->
+    <!--<script src="~/Content/Scripts/bootstrap-timepicker.min.js"></script>-->
+    <!--<script src="~/Content/Scripts/jquery.slimscroll.min.js"></script>-->
+    <!--<script src="~/Content/Scripts/icheck.min.js"></script>-->
+    <script src="~/Content/Scripts/fastclick.js"></script>
+    <script src="~/Content/Scripts/app.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Content/Scripts/demo.js"></script>
+    <!--<script src="~/Content/Scripts/ckeditor.js"></script>-->
+    <!--<script src="~/Content/Scripts/bootstrap3-wysihtml5.all.min.js"></script>-->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/Scripts/moment.min.js"></script>
+    <script src="~/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/Scripts/ckeditor.js"></script>
+    <script src="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="~/Content/Scripts/html5shiv.min.js"></script>
+    <script src="~/Content/Scripts/respond.min.js"></script>
+    <script src="~/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+    
+    <script>
+    $(function () {
+        var mensaje = '@ViewBag.mensaje';
+        if (mensaje != "")
+            alert(mensaje);
+    });
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('input').attr('autocomplete', 'off');
+
+        });
+
+    </script>
+
+</head>
+
+<body class="skin-blue sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+
+        
+            <header class="main-header">
+                <a href="../../index2.html" class="logo">
+                    <span class="logo-mini"><b>VG</b>SALUD</span>
+                    <span class="logo-lg"><b>VG SALUD </b></span>
+                </a>
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="hidden-xs">SEDE: @Html.Label(Session["nomSede"].ToString())</span>
+                                </a>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="~/Content/Images/avatar.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">HOLA @Html.Label(Session["nombre"].ToString())!</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="user-header">
+                                        <img src="~/Content/Images/avatar.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            @Html.Label(Session["nombre"].ToString())
+                                        </p>
+                                    </li>
+                                    <li class="user-footer">
+                                        <div class="pull-right">
+                                            <a href="~/Login/CerrarSesion" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user user-menu">
+                                <a href="~/Login/CerrarSesion" style="background-color:transparent" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="~/Content/Images/avatar.png" class="img-circle" alt="User Image">
+                        </div>
+                        <div class="pull-left info">
+                            <p>@Html.Label(Session["nombre"].ToString())</p>
+                        </div>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="header">Menu de Navegación</li>
+                        <li class="treeview">
+                            <a href="~/Master/Index">
+                                <i class="fa fa-home" style="font-size: 20px;"></i> <span style="padding-left: 5%; font-size: 16px;">INICIO</span>
+                            </a>
+                        </li>
+
+                        @foreach (var i in listaModulo) { 
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="@i.icono" style="font-size: 20px;"></i>
+                                <span style="padding-left: 5%; font-size: 16px;">@i.NombreModulo</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu" style="margin-top:-7px">
+                                @{
+                                    var listaCategoria = ma.ListaCategorias(i.idModulo, CodUsu).ToList();
+                                 }
+                                @foreach (var e in listaCategoria)
+                                {
+                                    var listaFormularioMenu = ma.ListaFormularioMenu(e.idCat, CodUsu).ToList();
+                                    if (listaFormularioMenu.Count() > 1)
+                                    {
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-circle-o"></i> @e.NomCat
+                                                <span class="pull-right-container">
+                                                    <i class="fa fa-angle-left pull-right"></i>
+                                                </span>
+                                            </a>
+                                            <ul class="treeview-menu menu-open" style="display: block;">
+                                                @foreach (var o in listaFormularioMenu) { 
+                                                <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @o.AliasForm</a></li>
+                                                }                                               
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        foreach (var o in listaFormularioMenu)
+                                        {
+                                            <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @e.NomCat</a></li>
+                                        }
+
+                                    }
+
+
+                                }
+
+                                
+
+                            </ul>
+                        </li>
+                     }
+
+
+                        
+                    </ul>
+                </section>
+            </aside>
+
+
+        @RenderBody()
+
+    </div>
+    <footer style="background-color:#3c8dbc">
+        <div align="center">
+            <p style="margin:0;color:#fff">Copyright © - Todos los derechos recervados a VG ALL SERVICE EIRL</p>
+            <p style="margin:0;color:#fff">LIMA PERÚ - 2017</p>
+        </div>
+    </footer>
+
+
+
+    <script>
+            $(function () {
+                $(".select2").select2();
+                $("#datemask").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
+                $("#datemask2").inputmask("mm/dd/yyyy", { "placeholder": "mm/dd/yyyy" });
+                $("[data-mask]").inputmask();
+                $('#reservation').daterangepicker();
+                $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A' });
+                $('#daterange-btn').daterangepicker(
+                    {
+                        ranges: {
+                            'Today': [moment(), moment()],
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        },
+                        startDate: moment().subtract(29, 'days'),
+                        endDate: moment()
+                    },
+                    function (start, end) {
+                        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    }
+                );
+
+                $('#reservation').daterangepicker();
+                //Date range picker with time picker
+                $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A' });
+                //Date range as a button
+                $('#daterange-btn').daterangepicker(
+                    {
+                        ranges: {
+                            'Today': [moment(), moment()],
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        },
+                        startDate: moment().subtract(29, 'days'),
+                        endDate: moment()
+                    },
+                    function (start, end) {
+                        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    }
+                );
+
+                //Date picker
+                $('.datepicker').datepicker({
+                    autoclose: true,
+                    format: 'dd/mm/yyyy'
+                });
+
+                $(".timepicker").timepicker({
+                    showInputs: false
+                });
+
+                $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                });
+
+
+            });
+    </script>
+
+    <script>
+        $(function () {
+            $(".textarea1").wysihtml5();
+            $(".textarea").wysihtml5();
+        });
+
+      $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+        $('#example3').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
+        $('#example4').DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false
+        });
+      });
+    </script>
+
+
+
+</body>
+</html>
+}

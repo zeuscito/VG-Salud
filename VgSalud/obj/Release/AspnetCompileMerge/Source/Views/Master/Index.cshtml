@@ -1,0 +1,81 @@
+﻿@model IEnumerable<VgSalud.Models.E_Master>
+
+@{
+    ViewBag.Title = "Index";
+    string CodUsu = Session["UserID"].ToString();
+    VgSalud.Controllers.AccesoController ma = new VgSalud.Controllers.AccesoController();
+    var listaModulo = ma.ListaModulos(CodUsu).ToList();
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Inicio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Inicio</a></li>
+            <li class="active">Panel de Control</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Panel de Control</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            
+            <div class="box-body">
+
+                @foreach (var i in listaModulo)
+                {
+
+                <div class="col-md-12" style="margin-bottom:2%">
+                    <div class="col-md-3" style="border-right: 1px solid #000">
+                        <div class="col-md-12">
+                            <span class="info-box-icon bg-aqua"><i class="@i.icono"></i></span>
+                            <div class="info-box-content" style="text-align:left">
+                                <h2 class="letraPanel">@i.NombreModulo</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        @{
+                            var listaCategoria = ma.ListaCategorias(i.idModulo, CodUsu).ToList();
+                        }
+                        @foreach (var e in listaCategoria)
+                        {
+                            var listaFormularioMenu = ma.ListaFormularioMenu(e.idCat, CodUsu).ToList();
+                            if (listaFormularioMenu.Count() > 1)
+                            {
+                               foreach (var o in listaFormularioMenu)
+                               {
+                                   <div class="col-md-3">
+                                       <a href="~/@o.nomForm" style="font-size:120%"><i class="fa fa-circle-o text-aqua"></i> @o.AliasForm</a>
+                                   </div>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var o in listaFormularioMenu)
+                                {
+                                    <div class="col-md-3">
+                                        <a href="~/@o.nomForm" style="font-size:120%"><i class="fa fa-circle-o text-aqua"></i> @e.NomCat</a>
+                                    </div>
+                                }
+
+                            }
+
+
+                        }
+                        
+
+                    </div>
+                </div>
+
+                }
+
+            </div>
+
+        </div>
+    </section>
+</div>

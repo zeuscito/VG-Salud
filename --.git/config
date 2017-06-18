@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+[remote "origin"]
+[branch "master"]
+	remote = Origen
+[branch "master"]
+	merge = refs/heads/master
+[remote "Origen"]
+	fetch = +refs/heads/*:refs/remotes/Origen/*
+[remote "Origen"]
+	url = https://github.com/zeuscito/VG-Salud.git

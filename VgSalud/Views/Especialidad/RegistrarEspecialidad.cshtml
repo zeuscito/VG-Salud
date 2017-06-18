@@ -1,0 +1,183 @@
+﻿@model VgSalud.Models.E_Especialidades
+
+@{
+    ViewBag.Title = "RegistrarEspecialidad";
+    var Tarifario = (SelectList)ViewBag.Tarifario;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Especialidades</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Especialidad</a></li>
+            <li class="active">Registrar Especialidad</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+
+                <div class="box-header">
+
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaEspecialidad">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Registrar</legend>
+                    </fieldset>
+
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @*<div class="form-group">
+                            <div class="col-md-3">
+                                <label>Código</label>
+                            </div>
+                            <div class="col-md-9">
+                               @Html.EditorFor(model => model.CodEspec, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Especialidad</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.NomEspec, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NomEspec, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Descripción</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DescEspec, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DescEspec, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.EstEspec, htmlAttributes: new { @checked = true })
+                                    @Html.ValidationMessageFor(model => model.EstEspec, "", new { @class = "text-danger"})                         
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Especialidad General</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.General)
+                                    @Html.ValidationMessageFor(model => model.General, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Tarifario predeterminado</label>
+                                </div>                                                               
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodTar", Tarifario, "[NO SELEECIONADO]", new { @class = "form-control select2" })
+                                </div>
+                            </div>
+
+                        
+
+                     
+                    </div>
+
+
+                    <label></label>
+                    <br /><br />
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                <center>
+                                    <button type="submit" value="Registrar" style="background-color:#13D003; border:0" class="btn btn-danger" id="grabar">Registrar</button>
+                                </center>
+                            </div>
+                        </div>
+
+                
+                    </div>
+                </div>
+        
+        </form>
+
+</div>
+    </section>
+</div>
+
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if ((presiono1 == true) && (e.keyCode == 123)) {
+            $("#grabar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            window.location.href = "ListaEspecialidad";
+        }
+
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "ListaEspecialidad";
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+

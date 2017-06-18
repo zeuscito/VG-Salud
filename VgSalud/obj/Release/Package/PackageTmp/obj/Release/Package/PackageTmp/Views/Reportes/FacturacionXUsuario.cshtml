@@ -1,0 +1,215 @@
+﻿@model VgSalud.Models.E_Caja
+
+@{
+    ViewBag.Title = "FacturacionXUsuario";
+    var listado = (List<VgSalud.Models.E_Caja>)ViewBag.listado;
+    var ListaUsuario = (SelectList)ViewBag.ListaUsuario;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>facturacion por usuario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Facturacion por Usuario</li>
+        </ol>
+    </section>
+        <section class="content">
+            
+                <div class="box box-default">
+
+                    <div class="box-header with-border">
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+
+                       
+                            <div class="box-header">
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black;margin-left:15px">Home</strong></center></a>
+                                    <br />
+                                </div>
+                            </div>
+
+                            <div class="box-body">
+                                <fieldset>
+                                    <legend style="margin-left: 30px;">Filtro</legend>
+                                    <div class="col-md-12" style="padding-left:0px">
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Usuario</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodUsu" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Fecha Inicio</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control  datepicker" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Fecha Final</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <input type="text" name="FechaF" value="@ViewBag.FechaFinal" maxlength="10" class="form-control  datepicker" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Hora Inicio</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="bootstrap-timepicker">
+                                                        <div class="input-group">
+                                                            <input type="text" id="HoraI" name="HoraI" value="07:00 AM" class="form-control timepicker">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-clock-o"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label>Hora Final</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="bootstrap-timepicker">
+                                                        <div class="input-group">
+                                                            <input type="text" id="HoraF" name="HoraF" value="07:59 PM" class="form-control timepicker">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-clock-o"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12" style="margin-top:1%">
+                                            <div class="form-group">
+                                                <center>
+                                                    <input type="submit" value="Consultar" style="background-color:#13D003;border:0" class="btn btn-danger" />
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+
+               
+                            </div>
+                  
+
+                    }
+
+                        @if (listado != null)
+                        {
+                            <h4 style="padding:0%;text-align:right;margin-right: 28px;">
+                                Exportar:
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=PDF&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=Word&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                                <a href="~/Reportes/GeneraFacturacionXUsuario/?id=Excel&CodUsu=@ViewBag.CodUsu&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal&HoraI=@ViewBag.HoraInicio&HoraF=@ViewBag.HoraFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                            </h4>
+
+                            <div class="box-body">
+                                <fieldset>
+                                    <legend style="margin-left: 30px;">Lista</legend>
+
+                                    <div class="col-md-12">
+                                        <table id="example3" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr class="headTabla">
+                                                    <th>Codigo</th>
+                                                    <th>Cuenta</th>
+                                                    <th>Secuencia</th>
+                                                    <th>Fecha de emision</th>
+                                                    <th>Paciente</th>
+                                                    <th>Cate. Pac.</th>
+                                                    <th>Total</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var item in listado)
+                                            {
+                                                    <tr>
+                                                        <td>@Html.DisplayFor(modelItem => item.CodCaja)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                        <td>@item.AliasCodDoc @item.Serie-@item.NumDoc</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.DescCatPac)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                                        <td>
+                                                            @if (item.Estado == true)
+                                                        {
+                                                                @(new HtmlString("ACTIVO"))
+                                                        }
+                                                        else
+                                                        {
+                                                                @(new HtmlString("ANULADO"))
+                                                        }
+                                                        </td>
+                                                    </tr>
+
+                                            }
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            
+                        }
+
+                </div>
+                <br /><br /><br />
+
+            
+
+        </section>
+    }
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#CodUsu option[value=@ViewBag.CodUsu]').prop('selected', 'selected').change();
+
+    });
+
+</script>

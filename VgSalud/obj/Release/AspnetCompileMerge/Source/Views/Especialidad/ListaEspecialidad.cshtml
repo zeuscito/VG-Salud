@@ -1,0 +1,92 @@
+﻿@model IEnumerable<VgSalud.Models.E_Especialidades>
+
+@{
+    ViewBag.Title = "ListaEspecialidad";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Especialidades</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Especialidad</a></li>
+            <li class="active">Consultar Especialidad</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarEspecialidad.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Especialidad/RegistrarEspecialidad" class="btn btn-danger">Registrar nueva especialidad &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+                     
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Especialidades</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Especialidad General</th>
+                                    <th><i class="fa fa-edit"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodEspec)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomEspec)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescEspec)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstEspec)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.General)</td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarEspecialidad.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarEspecialidad/@item.CodEspec"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                }
+                                               
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+

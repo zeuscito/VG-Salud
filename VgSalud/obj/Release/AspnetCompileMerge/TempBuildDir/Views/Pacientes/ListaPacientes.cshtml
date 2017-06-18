@@ -1,0 +1,105 @@
+﻿@model IEnumerable<VgSalud.Models.E_Pacientes>
+
+@{
+    ViewBag.Title = "ListaPacientes";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Pacientes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+            <li class="active">Consultar Pacientes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarPaciente.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Pacientes/RegistrarPaciente" class="btn btn-danger">Registrar nuevo Paciente &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Pacientes</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Historia</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>Nombres</th>
+                                    <th>Número Documento</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-ticket"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Historia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ApePat)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ApeMat)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomPac)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarPacientes.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarPacientes/@item.Historia"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        <a title="Citas" href="~/Citas/ConsultaCita/?id=@item.Historia"><i class="fa fa-ticket"></i></a>
+                                                    }
+
+                                                    var abc4 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistroAtenciones.cshtml");
+                                                    if (abc4 != null)
+                                                    {
+                                                        <a title="Atencion Varias" href="~/AtencionVarias/RegistroAtenciones/?historia=@item.Historia"><i class="fa fa-blind"></i></a>
+                                                    }
+
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+

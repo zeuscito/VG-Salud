@@ -1,0 +1,191 @@
+﻿@model VgSalud.Models.E_TipoMoneda
+
+@{
+    ViewBag.Title = "ModificarTipoMoneda";
+}
+
+
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tipo de Moneda</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tipo de Moneda</a></li>
+            <li class="active">Modificar Tipo de Moneda</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-header">
+
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaTipoMoneda">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Modificar</legend>
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <input type="hidden" name="CodTipMon" id="CodTipMon" value="@Model.CodTipMon" />
+                            <input type="hidden" name="IdTipoCambio" id="IdTipoCambio" />
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Descripción</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.DescTipMon, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DescTipMon, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Tipo de cambio</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                                        <label id="errorMessage" style="display:none;color:red"></label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Fecha</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        @*@Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control datepicker", @id = "Fecha" } })*@
+                                        <input type="text" name="fecha" id="Fecha" class="form-control datepicker" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-offset-1">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <center>
+                                                <input type="hidden" name="Evento" id="Evento" />
+                                                <button type="submit" class="btn btn-danger" style="background-color:#13D003; border:0" id="boton">Modificar</button>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </fieldset>
+
+                    
+
+
+
+
+                    <label></label>
+
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        //$("#Fecha").datepicker({
+        //    onSelect: function (dateText) {
+        //        //display("Selected date: " + dateText + "; input's current value: " + this.value);
+        //        alert(dateText + this.value);
+        //    }
+        //});
+        //$("#Fecha").datepicker({
+        //    onSelect: function () {
+        //        $(this).change(function () {
+        //            alert(this.value);
+        //        });
+        //    }
+        //});
+
+        $("#Fecha").val(null);
+        $("#Fecha").change(function(){
+           var fecha = this.value; 
+           var CodTip = $("#CodTipMon").val();
+           $.get('@Url.Action("ObtenerTipoCambio","TipoMoneda")', { fecha:fecha, CodTipoMoneda:CodTip }, function (response) {
+               if (response == false) {
+                   $("#TipoCambio").val("");
+                   $("#TipoCambio").focus();
+                   $("#Evento").val("1");
+                   $("#boton").text("Registrar");
+                   $("#errorMessage").text("No tiene Registrado un tipo Cambio").show();
+               } else {
+                   $.each(response, function (index, value) {
+                       $("#IdTipoCambio").val(value.IdTipoCambio);
+                       $("#TipoCambio").val(value.TipoCambio);
+                       $("#Evento").val("2");
+                       $("#boton").text("Modificar");
+                       $("#errorMessage").hide();
+                   }); 
+               }
+           }); 
+        });
+    });
+
+</script>
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#boton").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../TipoMoneda/ListaTipoMoneda");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../TipoMoneda/ListaTipoMoneda";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

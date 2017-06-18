@@ -1,0 +1,43 @@
+﻿@model VgSalud.Models.E_Tarifario
+
+@{
+    ViewBag.Title = "VistaDemo";
+    var catePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.catePaciente;
+    Layout = null;
+}
+
+@if (catePaciente != null) { 
+
+<div class="content">
+    <center>
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr class="headTabla">
+                    <td>Codigo</td>
+                    <td>Descripcion</td>
+                    <td>Precio</td>
+                    <td align="center"><i class="fa fa-trash-o"></i></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in catePaciente)
+                {
+                    <tr>
+                        <td>@item.CodCatPac</td>
+                        <td>@item.DescCatPac</td>
+                        <td>@item.Precio</td>
+                        
+                        <td align="center">
+                            <div class="tools">
+                                <a href="~/Tarifario/Delete/@item.CodCatPac" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </center>
+</div>
+}

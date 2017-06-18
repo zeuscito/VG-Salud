@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+    
+    string concatena = "";
+    string[] valor = ViewBag.consInf;
+    foreach (var array in valor) {
+        concatena = concatena + "<b>•	" + array + "</b><br />";
+    }
+    <br />
+
+    string actual = ViewBag.contenido;
+
+    string Result = actual.Replace("[nombreCompleto]", @ViewBag.nombreCompleto);
+    string Result1 = Result.Replace("[NomDocIdent]", @ViewBag.NomDocIdent);
+    string Result2 = Result1.Replace("[NumDoc]", @ViewBag.NumDoc);
+    string Result3 = Result2.Replace("[Direcc]", @ViewBag.Direcc);
+    string Result4 = Result3.Replace("[NomDist]", @ViewBag.NomDist);
+    string Result5 = Result4.Replace("[fecha]", @ViewBag.fecha);
+    string Result6 = Result5.Replace("[array]", concatena);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Consentimiento Informado</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/jquery.PrintArea.js"></script>
+    <script>
+        $(document).ready(function () {
+            var ancho = $(window).width();
+            var alto = $(window).height();
+
+      var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Imprimir Consentimiento", popClose: false };
+      $("div#imprime").printArea(options);
+
+  });
+    </script>
+</head>
+<body>
+    <div style="width:800px" align="justify" id="imprime">
+        <h1>CONSENTIMIENTO INFORMADO</h1><br />
+
+        @(new HtmlString(Result6))
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+﻿@model IEnumerable<VgSalud.Models.E_Medios_Pago>
+
+@{
+    ViewBag.Title = "ListarMedioPagos";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Medios Pago</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Medios Pago</a></li>
+            <li class="active">Medios Pago</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarMedioPago.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="RegistrarMedioPago"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+                            </div>
+                            <br />
+                        }
+
+                    }
+                                        
+
+                    <div class="box-body">
+
+                        <fieldset>
+                            <legend style="margin-left: 50px;">Lista</legend>
+                            <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                            <th>Estado</th>
+
+                                            <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                    {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CODMEDIOS)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DESCRIPCION)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ESTADO)</td>
+
+
+                                        <td>
+                                            <div class="tools">
+
+                                                @{
+
+                                                        var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarMediosPago.cshtml");
+                                                        if (abc2 != null)
+                                                        {
+                                                    <a title="Visualizar" href="ModificarMediosPago?id=@item.CODMEDIOS"><i class="fa fa-edit"></i></a>
+                                                        }
+
+                                                        var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarMedioPagos.cshtml");
+                                                        if (abc3 != null)
+                                                        {
+                                                            if (item.ESTADO == true)
+                                                            {
+                                                    <a title="Eliminar" href="Eliminar/@item.CODMEDIOS"><i class="fa fa-trash-o"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                    <a href="Activar/@item.CODMEDIOS"><i class="fa fa-plus-square"></i></a>
+                                                            }
+                                                        }
+
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                                        }
+
+                                    </tbody>
+
+                                </table>
+                                </div>
+                        </fieldset>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarMedioPago");
+        }
+
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>

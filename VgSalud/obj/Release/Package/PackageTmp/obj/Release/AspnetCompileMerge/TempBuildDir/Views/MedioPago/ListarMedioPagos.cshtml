@@ -1,0 +1,106 @@
+﻿@model IEnumerable<VgSalud.Models.E_Medios_Pago>
+
+@{
+    ViewBag.Title = "ListarMedioPagos";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Medios Pago</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Medios Pago</a></li>
+            <li class="active">Medios Pago</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarMedioPago.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/MedioPago/RegistrarMedioPago" class="btn btn-danger">Registrar Medios Pago &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Medios Pago</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Descripcion</th>
+                                    <th>Estado</th>
+
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr> 
+                                        <td>@Html.DisplayFor(modelItem => item.CODMEDIOS)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DESCRIPCION)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ESTADO)</td>
+
+
+                                        <td>
+                                            <div class="tools">
+
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarMediosPago.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Visualizar" href="ModificarMediosPago/@item.CODMEDIOS"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarMedioPagos.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        if (item.ESTADO == true)
+                                                        {
+                                                            <a title="Eliminar" href="Eliminar/@item.CODMEDIOS"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="Activar/@item.CODMEDIOS"><i class="fa fa-plus-square"></i></a>
+                                                        }
+                                                    }
+
+                                                }
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+

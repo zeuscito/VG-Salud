@@ -1,0 +1,230 @@
+﻿@model VgSalud.Models.E_Centro_Costo
+
+@{
+    ViewBag.Title = "RegistrarCentroCosto";
+    var lista = (List<VgSalud.Models.E_Centro_Costo>)ViewBag.lista;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Centro Costo</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario</a></li>
+            <li class="active">Registrar</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+
+            <div class="box-body">
+
+                <fieldset>
+                    <legend style="margin-left: 50px;">Registrar</legend>
+
+                    <form method="post" action="">
+                        @if (Model != null)
+                        {
+                            <input type="hidden" name="Idcc" value="@Model.Idcc" />
+                        }
+                        <div class="row">
+
+                            <div class="col-md-3"></div>
+                            <div class="col-md-4">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+
+                                    <div class="col-md-10" style="margin-left: 36px;">
+                                        <label>Centro de Costo</label>
+                                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", @id = "Descripcion" } })
+                                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+
+                                    </div>
+
+                                    <div class="col-md-2"></div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <br />
+                                    <div class="form-group">
+                                                  
+                                                <input type="hidden" name="Evento" id="Evento" />
+                                                <button type="submit" style="background-color:#13D003; border:0;margin-top: 5px;" id="@ViewBag.boton" class="btn btn-danger">@ViewBag.boton</button>
+                                          
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-1"></div>
+                        </div>
+                        @*<br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br />
+                                    <div class="form-group">
+                                        <div class="col-md-offset-1">
+                                            <center>
+                                                <input type="hidden" name="Evento" id="Evento" />
+                                                <button type="submit" style="background-color:#13D003; border:0" id="@ViewBag.boton" class="btn btn-danger">@ViewBag.boton</button>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                    </form>
+
+                </fieldset>
+
+
+                <br /><br />
+
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left: 50px;">Lista</legend>
+
+                        <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo Centro Costo</th>
+                                        <th>Descripcion</th>
+                                        <th>Estado</th>
+                                        <th style="text-align: center;"><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (lista != null)
+                                    {
+                                        foreach (var item in lista)
+                                        {
+
+                                            <tr>
+
+                                                <td>@Html.DisplayFor(modelItem => item.Idcc)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+
+                                                <td style="text-align: center;">
+                                                    <form action="" method="post">
+                                                        <input type="hidden" name="Evento" class="Evento" />
+                                                        <input type="hidden" name="Idcc" value="@item.Idcc" />
+                                                        <button class="btn btn-danger editar"><i class="fa fa-edit"></i></button>
+                                                        @if (item.Estado)
+                                                        {
+
+                                                            <button class="btn btn-danger eliminar"><i class="fa fa-trash-o"></i></button>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <button class="btn btn-danger activar"><i class="fa fa-plus-square"></i></button>
+
+                                                        }
+                                                    </form>
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    }
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#Registrar").click(function () {
+            $("#Evento").val("1");
+
+        });
+        $("#Modificar").click(function () {
+            $("#Evento").val("2");
+
+        });
+        $(".eliminar").click(function () {
+            $(".Evento").val("3");
+        });
+        $(".activar").click(function () {
+            $(".Evento").val("4");
+        });
+        $(".editar").click(function () {
+            $(".Evento").val("5");
+        });
+    });
+
+    $(document).ready(function () {
+        var ALT = 18; var N = 78; var G = 71; var presiono1 = false; var presiono2 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 && (e.keyCode == G)) {
+                $("#Registrar").click();
+            }
+        });
+        var ALT = 18; var N = 78; var G = 71; var presiono2 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono2 = true;
+            }
+            if (presiono2 && (e.keyCode == N)) {
+                location.reload();
+                $("#Descripcion").focus();
+            }
+            else if (presiono2 && (e.keyCode == 112)) {
+                $(location).attr("href", "../Master/Index");
+            }
+        });
+        $(document).keyup(function (e) {
+            if (e.keyCode == N) {
+                presiono1 = false;
+            }
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
+
+    });
+
+</script>

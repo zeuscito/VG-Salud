@@ -1,0 +1,1555 @@
+﻿ 
+@model VgSalud.Models.E_Gastos
+
+@{
+    ViewBag.Title = "RegistrarGastos";
+    var tipoMoneda = (SelectList)ViewBag.tipomoneda;
+    var fecha = ViewBag.FechaActual;
+    var proveedor = (SelectList)ViewBag.proveedor;
+    var modal = ViewBag.modal;
+    var listaAcuenta = (List<VgSalud.Models.E_Gastos>)ViewBag.listaAcuenta;
+    var BienesServicio = (SelectList)ViewBag.BienesServicio;
+
+    var gastos = (List<VgSalud.Models.E_Gastos>)ViewBag.gastos;
+    var ctacontable = (SelectList)ViewBag.ctacontable;
+    var centrocosto = (SelectList)ViewBag.centrocosto;
+    var tipodocumento = (SelectList)ViewBag.tipodocumento;
+    if (ViewBag.IDcentrocosto == null) { ViewBag.IDcentrocosto = null; }
+    if (ViewBag.IDSubCentrocosto == null) { ViewBag.IDSubCentrocosto = null; }
+    if (ViewBag.importe == null) { ViewBag.importe = 0; }
+    if (ViewBag.igv == null) { ViewBag.igv = 0; }
+    if (ViewBag.total == null) { ViewBag.total = 0; }
+    if (ViewBag.retencion == null) { ViewBag.retencion = 0; }
+    if (ViewBag.detraccion == null) { ViewBag.detraccion = 0; }
+    if (ViewBag.montototal == null) { ViewBag.montototal = 0; }
+
+    if (ViewBag.renta == null)
+    {
+        ViewBag.renta = 0;
+    }
+    if (ViewBag.totalbruto == null)
+    {
+        ViewBag.totalbruto = 0;
+    }
+    if (ViewBag.porcentaje == null) { ViewBag.porcentaje = null; }
+    if (ViewBag.detraccion == null) { ViewBag.detraccion = null; }
+    if (ViewBag.serie == null) { ViewBag.serie = ""; }
+
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Gastos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Gastos</a></li>
+            <li class="active">Registrar </li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+
+        <div class="box box-default">
+            <fieldset>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos de Gastos</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+
+            </fieldset>
+            <div class="box-body">
+                <div class="col-md-12">
+                    <form action="" method="post">
+
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>N° Operacion</label>
+                                    <input type="text" class="form-control" value="@ViewBag.NroOperacion" name="NroOperacion" id="NroOperacion" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Centro de Costo</label>
+                                    @Html.DropDownList("IdCentroCosto", centrocosto, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "centrocosto" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Sub Centro de Costo</label>
+                                    <select class="form-control select2" name="IdSubCentroCosto" id="IdSubCentroCosto"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3">
+
+                                <div class="col-md-10" style="margin:0px;padding-right:0px;">
+                                    <label>Proveedor</label>
+                                    @Html.DropDownList("IdPro", proveedor, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "pro" })
+                                    @*@Html.ValidationMessageFor(model => model.IdPro, "", new { @class = "text-danger" })*@
+                                </div>
+                                <div class="col-md-2" style="margin:0px;padding-right:0px;">
+                                    <label></label><br />
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" style="padding:6px 10px;margin-left: 1px; margin-top: 5px;"><i class="fa fa-plus"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <label>RUC</label>
+                                        @Html.EditorFor(model => model.Ruc, new { htmlAttributes = new { @class = "form-control", @id = "ruc" } })
+                                        @*@Html.ValidationMessageFor(model => model.Ruc, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Tipo Persona</label>
+                                    @Html.EditorFor(model => model.TipoPersona, new { htmlAttributes = new { @class = "form-control", @id = "TipoPersona" } })
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <label>Observacion</label>
+                                        <textarea class="form-control" name="Observ" id="observacion">@ViewBag.observacion</textarea>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <label>Tipo Venta (detraccion)</label>
+
+                                    @Html.DropDownList("IDbs", BienesServicio, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "bienes" })
+                                    @*@Html.ValidationMessageFor(model => model.IDbs, "", new { @class = "text-danger" })*@
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label>Moneda</label>
+                                            @Html.DropDownList("CodTipMon", tipoMoneda, new { @class = "form-control select2", @id = "moneda2" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label>Tipo Cambio</label>
+                                            <input type="text" name="TipoCambio" value="" class="form-control" readonly id="TipoCambio1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <label>Fecha Proxima Pago</label>
+                                        @Html.EditorFor(model => model.FechaProxPago, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaProxPago", @value = fecha } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <label>Acuenta</label>
+                                            <input type="text" name="TotalAcuenta" value="0" class="form-control" readonly id="acuenta" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Saldo</label>
+                                            <input type="text" name="saldo" class="form-control" id="saldo" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-1">
+                                <label></label><br />
+                                <div class="col-md-12">
+                                    <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                                        <label></label>
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style="padding:5px 10px;margin-top:2px;margin-left: 25px;" id="agregarID"><i class="glyphicon glyphicon-list"></i></button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+
+
+
+                            <div class="col-md-3">
+
+                                <div class="col-md-12">
+                                    <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                                        <label>Tipo Documento</label>
+                                        @Html.DropDownList("CodigoTipoDocumento", tipodocumento, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "TipoDoc" })
+                                        <div style="padding-left:250px;padding-right:0px;">
+                                            <div class="checkbox-inline">
+                                                <input type="checkbox" name="" id="electronico" class="electronico" style="padding-left:0px;padding-right:0px;" /><strong class="electronico">Electronico</strong>
+                                            </div>
+                                        </div>
+                                        @*<div class="checkbox-inline">
+                                                <label></label>
+
+
+                                            </div>*@
+
+                                    </div>
+                                    @*<div class="col-md-3 electronico" style="padding-left:2px;padding-right:2px;">
+
+                                            <label></label>
+
+                                            <
+                                        </div>*@
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <div class="col-md-6" style="margin:0px;padding:0px;">
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="margin:0px;padding-left:0px;">
+                                                <label>Serie</label>
+                                                @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control", @id = "Serie" } })
+                                                @*@Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin:0px;padding:0px;">
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="margin:0px;padding-right:0px;">
+                                                <label>Nº</label>
+                                                @Html.EditorFor(model => model.Documento, new { htmlAttributes = new { @class = "form-control", @id = "Documento" } })
+                                                @*@Html.ValidationMessageFor(model => model.Documento, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Tipo Pago</label>
+                                        <select class="form-control select2 TipoPago2" name="TipoPagoC" id="TipoPago2">
+                                            <option value="EFECTIVO">EFECTIVO</option>
+                                            <option value="CHECKE"></option>
+                                            <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                            <option value="OTROS">OTROS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Emision</label>
+                                            @Html.EditorFor(model => model.FechaEmision, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaEmision", @value = fecha } })
+                                            @*@Html.ValidationMessageFor(model => model.FechaEmision, "", new { @class = "text-danger" })*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Pago</label>
+                                            @Html.EditorFor(model => model.FechaPago, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaPago", @value = fecha } })
+                                            @*@Html.ValidationMessageFor(model => model.FechaPago, "", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12">
+
+                            <div class="col-md-3">
+
+                                <div class="col-md-12">
+                                    <label>Glosa</label>
+                                    <textarea class="form-control" name="glosa" id="glosa">@ViewBag.glosa</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="col-md-12">
+                                    <label>Observacion</label>
+                                    <textarea class="form-control" name="ObservacionC" id="ObservacionC">@ViewBag.observacionC</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="col-md-6" style="margin:0px;padding:0px;">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Nro Detraccion</label>
+                                            @Html.EditorFor(model => model.NroDetraccion, new { htmlAttributes = new { @class = "form-control", @id = "NroDetraccion" } })
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-6" style="margin:0px;padding:0px;">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Detraccion</label>
+                                            @Html.EditorFor(model => model.FechaDetraccion, new { htmlAttributes = new { @class = "form-control datepicker", @id = "FechaDetraccion" } })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <br />
+                                <input type="checkbox" name="" value="" id="Exonerar" class="ocultarRenta" /><strong class="ocultarRenta">Exonerar</strong><br />
+                                <input type="checkbox" name="" value="" id="checkRigv" class="ocultar" /><strong class="ocultar"> Retencion del I.G.V  </strong><br />
+                                <input type="checkbox" name="" value="" id="checkIigv" class="ocultar" /><strong class="ocultar">Incluye Impuestos</strong>
+
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <br /><br />
+                    <div class="col-md-12">
+                        <br /><br />
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form action="" method="post">
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Descripcion</label>
+                                                @Html.DropDownList("CodigoContable", ctacontable, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "ctacontable" })
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-2">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Cantidad</label>
+                                                <input type="text" class="form-control" value="1" name="Cant" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Precio</label>
+                                                <input type="text" class="form-control" name="PrecioU" value="" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label></label>
+                                        <div class="form-group">
+                                            <label></label>
+                                            <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                                            <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                                            <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                                            <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                                            <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                                            <input type="hidden" name="RazonS" class="RazonS" />
+                                            <input type="hidden" name="Serie" class="Serie" />
+                                            <input type="hidden" name="Documento" class="Documento" />
+                                            <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                                            <input type="hidden" name="TipoPago" class="TipoPago" />
+                                            <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC"/>
+                                            <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                                            <input type="hidden" name="FechaPago" class="FechaPago" />
+                                            <input type="hidden" name="IdPro" class="IdPro" />
+                                            <input type="hidden" name="Ruc" class="Ruc" />
+                                            <input type="hidden" name="Direccion" class="Direccion" />
+                                            <input type="hidden" name="Observ" class="Observ" />
+                                            <input type="hidden" name="IDbs" class="IDbs" />
+                                            <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                                            <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                                            <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                                            <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                                            <input type="hidden" name="glosa" class="glosa" />
+                                            <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                                            <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                                            <input type="hidden" name="Retencion" class="Retencion" />
+                                            <input type="hidden" name="Detraccion" class="Detraccion" />
+                                            <input type="hidden" name="igvCS" class="igvCS" />
+                                            <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                                            <input type="hidden" name="Total" class="Total" />
+                                            <button type="submit" class="btn btn-info btn-lg agregar" style="padding:6px 14px;" name="Evento" value="6" id="agregar"><i class="fa fa-plus"></i></button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Descripcion</th>
+
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Importe</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (gastos != null)
+                                {
+                                    foreach (var item in gastos)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.ItemG)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DescripcionCtaContable)</td>
+
+                                            <td>@Html.DisplayFor(modelItem => item.Cant)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrecioU)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                            <td>
+                                                <form action="" method="post">
+                                                    <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                                                    <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                                                    <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                                                    <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                                                    <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                                                    <input type="hidden" name="RazonS" class="RazonS" />
+                                                    <input type="hidden" name="Serie" class="Serie" />
+                                                    <input type="hidden" name="Documento" class="Documento" />
+                                                    <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                                                    <input type="hidden" name="TipoPago" class="TipoPago" />
+                                                    <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC" />
+                                                    <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                                                    <input type="hidden" name="FechaPago" class="FechaPago" />
+                                                    <input type="hidden" name="IdPro" class="IdPro" />
+                                                    <input type="hidden" name="Ruc" class="Ruc" />
+                                                    <input type="hidden" name="Direccion" class="Direccion" />
+                                                    <input type="hidden" name="Observ" class="Observ" />
+                                                    <input type="hidden" name="IDbs" class="IDbs" />
+                                                    <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                                                    <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                                                    <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                                                    <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                                                    <input type="hidden" name="TipoCompra" class="TipoCompra" />
+                                                    <input type="hidden" name="glosa" class="glosa" />
+                                                    <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                                                    <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                                                    <input type="hidden" name="Retencion" class="Retencion" />
+                                                    <input type="hidden" name="Detraccion" class="Detraccion" />
+                                                    <input type="hidden" name="igvCS" class="igvCS" />
+                                                    <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                                                    <input type="hidden" name="Total" class="Total" />
+                                                    <input type="hidden" name="ItemG" value="@item.ItemG" />
+                                                    <button type="submit" name="Evento" value="7" class="btn btn-danger agregar"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+
+                        </table>
+                        <br /><br />
+                        <div class="col-md-12">
+
+                            <br />
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Subtotal</label>
+                                    <input type="text" class="form-control" name="Total" value="@ViewBag.importe" id="bruto" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>I.G.V</label>
+                                    <input type="text" class="form-control" name="IgvC" value="@ViewBag.igv" id="igv" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Retencion</label>
+                                    <input type="text" class="form-control" name="Retencion" value="@ViewBag.retencion" id="retencion" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultar">
+                                    <label>Detraccion&nbsp</label><label id="errorMessage" style="display:none;color:red" class="ocultar"></label>
+                                    <input type="text" class="form-control" name="Detraccion" id="detraccion" value="@ViewBag.detraccion" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12 ocultarRenta">
+                                    <label>Renta</label>
+                                    <input type="text" class="form-control" name="Renta" id="Renta" value="@ViewBag.renta" readonly />
+                                    <label id="errorMessage" style="display:none;color:red"></label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-12">
+                                    <label>Total</label>
+                                    <input type="text" class="form-control" name="Total" id="neto" value="@ViewBag.total" readonly />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-offset-6">
+                            <form method="post" action="">
+                                <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                                <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                                <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                                <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                                <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                                <input type="hidden" name="RazonS" class="RazonS" />
+                                <input type="hidden" name="Serie" class="Serie" />
+                                <input type="hidden" name="Documento" class="Documento" />
+                                <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                                <input type="hidden" name="TipoPago" class="TipoPago" />
+                                <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC" />
+                                <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                                <input type="hidden" name="FechaPago" class="FechaPago" />
+                                <input type="hidden" name="IdPro" class="IdPro" />
+                                <input type="hidden" name="Ruc" class="Ruc" />
+                                <input type="hidden" name="Direccion" class="Direccion" />
+                                <input type="hidden" name="Observ" class="Observ" />
+                                <input type="hidden" name="IDbs" class="IDbs" />
+                                <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                                <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                                <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                                <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                                <input type="hidden" name="TipoCompra" class="TipoCompra" />
+                                <input type="hidden" name="glosa" class="glosa" />
+                                <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                                <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                                <input type="hidden" name="Retencion" class="Retencion" />
+                                <input type="hidden" name="Detraccion" class="Detraccion" />
+                                <input type="hidden" name="igvCS" class="igvCS" />
+                                <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                                <input type="hidden" name="Total" class="Total" />
+                                <button type="submit" class="btn btn-danger agregar" style="padding:7px 9px;" name="Evento" value="1">Registrar</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+    </section>
+
+
+    <br />
+
+
+
+
+    <br />
+
+
+</div>
+<br />
+
+
+@*<center>
+        <input class="btn btn-danger" type="submit" value="Facturar" />
+    </center>*@
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Registro Persona Juridica</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="" method="post">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Razon Social</label>
+                                <input type="text" name="RazonS" id="RazonS" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>RUC</label>
+                                <input type="text" name="Ruc" id="Ruc" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <label>Tipo Persona</label>
+                            <select class="form-control" name="TipoPersona" id="TipoPersona">
+                                <option value="NATURAL">NATURAL</option>
+                                <option value="JURIDICA">JURIDICA</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Contacto</label>
+                                <input type="text" name="Contacto" id="Contacto" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Telefono</label>
+                                <input type="text" name="Telef" id="Telef" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Correo</label>
+                                <input type="text" name="Correo" id="Correo" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Rubro</label>
+                                <input type="text" name="Rubro" id="Rubro" class="form-control" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Observacion</label>
+                                <textarea name="Observ" class="form-control"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-offset-5">
+                        <br /><br />
+                        <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                        <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                        <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                        <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                        <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                        <input type="hidden" name="RazonS" class="RazonS" />
+                        <input type="hidden" name="Serie" class="Serie" />
+                        <input type="hidden" name="Documento" class="Documento" />
+                        <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                        <input type="hidden" name="TipoPago" class="TipoPago" />
+                        <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC" />
+                        <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                        <input type="hidden" name="FechaPago" class="FechaPago" />
+                        <input type="hidden" name="IdPro" class="IdPro" />
+                        <input type="hidden" name="Ruc" class="Ruc" />
+                        <input type="hidden" name="Direccion" class="Direccion" />
+                        <input type="hidden" name="Observ" class="Observ" />
+                        <input type="hidden" name="IDbs" class="IDbs" />
+                        <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                        <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                        <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                        <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                        <input type="hidden" name="TipoCompra" class="TipoCompra" />
+                        <input type="hidden" name="glosa" class="glosa" />
+                        <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                        <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                        <input type="hidden" name="Retencion" class="Retencion" />
+                        <input type="hidden" name="Detraccion" class="Detraccion" />
+                        <input type="hidden" name="igvCS" class="igvCS" />
+                        <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                        <input type="hidden" name="Total" class="Total" />
+                        <button type="submit" class="btn btn-danger agregar" value="3" name="Evento">Registrar</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <br />
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Distribucion de precios</h4>
+            </div>
+            <div class="modal-body">
+
+                <form action="" method="post">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Tipo Moneda</label>
+                                @Html.DropDownList("CodTipMon", tipoMoneda, new { @class = "form-control select2", @id = "moneda", @style = "width: 100%;" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Tipo Cambio</label>
+                                <input type="text" name="TipoCambio" class="form-control" readonly id="TipoCambio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Fecha</label>
+                                @Html.EditorFor(model => model.FechaPago, new { htmlAttributes = new { @class = "form-control datepicker", @id = "fechaPago" } })
+                                @Html.ValidationMessageFor(model => model.FechaPago, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Monto</label>
+                                <input type="text" name="Monto" class="form-control" id="monto" />
+                                <label id="errorMessage1" style="display:none;color:red"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>Tipo Pago</label>
+                                <select class="form-control" name="TipoPago" id="TipoPagoA">
+                                    <option value="EFECTIVO">EFECTIVO</option>
+                                    <option value="CHECKE">CHECKE</option>
+                                    <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                    <option value="OTROS">OTROS</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                                <label>Observacion</label>
+                                <textarea class="form-control" name="Observ" id="observacionA"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <center>
+                            <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                            <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                            <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                            <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                            <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                            <input type="hidden" name="RazonS" class="RazonS" />
+                            <input type="hidden" name="Serie" class="Serie" />
+                            <input type="hidden" name="Documento" class="Documento" />
+                            <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                            <input type="hidden" name="TipoPago" class="TipoPago" />
+                            <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC" />
+                            <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                            <input type="hidden" name="FechaPago" class="FechaPago" />
+                            <input type="hidden" name="IdPro" class="IdPro" />
+                            <input type="hidden" name="Ruc" class="Ruc" />
+                            <input type="hidden" name="Direccion" class="Direccion" />
+                            <input type="hidden" name="Observ" class="Observ" />
+                            <input type="hidden" name="IDbs" class="IDbs" />
+                            <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                            <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                            <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                            <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                            <input type="hidden" name="TipoCompra" class="TipoCompra" />
+                            <input type="hidden" name="glosa" class="glosa" />
+                            <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                            <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                            <input type="hidden" name="Retencion" class="Retencion" />
+                            <input type="hidden" name="Detraccion" class="Detraccion" />
+                            <input type="hidden" name="igvCS" class="igvCS" />
+                            <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                            <input type="hidden" name="Total" class="Total" />
+                            <button class="btn btn-danger agregar" type="submit" value="4" name="Evento" id="agregarCuenta">Agregar</button>
+
+                        </center>
+                    </div>
+
+                </form>
+
+                <div class="col-md-12">
+
+                    <table id="example3" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td>Item</td>
+                                <th>Moneda</th>
+                                <th>TipoCambio</th>
+                                <th>Tipo Pago</th>
+                                <th>Fecha Pago</th>
+                                <th>Monto</th>
+                                <th>Observacion</th>
+
+                                <th><i class="fa fa-trash-o"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (listaAcuenta != null)
+                            {
+                                foreach (var item in listaAcuenta)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.ItemACta)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescripTip)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TipoCambio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TipoPago)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.FechaPago)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Monto)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Observ)</td>
+
+                                        <th>
+                                            <form action="" method="post">
+                                                <input type="hidden" name="NroDetraccion" class="NroDetraccion" />
+                                                <input type="hidden" name="FechaDetraccion" class="FechaDetraccion" />
+                                                <input type="hidden" name="NroOperacion" class="NroOperacion" />
+                                                <input type="hidden" name="IdCentroCosto" class="IdCentroCosto" />
+                                                <input type="hidden" name="IdSubCentroCosto" class="IdSubCentroCosto" />
+                                                <input type="hidden" name="Serie" class="Serie" />
+                                                <input type="hidden" name="Documento" class="Documento" />
+                                                <input type="hidden" name="CodigoTipoDocumento" class="TipoDoc" />
+                                                <input type="hidden" name="TipoPago" class="TipoPago" />
+                                                <input type="hidden" name="TipoPagoC" id="TipoPagoC" class="TipoPagoC" />
+                                                <input type="hidden" name="FechaEmision" class="FechaEmision" />
+                                                <input type="hidden" name="FechaPago" class="FechaPago" />
+                                                <input type="hidden" name="IdPro" class="IdPro" />
+                                                <input type="hidden" name="Ruc" class="Ruc" />
+                                                <input type="hidden" name="Direccion" class="Direccion" />
+                                                <input type="hidden" name="Observ" class="Observ" />
+                                                <input type="hidden" name="IDbs" class="IDbs" />
+                                                <input type="hidden" name="CodTipMon" class="CodTipMon" />
+                                                <input type="hidden" name="TipoCambio" class="TipoCambio" />
+                                                <input type="hidden" name="TotalAcuenta" class="TotalAcuenta" />
+                                                <input type="hidden" name="ItemACta" value="@item.ItemACta" />
+
+                                                <input type="hidden" name="TipoPersona" class="TipoPersona" />
+                                                <input type="hidden" name="TipoCompra" class="TipoCompra" />
+                                                <input type="hidden" name="glosa" class="glosa" />
+                                                <input type="hidden" name="ObservacionC" class="ObservacionC" />
+                                                <input type="hidden" name="FechaProxPago" class="FechaProxPago" />
+                                                <input type="hidden" name="Retencion" class="Retencion" />
+                                                <input type="hidden" name="Detraccion" class="Detraccion" />
+                                                <input type="hidden" name="igvCS" class="igvCS" />
+                                                <input type="hidden" name="TotalNeto" class="TotalNeto" />
+                                                <input type="hidden" name="Total" class="Total" />
+                                                <button type="submit" name="Evento" value="5" class="btn btn-danger agregar"><i class="fa fa-trash-o"></i></button>
+                                            </form>
+
+                                        </th>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+
+                    @*<div class="col-md-offset-5">
+                            <button type="submit" name="Evento" value="4" class="btn btn-danger">Registrar</button>
+                        </div>*@
+                </div>
+
+            </div>
+            <br /><br /><br /><br /><br /><br />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        var total = "@ViewBag.totalbruto";
+        var acuenta = "@ViewBag.MontoTotal";
+
+
+
+        @if (ViewBag.IDcentrocosto != null) {
+            if (ViewBag.IDSubCentrocosto != null ) {
+        <text>
+        var IDSubCentrocosto = @ViewBag.IDSubCentrocosto ;
+        var IDcentroCosto = @ViewBag.IDcentrocosto;
+        $.get('@Url.Action("ObtenerSubCentroCosto", "Gastos")', { id: IDcentroCosto }, function (response) {
+            var select = $("#IdSubCentroCosto");
+            select.find('option').remove();
+            $('<option>').val('NULL').text('[NO SELECCIONADO]').appendTo(select);
+            $('#IdSubCentroCosto option[value=NULL]').prop('selected', 'selected').change();
+            $.each(response, function (index, value) {
+                $('<option>').val(value.IdSubCentroCosto).text(value.DescripcionSubCentroCosto).appendTo(select);
+                if(value.IdSubCentroCosto == IDSubCentrocosto) {
+                    $('#IdSubCentroCosto option[value=@ViewBag.IDSubCentrocosto]').prop('selected', 'selected').change();
+                }
+            });
+        });
+        </text>
+            }
+
+        }
+
+        $("#Exonerar").change(function () {
+            if (this.checked == true) {
+                $("#Renta").val(0);
+            }
+            else {
+                if (total != 0) {
+                    var importe = "@ViewBag.totalbruto";
+                    var renta = parseFloat(importe) * parseFloat("0.08");
+                    $("#Renta").val(renta.toFixed(2));
+                }
+                else {
+                    $("#Renta").val(0);
+                }
+            }
+        });
+
+        $("#TipoDoc").change(function () {
+            $("#checkRigv").prop("checked", false);
+            $("#checkIigv").prop("checked", false);
+            $("#Exonerar").prop("checked", false);
+
+            var select = this.value;
+
+            if (select == 1 || select == 2) {
+                $(".electronico").show();
+
+            } else if (select != 1 && select != 2) {
+                $(".electronico").hide();
+            }
+
+            if (select == 2) {
+                $(".ocultar").hide();
+                $(".ocultarRenta").show();
+                $("#neto").val(total);
+                var importe = "@ViewBag.totalbruto";
+                var renta = parseFloat(importe) * parseFloat("0.08");
+                $("#Renta").val(renta.toFixed(2));
+
+            } else if (select != 2) {
+                $(".ocultar").show();
+                $(".ocultarRenta").hide();
+
+                if (total != 0) {
+                    var importe = "@ViewBag.totalbruto";
+
+                    var Nigv = parseFloat(importe) * parseFloat("0.18");
+                    var igvDec = Nigv.toFixed(2);
+                    var ToTNet = parseFloat(importe) + parseFloat(Nigv);
+                    $("#bruto").val(importe);
+                    $("#igv").val(igvDec);
+                    $("#neto").val(ToTNet.toFixed(2));
+                }
+                else {
+                    $("#igv").val(0);
+                    $("#neto").val(0);
+                }
+            }
+
+            if ($(".electronico").is(":checked")) {
+
+                if (select == 1) {
+                    $("#Serie").val("F001");
+                    $("#Serie").attr("disabled", true);
+
+                } else if (select == 2) {
+                    $("#Serie").val("E001");
+                    $("#Serie").attr("disabled", true);
+
+
+                } else {
+
+                    $("#Serie").attr("disabled", false);
+                    $("#Serie").val(null);
+                    $("#Serie").focus();
+                }
+            }
+            else {
+
+                $("#Serie").attr("disabled", false);
+                $("#Serie").val(null);
+                $("#Serie").focus();
+            }
+
+        });
+
+        $("#electronico").change(function () {
+            var select = $("#TipoDoc").val();
+            if (this.checked == true) {
+
+                if (select == 1) {
+                    $("#Serie").val("F001");
+                    $("#Serie").attr("disabled", true);
+                } else if (select == 2) {
+                    $("#Serie").val("E001");
+                    $("#Serie").attr("disabled", true);
+                } else {
+                    $("#Serie").attr("disabled", false);
+                    $("#Serie").val(null);
+                    $("#Serie").focus();
+                }
+            }
+            else {
+                $("#Serie").attr("disabled", false);
+                $("#Serie").val(null);
+                $("#Serie").focus();
+            }
+        });
+
+
+        $('#TipoDoc option[value=@ViewBag.TipoDoc]').prop('selected', 'selected').change();
+        $('#TipoPago option[value=@ViewBag.TipoPago]').prop('selected', 'selected').change();
+        $('#bienes option[value=@ViewBag.IDbs]').prop('selected', 'selected').change();
+        $('#moneda2 option[value=@ViewBag.IDbs]').prop('selected', 'selected').change();
+
+
+        if (total != 0) {
+            var Nigv = parseFloat(total) * parseFloat("0.18");
+            var igvDec = Nigv.toFixed(2);
+            var ToTNet = parseFloat(total) + parseFloat(Nigv);
+            $("#igv").val(igvDec);
+            $("#neto").val(ToTNet.toFixed(2));
+        }
+        else {
+            //$("#igv").val(0);
+            //$("#neto").val(0);
+        }
+
+
+
+        @if (ViewBag.porcentaje != null) {
+           if (ViewBag.detraccion != null) {
+               <text>
+        $("#errorMessage").text("@ViewBag.porcentaje" + " %").show();
+        $("#detraccion").val(Math.round("@ViewBag.detraccion"));
+        </text>
+           }
+       }
+
+
+
+
+        $("#bienes").change(function () {
+            var valor = this.value;
+            var TotalNeto = $("#neto").val();
+            if (parseFloat(TotalNeto) > 700) {
+
+                $.get('@Url.Action("ObtenerPorcentajeBienesServicio","Gastos")', { valor: valor },
+                    function (response) {
+
+                        $("#errorMessage").text(response + " %").show();
+                        var retraccion = (parseFloat(TotalNeto) * parseInt(response)) / parseInt(100);
+                        $("#detraccion").val(Math.round(retraccion));
+
+                    });
+            }
+            else {
+                $("#detraccion").val("0");
+            }
+        });
+
+        $("#centrocosto").change(function () {
+            var value = this.value;
+            if (value == null) {
+                var select = $("#IdSubCentroCosto");
+                select.find('option').remove();
+                $('<option>').val('NULL').text('[NO SELECCIONADO]').appendTo(select);
+                $('#IdSubCentroCosto option[value=NULL]').prop('selected', 'selected').change();
+            } else {
+                $.get('@Url.Action("ObtenerSubCentroCosto", "Gastos")', { id: value }, function (response) {
+                    var select = $("#IdSubCentroCosto");
+                    select.find('option').remove();
+                    $('<option>').val('NULL').text('[NO SELECCIONADO]').appendTo(select);
+                    $('#IdSubCentroCosto option[value=NULL]').prop('selected', 'selected').change();
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.IdSubCentroCosto).text(value.DescripcionSubCentroCosto).appendTo(select);
+                    });
+                });
+            }
+
+        });
+
+
+        if (acuenta == "") {
+            acuenta = 0;
+        }
+
+        $("#acuenta").val(acuenta);
+        $("#saldo").val(0) ;
+        @*$("#bruto").val(@ViewBag.totalbruto);*@
+        //$("#detraccion").val(0);
+
+        $("#TipoCambio").val(0);
+        $("#TipoCambio1").val(0);
+        //$("#retencion").val(0);
+        $("#checkRigv").change(function () {
+            if (this.checked == true) {
+                var neto = $("#neto").val();
+                var detra = parseFloat(neto) * parseFloat("0.03");
+                $("#retencion").val(detra.toFixed(2));
+            }
+            else {
+                $("#retencion").val(0);
+            }
+        });
+
+        $("#checkIigv").change(function () {
+            if ( $(this).prop('checked')) {
+                var importe = "@ViewBag.importe";
+                var totalsinIgv = parseFloat(importe) / parseFloat("1.18");
+                var Conigv = parseFloat(totalsinIgv) * parseFloat("0.18");
+                var igvD = parseFloat(Conigv.toFixed(2));
+                var totalD = parseFloat(totalsinIgv) + igvD;
+                var totalNeto = parseFloat(totalD.toFixed(2));
+                $("#bruto").val(totalsinIgv.toFixed(2));
+                $("#igv").val(igvD);
+                $("#neto").val(totalD.toFixed(2));
+                $("#saldo").val(totalD.toFixed(2)) ;
+            }
+            else {
+
+                var totalbruto = "@ViewBag.importe";
+                var Nigv = parseFloat(totalbruto) * parseFloat("0.18");
+                $("#bruto").val(totalbruto);
+                $("#igv").val(Nigv.toFixed(2));
+                $("#neto").val((parseFloat(totalbruto) + Nigv).toFixed(2));
+                $("#saldo").val((parseFloat(totalbruto) + Nigv).toFixed(2)) ;
+            }
+
+        });
+
+
+        @if(modal != ""){
+        <Text>
+        $('#myModal2').modal('show');
+        </text>
+                        }
+
+        $("#moneda2").change(function () {
+            var valor = this.value;
+            $.get('@Url.Action("ObtenerTipoCambio","Gastos")', { value: valor },
+                function (response) {
+                    $("#TipoCambio1").val(response);
+                });
+        });
+
+        $("#moneda").change(function () {
+            var valor = this.value;
+            $.get('@Url.Action("ObtenerTipoCambio","Gastos")', { value: valor },
+                function (response) {
+                    $("#TipoCambio").val(response);
+                });
+        });
+
+        $("#direccion").attr("readonly", true);
+        $("#ruc").attr("readonly", true);
+        $("#observacion").attr("readonly", true);
+        $("#TipoPersona").attr("readonly", true);
+        $('#pro option[value=@ViewBag.pro]').prop('selected', 'selected').change();
+
+        $("#pro").change(function () {
+            var valor = this.value;
+            $.get('@Url.Action("ObtenerDatosProveedor","Gastos")', { valor: valor },
+                function (response) {
+                    $("#observacion").val(null);
+                    $("#ruc").val(null);
+                    $("#direccion").val(null);
+                    $("#TipoPersona").val(null);
+                    if (response != null) {
+                        $.each(response, function (index, value) {
+                            $("#observacion").val(value.Observ);
+                            $("#ruc").val(value.Ruc);
+                            $("#direccion").val(value.Direc);
+                            $("#TipoPersona").val(value.TipoPersona);
+                        });
+                    }
+
+                });
+        });
+        @if (@ViewBag.renta != 0)
+        {
+        <text>
+        $(".ocultarRenta").show();
+        $(".ocultar").hide();
+        </text>
+        }
+        else {
+        <text>
+        $(".ocultarRenta").hide();
+        $(".ocultar").show();
+        </text>
+        }
+
+
+        @if (@ViewBag.importe != 0)
+        {
+         <text>
+        var aa = "@ViewBag.importe";
+        $("#bruto").val(aa);
+        </text>
+        }
+        else {
+              <text>
+        var aa = "@ViewBag.importe";
+        $("#bruto").val(aa);
+        </text>
+        }
+
+        @if (@ViewBag.igv != 0)
+        {
+            <text>
+        var aa = "@ViewBag.igv";
+        $("#igv").val(aa);
+        </text>
+        }
+        else {
+        <text>
+        var aa = "@ViewBag.igv";
+        $("#igv").val(aa);
+        </text>
+        }
+
+        @if (@ViewBag.total != 0)
+        {
+            <text>
+        var aa = "@ViewBag.total";
+        $("#neto").val(aa);
+        </text>
+        } else {
+        <text>
+        var aa = "@ViewBag.total";
+        $("#neto").val(aa);
+        </text>
+        }
+
+        var totalNeto = $("#neto").val();
+        $("#agregarID").click(function(){
+            var saldo = $("#saldo").val() ;
+
+            if(saldo == 0) {
+                $("#moneda").attr("disabled", true);
+                $("#TipoCambio").attr("disabled", true);
+                $("#monto").attr("disabled", true);
+                $("#fechaPago").attr("disabled", true);
+                $("#TipoPagoA").attr("disabled", true);
+                $("#observacionA").attr("disabled", true);
+                $("#agregarA").attr("disabled", true);
+                $("#agregarCuenta").attr("disabled",true) ;
+            } else {
+
+                $("#moneda").attr("disabled", false);
+                $("#TipoCambio").attr("disabled", false);
+                $("#monto").attr("disabled", false);
+                $("#fechaPago").attr("disabled", false);
+                $("#TipoPagoA").attr("disabled", false);
+                $("#observacionA").attr("disabled", false);
+                $("#agregarA").attr("disabled", false);
+                $("#agregarCuenta").attr("disabled",false) ;
+            }
+        }) ;
+
+
+
+
+        $("#monto").keyup(function(){
+            var monto = this.value ;
+            //var totalacuenta =parseFloat(monto) + parseFloat(acuenta) ;
+            var saldo = $("#saldo").val() ;
+
+            if( parseFloat(monto) > parseFloat(saldo) ) {
+                $("#errorMessage1").text("Error : Excedio el Monto Total").show();
+                $("#agregarCuenta").attr("disabled",true) ;
+            } else {
+                $("#errorMessage1").hide();
+                $("#agregarCuenta").attr("disabled",false) ;
+            }
+
+        }) ;
+
+        //recogiendo datos
+        $(".agregar").click(function () {
+            //id
+            var FechaDetraccion = $("#FechaDetraccion").val();
+            var NroDetraccion = $("#NroDetraccion").val() ;
+            var NroOperacion = $("#NroOperacion").val();
+            var RazonS = $("#RazonS").val();
+            var serie = $("#Serie").val();
+            var tipoPago2 = $("#TipoPago2").val();
+            var documento = $("#Documento").val();
+            var TipoDoc = $("#TipoDoc").val();
+            var TipoPago = $("#TipoPago").val();
+            var FechaEmision = $("#FechaEmision").val();
+            var FechaPago = $("#FechaPago").val();
+            var pro = $("#pro").val();
+            var ruc = $("#ruc").val();
+            var direccion = $("#direccion").val();
+            var observacion = $("#observacion").val();
+            var bienes = $("#bienes").val();
+            var moneda2 = $("#moneda2").val();
+            var TipoCambio = $("#TipoCambio1").val();
+            var acuenta = $("#acuenta").val();
+            var centrocosto = $("#centrocosto").val();
+            var IdSubCentroCosto = $("#IdSubCentroCosto").val();
+            var TipoPersona = $("#TipoPersona").val();
+            var TipoCompra = $("#TipoCompra").val();
+            var glosa = $("#glosa").val();
+            var ObservacionC = $("#ObservacionC").val();
+            var FechaProxPago = $("#FechaProxPago").val();
+            var retencion = $("#retencion").val();
+            var detraccion = $("#detraccion").val();
+            var total = $("#bruto").val() ;
+            var igv = $("#igv").val();
+            var neto = $("#neto").val();
+            //class
+            $(".FechaDetraccion").val(FechaDetraccion);
+            $(".NroDetraccion").val(NroDetraccion) ;
+            $(".NroOperacion").val(NroOperacion);
+            $(".TipoPagoC").val(tipoPago2);
+            $(".Total").val(total) ;
+            $(".IdSubCentroCosto").val(IdSubCentroCosto);
+            $(".IdCentroCosto").val(centrocosto);
+            $(".RazonS").val(RazonS);
+            $(".TipoPersona").val(TipoPersona);
+            $(".TipoCompra").val(TipoCompra);
+            $(".glosa").val(glosa);
+            $(".ObservacionC").val(ObservacionC);
+            $(".FechaProxPago").val(FechaProxPago);
+            $(".Retencion").val(retencion);
+            $(".Detraccion").val(detraccion);
+            $(".igvCS").val(igv);
+            $(".TotalNeto").val(neto);
+
+            $(".Serie").val(serie);
+            $(".Documento").val(documento);
+            $(".TipoDoc").val(TipoDoc);
+            $(".TipoPago").val(TipoPago);
+            $(".FechaEmision").val(FechaEmision);
+            $(".FechaPago").val(FechaPago);
+            $(".IdPro").val(pro);
+            $(".Ruc").val(ruc);
+            $(".Direccion").val(direccion);
+            $(".Observ").val(observacion);
+            $(".IDbs").val(bienes);
+
+            $(".CodTipMon").val(moneda2);
+            $(".TipoCambio").val(TipoCambio);
+            $(".TotalAcuenta").val(acuenta);
+
+        });
+
+        @if (ViewBag.importe != 0)
+        {
+
+            if (ViewBag.MontoTotal != 0)
+            {
+                <text>
+        $("#acuenta").val(acuenta);
+        var total =  @ViewBag.total ;
+        var saldo = (parseFloat(total) - parseFloat(acuenta)) ;
+        $("#saldo").val(saldo.toFixed(2))
+        </text>
+            }
+            else
+            {
+                    <text>
+        var saldo = @ViewBag.total;
+        $("#saldo").val(saldo.toFixed(2));
+        </text>
+
+            }
+
+        }
+        else
+        {
+        <text>
+        $("#saldo").val(0);
+        </text>
+        }
+
+
+        @if (ViewBag.serie != "") {
+        <text>
+        if("@ViewBag.serie" == "F001") { $("#electronico").prop("checked", "checked");  $("#Serie").attr("readonly",true) ; } else if("@ViewBag.serie" == "E001") { $("#electronico").prop("checked", "checked");  $("#Serie").attr("readonly",true) ; } 
+       
+        $("#Serie").val("@ViewBag.serie") ; 
+        </text>
+        }
+
+
+
+        //$.datepicker.regional['es'] = {
+        //    closeText: 'Cerrar',
+        //    prevText: '< Ant',
+        //    nextText: 'Sig >',
+        //    currentText: 'Hoy',
+        //    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        //    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        //    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        //    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        //    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        //    weekHeader: 'Sm',
+        //    dateFormat: 'dd/mm/yy',
+        //    firstDay: 1,
+        //    isRTL: false,
+        //    showMonthAfterYear: false,
+        //    yearSuffix: ''
+        //};
+        //$.datepicker.setDefaults($.datepicker.regional['es']);
+        //$(function () {
+        //    $(".datepicker").datepicker();
+        //});
+
+
+
+
+
+
+    });
+</script>

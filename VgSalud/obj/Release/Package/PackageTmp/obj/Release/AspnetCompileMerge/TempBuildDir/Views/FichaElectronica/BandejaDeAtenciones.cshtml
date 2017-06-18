@@ -1,0 +1,97 @@
+﻿@model IEnumerable<VgSalud.Models.E_Ficha_Electronica>
+
+@{
+    ViewBag.Title = "BandejaDeAtenciones";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Bandeja de atenciones
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Ficha Electronica</a></li>
+            <li class="active">Bandeja de atenciones</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Lista de atenciones</h3>
+                        <div class="box-tools pull-right">
+                            <div class="has-feedback">
+                                <input type="text" class="form-control input-sm" placeholder="Buscar Cuenta">
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div class="table-responsive mailbox-messages">
+                            <table class="table table-hover table-striped">
+                                <tbody>
+
+                                    <tr>
+                                        <td><b></b></td>
+                                        <td><b>PACIENTE</b></td>
+                                        <td><b>DESCRIPCION</b></td>
+                                        <td><b>CANTIDAD</b></td>
+                                        <td><b>COSTO</b></td>
+                                        <td><b>FECHA</b></td>
+                                        <td><b>HORA INICIO</b></td>
+                                        <td><b>HORA TERMINO</b></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="mailbox-name"><a href="read-mail.html">ANA LAURA GARCIA</a></td>
+                                        <td class="mailbox-subject">
+                                            <b>CONSULTA GINECOLOGICA</b>
+                                        </td>
+                                        <td class="mailbox-attachment">1</td>
+                                        <td class="mailbox-date">12.00</td>
+                                        <td>17-01-2016</td>
+                                        <td>08:00</td>
+                                        <td>08:10</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="mailbox-name"><a href="read-mail.html">ANA LAURA GARCIA</a></td>
+                                        <td class="mailbox-subject">
+                                            <b>CONSULTA GINECOLOGICA</b>
+                                        </td>
+                                        <td class="mailbox-attachment">1</td>
+                                        <td class="mailbox-date">12.00</td>
+                                        <td>17-01-2016</td>
+                                        <td>08:10</td>
+                                        <td>08:20</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td class="mailbox-name"><a href="read-mail.html">ANA LAURA GARCIA</a></td>
+                                        <td class="mailbox-subject">
+                                            <b>CONSULTA GINECOLOGICA</b>
+                                        </td>
+                                        <td class="mailbox-attachment">1</td>
+                                        <td class="mailbox-date">12.00</td>
+                                        <td>17-01-2016</td>
+                                        <td>08:20</td>
+                                        <td>08:30</td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box-footer no-padding">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,406 @@
+﻿@model VgSalud.Models.E_Tarifario
+
+@{
+    ViewBag.Title = "RegistrarTarifario";
+    VgSalud.Controllers.TipoMonedaController a = new VgSalud.Controllers.TipoMonedaController();
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    var listadoCategoria = (SelectList)ViewBag.listadoCategoria;
+    var listadoTipoTarifa = (SelectList)ViewBag.listadoTipoTarifa;
+    var listadoSubTipoTarifa = (SelectList)ViewBag.listadoSubTipoTarifa;
+    var listadoTipoMoneda = (List<VgSalud.Models.E_TipoMoneda>)a.ListadoTipoMoneda().Where(x => x.EstTipMon == true).ToList(); ;
+    var name = " selected";
+    var catePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.catePaciente;
+
+    var listadoSede = (SelectList)ViewBag.ListaSedes;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tarifario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tarifario</a></li>
+            <li class="active">Registrar Tarifario</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Tarifario</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+
+
+            <div class="box-body">
+
+
+                <fieldset>
+                    <h3 style="color:coral">Datos de Tarifario</h3>
+
+                    <div class="col-md-6">
+                        <form method="post" action="">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Descripción</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="DescTar" class="form-control" id="descripcionTar" value="@ViewBag.descripcion" />
+                                    @Html.ValidationMessageFor(model => model.DescTar, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin:0;padding:0">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Costo</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" name="Precio" class="form-control" id="prec2" value="@ViewBag.costo" />
+                                        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Especialidad</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodEspec", listadoEspecialidad, "--Seleccione una especialidad--", new { @class = "form-control select2", @id = "especialidad" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodTipTar", listadoTipoTarifa, "--Seleccione un tipo de tarifa--", new { @class = "form-control select2", @id = "tipoTarifa" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de sub tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodSTipTar", listadoSubTipoTarifa, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "subTipoTarifa" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de moneda</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="CodTipMon" id="moneda" class="form-control select2">
+                                        @foreach (var lista in listadoTipoMoneda)
+                                        {
+                                            <option @{if (lista.CodTipMon.Equals("TM001")) { @name  }  } value="@lista.CodTipMon">@lista.DescTipMon</option>
+    }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.EstTar, new { @checked = "checked" })
+                                    @Html.ValidationMessageFor(model => model.EstTar, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <br /><br /><br />
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Afecta IGV?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.AfecIgcv, new { @checked = "checked" })
+                                        @Html.ValidationMessageFor(model => model.AfecIgcv, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Requiere registro a Dr.?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.ModPrecTar, new { @checked = "checked" })
+                                        @Html.ValidationMessageFor(model => model.ModPrecTar, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Precio modificable?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.ModPrecio)
+                                        @Html.ValidationMessageFor(model => model.ModPrecio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12" style="margin-top:5%">
+                                <div class="form-group">
+                                    <center>
+                                        <button type="submit" value="Registrar" class="btn btn-danger">Registrar</button> 
+                                        <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    </center>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <h3 style="color:coral">Asignacion de precios</h3>
+                        <form action="~/Tarifario/AsignarPrecio" method="post">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Lista de categorias por cliente:<br />
+                                    @Html.DropDownList("CodCatPac", listadoCategoria, "[TODOS]", new { @class = "form-control select2" })
+                                </div>
+                                <div class="col-md-4">
+                                    Precio:<br />
+                                    <input name="Precio" value="0" type="text" id="prec" class="form-control" />
+                                    <input name="demo" id="descripcionRecibe" type="hidden"/>
+                                    <input name="costo" id="costoRecibe" type="hidden" value="@ViewBag.costo"/>
+                                    <input type="hidden" id="especialidadG" name="espe" value="@ViewBag.especialidad" />
+                                    <input type="hidden" id="tipMonedaR" name="TipMoneda" />
+                                    <input type="hidden" id="tipoTar" name="tipoTar" value="@ViewBag.tipoTar" />
+                                    <input type="hidden" id="tipoSubTar" name="tipoSubTar" value="@ViewBag.tipoSubTar" />
+                                    <input type="hidden" id="descripcion" name="descripcion" />
+                                    <input type="hidden" id="precio" name="precio" />
+
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <button type="submit" class="btn btn-danger" id="agregar">Agregar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="col-md-6" id="lista">
+
+                        <div name="timediv" id="timediv">
+                        </div>
+                    </div>
+
+                </fieldset>
+
+
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#agregar").click(function () {
+            var des = $("#descripcionTar").val();
+            $("#descripcionRecibe").val(des);
+            var precio = $("#prec2").val();
+            $("#costoRecibe").val(precio);
+            var demoE = $("#especialidad").val();
+            $("#especialidadG").val(demoE);
+            var demoT = $("#tipoTarifa").val();
+            $("#tipoTar").val(demoT);
+            var demoS = $("#subTipoTarifa").val();
+            $("#tipoSubTar").val(demoS);
+     
+        }); 
+      
+
+        //var moneda = $('#moneda').val();
+        //$("#tipMonedaR").val(moneda);
+
+        $('#especialidad option[value=@ViewBag.especialidad]').prop('selected', 'selected').change();
+        $('#tipoTarifa option[value=@ViewBag.tipoTar]').prop('selected', 'selected').change();
+        $('#subTipoTarifa option[value=@ViewBag.tipoSubTar]').prop('selected', 'selected').change();
+        @*$('#moneda option[value=@ViewBag.moneda]').prop('selected', 'selected').change();*@
+
+        $('#tipMonedaR').val('TM001');
+
+        $('#moneda').change(function (event) {
+            var codCuentaa = $(this).val();
+            $("#tipMonedaR").val(codCuentaa);
+        });
+
+        var descripcion = $("#descripcionRecibe").val();
+        @if (ViewBag.descripcion == "")
+        {
+        <text>
+        $("#descripcionTar").val(descripcion);
+        </text>
+        }
+
+        //$("#prec2").val(costo);
+
+
+        var codigoTipTar = $("select#tipoTarifa").val();
+        $.get('@Url.Action("ObtenerSubTipoTarifa", "Tarifario")', {
+            TipoTar: demoT
+        }, function (response) {
+
+            var select = $('#subTipoTarifa');
+            select.find('option').remove();
+            $('<option>').val("").text("Seleccione una sub tarifa").appendTo(select);
+            $.each(response, function (index, value) {
+                $('<option>').val(value.CodSTipTar).text(value.DescSTipTar).appendTo(select);
+                if (value.CodSTipTar == demoS) {
+                    $('#subTipoTarifa option[value="' + value.CodSTipTar + '"]').attr('selected', true);
+                    $("#select2-subTipoTarifa-container").text(value.DescSTipTar);
+                }
+            });
+        });
+
+        $('#tipoTarifa').change(function (event) {
+            var sports = $("select#tipoTarifa").val();
+            $.get('@Url.Action("ObtenerSubTipoTarifa", "Tarifario")', {
+                TipoTar: sports
+            }, function (response) {
+
+                var select = $('#subTipoTarifa');
+                select.find('option').remove();
+                $('<option>').val("").text("Seleccione una sub tarifa").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodSTipTar).text(value.DescSTipTar).appendTo(select);
+                });
+            });
+        });
+
+
+        $("#prec").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+        $("#prec2").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+
+        $("#descripcionTar").keyup(function () {
+            var value = $(this).val();
+            $("#descripcionRecibe").val(value);
+        });
+
+        $("#especialidad").change(function () {
+            var value = $(this).val();
+            $("#especialidadG").val(value);
+        });
+
+
+
+        $("#tipoTarifa").change(function () {
+            var value = $(this).val();
+            $("#tipoTar").val(value);
+        });
+
+        $("#subTipoTarifa").change(function () {
+            var value = $(this).val();
+            $("#tipoSubTar").val(value);
+        });
+
+        //$("#prec2").keyup(function () {
+        //    var value = $(this).val();
+        //    $("#costoRecibe").val(value);
+        //});
+
+
+    });
+
+
+</script>
+
+
+<script>
+
+    var seconds = 1;
+    var divid = "lista";
+    var url = "VistaDemo";
+
+    function refreshdiv() {
+
+        var xmlHttp;
+        try {
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch (e) {
+                try {
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                catch (e) {
+                    alert("Tu explorador no soporta AJAX.");
+                    return false;
+                }
+            }
+        }
+
+        var timestamp = parseInt(new Date().getTime().toString().substring(0, 10));
+        var nocacheurl = url + "?t=" + timestamp;
+
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.readyState != null) {
+                document.getElementById(divid).innerHTML = xmlHttp.responseText;
+                setTimeout('refreshdiv()', seconds * 1000);
+            }
+        }
+        xmlHttp.open("GET", nocacheurl, true);
+        xmlHttp.send(null);
+    }
+
+    window.onload = function () {
+        refreshdiv();
+    }
+
+</script>

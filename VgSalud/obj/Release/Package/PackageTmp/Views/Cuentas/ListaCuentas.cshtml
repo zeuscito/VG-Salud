@@ -1,0 +1,181 @@
+﻿@model IEnumerable<VgSalud.Models.E_Cuentas>
+@{
+    ViewBag.Title = "ListaCuentas";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+    var colorCancelado = "style=background-color:#f7c2bb;color:#fff";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Cuentas</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Cuentas</a></li>
+            <li class="active">Consultar Cuentas</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    
+                    @using (Html.BeginForm())
+                    {
+                        <div class="box-header">
+                            <div style="float:left; padding:0% 1% 0 1%">
+                                <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                <br />
+                            </div>
+                        </div>
+                  
+                            <div class="box-body">
+                                <fieldset>
+                                    <legend style="margin-left: 15px;">Filtro</legend>
+
+                                    <div class="col-md-12">
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                        <div class="col-md-3"></div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Fecha Inicio:</label>
+                                                    <input type="text" class="form-control datepicker" name="FechaI" value="@ViewBag.FechaI" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Fecha Final:</label>
+                                                    <input type="text" class="form-control datepicker" name="FechaF" value="@ViewBag.FechaF" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Cuenta:</label>
+                                                    <input type="text" class="form-control" name="Cuenta" value="@ViewBag.Cuenta" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3"></div>
+
+                                        <div class="col-md-12" style="margin-top:2%">
+                                            <div class="form-group">
+                                                <center>
+                                                    <input type="submit" value="Consultar" style="background-color:#13D003;border:0px" class="btn btn-danger" />
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                      
+
+                    }
+
+                    <br />
+
+                    <div class="box-body">
+                       
+                        <div class="col-md-12">
+                            <fieldset>
+                                <legend>Lista</legend>
+
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Cuenta</th>
+                                            <th>Historia</th>
+                                            <th>Nombre Paciente</th>
+                                            <th>Categoria Pac.</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th><i class="fa fa-list"></i> / <i class="fa fa-money"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                {
+
+                                            <tr @if (item.EstGene == "C") { @colorCancelado  ; }>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Historia)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.nomCompleto)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodcatPac)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.TotCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.EstGene)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.FecCrea)</td>
+                                                <td>
+                                                    <div class="tools">
+
+                                                        @{
+                                                    if (!item.EstGene.Equals("F"))
+                                                    {
+
+
+
+                                                        var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "VerificaCuenta.cshtml");
+                                                        if (abc2 != null)
+                                                        {
+                                                                    <text>
+                                                                        /
+                                                                        <a title="Facturar" href="VerificaCuenta/@item.CodCue"><i class="fa fa-money"></i></a>
+                                                                    </text>
+                                                        }
+
+                                                        var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCuenta.cshtml");
+                                                        if (abc3 != null)
+                                                        {
+                                                                    <text>
+                                                                        /
+                                                                        <a title="Eliminar" href="EliminarCuenta/?CodCue=@item.CodCue"><i class="fa fa-trash"></i></a>
+                                                                    </text>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "VerificaCuenta.cshtml");
+                                                        if (abc2 != null)
+                                                        {
+                                                                    <text>
+                                                                        /
+                                                                        <a title="Facturar" style="color:#ff0000" href="VerificaCuenta/@item.CodCue"><i class="fa fa-money"></i></a>
+                                                                    </text>
+                                                        }
+                                                    }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                }
+
+                                    </tbody>
+
+                                </table>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+ 

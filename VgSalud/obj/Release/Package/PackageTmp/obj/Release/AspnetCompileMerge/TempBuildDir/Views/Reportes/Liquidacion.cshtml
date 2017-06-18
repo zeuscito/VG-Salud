@@ -1,0 +1,196 @@
+﻿@model VgSalud.Models.E_Honorario_Cabecera_Detalle
+
+@{
+    ViewBag.Title = "Liquidacion";
+    var listado = (List<VgSalud.Models.E_Honorario_Cabecera_Detalle>)ViewBag.listado;
+    var ListaMedico = (SelectList)ViewBag.ListaMedico;
+    var ListaServicio = (SelectList)ViewBag.ListaServicio;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Reportes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de facturacion por usuario</li>
+        </ol>
+    </section>
+    <section class="content">
+
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Generar Reporte de facturacion por usuario</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+
+                <fieldset>
+                    <div class="box-body">
+                        <div class="col-md-12">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Tipo de consulta</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <table>
+                                            <tr>
+                                                <td><input type="radio" name="Tipo" value="1" id="medico" checked /> &nbsp</td>
+                                                <td>Medico</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="radio" name="Tipo" value="2" id="servicio" /> &nbsp</td>
+                                                <td>Servicio</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label id="lblMedico">Medico</label>
+                                        <label id="lblServicio">Servicio</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div id="medic">
+                                            @Html.DropDownList("CodMed", ListaMedico, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Med" })
+                                        </div>
+                                        <div id="serv">
+                                            @Html.DropDownList("CodServ", ListaServicio, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Ser" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Fecha Inicio</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control  datepicker" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Fecha Final</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" name="FechaF" value="@ViewBag.FechaFinal" maxlength="10" class="form-control  datepicker" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="col-md-12" style="margin-top:2%">
+                                <div class="form-group">
+                                    <center>
+                                        <input type="submit" value="Consultar" class="btn btn-danger" />
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+
+            }
+
+            <br /><br /><br />
+
+            @if (listado != null)
+            {
+
+                <div class="box-body">
+                    <table id="example3" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Consulta</th>
+                                <th>Fecha Liquidacion</th>
+                                <th>Nro. Aten</th>
+                                <th>Nro. Doc</th>
+                                <th>Total Fac.</th>
+                                <th>Total Pago</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var item1 in listado)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item1.nombre)</td>
+                                    <td>@Html.DisplayFor(modelItem => item1.FechaLiquidacion)</td>
+                                    <td>@Html.DisplayFor(modelItem => item1.NroAtenciones)</td>
+                                    <td>@Html.DisplayFor(modelItem => item1.NroDocumentos)</td>
+                                    <td>@Html.DisplayFor(modelItem => item1.Tot_Tarifa)</td>
+                                    <td>@Html.DisplayFor(modelItem => item1.APagar)</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+                            <h4 style="padding:2%">
+                                Exportar:
+                                <a href="~/Reportes/GeneraLiquidacion/?id=PDF&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                                <a href="~/Reportes/GeneraLiquidacion/?id=Word&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                                <a href="~/Reportes/GeneraLiquidacion/?id=Excel&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                            </h4>
+            }
+
+        </div>
+        <br /><br /><br />
+
+
+
+    </section>
+    }
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#Med option[value=@ViewBag.CodMed]').prop('selected', 'selected').change();
+        $('#Ser option[value=@ViewBag.CodServ]').prop('selected', 'selected').change();
+
+        $("#lblServicio").fadeOut();
+        $("#serv").fadeOut();
+
+        $('#medico').click(function (event) {
+            $("#lblMedico").fadeIn();
+            $("#medic").fadeIn();
+            $("#lblServicio").fadeOut();
+            $("#serv").fadeOut();
+        });
+
+        $('#servicio').click(function (event) {
+            $("#lblMedico").fadeOut();
+            $("#medic").fadeOut();
+            $("#lblServicio").fadeIn();
+            $("#serv").fadeIn();
+        });
+
+    });
+
+
+</script>

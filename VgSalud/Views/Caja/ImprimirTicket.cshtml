@@ -1,0 +1,253 @@
+﻿
+
+@{
+    ViewBag.Title = "ImprimirTicket";
+    Layout = null;
+    var cabecera = (List<VgSalud.Models.E_Caja>)ViewBag.cabecera;
+    var detalle = (List<VgSalud.Models.E_CajaDetalle>)ViewBag.detalle;
+    var paciente = (List<VgSalud.Models.E_Caja>)ViewBag.paciente;
+    var Doc = (List<VgSalud.Models.E_UsuarioSerie>)ViewBag.TipoDoc;
+    var DatosGenerales = (VgSalud.Models.E_Datos_Generales)ViewBag.DatosGenerales;
+    decimal total = 0; ;
+    decimal subtotal = 0; decimal igv = 0; decimal totalg = 0;
+    var letra = "";
+    var soles = "";
+    var RazonSocial = "";
+    var Ruc = "";
+    var DirecRazon = "";
+    var sede = "";
+    var tipoDoc = "";
+    var Cajero = ""; 
+}
+
+
+
+<head>
+    <title>Ticket</title>
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/jquery.PrintArea.js"></script>
+
+    <style type="text/css">
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+            font-size: 11px;
+        }
+
+        table {
+            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+            font-size: 11px;
+        }
+    </style>
+
+</head>
+
+<body>
+    @{
+        foreach (var item in cabecera)
+        {
+            sede = item.NomSede;
+            Ruc = item.Ruc;
+            RazonSocial = item.RazonSocial;
+            DirecRazon = item.DirRazSoc;
+        }
+        foreach (var item in Doc) {
+            tipoDoc += item.Etiqueta;
+            Cajero += item.CodUsu; 
+        }
+
+   }
+    
+    <div id="imprime" style="width: 300px;font-family: Consolas;
+            font-size: 11px;">
+        <p align="center">
+            VG ALL SERVICES EIRL
+            <br>
+            @sede.ToUpper() (SEDE)<br>
+            RUC 20600932021<br>
+            TELEFONO: +51 5348338
+        </p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            @foreach (var item in cabecera)
+            {
+                <tr>
+                    <td colspan="3">@tipoDoc - N°@item.NumDoc</td>
+                </tr>
+                <tr>
+                    <td width="80">Fecha</td>
+                    <td width="10">:</td>
+                    <td>@item.FechaEmision.ToShortDateString() - @item.HoraEmision</td>
+                </tr>
+                <tr>
+                    <td>Cajero(a)</td>
+                    <td>:</td>
+                    <td>@Cajero</td>
+                </tr>
+                <tr>
+                    <td>Secuencia</td>
+                    <td>:</td>
+                    <td>@item.CodCaja</td>
+                </tr>
+                <tr>
+                    <td>Servicio</td>
+                    <td>:</td>
+                    <td>@ViewBag.servicio</td>
+                </tr>
+                <tr>
+                    <td>Cuenta</td>
+                    <td>: </td>
+                    <td>@item.CodCue</td>
+                </tr>
+
+            }
+
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td colspan="3">----------------------------------------------</td>
+            </tr>
+            <tr>
+                <td width="40">CANT</td>
+                <td>PRODUCTO</td>
+                <td width="60">SUB TOTAL</td>
+            </tr>
+            <tr>
+                <td colspan="3" align="right">----------------------------------------------</td>
+            </tr>
+            @foreach (var item1 in detalle)
+            {
+
+                <tr>
+                    <td>@item1.Cantidad</td>
+                    <td>@item1.NomTar</td>
+                    <td align="right">@item1.PUnit</td>
+                </tr>
+
+
+                total += item1.PUnit;
+            }
+            @{
+                subtotal = total / decimal.Parse("1.18");
+                igv = subtotal * decimal.Parse("0.18");
+                totalg = subtotal + igv;
+            }
+            <tr>
+                <td colspan="3">----------------------------------------------</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td align="right">Total S/. :</td>
+                <td align="right">@total</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td align="right">&nbsp;</td>
+                <td align="right">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td align="right">Sub Total S/. :</td>
+                <td align="right">@subtotal.ToString("N2")</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right">IGV 18.00% S/. :</td>
+                <td align="right">@igv.ToString("N2")</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right">Total S/. :</td>
+                <td align="right">@totalg.ToString("N2")</td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+        <br />
+        @if (DatosGenerales.MOSTRARPACIENTETICKET)
+        {
+            foreach (var item1 in Doc)
+            {
+                if (item1.CodDocCont == 1)
+                {
+                    foreach (var item in paciente)
+                    {
+                    <p align="center">
+                        <span>Nombre&nbsp;:</span> @item.NomPac<br />
+                        <span>Edad&nbsp;:</span> @item.Edad<br />
+                        <span>Dni&nbsp;:</span> @item.NumDoc<br />
+                        <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
+                    </p>
+                    <p align="center">
+                        <span>Razon Social&nbsp;:</span>@RazonSocial<br>
+                        <span>Ruc&nbsp;:</span>@Ruc<br>
+                        <span>Direccion&nbsp;:</span>@DirecRazon<br>
+                    </p>
+                    }
+                }
+                else
+                {
+                    foreach (var item in paciente)
+                    {
+                        <p align="center">
+                            <span>Nombre&nbsp;:</span> @item.NomPac<br />
+                            <span>Edad&nbsp;:</span> @item.Edad<br />
+                            <span>Dni&nbsp;:</span> @item.NumDoc<br />
+                            <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
+                        </p>
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var item1 in Doc)
+            {
+                if (item1.CodDocCont == 1)
+                {
+                    <p align="center">
+                        <span>Razon Social&nbsp;:</span>@RazonSocial<br>
+                        <span>Ruc&nbsp;:</span>@Ruc<br>
+                        <span>Direccion&nbsp;:</span>@DirecRazon<br>
+                    </p>
+
+                }
+                else
+                {
+                    foreach (var item in paciente)
+                    {
+                        <p align="center">
+                            <span>Nombre&nbsp;:</span> @item.NomPac<br />
+                            <span>Edad&nbsp;:</span> @item.Edad<br />
+                            <span>Dni&nbsp;:</span> @item.NumDoc<br />
+                            <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
+                        </p>
+                    }
+                }
+            }
+        }
+        <p align="center">
+           GRACIAS POR SU VISITA<br />
+        </p>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var ancho = $(window).width();
+            var alto = $(window).height();
+
+            var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
+            $("div#imprime").printArea(options);
+            $("#imprime").fadeOut();
+            
+            window.location.href = '../Pacientes/ListaPacientes';
+        });
+    </script>
+
+
+</body>
