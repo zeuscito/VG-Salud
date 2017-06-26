@@ -18,6 +18,8 @@
     var med = (List<VgSalud.Models.E_Medico>)ViewBag.med;
     var tiptar = (List<VgSalud.Models.E_Tipo_Tarifa>)ViewBag.tiptar;
     var listatipoexamenlaboratorio = (SelectList)ViewBag.ListaTipoExamenLaboratorio;
+
+    var listadoTari = (SelectList)ViewBag.listadoTari;
 }
 
 <script type="text/javascript">
@@ -60,90 +62,164 @@
 {
     @Html.AntiForgeryToken()
 
-   <div class="content-wrapper">
-       <section class="content-header">
-           <h1>Examen Laboratorio</h1>
-           <ol class="breadcrumb">
-               <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
-               <li class="active">Registrar Examen</li>
-           </ol>     
-       </section>
-       <section><!--aqui va  class="content" id="yaRegistro"-->
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title">Registrar Examen</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>Examen Laboratorio</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+                <li class="active">Registrar Examen</li>
+            </ol>
+        </section>
+        <section class="content" id="yaRegistro">
+            <!--aqui va  -->
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Registrar Examen</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
                 </div>
-            </div>
-            <div class="box-header">
-                @{ 
-                    <div style="float:left;padding:0% 1% 0 1%">
-                        <a href="~/Pacientes/ListaPacientes">
-                            <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
-                        </a>
-                    </div>
-                }
+                <div class="box-header">
+                    @{
+                        <div style="float:left;padding:0% 1% 0 1%">
+                            <a href="~/Pacientes/ListaPacientes">
+                                <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                            </a>
+                        </div>
+                    }
 
-            </div>
+                </div>
 
-            <div class="box-body">
-                <input type="hidden" name="Historia" value="@Model.Historia" />
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Tipo Examen</label>
+                <div class="box-body">
+
+
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="Historia" value="@Model.Historia" />
                             </div>
-                            <div class="col-md-9">
-                                @Html.DropDownList("idTipoExamen", listatipoexamenlaboratorio, "[NO SELECCIONADO]", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.idTipoExamen, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <input type="hidden" name="idExamen" value="@Model.idExamen" />
                             </div>
+                            <div class="form-group">
+                            <input type="hidden" name="idExamen" value="@Model.CodServ" />
+                             </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo Examen</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("idTipoExamen", listatipoexamenlaboratorio, "[NO SELECCIONADO]", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.idTipoExamen, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label> Tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="hidden" name="Tarifa" value="@Model.CodTar" />
+                                    @Html.DropDownList("CodTar", listadoTari, "[NO SELECCIONADO]", new { @class = "form-control select2", @style = "width:100%", @id = "codtar" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label> Resultado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <textarea name="Resultado" id="resultado" rows="5" cols="100"></textarea>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-md-12" style="margin-top:2%;">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <input type="submit" value="Registrar" class="btn btn-primary" style="background-color:#13D003;border:0px" />
+                                </div>
+                            </div>
+
                         </div>
-                        
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label> Resultado</label>
+                        <div class="col-md-6">
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label> Precio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="precio" class="form-control" id="precio" value="" readonly />
+                                    @Html.ValidationMessageFor(model => model.precio, "", new { @class = "text-danger", @id = "precio" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                                <textarea name="Resultado" id="resultado" rows="5" cols="100"></textarea>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Igv</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="igv" class="form-control" id="igv" value="" readonly />
+                                    @Html.ValidationMessageFor(model => model.igv, "", new { @class = "text-danger", @id = "igv" })
+                                </div>
                             </div>
-                        </div>
-                      <br />
-                        <br />
-                        <br />
-                        <br />
-                        <div class="col-md-12" style="margin-top:2%;">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Registrar" class="btn btn-default" style="background-color:#13D003;border:0px" />
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label> Total</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="total" class="form-control" id="total" value="" readonly />
+                                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger", @id = "total" })
+                                </div>
                             </div>
-                        </div>
-                      
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label> Estado</label>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.estexa)
-                                    @Html.ValidationMessageFor(model => model.estexa, "", new { @class = "text-danger" })
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label> Estado</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.estexa)
+                                        @Html.ValidationMessageFor(model => model.estexa, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-       </section>
-   </div>
+        </section>
+    </div>
 
-        
-    
-}
+
+
+                        }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+
 </div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#codtar").change(function () {
+            var valor = this.value;
+            var historia = "@Model.Historia";
+            $.get('@Url.Action("VerPrecios","ExamenLaboratorio")', { codtar: valor,codpac:historia },
+                function (response) {
+                    debugger;
+                    $.each(response, function (index, value) {
+                        debugger;
+                        $("#precio").val(value.Precio);
+                        $("#igv").val(value.igv);
+                        $("#total").val(value.total);
+                    });
+
+            });
+        });
+    });
+</script>

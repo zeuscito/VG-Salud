@@ -253,6 +253,7 @@
     <Compile Include="Models\E_Empresa_Tercero.cs" />
     <Compile Include="Models\E_Especialidades.cs" />
     <Compile Include="Models\E_Estadistica.cs" />
+    <Compile Include="Models\E_Estado.cs" />
     <Compile Include="Models\E_EstadoCivil.cs" />
     <Compile Include="Models\E_ExamenAuxiliar.cs" />
     <Compile Include="Models\E_Examen_Laboratorio.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Models\E_Honorario_Cabecera_Detalle.cs" />
     <Compile Include="Models\E_HorarioMedico.cs" />
     <Compile Include="Models\E_HorarioMedico_SobreCarga.cs" />
+    <Compile Include="Models\E_Laboratorio.cs" />
     <Compile Include="Models\E_Login.cs" />
     <Compile Include="Models\E_Master.cs" />
     <Compile Include="Models\E_Medico.cs" />

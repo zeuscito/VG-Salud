@@ -14,8 +14,7 @@ namespace VgSalud.Controllers
     public class ExamenLaboratorioController : Controller
     {
         string cadena = ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString;
-        SqlConnection db;
-        SqlCommand cmd;
+
 
         TipoTarifaController tt = new TipoTarifaController();
         EspecialidadController es = new EspecialidadController();
@@ -24,7 +23,7 @@ namespace VgSalud.Controllers
         TarifarioController tar = new TarifarioController();
         AtencionVariasController aten = new AtencionVariasController();
         CitasController cit = new CitasController();
-        public ActionResult RegistroExamenLaboratorio(int historia,E_Examen_Laboratorio exa)
+        public ActionResult RegistroExamenLaboratorio(int historia, E_Examen_Laboratorio exa)
         {
             exa.Historia = historia;
             string sede = Session["CodSede"].ToString();
@@ -37,15 +36,14 @@ namespace VgSalud.Controllers
         {
             string sede = Session["CodSede"].ToString();
             ViewBag.ListaTipoExamenLaboratorio = new SelectList(getListaTipoExamenLaboratorio(), "idTipoExamen", "nomTipoExamen");
-            var codusu = Session["UserID"]; 
+            var codusu = Session["UserID"];
             var util = new DatosGeneralesController().listadatogenerales().FirstOrDefault();
 
 
-            decimal precio = 0, igv = 0, total = 0;
 
             UtilitarioController ut = new UtilitarioController();
             var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-
+            var medicos = new MedicosController().ListadoMedico().Where(X => X.CodMed == exa.CodMed).FirstOrDefault();
             var pacientes = new PacientesController().ListadoPacientes().Where(x => x.Historia == exa.Historia).FirstOrDefault();
 
             string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
@@ -86,22 +84,21 @@ namespace VgSalud.Controllers
                                 da.Parameters.AddWithValue("@Modifica", "");
                                 da.Parameters.AddWithValue("@Elimina", "");
                                 da.Parameters.AddWithValue("@Evento", "1");
+
                             }
                             else
                             {
 
 
-                                precio = 0;
-                                igv = 0;
-                                total = 0;
+
 
                                 da.Parameters.AddWithValue("@CodCue", exa.CodCue);
                                 da.Parameters.AddWithValue("@CodSede", "");
                                 da.Parameters.AddWithValue("@Historia", "");
                                 da.Parameters.AddWithValue("@CodcatPac", "");
-                                da.Parameters.AddWithValue("@STotCue", precio);
-                                da.Parameters.AddWithValue("@IgvCue", igv);
-                                da.Parameters.AddWithValue("@TotCue", total);
+                                da.Parameters.AddWithValue("@STotCue", exa.precio);
+                                da.Parameters.AddWithValue("@IgvCue", exa.igv);
+                                da.Parameters.AddWithValue("@TotCue", exa.total);
                                 da.Parameters.AddWithValue("@FecCrea", "");
                                 da.Parameters.AddWithValue("@FecAnul", "");
                                 da.Parameters.AddWithValue("@EstCue", "1");
@@ -144,8 +141,8 @@ namespace VgSalud.Controllers
                                 dd.Parameters.AddWithValue("@EstDet", "1");
                                 dd.Parameters.AddWithValue("@FechaAten", "");
                                 dd.Parameters.AddWithValue("@TurnoAten", "");
-                                dd.Parameters.AddWithValue("@RegMedico", exa.CodMed);
-                                dd.Parameters.AddWithValue("@MedicoEnvia", exa.MedInter);
+                                dd.Parameters.AddWithValue("@RegMedico", "");
+                                dd.Parameters.AddWithValue("@MedicoEnvia", "");
                                 dd.Parameters.AddWithValue("@Crea", Crea);
                                 dd.Parameters.AddWithValue("@Modifica", "");
                                 dd.Parameters.AddWithValue("@Elimina", "");
@@ -154,6 +151,47 @@ namespace VgSalud.Controllers
                                 dd.ExecuteNonQuery();
 
                                 tr.Commit();
+
+
+
+
+                                using (SqlCommand cmd = new SqlCommand("Usp_Mantenimiento_Examen_Laboratorio", con))
+                                {
+                                    try
+                                    {
+                                        cmd.Parameters.AddWithValue("@IdExamen", exa.idExamen);
+                                        cmd.Parameters.AddWithValue("@IdTipoExamen", exa.idTipoExamen);
+                                        cmd.Parameters.AddWithValue("@Resultado", exa.resultado);
+                                        cmd.Parameters.AddWithValue("@Fecha", "");
+                                        cmd.Parameters.AddWithValue("@Crea", Crea);
+                                        cmd.Parameters.AddWithValue("@Modifica", "");
+                                        cmd.Parameters.AddWithValue("@Elimina", "");
+                                        cmd.Parameters.AddWithValue("@Estado", true);
+                                        cmd.Parameters.AddWithValue("@CodCue", Resu);
+                                        cmd.Parameters.AddWithValue("@Evento", 1);
+                                        cmd.CommandType = CommandType.StoredProcedure;
+                                        cmd.ExecuteNonQuery();
+
+
+                                        ViewBag.Mensaje = "Se registro Satisfactoriamente";
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ViewBag.mensaje = "Ocurrio algun error al registrar : " + ex.Message.ToString();
+                                        return View(exa);
+                                    }
+
+
+
+
+
+
+
+                                }
+
+
+
+
                                 if (util.GENERARCUENTAAUTO)
                                 {
                                     return RedirectPermanent("~/Caja/RegistrarCaja?id=" + Resu);
@@ -185,54 +223,7 @@ namespace VgSalud.Controllers
                 }
 
 
-                try
-                {
-                    
-                        using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
-                        {
-                            con.Open();
-                            using (SqlCommand cmd = new SqlCommand("Usp_Mantenimiento_Examen_Laboratorio", con))
-                            {
-                            try
-                            {
-                                cmd.Parameters.AddWithValue("@IdExamen", "");
-                                cmd.Parameters.AddWithValue("@IdTipoExamen", exa.idTipoExamen);
-                                cmd.Parameters.AddWithValue("@Resultado", exa.resultado);
-                                cmd.Parameters.AddWithValue("@Fecha", "");
-                                cmd.Parameters.AddWithValue("@Crea", Crea);
-                                cmd.Parameters.AddWithValue("@Modifica", "");
-                                cmd.Parameters.AddWithValue("@Elimina", "");
-                                cmd.Parameters.AddWithValue("@Estado", true);
-                                cmd.Parameters.AddWithValue("@CodCue", exa.CodCue);
-                                cmd.Parameters.AddWithValue("@Evento", 1);
-                                cmd.CommandType = CommandType.StoredProcedure;
-              
-                                ViewBag.Mensaje = "Se registro Satisfactoriamente";
-                            }
-                            catch (Exception ex)
-                            {
-                                ViewBag.mensaje = "Ocurrio algun error al registrar : " + ex.Message.ToString();
-                                return View(exa);
-                            }
-                            finally
-                            {
-                                con.Close();
-                            }
-                               
 
-
-                            }
-
-
-                        }
-                    
-                }
-                catch (Exception e)
-                {
-
-                    return RedirectPermanent("../Master");
-
-                }
 
 
 
@@ -281,11 +272,100 @@ namespace VgSalud.Controllers
                 }
             }
             return lista;
+        }
 
+        public JsonResult VerPrecios(string codtar, string codpac)
+        {
+
+            var paciente = new PacientesController().ListadoPacientes().Where(x => x.Historia == Convert.ToInt32(codpac)).FirstOrDefault();
+            var evalua = tar.ListadoCategoriaPacienteTarifa(codtar).Find(x => x.CodCatPac == paciente.CodCatPac);
+            var evalua1 = tar.ListadoTarifa().Find(x => x.CodTar == codtar);
+
+            E_Tarifario tari = new E_Tarifario();
+            if (tari != null)
+            {
+                if (evalua1.AfecIgcv == true)
+                {
+                    DatosGeneralesController da = new DatosGeneralesController();
+                    E_Datos_Generales dat = da.listadatogenerales().FirstOrDefault();
+                    tari.Precio = decimal.Round(evalua.Precio / (dat.igv + 1), 2);
+                    var result = ((evalua.Precio / decimal.Parse("1.18")) * dat.igv);
+                    tari.igv = decimal.Round(result, 2);
+                    tari.total = decimal.Round(tari.Precio + tari.igv, 2);
+
+                }
+                else
+                {
+                    tari.Precio = evalua.Precio;
+                    tari.igv = 0;
+                    tari.total = evalua.Precio;
+                }
+            }
+            else
+            {
+                tari.Precio = 0;
+                tari.igv = 0;
+                tari.total = 0;
+            }
+
+            tari.CodTipTar = evalua1.CodTipTar;
+            tari.TiempoApox = evalua1.TiempoApox;
+
+            List<E_Tarifario> lista = new List<E_Tarifario>();
+            lista.Add(tari);
+
+            if (lista.Count() != 0)
+            {
+                return Json(lista, JsonRequestBehavior.AllowGet);
+            }
+            return null;
+
+        }
+
+        public ActionResult VISTA()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult VISTA(E_Examen_Laboratorio exa)
+        {
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["cn1"].ConnectionString))
+            {
+
+               con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_Mantenimiento_Examen_Laboratorio", con))
+                {
+                    try
+                    {
+                        cmd.Parameters.AddWithValue("@IdExamen", exa.idExamen);
+                        cmd.Parameters.AddWithValue("@IdTipoExamen", exa.idTipoExamen);
+                        cmd.Parameters.AddWithValue("@Resultado", exa.resultado);
+                        cmd.Parameters.AddWithValue("@Fecha", "");
+                        cmd.Parameters.AddWithValue("@Crea", "");
+                        cmd.Parameters.AddWithValue("@Modifica", "");
+                        cmd.Parameters.AddWithValue("@Elimina", "");
+                        cmd.Parameters.AddWithValue("@Estado", true);
+                        cmd.Parameters.AddWithValue("@CodCue", "");
+                        cmd.Parameters.AddWithValue("@Evento", 1);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+
+
+                        ViewBag.Mensaje = "Se registro Satisfactoriamente";
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.mensaje = "Ocurrio algun error al registrar : " + ex.Message.ToString();
+                        return View(exa);
+                    }
+                }
+                return RedirectToAction("VISTA");
+            }
         }
     }
 }
 
-        
-       
-        
+
+
+

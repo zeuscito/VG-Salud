@@ -16,7 +16,7 @@ namespace VgSalud.Models
         public string modifica { get; set; }
         public string elimina { get; set; }
         public bool estexa { get; set; }
-        public int CodCue { get; set; }
+        public int CodCuen { get; set; }
 
 
 
