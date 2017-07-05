@@ -1,0 +1,198 @@
+﻿@model IEnumerable<VgSalud.Models.E_Informes>
+
+@{
+    ViewBag.Title = "ListaPacienteResultadoApto";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Informes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-info-circle"></i>Informes</a></li>
+            <li class="active">Consultar Informes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                       <div class="box-header">
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                
+
+
+                            </div>
+                            <br />
+                       
+
+                   
+                    @using (Html.BeginForm())
+                    {
+
+                        <fieldset>
+                            <legend style="margin-left:3%; width:96%">Filtro</legend>
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Nombre y Apellido:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" name="nombre" value="@ViewBag.nombre" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>DNI:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" name="dni" value="@ViewBag.dni" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="margin-top:1%">
+                                        <div class="form-group">
+                                            <center>
+                                                <input style="background-color:#13D003; border:#13D003;margin-top: 11px;" type="submit" value="Consultar" class="btn btn-danger" />
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    }
+
+                    <br />
+
+                    <fieldset>
+
+                        <legend style="margin-left:3%; width:96%">Lista</legend>
+
+                        <div class="box-body">
+                            <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th width="9%" style="text-align:center">Numero de Carnet</th>
+                                            <th width="9%" style="text-align:center">Numero de Documento</th>
+                                            <th width="11%" style="text-align:center">Paciente</th>
+                                            <th width="10%" style="text-align:center">Fecha Atencion Laboratorio</th>
+                                            <th width="9%" style="text-align:center">Observacion Laboratorio</th>
+                                            <th width="9%" style="text-align:center">Reevaluado Laboratorio</th>
+                                            <th width="10%" style="text-align:center">Fecha Atencion Odontologia</th>
+                                            <th width="9%" style="text-align:center">Observacion Odontologia</th>
+                                            <th width="9%" style="text-align:center">Reevaluado Odontologia</th>
+                                            <th width="7%" style="text-align:center">Resultado</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.NroCarnet)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ApePat) &nbsp;
+                                                @Html.DisplayFor(modelItem => item.ApeMat) &nbsp;
+                                                @Html.DisplayFor(modelItem => item.NomPac)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem=>item.FechaAtenLab)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionLab)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoLab)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenOdon)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionOdon)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoOndon)</td>
+                                                <td style="text-align:center"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Resultado</button></td>
+                                                
+                                                
+                                            </tr>
+
+                                                                }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                     
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Resultado </h4>
+            </div>
+            <div class="col-md-12">
+                <table id="example3" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th width="33%" style="text-align:center">LABORATORIO</th>
+                            <th width="33%" style="text-align:center">ODONTOLOGIA</th>
+                            <th width="33%" style="text-align:center">MEDICINA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoLab)</td>
+                                <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoOdon)</td>
+                                <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoMed)</td>
+
+                            </tr>
+
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer" >
+                <button type="button" style="text-align:left" class="btn btn-success" data-dismiss="modal">Pasar Medicina</button>
+                <button type="button" style="text-align:right" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+             
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

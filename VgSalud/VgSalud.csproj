@@ -192,6 +192,7 @@
     <Compile Include="Controllers\GastosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HonorariosCabeceraDetalleController.cs" />
+    <Compile Include="Controllers\InformesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Models\E_Centro_Costo.cs" />
     <Compile Include="Models\E_Citas.cs" />
     <Compile Include="Models\E_Consultorio.cs" />
+    <Compile Include="Models\E_CSOdontologia.cs" />
     <Compile Include="Models\E_CuentaDetalle.cs" />
     <Compile Include="Models\E_Cuentas.cs" />
     <Compile Include="Models\E_CuentasEstado.cs" />
@@ -265,9 +267,11 @@
     <Compile Include="Models\E_Honorario_Cabecera_Detalle.cs" />
     <Compile Include="Models\E_HorarioMedico.cs" />
     <Compile Include="Models\E_HorarioMedico_SobreCarga.cs" />
-    <Compile Include="Models\E_Laboratorio.cs" />
+    <Compile Include="Models\E_CSLaboratorio.cs" />
+    <Compile Include="Models\E_Informes.cs" />
     <Compile Include="Models\E_Login.cs" />
     <Compile Include="Models\E_Master.cs" />
+    <Compile Include="Models\E_CSMedicina.cs" />
     <Compile Include="Models\E_Medico.cs" />
     <Compile Include="Models\E_Medico_TipoTarifa.cs" />
     <Compile Include="Models\E_Medios_Pago.cs" />
@@ -5462,11 +5466,13 @@
     <Content Include="Views\Caja\ImprimirTicket.cshtml" />
     <Content Include="Views\Carnet\RegistroCarnet.cshtml" />
     <Content Include="Views\ExamenLaboratorio\RegistroExamenLaboratorio.cshtml" />
+    <Content Include="Views\Informes\ListaPacienteResultadoApto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="obj\Release\ProfileTransformWebConfig\transformed\Views\" />
     <Folder Include="obj\Release\TransformWebConfig\transformed\Views\" />
+    <Folder Include="Views\Medicina\" />
     <Folder Include="Views\PagoResumen\" />
     <Folder Include="Views\Recetas\" />
   </ItemGroup>
