@@ -51,7 +51,7 @@ namespace VgSalud.Controllers
                         while (dr.Read())
                         {
                             E_Informes inf = new E_Informes();
-                            inf.NroCarnet = dr.GetInt32(0);
+                            inf.Carnet = dr.GetString(0);
                             inf.NumDoc = dr.GetString(1);
                             inf.ApePat = dr.GetString(2);
                             inf.ApeMat = dr.GetString(3);
@@ -71,14 +71,18 @@ namespace VgSalud.Controllers
                     }
                 }
                 return lista;
+                
+           
             }
         }
-        public ActionResult PasarMedicina(E_CSMedicina med,string id)
+        public ActionResult PasarMedicina(string id,E_Pacientes pac)
         {
             string sede = Session["codSede"].ToString();
             string Modifica = Session["usuario"] + " " + DateTime.Now + " " + Environment.MachineName;
-            
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+
+            if (pac.evento == 1)
+            {
+                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("Usp_ActualizarDatosCSMedicina", con))
@@ -91,6 +95,7 @@ namespace VgSalud.Controllers
                     cmd.Parameters.AddWithValue("@Modifica", Modifica);
                     cmd.Parameters.AddWithValue("@Sedes", sede);
                 }
+            }
             }
             return RedirectToAction("ListaPacienteResultadoApto");
         }

@@ -7,7 +7,7 @@ namespace VgSalud.Models
 {
     public class E_Informes
     {
-        public int NroCarnet { get; set; }
+        public string Carnet { get; set; }
         public string NumDoc { get; set; }
         public string ApePat { get; set; }
         public string ApeMat { get; set; }
@@ -21,5 +21,6 @@ namespace VgSalud.Models
         public string AptoLab { get; set; }
         public string AptoOdon { get; set; }
         public string AptoMed { get; set; }
+        
     }
 }

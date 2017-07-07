@@ -4,6 +4,7 @@
     ViewBag.Title = "ListaPacienteResultadoApto";
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
     string CodUsu = Session["UserID"].ToString();
+    
 }
 
 <div class="content-wrapper">
@@ -87,7 +88,7 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr class="headTabla">
-                                            <th width="9%" style="text-align:center">Numero de Carnet</th>
+                                            <th width="9%" style="text-align:center">Carnet</th>
                                             <th width="9%" style="text-align:center">Numero de Documento</th>
                                             <th width="11%" style="text-align:center">Paciente</th>
                                             <th width="10%" style="text-align:center">Fecha Atencion Laboratorio</th>
@@ -107,7 +108,7 @@
                                         {
 
                                             <tr>
-                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.NroCarnet)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Carnet)</td>
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.NumDoc)</td>
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.ApePat) &nbsp;
                                                 @Html.DisplayFor(modelItem => item.ApeMat) &nbsp;
@@ -174,15 +175,25 @@
                 </table>
 
             </div>
-            <div class="modal-footer" >
+           @foreach (var item in Model)
+           {
+                <div class="modal-footer" >
+                <input type="hidden" value="1" id="evento" name="evento" />
                 <button type="button" style="text-align:left" class="btn btn-success" data-dismiss="modal">Pasar Medicina</button>
-                <button type="button" style="text-align:right" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="submit" style="text-align:right" value="@item." >Cerrar</button>
              
-            </div>
+            </div> 
+           }
         </div>
 
     </div>
 </div>
+
+<script>
+    $(".eliminar").click(function () {
+        $("#evento").val("3");
+    });
+</script>
 
 
 
