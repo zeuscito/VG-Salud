@@ -8,6 +8,11 @@ namespace VgSalud.Models
     public class E_CSMedicina
     {
         public int Id { get; set; }
+        public int CodCue { get; set; }
+        public string Paciente { get; set; }
+        public string DesTipoCarnet { get; set; }
+        public int idEstado { get; set; }
+        public int Edad { get; set; }
         public int IdProcedencia { get; set; }
         public string Manipulador { get; set; }
         public string Procedencia { get; set; }
@@ -23,5 +28,8 @@ namespace VgSalud.Models
         public string Crea { get; set; }
         public string Modifica { get; set; }
         public string Elimina { get; set; }
+
+
+
     }
 }

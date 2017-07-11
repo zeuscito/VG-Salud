@@ -1,4 +1,4 @@
-﻿@{
+﻿ @{
     Layout = null;
 }
 
@@ -19,6 +19,7 @@
     </script>
 <script>
     $(document).ready(function () {
+
         if ("@ViewBag.validation" != "") {
             toastr.options = {
                 "closeButton": true,
@@ -40,7 +41,6 @@
 
             toastr.error("@ViewBag.validation", "Aviso del Sistema", 'Aviso del Sistema', { timeOut: 500 })
         }
-       
 
     });
 </script>

@@ -1,0 +1,95 @@
+﻿
+@model IEnumerable<VgSalud.Models.E_Carnet_Sanitario>
+@{
+    int nro=0; 
+ }
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Carnet</h1>
+        @*<ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+                <li class="active">Consultar Pacientes</li>
+            </ol>*@
+    </section>
+    <section class="content">
+        <div class="row" >
+            <div class="col-xs-12" >
+                <div class="box">
+                    <fieldset>
+                        <legend style="margin-left:3%;width:96%">Lista</legend>
+
+                        <div class="box-body">
+                            <div class="col-md-12 " style="padding-left:44px;padding-right: 115px;">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th width="10%" style="text-align:center">Nro.</th>
+                                            <th width="20%" style="text-align:center">Paciente</th>
+                                            <th width="10%" style="text-align:center">Manipulador</th>
+                                            <th width="10%" style="text-align:center">TipoCarnet</th>
+                                            <th width="10%" style="text-align:center">Campaña</th>
+                                            <th width="10%" style="text-align:center">Nro. Carnet</th>
+                                            <th width="10%" style="text-align:center">Cod. Cue.</th>
+                                            <th width="10%" style="text-align:center">Estado</th>
+                                            <th width="10%" style="text-align:center"><i class="fa fa-pencil-square-o"></i></th>
+                                            
+                                            @*<th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+                                            nro++;
+                                            <tr>
+                                                <td>@nro</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NombrePaciente)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Manipulador)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.DesCarnet)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Campana)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NroCarnet)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                                <td style="text-align:center"><a title="Actualizar" class="btn btn-info" href="RegistroCarnet?idCarnet=@item.NroCarnet&Historia=@item.CodPaciente" action='@Url.Action("RegistroCarnet", "Carnet")'><i class="fa fa-pencil-square-o"></i> Actualizar</a></td>
+                                                
+                                                
+                                            </tr>
+
+                                         }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>     
+
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        //if($('#example1 > tbody > tr').length!= 0){
+        //    alert("SI");
+        //}
+
+
+
+
+        //$(function () {
+        //    $("#mi-boton").click(function () {
+        //        var nFilas = $("#example1 tr").length;
+        //        var nColumnas = $("#example1 tr:last td").length;
+        //        var msg = "Filas: " + nFilas + " - Columnas: " + nColumnas;
+        //        alert(msg);
+        //    });
+        //});
+
+
+    });
+</script>                                  
+
+

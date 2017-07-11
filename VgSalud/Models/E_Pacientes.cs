@@ -103,7 +103,6 @@ namespace VgSalud.Models
         public string ObservacionP { get; set; }
         public string ObservacionF { get; set; }
         public bool Usuario { get; set; }
-        public int evento { get; set; }
 
 
 

@@ -14,6 +14,8 @@ namespace VgSalud.Models
 
         public int TipoCarnet { get; set; }
 
+        public string TipoCarnetS { get; set; }
+
         public string Campana { get; set; }
         public DateTime FecRecojo { get; set; }
         
@@ -24,8 +26,14 @@ namespace VgSalud.Models
         public DateTime FecVencimiento { get; set; }
         public string Carnet { get; set; }
 
+        public string NroDoc { get; set; }
 
 
+        public string DesCarnet { get; set; }
+        public bool Estado { get; set; }
+
+        public int CodPaciente { get; set; }
+        
 
 
     }

@@ -101,7 +101,7 @@
                         <legend style="margin-left:3%; width:96%">Lista</legend>
 
                         <div class="box-body">
-                            <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
+                            <div class="col-md-12 " style="padding-left:44px;padding-right: 115px;">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr class="headTabla">
@@ -110,7 +110,7 @@
                                             <th width="20%" style="text-align:center">Apellido Materno</th>
                                             <th width="30%" style="text-align:center">Nombres</th>
                                             <th width="10%" style="text-align:center">Doc. Iden.</th>
-                                            <th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>
+                                            <th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-pencil"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -134,11 +134,17 @@
                                                                 if (abc2 != null)
                                                                 {
                                                                     <a title="Editar" style="color:#F7B620" href="RegistroPaciente?id=@item.Historia"><i class="fa fa-edit"></i></a>
+
+
                                                                 }
 
+                                                                @*<a title="Registrar Carnet" style="color:#F7B620" href="~/Carnet/RegistroCarnet?id=@item.Historia"><i class="fa fa-pencil"></i></a>*@
+
+                                                                
+
                                                                 @*var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
-                                        if (abc3 != null)
-                                        {
+                                                                if (abc3 != null)
+                                                                {
                                             <a title="Citas" href="~/Citas/ConsultaCita?id=@item.Historia"><i class="fa fa-ticket"></i></a>
                                         }
 
@@ -164,9 +170,12 @@
                                                                 }
 
                                                                 <a title="Cuentas" style="color:#F7B620" href="../Cuentas/ListaCuentaEstado?id=@item.Historia"><i class="fa fa-id-card"></i></a>
-                                                            }
+                                                            
+                                                                
+                                                                }
 
-
+                                                            
+                                                            
 
                                                         </div>
                                                     </form>

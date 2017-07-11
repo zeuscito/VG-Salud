@@ -1,0 +1,173 @@
+﻿@model IEnumerable<VgSalud.Models.E_CSOdontologia>
+
+@{
+    ViewBag.Title = "ListadoCarnetOdontologiaEnEspera";
+    var Lista = (List<VgSalud.Models.E_CSOdontologia>)ViewBag.lista;
+    var Postergados = (List<VgSalud.Models.E_CSOdontologia>)ViewBag.postergado;
+    var NroEspera = 0;
+    var genero = 0;
+    var llamado = "class=bg-green-active";
+    var llamar = "LLamar"; var Rellamado = "Volver a LLamar";
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Odontologia</h1>
+        @*<ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-users"></i>Pacientes</a></li>
+                <li class="active">Consultar Pacientes</li>
+            </ol>*@
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    @*<fieldset>
+                        <div style="float:right; padding:1% 2% 1% 2%;">
+                            <a href="~/Odontologia/ListadoCarnetOdontologiaPorAtender" action='@Url.Action("ListadoCarnetOdontologiaPorAtender", "Odontologia")'><center><i class="fa fa-search" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Pacientes Ausentes</strong></center></a>
+                        </div>
+                    </fieldset>*@
+                    <fieldset>
+                        <legend style="margin-left:0%;width:96%">Pacientes En Espera</legend>
+                        <div class="box-body">
+
+                            <form method="post">
+                                <input type="hidden" name="Id" id="Id" />
+                                <div class="col-xs-12 table table-responsive " style="margin-left:1%;padding-right:4%">
+                                    <table id="example1" class="table table-bordered table-striped ">
+                                        <thead>
+                                            <tr class="headTabla">
+                                                <th width="3%" style="text-align:center">Nro Espera</th>
+                                                <th width="10%" style="text-align:center">Cod. Cue.</th>
+                                                <th width="30%" style="text-align:center">Paciente</th>
+                                                <th width="10%" style="text-align:center">Tipo Carnet</th>
+                                                <th width="10%" style="text-align:center">Manipulador</th>
+                                                <th width="5%" style="text-align:center">Edad</th>
+                                                <td width="5%" style="text-align:center">Prioridad</td>
+                                                <th width="10%" style="text-align:center"><i class="fa fa-user-circle"></i></th>
+                                                <th width="10%" style="text-align:center"><i class="fa fa-circle-thin"></i></th>
+                                                <th width="10%" style="text-align:center"><i class="fa fa-sign-in"></i></th>
+                                                @*<th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            @foreach (var item in Lista)
+                                            {
+                                                NroEspera++;
+                                                <tr @if (item.idEstado == 7) { @llamado;} >
+                                                    <td style="text-align:center">@NroEspera</td>
+                                                    <td style="text-align:center">@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.DesTipoCarnet)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Manipulador)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Edad)</td>
+                                                    <td class="mailbox-star" align="center">
+                                                        <div class="tools">
+                                                            @if (item.Prioridad == 1)
+                                                            {
+                                                                <button type="submit" class="btn btn-default prioridad" codOdon="@item.Id" name="evento" value="2"><i class="fa fa-star text-yellow"></i></button>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <button type="submit" class="btn btn-default prioridad" codOdon="@item.Id" name="evento" value="1"><i class="fa fa-star-o text-yellow"></i></button>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align:center"><button title="Llamar" class="btn btn-success prioridad" codOdon="@item.Id" name="evento" value="3"><i class="fa fa-user-circle"> </i>@if (item.idEstado == 7) {@Rellamado; } else {@llamar; }</button></td>
+                                                    <td style="text-align:center"><button title="Ausente" class="btn btn-danger prioridad" codOdon="@item.Id" name="evento" value="4"><i class="fa fa-circle-thin"></i> Postergar</button></td>
+                                                    @*<td style="text-align:center"><a title="Ausente" class="btn btn-danger" href="PostergarPacienteOdo?id=@item.Id"><i class="fa fa-circle-thin"></i> Postergar</a></td>*@
+                                                    <td style="text-align:center"><a title="Atender" class="btn btn-info" href="ActualizarDatosAtencionOdontologia?id=@item.Id" action='@Url.Action("ActualizarDatosAtencionOdontologia", "Odontologia")'><i class="fa fa-sign-in"></i> Atender</a></td>
+                                                </tr>
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="col-xs-12 table table-responsive " style="margin-left:1%;padding-right:4%">
+                                    <fieldset>
+                                        <legend style="margin-left:0%;width:96%">Pacientes Postergados</legend>
+                                        <div class="col-md-12">
+                                            
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-2">
+                                                    <label>Dni</label>
+                                                    <input type="text" name="" class="form-control" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                   
+                                                        <label>Fecha Atencion</label>
+                                                        <input type="text" name="" class="form-control" />
+                                                   
+                                               
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <br />
+                                                    <button type="submit" class="btn btn-success">Buscar</button>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                          
+                                        </div>
+                                
+                                        <table id="example1" class="table table-bordered table-striped ">
+                                            <thead>
+                                                <tr class="headTabla">
+                                                    <th width="3%" style="text-align:center">Nro Espera</th>
+                                                    <th width="10%" style="text-align:center">Cod. Cue.</th>
+                                                    <th width="30%" style="text-align:center">Paciente</th>
+                                                    <th width="10%" style="text-align:center">Tipo Carnet</th>
+                                                    <th width="10%" style="text-align:center">Manipulador</th>
+                                                    <th width="10%" style="text-align:center"><i class="fa fa-user-circle"></i></th>
+
+                                                    @*<th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>*@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var item in Postergados)
+                                                {
+                                                    genero++;
+                                                    <tr>
+                                                        <td style="text-align:center">@genero</td>
+                                                        <td style="text-align:center">@item.CodCue</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.DesTipoCarnet)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Manipulador)</td>
+                                                        <td style="text-align:center"><button type="submit" title="Presente" class="btn btn-primary prioridad" codOdon="@item.Id" name="evento" value="5"><i class="fa fa-user-circle"></i> En Espera</button></td>
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </fieldset>
+
+                                </div>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".prioridad").on("click", function () {
+            debugger;
+            var codOdo = this.attributes.codOdon.value;
+            $("#Id").val(codOdo);
+        });
+    });
+</script>

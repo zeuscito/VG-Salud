@@ -1,0 +1,39 @@
+﻿<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Acceso</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Acceso</a></li>
+            <li class="active">Consultar Acceso</li>
+        </ol>
+    </section>
+    <div class="content">
+        <div class="row">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div id="cabecera-laboratorio">
+
+                    </div>
+
+                    <div class="detalle-laboratorio">
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function CargarData()
+    {
+        $("#cabecera-laboratorio").load("./Vista_Cabecera_Lab"); 
+    }
+
+    $(document).ready(function () {
+        setInterval(CargarData, 1000);
+    });
+</script>

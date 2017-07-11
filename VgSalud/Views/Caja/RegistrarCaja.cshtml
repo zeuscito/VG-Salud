@@ -313,42 +313,46 @@
                         </div>
                     </fieldset>
                     <div class="box-body">
-                        <table id="example3" class="table table-bordered table-striped">
-                            <thead>
-                                <tr style="background-color: #999; color: #fff;">
-                                    <th>Codigo</th>
-                                    <th>Tarifa</th>
-                                    <th>Codigo Procedencia</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Sub Total</th>
-                                    <th>IGV</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <center>
+                            <table id="example3" class="table table-bordered table-striped" style="width:80%;">
+                                <thead>
+                                    <tr style="background-color: #999; color: #fff;">
+                                        @*<th>Codigo</th>*@
+                                        <th style="width:10%">Cod Tarifa</th>
+                                        <th style="width:45%">Nombre Tarifa</th>
+                                        @*<th>Codigo Procedencia</th>*@
+                                        <th style="width:10%">Cantidad</th>
+                                        <th style="width:10%">Precio Unitario</th>
+                                        <th style="width:10%">Sub Total</th>
+                                        <th style="width:10%">IGV</th>
+                                        <th style="width:10%">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
-                                @foreach (var item1 in listaDetalle)
+                                    @foreach (var item1 in listaDetalle)
                                 {
                                     total = total + item1.total;
 
-                                    <tr>
-                                        <td>@Html.DisplayFor(modelItem => item1.CodCue)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.Tarifa)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.CodProce)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.precioUni)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.precio)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.igv)</td>
-                                        <td>@Html.DisplayFor(modelItem => item1.total)</td>
-                                    </tr>
+                                        <tr>
+                                            @*<td>@Html.DisplayFor(modelItem => item1.CodCue)</td>*@
+                                            <td>@Html.DisplayFor(modelItem => item1.Tarifa)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.NombreTarifario)</td>
+                                            @*<td>@Html.DisplayFor(modelItem => item1.CodProce)</td>*@
+                                            <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.precioUni)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.precio)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.igv)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.total)</td>
+                                        </tr>
 
                                 }
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
+                        </center>
                         <h3 align="right" style="margin-right:5%">Total a pagar: S/.@total</h3>
                     </div>
                     <center style="margin-bottom:4%">

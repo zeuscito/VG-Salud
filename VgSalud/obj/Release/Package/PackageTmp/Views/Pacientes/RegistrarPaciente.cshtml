@@ -204,7 +204,6 @@
                                             <label>Documento Identidad</label>
                                         </div>
                                         <div class="col-md-9">
-
                                             @Html.DropDownList("CodDocIdent", listaDocumentoIdentidad, "[NO SELECCIONADO]", new { @class = "form-control select2" })
                                             @Html.ValidationMessageFor(model => model.CodDocIdent, "", new { @class = "text-danger" })
                                         </div>
@@ -268,7 +267,7 @@
                                             @Html.ValidationMessageFor(model => model.CodTipFil, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" style="display:none;">
                                         <div class="col-md-3">
                                             <label>Tipo Paciente</label>
                                         </div>
@@ -847,8 +846,15 @@
 
     $(document).ready(function () {
 
+        
 
-        $("#fecha").keyup(function (e) {
+        $('#CodDocIdent > option[value="DI001"]').attr('selected', 'selected');
+
+        $('#cate > option[value="CP001"]').attr('selected', 'selected');
+        
+        
+
+        $("#fecha").blur(function (e) {
             var fechita = this.value;
             $.get('@Url.Action("getedadActual", "Pacientes")', { fecha: fechita },
                 function (response) {

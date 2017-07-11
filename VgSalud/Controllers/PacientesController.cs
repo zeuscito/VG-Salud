@@ -358,8 +358,15 @@ namespace VgSalud.Controllers
 
                         if (EPac.TelfCel == null) { cmd.Parameters.AddWithValue("@TelfCel", ""); } else { cmd.Parameters.AddWithValue("@TelfCel", EPac.TelfCel); }
 
+                        cmd.Parameters.AddWithValue("@CodTipPac", 1);
 
-                        if (EPac.CodTipPac == 0) { cmd.Parameters.AddWithValue("@CodTipPac", 1); } else { cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac); }
+                        //if (EPac.CodTipPac == 0)
+                        //{
+                        //    cmd.Parameters.AddWithValue("@CodTipPac", 1);
+                        //} else
+                        //{
+                        //    cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac);
+                        //}
 
                         if (EPac.Observ == null) { cmd.Parameters.AddWithValue("@Observ", ""); } else { cmd.Parameters.AddWithValue("@Observ", EPac.Observ.ToUpper()); }
 
@@ -518,8 +525,7 @@ namespace VgSalud.Controllers
                 using (SqlCommand cmd = new SqlCommand("Usp_Lista_Pacientes", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-
-
+                    
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -981,7 +987,7 @@ namespace VgSalud.Controllers
 
 
         public string getedadActual(string fecha)
-        {
+            {
             string edad = ""; 
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {

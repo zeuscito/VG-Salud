@@ -21,6 +21,10 @@ namespace VgSalud.Models
         public string AptoLab { get; set; }
         public string AptoOdon { get; set; }
         public string AptoMed { get; set; }
-        
+
+        public int Historia { get; set; }
+
+        public int IdMedicina { get; set; }
+
     }
 }
