@@ -1,0 +1,118 @@
+﻿@model VgSalud.Models.E_Categoria_Paciente
+
+@{
+    ViewBag.Title = "ModificarCategoriaCliente";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Categoria pacientes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Categorias de paciente</a></li>
+            <li class="active">Modificar Categoria de paciente</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+
+            <div class="box-header">
+
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="../listaCategoriaCliente">
+                        <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+
+            </div>
+
+            <form method="post" action="">
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Modificar</legend>
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Categoria de paciente</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DescCatPac, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescCatPac, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="CodCatPac" value="@Model.CodCatPac" />
+
+
+                        </div>
+                    </fieldset>
+
+                    
+                    <div class="col-md-6">
+                        
+                    </div>
+
+
+                    <label></label>
+                    <br /><br />
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                <center>
+                                    <button type="submit" value="Modificar" style="background-color:#13D003; border:0" class="btn btn-danger" id="Modificar">Modificar</button>
+                                </center>
+                            </div>
+                        </div>
+
+                        @*<div class="col-md-3">
+                            <div class="form-group">
+
+                                <center>
+                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                </center>
+                            </div>
+                        </div>*@
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if ((presiono1 == true) && (e.keyCode == 123)) {
+            $("#Modificar").click();
+        }
+        else if (presiono1 && (e.keyCode == 65)) {
+            $(location).attr("href", "../listaCategoriaCliente");
+           
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

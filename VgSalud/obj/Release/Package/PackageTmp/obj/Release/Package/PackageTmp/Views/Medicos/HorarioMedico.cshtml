@@ -1,0 +1,430 @@
+﻿@model VgSalud.Models.E_HorarioMedico
+
+@{
+    ViewBag.Title = "HorarioMedico";
+    var listaHorarios = (List<VgSalud.Models.E_HorarioMedico>)ViewBag.listaHorarios;
+    var listadoConsultorio = (SelectList)ViewBag.listadoConsultorio;
+    
+
+    var evalua = ViewBag.diasCon;
+    var evalua2 = ViewBag.mesCon;
+    var evalua3 = ViewBag.anioCon;
+    var evalua4 = ViewBag.horaICon;
+    var evalua5 = ViewBag.horaFCon;
+    var evalua6 = ViewBag.minCon;
+    var evalua7 = ViewBag.turnoCon;
+    var evalua8 = ViewBag.consultorioCon;
+    int diasMes;
+    int Mes;
+    int Anio;
+    string HoraI;
+    string HoraF;
+    int min;
+    string turno;
+    string consultorio;
+
+    if (evalua == null)
+    {
+        diasMes = ViewBag.dias;
+    }
+    else {
+        diasMes = ViewBag.diasCon;
+    }
+
+    if (evalua2 == null)
+    {
+        Mes = int.Parse(ViewBag.mes);
+    }
+    else
+    {
+        Mes = ViewBag.mesCon;
+    }
+
+    if (evalua3 == null)
+    {
+        Anio = ViewBag.anio;
+    }
+    else
+    {
+        Anio = ViewBag.anioCon;
+    }
+
+    if (evalua4 == null)
+    {
+        HoraI = ViewBag.horaI;
+    }
+    else
+    {
+        HoraI = ViewBag.horaICon;
+    }
+
+    if (evalua5 == null)
+    {
+        HoraF = ViewBag.horaF;
+    }
+    else
+    {
+        HoraF = ViewBag.horaFCon;
+    }
+
+    if (evalua6 == null)
+    {
+        min = ViewBag.min;
+    }
+    else
+    {
+        min = ViewBag.minCon;
+    }
+
+    if (evalua7 == null)
+    {
+        turno = ViewBag.turno;
+    }
+    else
+    {
+        turno = ViewBag.turnoCon;
+    }
+
+    if (evalua8 == null)
+    {
+        consultorio = ViewBag.consultorio;
+    }
+    else
+    {
+        consultorio = ViewBag.consultorioCon;
+    }
+
+
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Registrar Horario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Registrar Horario</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="~/Medicos/ListarMedico">
+                        <center style="margin-left: 12px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><span style="color:coral;margin-left: 28px;">@ViewBag.codnom</span></h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form action="~/Medicos/ObtenerFechaFor" method="post">
+                <div class="col-md-6" style="margin-top:3%; float:right">
+                    <div class="form-group">
+                        <div class="col-md-2" align="right">
+                            <label>Mes</label>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="MesConsulta" id="mesCombo" class="form-control select2">
+                                <option value="1">ENERO</option>
+                                <option value="2">FEBRERO</option>
+                                <option value="3">MARZO</option>
+                                <option value="4">ABRIL</option>
+                                <option value="5">MAYO</option>
+                                <option value="6">JUNIO</option>
+                                <option value="7">JULIO</option>
+                                <option value="8">AGOSTO</option>
+                                <option value="9">SETIEMBRE</option>
+                                <option value="10">OCTUBRE</option>
+                                <option value="11">NOVIEMBRE</option>
+                                <option value="12">DICIEMBRE</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2" align="right">
+                            <label>Año</label>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="AnioConsulta" id="anioCombo" class="form-control select2">
+                                <option value="@ViewBag.anioActual">@ViewBag.anioActual</option>
+                                <option value="@ViewBag.anioSiguiente">@ViewBag.anioSiguiente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+
+                        <div class="col-md-12" align="center" style="margin-top:4%">
+                            <input type="hidden" name="CodMed" value="@ViewBag.codigo" />
+                            <input type="hidden" name="horaInicioB" id="horaI" />
+                            <input type="hidden" name="horaFinB" id="horaS" />
+                            <input type="hidden" name="IntMin" value="@ViewBag.minCon" id="IntMinS" />
+                            <input type="hidden" name="Turno" id="TurnoS" />
+                            <input type="hidden" name="Consultorio" id="Consultorio" />
+                            <input type="submit" class="btn btn-info" style="background-color:#13D003; border:#13D003;margin-top: 11px;" value="Ver dias" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+            @using (Html.BeginForm())
+            {
+
+                <div class="box-body">
+                    <div class="col-md-6" style="float:right">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Turno</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select name="Turno" class="form-control" id="Turno">
+                                    <option value="MAÑANA" selected>MAÑANA</option>
+                                    <option value="TARDE">TARDE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Hora entrada</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="bootstrap-timepicker">
+                                    <div class="input-group">
+                                        <input type="text" id="horaEn" class="form-control timepicker" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Hora salida</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="bootstrap-timepicker">
+                                    <div class="input-group">
+                                        <input type="text" id="horaSal" class="form-control timepicker" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Intervalo (minutos)</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" name="IntMin" id="IntMin" class="form-control" value="@ViewBag.minCon" />
+                            </div>
+                        </div>
+
+                
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Consultorio</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.DropDownList("Consultorio", listadoConsultorio, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Consul" })
+                                @Html.ValidationMessageFor(model => model.Consultorio, "", new { @class = "text-danger" })
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" style="margin-top:1%">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="col-md-12" style="margin-top:1%;border-bottom-style: groove;">
+                                <input type="checkbox" class="marcarTodos" id="marcarTodos" /><label for="marcarTodos">[SELECCIONE TODOS]</label>
+                            
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+
+                                @for (int i = 1; i <= diasMes; i++)
+                                {
+                                    string recibeFecha = i + "/" + Mes + "/" + Anio;
+                                    DateTime cambia = DateTime.Parse(recibeFecha);
+                                    recibeFecha = cambia.ToString("dddd");
+                                    recibeFecha = recibeFecha.ToUpper();
+                                    <div style="width:14.1%;float:left" class="aqui">
+                                        <input type="checkbox" name="array" value="@i/@Mes/@Anio" class="diasHabilitados" /> &nbsp @i - @recibeFecha
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                   
+
+                    </div>
+                    
+                    <input type="hidden" name="CodMed" value="@ViewBag.codigo" />
+                    <input type="hidden" name="horaInicioB" id="RecibeE" />
+                    <input type="hidden" name="horaFinB" id="RecibeS" /> 
+                    <input type="hidden" name="accion" class="accion" />
+                    <div class="col-md-12" style="margin:5% 0% 0% 0%" align="center">
+                        <div class="form-group">
+                            <center>
+                                <button type="submit" value="Registrar" class="btn btn-danger horario" style="background-color:#13D003; border:#13D003;margin-top: 11px;">Registrar</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var turno = "@ViewBag.TurnoSelec"; 
+        var cambio = turno.replace("&#209;","Ñ");
+        $(".horario").click(function () {
+            $(".accion").val($(window).width());
+        });
+
+
+        $("#horaEn").val("@HoraI");
+        $("#horaSal").val("@HoraF");
+        $("#IntMin").val("@min"); 
+      
+     
+        $('#Consul option[value="@consultorio"]').attr("selected", true);
+
+        var traeMes = $("#mesCombo").val();
+        var traeAnio = $("#anioCombo").val();
+
+        var combo = $("#Consul").val();
+        $("#Consultorio").val(combo);
+
+        var combo = $("#Turno").val();
+        $("#TurnoS").val(combo);
+
+        $("#horaEn").change(function () {
+            var value = $(this).val();
+            $("#horaI").val(value);
+        });
+
+        $("#horaSal").change(function () {
+            var value = $(this).val();
+            $("#horaS").val(value);
+        });
+
+        $("#IntMin").keyup(function () {
+            var value = $(this).val();
+            $("#IntMinS").val(value);
+        });
+
+        $("#Turno").change(function () {
+            var value = $(this).val();
+            $("#TurnoS").val(value);
+        });
+
+        $("#Consul").change(function () {
+            var value = $(this).val();
+            $("#Consultorio").val(value);
+        });
+
+        $('#mesCombo option[value="@Mes"]').attr("selected", true);
+        $('#anioCombo option[value="@Anio"]').attr("selected", true);
+
+        $('#horaSal').change(function (event) {
+            var hora = $("#horaSal").val();
+            $("#RecibeS").val(hora);
+            $.get('@Url.Action("EvaluaHora", "Medicos")', {
+                HoraE: hora
+            }, function (response) {
+
+                $.each(response, function (index, value) {
+                    $("#TurnoS").val(value.Turno);
+                });
+            });
+        });
+
+        $('#horaEn').change(function (event) {
+            var hora = $("#horaEn").val();
+            $("#RecibeE").val(hora);
+        });
+
+        $("#horaEn").val("8:00 AM");
+        $("#horaSal").val("2:00 PM");
+
+        $("#Turno").change(function () {
+            var valor = this.value;
+            if (valor == "MAÑANA") {
+                $("#horaEn").val("8:00 AM");
+                $("#horaSal").val("2:00 PM");
+            
+            }
+            else if (valor == "TARDE") {
+                $("#horaEn").val("2:00 PM");
+                $("#horaSal").val("8:00 PM");
+            }
+            $('#Turno option[value='+valor+']').attr("selected", true);
+        });
+
+        $('.aqui input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+        $('#Turno option[value='+cambio+']').prop('selected', 'selected').change();
+        @*@if (ViewBag.horaI != null)
+        {
+            <text>
+            $("#horaEn").val(@ViewBag.horaI);
+            </text>
+        }
+        @if(ViewBag.horaS != null)
+        {
+            <text>
+            $("#horaSal").val(@ViewBag.horaS);
+            </text>
+        }*@
+
+        $(".marcarTodos").change(
+           
+                function () {
+                    var marcado = $("#marcarTodos").is(":checked");
+
+                    if (marcado) {
+                        $('.aqui input[type="checkbox"]').attr('checked', true);
+                        $(".icheckbox_flat-blue").addClass("checked");
+                    }
+
+                    else {
+                        $('.aqui input[type="checkbox"]').attr('checked', false);
+                        $(".icheckbox_flat-blue").removeClass("checked");
+                    }
+                       
+                }
+            );
+    
+    });
+
+</script>
+

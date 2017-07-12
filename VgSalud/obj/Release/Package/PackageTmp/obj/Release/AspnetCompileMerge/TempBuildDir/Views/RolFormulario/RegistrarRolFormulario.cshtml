@@ -1,0 +1,143 @@
+﻿@model VgSalud.Models.E_RolFormulario
+
+@{
+    ViewBag.Title = "RegistrarRolFormulario";
+    var perfil = (SelectList)ViewBag.perfil;
+    var formulario = (SelectList)ViewBag.formulario;
+    var lista = (List<VgSalud.Models.E_RolFormulario>)Session["agregar"]; 
+   
+
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Atenciones Varias </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
+            <li class="active">Registrar Atención</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Atención</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+                      
+
+            <div class="box-body">
+
+                <form method="post" action="~/RolFormulario/agregar">
+                    <fieldset>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Perfil</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodPerf", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodPerf" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Formulario</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("IdForm", formulario, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "IdForm" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                @*<div class="col-md-3">
+                                        <label>Cuenta</label>
+                                    </div>*@
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-danger">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br /><br /><br />
+                                             
+
+                    </fieldset>
+                </form>
+
+                @if (lista != null)
+                {
+
+                    <div class="content" style="margin-top:4%">
+                        <center>
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Descripcion Perfil</td>
+                                        <td>Alias Formulario</td>
+                                  
+                                        <th><i class="fa fa-trash-o"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in lista)
+                                    {
+
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => @item.DescPerf)</td>
+                                             <td>@Html.DisplayFor(modelItem => @item.AliasForm)</td> 
+                                         
+
+                                            <td>
+                                                <div class="tools">
+                                                    <a href="~/RolFormulario/Delete/?id=@item.CodPerf&id2=@item.IdForm"><i class="fa fa-trash-o"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </center>
+                    </div>
+
+                }
+                <form action="" method="post">
+                    <div class="col-md-12" style="margin-top:2%;">
+                        <center>
+                            <input type="submit" class="btn btn-danger" value="Registrar" /> 
+                        
+                            <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                        </center>
+                    </div>
+                </form>
+              
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $('#CodPerf option[value="@ViewBag.CodPerf"]').prop('selected', 'selected').change();
+        $('#IdForm option[value="@ViewBag.IdForm"]').prop('selected', 'selected').change();
+
+    });
+
+
+</script>

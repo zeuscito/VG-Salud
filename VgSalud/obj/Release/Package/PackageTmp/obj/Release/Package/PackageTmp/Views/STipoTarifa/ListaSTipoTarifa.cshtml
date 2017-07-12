@@ -1,0 +1,130 @@
+﻿@model IEnumerable<VgSalud.Models.E_Sub_Tipo_Tarifa>
+
+@{
+    ViewBag.Title = "ListaSTipoTarifa";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Sub Tipo Tarifa</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Sub Tipo Tarifa</a></li>
+            <li class="active">Consultar Sub Tipo Tarifa</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarSTipoTarifa.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/STipoTarifa/RegistrarSTipoTarifa"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+
+                            </div>
+                      
+                        }
+
+                    }
+
+                    <div class="box-body">
+                        <fieldset>
+                            <legend style="margin-left: 15px;">Lista</legend>
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Codigo</th>
+                                            <th>Descripción</th>
+                                            <th>Tipo Tarifa</th>
+                                            <th>Estado</th>
+                                            <th style="text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.CodSTipTar)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.DescSTipTar)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.TipoTarifa)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.EstTipTar)</td>
+
+                                                <td style="text-align:center">
+                                                    <div class="tools">
+                                                        @{
+
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarSTipoTarifa.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                <a title="Editar" href="ModificarSTipoTarifa/@item.CodSTipTar"><i class="fa fa-edit"></i></a>
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                                            }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                    
+                        </fieldset>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarSTipoTarifa");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>
+
+
+

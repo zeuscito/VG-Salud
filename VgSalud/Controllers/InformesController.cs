@@ -94,13 +94,34 @@ namespace VgSalud.Controllers
                     }
                 }
                 return lista;
+
+
             }
         }
-        public ActionResult PasarMedicina(E_CSMedicina med,string id)
+
+        public ActionResult PasarMedicina(int IdMedicina)//,string AptoLab, string AptoOdon)
         {
             string sede = Session["codSede"].ToString();
             string Modifica = Session["usuario"] + " " + DateTime.Now + " " + Environment.MachineName;
-            
+
+            //string AptoLa = AptoLab;
+            //string AptoOdo = AptoOdon;
+
+            //if (AptoLa == "NO" && AptoOdo=="NO")
+            //{
+            //    ViewBag.mensaje = "Para enviarlos a medicina deben de ser pacientes APTOS en Odontologia y Laboratorio";
+
+            //}
+            //if(AptoLa == "SI" && AptoOdo == "NO")
+            //{
+            //    ViewBag.mensaje = "Para enviarlos a medicina deben de ser pacientes APTOS en Odontologia y Laboratorio";
+            //}
+            //if (AptoLa == "NO" && AptoOdo == "SI")
+            //{
+            //    ViewBag.mensaje = "Para enviarlos a medicina deben de ser pacientes APTOS en Odontologia y Laboratorio";
+            //}
+            //if (AptoLa == "SI" && AptoOdo == "SI")
+            //{
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
@@ -112,7 +133,6 @@ namespace VgSalud.Controllers
                     //cmd.Parameters.AddWithValue("@Modifica", Modifica);
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                 }
-            }
             }
             return RedirectToAction("ListaPacienteResultadoApto");
             //}

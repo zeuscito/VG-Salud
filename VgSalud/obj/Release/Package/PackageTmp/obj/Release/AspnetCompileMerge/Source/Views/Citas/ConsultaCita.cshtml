@@ -1,0 +1,516 @@
+﻿@model VgSalud.Models.E_Citas
+
+@{
+    ViewBag.Title = "ConsultaCita";
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    VgSalud.Controllers.UtilitarioController u = new VgSalud.Controllers.UtilitarioController();
+    VgSalud.Models.E_Master regH = u.ListadoHoraServidor().FirstOrDefault();
+    var listaConsulta = (List<VgSalud.Models.E_Citas>)ViewBag.listaConsulta;
+    var listaCitasHoy = (List<VgSalud.Models.E_Citas>)ViewBag.listaCitasHoy;
+    
+
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Consulta de Cita</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Citas</a></li>
+            <li class="active">Consulta de Cita</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Consulta Cita</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="" id="formulario">
+
+                <div class="box-body">
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Especialidad</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="especialidad" name="CodEspec" data-placeholder="Seleccione una especialidad" required></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Servicio</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2" id="servicio" name="CodServ" data-placeholder="Seleccione un servicio" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Fecha</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control datepicker" name="fechaCita" id="fecha" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tarifa</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2" name="CodTar" data-placeholder="Seleccione una tarifa" id="tarifa" required></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Medico</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2" name="CodMed" data-placeholder="Seleccione un medico" id="medico" required></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Turno</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2" name="Turno" data-placeholder="Seleccione un turno" id="turno" required></select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <input type="hidden" name="Historia" value="@ViewBag.idCliente" />
+                    <input type="hidden" name="CodCue" id="cuenta" value="@ViewBag.cuenta" />
+                    <input type="hidden" name="dimension" id="clientScreenWidth" />
+
+                    <label></label>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <center>
+
+                                <input type="submit" class="btn btn-danger" id="buscaCita" value="Buscar" />
+                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+@if (listaConsulta != null)
+{
+ 
+       <section class="content" id="aqui">
+        <div class="row" id="cargaPrueba">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-body">
+                        <h3 style="color:coral">Disponibilidad de citas / <span id="muestraServi"></span> / <span id="muestraMedi"></span> / <span id="muestraTurno"></span> - <span id="muestraFecha"></span></h3>
+                        <div class="col-md-12" id="listadito">
+                            <div name="timediv" id="timediv">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+</div>
+
+
+
+<script>
+
+
+
+
+
+    $.ajaxSetup({ cache: false });
+
+
+    var turnoSS = "@ViewBag.turno";
+
+    var turnoDSS = turnoSS.replace("&#209;", "Ñ");
+
+    var seconds = 1;
+    var divid = "listadito";
+    var url = "../ConsultaCitaGenerada/?id=" + @ViewBag.idCliente + "&cadena=" + "@ViewBag.especialidad" + "," + "@ViewBag.servicio" + "," + "@ViewBag.tarifa" + "," + "@ViewBag.fechaSeleccionada" + "," + "@ViewBag.medico" + "," + turnoDSS + "," + "@ViewBag.dimension" + "&cuenta=" + @ViewBag.cuenta + "#";
+
+    function refreshdiv() {
+        var xmlHttp;
+        try {
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch (e) {
+                try {
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                catch (e) {
+                    alert("Tu explorador no soporta AJAX.");
+                    return false;
+                }
+            }
+        }
+
+        var timestamp = parseInt(new Date().getTime().toString().substring(0, 10));
+        var nocacheurl = url + "?t=" + timestamp;
+
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.readyState != null) {
+                document.getElementById(divid).innerHTML = xmlHttp.responseText;
+                setTimeout('refreshdiv()', seconds * 100000);
+            }
+        }
+        xmlHttp.open("GET", nocacheurl, true);
+        xmlHttp.send(null);
+    }
+
+
+</script>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $("#clientScreenWidth").val($(window).width());
+
+      
+        refreshdiv();
+
+        var espee = "@ViewBag.especialidad";
+        var servi = "@ViewBag.servicio";
+        var medi = "@ViewBag.medico";
+        var turno = "@ViewBag.turno";
+        var tarifaa = "@ViewBag.tarifa";
+
+       var turnoD =  turno.replace("&#209;", "Ñ"); 
+
+        $('#especialidad option[value=@ViewBag.especialidad]').prop('selected', 'selected').change();
+
+        var d = new Date();
+
+        var total = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+
+        var fechasel = "@ViewBag.fechaSeleccionada";
+        if (fechasel != "") {
+            $("#fecha").val(fechasel);
+        } else {
+            $("#fecha").val(total);
+        }
+
+        $('#select2-especialidad-container').empty();
+        $('#especialidad > option[text="--Seleccione una especialidad--"]').attr('selected', true);
+        $('#especialidad option:contains("--Seleccione una especialidad--")').prop('selected', true);
+
+
+        $('#medico').change(function (event) {
+            var codMed = $("select#medico").val();
+            var fechaVal = $("#fecha").val()
+            $.get('@Url.Action("ObtenerTurno", "Citas")', {
+                CodMed: codMed, Fecha: total
+            }, function (response) {
+
+                $('#select2-turno-container').empty();
+                var select = $('#turno');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione un turno").appendTo(select);
+
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.Turno).text(value.Turno).appendTo(select);
+                });
+            });
+        });
+
+        $('#fecha').change(function (event) {
+            var fechaVal = $("#fecha").val()
+            $.get('@Url.Action("ObtenerMedico", "Citas")', {
+                CodServ: servi, Fecha: fechaVal
+            }, function (response) {
+
+                $('#select2-medico-container').empty();
+                var select = $('#medico');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione un medico").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+               });
+            });
+        });
+
+
+        $('#servicio').change(function (event) {
+            var servicioVal = $("select#servicio").val();
+            var fechaVal = $("#fecha").val()
+            $.get('@Url.Action("ObtenerMedico", "Citas")', {
+                CodServ: servicioVal, Fecha: total
+            }, function (response) {
+
+                $('#select2-medico-container').empty();
+                var select = $('#medico');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione un medico").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+                });
+            });
+        });
+
+
+
+        $('#especialidad').change(function (event) {
+            var sports = $("select#especialidad").val();
+            $.get('@Url.Action("ObtenerTarifa", "Citas")', {
+                CodEspec: sports
+            }, function (response) {
+
+                $('#select2-tarifa-container').empty();
+                var select = $('#tarifa');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione una tarifa").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                    if (value.CodTar == value.CodTarE) {
+                        $('#tarifa option[value="' + value.CodTarE + '"]').attr('selected', true);
+                        $("#select2-tarifa-container").text(value.DescTar);
+                    }
+                });
+            });
+        });
+
+
+        $('#especialidad').change(function (event) {
+            var sports = $("select#especialidad").val();
+            $.get('@Url.Action("ObtenerServicios", "Citas")', {
+                CodEspec: sports
+            }, function (response) {
+
+                $('#select2-servicio-container').empty();
+                var select = $('#servicio');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione un servicio").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select);
+                });
+            });
+        });
+
+        $('#servicio').change(function (event) {
+            $('#fecha').change(function (event) {
+                var servicioVal = $("select#servicio").val();
+                var fechaVal = $("#fecha").val()
+                $.get('@Url.Action("ObtenerMedico", "Citas")', {
+                    CodServ: servicioVal, Fecha: fechaVal
+                }, function (response) {
+
+                    $('#select2-medico-container').empty();
+                    var select = $('#medico');
+                    select.find('option').remove();
+                    $('<option>').val("nulo").text("Seleccione un medico").appendTo(select);
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+                    });
+                });
+            });
+        });
+
+        $('#fecha').change(function (event) {
+            $('#servicio').change(function (event) {
+                var servicioVal = $("select#servicio").val();
+                var fechaVal = $("#fecha").val()
+                $.get('@Url.Action("ObtenerMedico", "Citas")', {
+                    CodServ: servicioVal, Fecha: fechaVal
+                }, function (response) {
+
+                    $('#select2-medico-container').empty();
+                    var select = $('#medico');
+                    select.find('option').remove();
+                    $('<option>').val("nulo").text("Seleccione un medico").appendTo(select);
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+                    });
+                });
+            });
+        });
+
+        $('#fecha').change(function (event) {
+            $('#medico').change(function (event) {
+                var codMed = $("select#medico").val();
+                var fechaVal = $("#fecha").val()
+                $.get('@Url.Action("ObtenerTurno", "Citas")', {
+                    CodMed: codMed, Fecha: fechaVal
+                }, function (response) {
+
+                    $('#select2-turno-container').empty();
+                    var select = $('#turno');
+                    select.find('option').remove();
+                    $('<option>').val("nulo").text("Seleccione un turno").appendTo(select);
+
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.Turno).text(value.Turno).appendTo(select);
+                    });
+                });
+            });
+        });
+
+
+        $('#medico').change(function (event) {
+            $('#fecha').change(function (event) {
+                var codMed = $("select#medico").val();
+                var fechaVal = $("#fecha").val()
+                $.get('@Url.Action("ObtenerTurno", "Citas")', {
+                    CodMed: codMed, Fecha: fechaVal
+                }, function (response) {
+
+                    $('#select2-turno-container').empty();
+                    var select = $('#turno');
+                    select.find('option').remove();
+                    $('<option>').val("nulo").text("Seleccione un turno").appendTo(select);
+
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.Turno).text(value.Turno).appendTo(select);
+                    });
+                });
+            });
+        });
+
+
+
+        $.get('@Url.Action("ObtenerEspecialidad", "Citas")', function (response) {
+            var select = $('#especialidad');
+            select.find('option').remove();
+            $('<option>').val("nulo").text("Seleccione una especialidad").appendTo(select);
+            $.each(response, function (index, value) {
+                $('<option>').val(value.CodEspec).text(value.NomEspec).appendTo(select);
+                if (value.CodEspec == espee) {
+                    $('#especialidad option[value="' + value.CodEspec + '"]').attr('selected', true);
+                    $("#select2-especialidad-container").text(value.NomEspec);
+
+                    $.get('@Url.Action("ObtenerTarifa", "Citas")', {
+                        CodEspec: value.CodEspec
+                    }, function (response) {
+                        $('#select2-tarifa-container').empty();
+                        var select = $('#tarifa');
+                        select.find('option').remove();
+                        $('<option>').val("nulo").text("Seleccione una tarifa").appendTo(select);
+                        $.each(response, function (index, value) {
+                            $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                            if (value.CodTar == tarifaa) {
+                                $('#tarifa option[value="' + value.CodTarE + '"]').attr('selected', true);
+                                $("#select2-tarifa-container").text(value.DescTar);
+
+                                $.get('@Url.Action("ObtenerServicios", "Citas")', {
+                                    CodEspec: value.CodEspec
+                                }, function (response) {
+                                    $('#select2-servicio-container').empty();
+                                    var select = $('#servicio');
+                                    select.find('option').remove();
+                                    $('<option>').val("nulo").text("Seleccione un servicio").appendTo(select);
+                                    $.each(response, function (index, value) {
+                                        $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select);
+                                        if (value.CodServ == servi) {
+                                            $('#servicio option[value="' + value.CodServ + '"]').attr('selected', true);
+                                            $("#select2-servicio-container").text(value.NomServ);
+                                            $("#muestraServi").text(value.NomServ);
+                                            var fechaVal = $("#fecha").val();
+                                            $("#muestraFecha").text(fechaVal);
+                                            $.get('@Url.Action("ObtenerMedico", "Citas")', {
+                                                CodServ: value.CodServ, Fecha: fechaVal
+                                            }, function (response) {
+                                                $('#select2-medico-container').empty();
+                                                var select = $('#medico');
+                                                select.find('option').remove();
+                                                $('<option>').val("nulo").text("Seleccione un medico").appendTo(select);
+                                                $.each(response, function (index, value) {
+                                                    $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+                                                    if (value.CodMed == medi) {
+                                                        $('#medico option[value="' + value.CodMed + '"]').attr('selected', true);
+                                                        $("#select2-medico-container").text(value.NomMed);
+                                                        $("#muestraMedi").text(value.NomMed);
+
+                                                        $.get('@Url.Action("ObtenerTurno", "Citas")', {
+                                                            CodMed: value.CodMed, Fecha: fechaVal
+                                                        }, function (response) {
+                                                            $('#select2-turno-container').empty();
+                                                            var select = $('#turno');
+                                                            select.find('option').remove();
+                                                            $('<option>').val("nulo").text("Seleccione un turno").appendTo(select);
+                                                            $.each(response, function (index, value) {
+                                                                $('<option>').val(value.Turno).text(value.Turno).appendTo(select);
+                                                                if (value.Turno == turnoD) {
+                                                                    $('#turno option[value="' + value.Turno + '"]').attr('selected', true);
+                                                                    $("#select2-turno-container").text(value.Turno);
+                                                                    $("#muestraTurno").text(value.Turno);
+                                                                }
+                                                            });
+                                                        });
+                                                    }
+                                                });
+                                            });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+
+        $("#buscaCita").click(function () {
+            var cuentaGene = $("#cuenta").val();
+            var uno = $('select#especialidad').val();
+            var dos = $('select#servicio').val();
+            var tres = $('select#tarifa').val();
+            var cuatro = $('#fecha').val();
+            var cinco = $("select#medico").val();
+            var seis = $('select#turno').val();
+
+            var total = uno + "," + dos + "," + tres + "," + cuatro + "," + cinco + "," + seis;
+
+            $("#formulario").submit();
+
+            window.location.href = "../ConsultaCita/?id=@ViewBag.idCliente&cadena=" + total + "&cuenta=" + cuentaGene;
+            
+        });
+
+        
+    });
+
+</script>
+
+
+

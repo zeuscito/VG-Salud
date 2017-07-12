@@ -1,0 +1,796 @@
+﻿@model VgSalud.Models.E_Caja
+
+@{
+    ViewBag.Title = "RegistrarCaja";
+    var listaDetalle = (List<VgSalud.Models.E_CuentaDetalle>)ViewBag.listaDetalle;
+    var listaCuenta = (List<VgSalud.Models.E_Cuentas>)ViewBag.listaCuenta;
+    var listaSerie = (List<VgSalud.Models.E_UsuarioSerie>)ViewBag.listaSerie;
+    var pago = (List<VgSalud.Models.E_CajaPago>)ViewBag.pago;
+    var selected = "selected";
+    var personaJuridica = (SelectList)ViewBag.personaJuridica;
+    var mediosPago = (SelectList)ViewBag.mediosPago;
+    var tipoMoneda = (SelectList)ViewBag.tipoMoneda;
+    decimal total = 0;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Caja</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Caja</a></li>
+            <li class="active">Registrar Caja</li>
+        </ol>
+    </section>
+    @foreach (var item in listaCuenta)
+    {
+        <section class="content">
+            <form action="" method="post">
+                <div class="box box-default">
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Datos de Caja</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+
+                    <fieldset>
+                        <div class="box-body">
+                            <div class="col-md-6">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Serie</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <select class="form-control select2" name="Serie" id="serie" style="width:100%">
+                                                @foreach (var carga in listaSerie)
+                                                {
+                                                    <option @if (carga.Prioridad == true) { @selected   ; } value="@carga.CodDocSerie">
+                                                        @carga.Etiqueta
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label style="text-align:left">N°</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="" id="correlativo" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Cuenta</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="CodCue" value="@item.CodCue" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Secuencia</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-4">
+                                            <label>Historia</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" name="Historia" value="@item.Historia" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            <label>Paciente</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input type="text" name="NomPac" value="@item.nomCompleto" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="juridica">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>RUC</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownList("Ruc", personaJuridica, "[NO SELEECIONADO]", new { @class = "form-control select2", @id = "ruc" })
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>RUC</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" name="NrRUC" id="NrRUC" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>Razon Social</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" name="RazonSocial" id="RazonSocial" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>Direccion</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <input type="text" name="DirRazSoc" id="Direccion" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            <label>Observaciones</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <textarea name="Obser" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                            <div class="col-md-6">
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>T. pago</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <select name="TipoPago" id="TipoPago" class="form-control select2">
+
+                                                <option value="Contado" selected>Contado</option>
+                                                <option value="Credito">Credito</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Moneda</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.DropDownList("CodTipMon", tipoMoneda, new { @class = "form-control select2", @id = "moneda" })
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>SubTotal</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="SubTotal" value="@item.STotCue" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>IGV (@ViewBag.igv%)</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="Igv" value="@item.IgvCue" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Total</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="Total" value="@item.TotCue" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>T/C</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" name="TipoCambio" id="tipoCambio" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="@ViewBag.igv" name="TazaIgv" />
+
+                                <br /><br />
+
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+
+                                        <table id="example4" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Medios Pago</th>
+                                                    <th>Importe</th>
+                                                    <th>Importe Soles</th>
+                                                    <th>Moneda</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var item1 in pago)
+                                                {
+
+                                                    <tr>
+
+                                                        <td>@Html.DisplayFor(modelItem => item1.item)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item1.NomMedios)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item1.Importe)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item1.ImporteSoles)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item1.NomMoneda)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item1.Estado)</td>
+
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+
+                                        </table>
+
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <center>
+                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2">Modificar</button> 
+                                            <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                        </center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+
+                    <br /><br /><br />
+
+                    <div class="box-body">
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Tarifa</th>
+                                    <th>Codigo Procedencia</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Sub Total</th>
+                                    <th>IGV</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item1 in listaDetalle)
+                                {
+                                    total = total + item1.total;
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item1.CodCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.Tarifa)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.CodProce)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.precioUni)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.precio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.igv)</td>
+                                        <td>@Html.DisplayFor(modelItem => item1.total)</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                        <h3 align="right" style="margin-right:5%">Total a pagar: S/.@total</h3>
+                    </div>
+
+                </div>
+                <br /><br /><br />
+
+
+                <center>
+
+                    <input class="btn btn-danger" type="submit" value="Facturar" />
+
+                </center>
+
+            </form>
+            
+        </section>
+    }
+</div>
+
+
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <form action="~/Caja/RegistrarPersonaJuridica" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Registro Persona Juridica</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label>RUC</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="RUC" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label>Razón Social</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="RazonSocial" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label>Dirección</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="Direccion" class="form-control" />
+                        </div>
+                    </div>
+                    <input type="hidden" value="@ViewBag.CodCue" name="CodCue" />
+
+                </div>
+                <br /><br /><br /><br /><br /><br />
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Registrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+
+        
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Distribucion de precios</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="~/Caja/Añadir" method="post">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Medio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CODMEDIOS", mediosPago, new { @class = "form-control select2", @style = "width: 100%;" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Monto</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="Monto" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-12">
+                            <center>
+                                <input type="hidden" name="CodCue" value="@ViewBag.CodCue" />
+                                <input type="hidden" name="seriePago" id="seriePagoR" />
+                                <input type="hidden" name="rucPago" id="rucPagoR" />
+                                <input type="hidden" name="tipPago" id="tipPagoR" />
+                                <input type="hidden" name="montoCambio" id="montoCambio" />
+                                <input type="hidden" name="tipMoneda" id="tipMonedaR" />
+                                <input type="submit" value="Registrar" class="btn btn-danger" />
+                            </center>
+                        </div>
+
+                    </form>
+
+                        <div class="col-md-12">
+
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Medios Pago</th>
+                                        <th>Importe</th>
+                                        <th>Importe Soles</th>
+                                        <th>Moneda</th>
+                                        <th>Estado</th>
+                                        <th><i class="fa fa-trash-o"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @foreach (var item1 in pago)
+                                    {
+                                    
+                                        <tr>
+
+                                            <td>@Html.DisplayFor(modelItem => item1.item)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.NomMedios)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.Importe)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.ImporteSoles)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.NomMoneda)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.Estado)</td>
+                                            <td>
+                                                <div class="tools">
+                                                    <form method="post" action="~/Caja/Delete">
+                                                        <input type="hidden" name="item" value="@item1.item" />
+                                                        <input type="hidden" name="CodCue" value="@ViewBag.CodCue" />
+                                                        <input type="hidden" name="seriePago" id="seriePago" />
+                                                        <input type="hidden" name="rucPago" id="rucPago" />
+                                                        <input type="hidden" name="montoCambio" id="montoCambioR" />
+                                                        <input type="hidden" name="tipPago" id="tipPago" />
+                                                        <input type="hidden" name="tipMoneda" id="tipMoneda" />
+                                                        <button class="btn-danger" type="submit"><i class="fa fa-trash-o"></i></button>
+                                                    </form>
+
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <input type="hidden" value="@ViewBag.CodCue" name="CodCue" />
+
+</div>
+                <br /><br /><br /><br /><br /><br />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        
+
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+
+        $('#moneda option[value=TM001]').prop('selected', 'selected').change();
+        $('#ruc option[value=@ViewBag.ruc]').prop('selected', 'selected').change();
+
+        $('#juridica').css('display', 'none');
+
+        var opcion_seleccionada = $("#serie option:selected").text();
+        if (opcion_seleccionada.includes("FAC")) {
+            $('#juridica').fadeIn();
+        } else {
+            $('#juridica').fadeOut();
+        }
+
+        $('#serie').change(function (event) {
+
+            var opcion_seleccionada = $("#serie option:selected").text();
+            if (opcion_seleccionada.includes("FAC")) {
+                $('#juridica').fadeIn();
+            } else {
+                $('#juridica').fadeOut();
+            }
+
+        });
+
+        var serie = $("select#serie").val();
+
+        $.get('@Url.Action("ObtenerSerie", "Caja")', {
+            CodSerie: serie
+        }, function (response) {
+            $.each(response, function (index, value) {
+                $('#correlativo').val(value.Serie);
+            });
+        });
+
+        $("#serie").change(function (event) {
+            var ruc = $("select#serie").val();
+            $.get('@Url.Action("ObtenerSerie", "Caja")', {
+                CodSerie: serie
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $('#correlativo').val(value.Serie);
+                });
+            });
+        });
+
+
+        var ruc = $("select#ruc").val();
+
+        $.get('@Url.Action("ObtenerDatos", "Caja")', {
+            RUC: ruc
+        }, function (response) {
+            $.each(response, function (index, value) {
+                $('#NrRUC').val(value.RUC);
+                $('#RazonSocial').val(value.RazonSocial);
+                $('#Direccion').val(value.Direccion);
+            });
+        });
+
+        $("#ruc").change(function (event) {
+            var ruc = $("select#ruc").val();
+            $.get('@Url.Action("ObtenerDatos", "Caja")', {
+                RUC: ruc
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $('#NrRUC').val(value.RUC);
+                    $('#RazonSocial').val(value.RazonSocial);
+                    $('#Direccion').val(value.Direccion);
+                });
+            });
+        });
+
+
+
+
+
+        $("#tipoCambio").keyup(function () {
+            var value = $(this).val();
+            $("#montoCambio").val(value);
+        });
+
+        $("#tipoCambio").keyup(function () {
+            var value = $(this).val();
+            $("#montoCambioR").val(value);
+        });
+
+
+
+
+        var serie = $('#serie').val();
+        $("#seriePago").val(serie);
+
+        var ruc = $('#ruc').val();
+        $("#rucPago").val(ruc);
+
+        var TipoPago = $('#TipoPago').val();
+        $("#tipPago").val(TipoPago);
+
+        var moneda = $('#moneda').val();
+        $("#tipMoneda").val(moneda);
+
+
+
+        $('#serie').change(function (event) {
+            var codCuentaa = $('#serie').val();
+            $("#seriePago").val(codCuentaa);
+        });
+
+        $('#ruc').change(function (event) {
+            var codCuentaa = $('#ruc').val();
+            $("#rucPago").val(codCuentaa);
+        });
+
+        $('#TipoPago').change(function (event) {
+            var codCuentaa = $('#TipoPago').val();
+            $("#tipPago").val(codCuentaa);
+        });
+
+        $('#moneda').change(function (event) {
+            var codCuentaa = $('#moneda').val();
+            $("#tipMoneda").val(codCuentaa);
+        });
+
+
+
+
+
+
+        var serie = $('#serie').val();
+        $("#seriePagoR").val(serie);
+
+        var ruc = $('#ruc').val();
+        $("#rucPagoR").val(ruc);
+
+        var TipoPago = $('#TipoPago').val();
+        $("#tipPagoR").val(TipoPago);
+
+        var moneda = $('#moneda').val();
+        $("#tipMonedaR").val(moneda);
+
+
+
+        $('#serie').change(function (event) {
+            var codCuentaa = $('#serie').val();
+            $("#seriePagoR").val(codCuentaa);
+        });
+
+        $('#ruc').change(function (event) {
+            var codCuentaa = $('#ruc').val();
+            $("#rucPagoR").val(codCuentaa);
+        });
+
+        $('#TipoPago').change(function (event) {
+            var codCuentaa = $('#TipoPago').val();
+            $("#tipPagoR").val(codCuentaa);
+        });
+
+        $('#moneda').change(function (event) {
+            var codCuentaa = $('#moneda').val();
+            $("#tipMonedaR").val(codCuentaa);
+        });
+
+
+
+
+
+
+
+        @if (ViewBag.serie != "")
+        {
+            <Text>
+        $('#serie option[value=@ViewBag.serie]').prop('selected', 'selected').change();
+        </text>
+        }
+
+        @if (ViewBag.rucC != "")
+        {
+            <Text>
+        $('#ruc option[value=@ViewBag.rucC]').prop('selected', 'selected').change();
+        </text>
+        }
+
+        @if (ViewBag.tipPago != "")
+        {
+            <Text>
+        $('#TipoPago option[value=@ViewBag.tipPago]').prop('selected', 'selected').change();
+        </text>
+        }
+
+        @if (ViewBag.tipMoneda != "")
+        {
+            <Text>
+        $('#moneda option[value=@ViewBag.tipMoneda]').prop('selected', 'selected').change();
+        </text>
+        }
+
+        @if (ViewBag.modal != "")
+        {
+            <Text>
+        $('#myModal2').modal('show');
+        </text>
+        }
+
+        @if (ViewBag.tc != "")
+        {
+            <Text>
+        $('#tipoCambio').val("@ViewBag.tc");
+        $('#montoCambioR').val("@ViewBag.tc");
+        $('#montoCambio').val("@ViewBag.tc");
+        </text>
+            }
+            else {
+                <Text>
+                var tipoMo = $("select#moneda").val();
+
+        $.get('@Url.Action("ObtenerMoneda", "Caja")', {
+                TipMo: tipoMo
+        }, function(response) {
+            $.each(response, function(index, value) {
+                $('#tipoCambio').val(value.TipoCambio);
+                $("#montoCambio").val(value.TipoCambio);
+                $("#montoCambioR").val(value.TipoCambio);
+                    });
+                });
+
+        $("#moneda").change(function(event) {
+            var tipoMo = $("select#moneda").val();
+            $.get('@Url.Action("ObtenerMoneda", "Caja")', {
+            TipMo: tipoMo
+            }, function(response) {
+                $.each(response, function(index, value) {
+                    $('#tipoCambio').val(value.TipoCambio);
+                    $("#montoCambio").val(value.TipoCambio);
+                    $("#montoCambioR").val(value.TipoCambio);
+                });
+            });
+        });
+        </text>
+        }
+
+
+    });
+
+</script>

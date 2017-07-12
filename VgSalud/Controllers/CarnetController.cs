@@ -171,9 +171,21 @@ namespace VgSalud.Controllers
             string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
             string usuario = Session["UserID"].ToString();
 
+
             int Resu = 0;
             try
             {
+
+                var evalua = tar.ListadoCategoriaPacienteTarifa(car.CodTar).Find(x => x.CodCatPac == pacientes.CodCatPac);
+                var evalua1 = tar.ListadoTarifa().Find(x => x.CodTar == car.CodTar);
+                DatosGeneralesController da1 = new DatosGeneralesController();
+                E_Datos_Generales dat = da1.listadatogenerales().FirstOrDefault();
+
+                precio = decimal.Round(evalua.Precio / (dat.igv + 1), 2);
+                var result = ((evalua.Precio / decimal.Parse("1.18")) * dat.igv);
+                igv = decimal.Round(result, 2);
+                total = decimal.Round(precio + igv, 2);
+
                 using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
                 {
                     con.Open();
@@ -191,9 +203,9 @@ namespace VgSalud.Controllers
                                 da.Parameters.AddWithValue("@CodSede", sede);
                                 da.Parameters.AddWithValue("@Historia", car.Historia);
                                 da.Parameters.AddWithValue("@CodcatPac", pacientes.CodCatPac);
-                                da.Parameters.AddWithValue("@STotCue", car.precio);
-                                da.Parameters.AddWithValue("@IgvCue", car.igv);
-                                da.Parameters.AddWithValue("@TotCue", car.total);
+                                da.Parameters.AddWithValue("@STotCue", precio);
+                                da.Parameters.AddWithValue("@IgvCue", igv);
+                                da.Parameters.AddWithValue("@TotCue", total);
                                 da.Parameters.AddWithValue("@FecCrea", "");
                                 da.Parameters.AddWithValue("@FecAnul", "");
                                 da.Parameters.AddWithValue("@EstCue", 1);
@@ -209,10 +221,12 @@ namespace VgSalud.Controllers
                             else
                             {
 
+         
 
-                                precio = 0;
-                                igv = 0;
-                                total = 0;
+                                //tari.Precio = decimal.Round(evalua.Precio / (dat.igv + 1), 2);
+                                //var result = ((evalua.Precio / decimal.Parse("1.18")) * dat.igv);
+                                //tari.igv = decimal.Round(result, 2);
+                                //tari.total = decimal.Round(tari.Precio + tari.igv, 2);
 
                                 da.Parameters.AddWithValue("@CodCue", car.CodCue);
                                 da.Parameters.AddWithValue("@CodSede", "");
@@ -256,10 +270,10 @@ namespace VgSalud.Controllers
                                 dd.Parameters.AddWithValue("@CodDetalleP", 3);
                                 dd.Parameters.AddWithValue("@CodSede", sede);
                                 dd.Parameters.AddWithValue("@Cantidad", 1);
-                                dd.Parameters.AddWithValue("@precioUni", car.total);
-                                dd.Parameters.AddWithValue("@precio", car.precio);
-                                dd.Parameters.AddWithValue("@igv", car.igv);
-                                dd.Parameters.AddWithValue("@total", car.total);
+                                dd.Parameters.AddWithValue("@precioUni", total);
+                                dd.Parameters.AddWithValue("@precio", precio);
+                                dd.Parameters.AddWithValue("@igv", igv);
+                                dd.Parameters.AddWithValue("@total", total);
                                 dd.Parameters.AddWithValue("@EstDet", "1");
                                 dd.Parameters.AddWithValue("@FechaAten", "");
                                 dd.Parameters.AddWithValue("@TurnoAten", "");

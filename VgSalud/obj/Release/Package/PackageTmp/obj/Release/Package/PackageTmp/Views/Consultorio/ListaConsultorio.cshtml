@@ -1,0 +1,138 @@
+﻿@model IEnumerable<VgSalud.Models.E_Consultorio>
+
+@{
+    ViewBag.Title = "ListaConsultorio";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Consultorio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Consultorio</a></li>
+            <li class="active">Consultar Consultorio</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarConsultorio.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Consultorio/RegistrarConsultorio"><center><i class="fa fa-plus-circle" style="font-size:25px;color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+                           
+                            </div>
+                        }
+
+                    }
+
+                    
+                    <br />
+                      <div class="box-body">
+                          
+                          <fieldset>
+                              <legend style="margin-left:18px">Lista</legend>
+                              <div class="col-md-12">
+                                  <table id="example1" class="table table-bordered table-striped">
+                                      <thead>
+                                          <tr class="headTabla">
+                                              <th>Id</th>
+                                              <th>Consultorio</th>
+                                              <th>Servicio</th>
+                                              <th>Mixto</th>
+                                              <th>Estado</th>
+                                              <th><i class="fa fa-edit"></i></th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+
+
+                                          @foreach (var item in Model)
+                                          {
+
+                                              <tr>
+                                                  <td>@Html.DisplayFor(modelItem => item.IdConsul)</td>
+                                                  <td>@Html.DisplayFor(modelItem => item.DescConsul)</td>
+                                                  <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                                  <td>@Html.DisplayFor(modelItem => item.Mixto)</td>
+                                                  <td>@Html.DisplayFor(modelItem => item.EstConsul)</td>
+
+                                                  <td>
+                                                      <div class="tools">
+                                                          @{
+
+                                                              var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarConsultorio.cshtml");
+                                                              if (abc2 != null)
+                                                              {
+                                                                  <a title="Editar" href="ModificarConsultorio/@item.IdConsul"><i class="fa fa-edit"></i></a>
+                                                              }
+
+                                                          }
+
+                                                      </div>
+                                                  </td>
+                                              </tr>
+
+                                                              }
+
+                                      </tbody>
+
+                                  </table>
+                              </div>
+                          </fieldset>
+                    
+
+
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+    var ALT = 18; var N = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        if (presiono2 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarConsultorio");
+        }
+        else if (presiono2 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+    $(document).keyup(function (e) {
+
+        if (e.keyCode == ALT) {
+            presiono2 = false;
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+

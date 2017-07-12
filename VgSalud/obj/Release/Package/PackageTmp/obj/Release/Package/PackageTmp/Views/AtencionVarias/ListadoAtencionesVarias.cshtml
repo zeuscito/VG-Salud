@@ -1,0 +1,170 @@
+﻿@model IEnumerable<VgSalud.Models.E_AtencionVarias>
+
+@{
+    ViewBag.Title = "ListadoAtencionesVarias";
+    var evaluaTipo = (List<VgSalud.Models.E_AtencionVarias>)ViewBag.evaluaTipo;
+    var paciente = (SelectList)ViewBag.paciente;
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Atenciones Varias</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atenciones Varias</a></li>
+            <li class="active">Listado de Atenciones Varias</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 50px;">Lista</legend>
+                        <div class="col-md-12">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <form method="post" action="">
+
+                                <div class="col-md-3">
+                                    <div class="col-md-3">
+                                        <label>Paciente</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("historia", paciente, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <center>
+                                        <input type="submit" class="btn btn-danger" style="background-color:#13D003; border:0" value="Buscar" />
+                                    </center>
+                                </div>
+
+                            </form>
+                        </div>
+                        @if (evaluaTipo != null)
+                        {
+
+                            <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+
+                                <br />
+                                <div class="box-header">
+                                    <h3 class="box-title">Lista de Citas</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr class="headTabla">
+                                                <th>Codigo</th>
+                                                <th>Codigo Cuenta</th>
+                                                <th>Historia</th>
+                                                <th>Paciente</th>
+                                                <th>Fecha</th>
+                                                <th>Precio</th>
+                                                <th>IGV</th>
+                                                <th>Total</th>
+                                                <th>Estado</th>
+                                                <th><i class="fa fa-trash"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            @foreach (var item in evaluaTipo)
+                                            {
+
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item.CodAten)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Historia)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.NomPac)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.SubTotal)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Igv)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.EstConsul)</td>
+                                                    <td>
+                                                        <div class="tools">
+                                                            @{
+
+                                                                var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarAtencionesVarias.cshtml");
+                                                                if (abc1 != null)
+                                                                {
+                                                                    if (item.EstConsul == "G")
+                                                                    {
+                                                                        <text>
+                                                                            <a title="Eliminar" href="~/AtencionVarias/EliminarAtencionVaria/@item.CodAten"><i class="fa fa-trash"></i></a>
+                                                                        </text>
+                                                                    }
+                                                                }
+
+                                                                var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ListadoAtencionesVariasDetalle.cshtml");
+                                                                if (abc2 != null)
+                                                                {
+                                                                    <a title="Listar" href="~/AtencionVarias/ListadoAtencionesVariasDetalle/@item.CodAten"><i class="fa fa-list"></i></a>
+                                                                }
+
+                                                            }
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                                }
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                                                                }
+
+                    </fieldset>
+
+                    
+
+
+
+                </div>
+            </div>
+    </section>
+</div>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

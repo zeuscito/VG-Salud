@@ -1,0 +1,150 @@
+﻿@model VgSalud.Models.E_Sede
+
+@{
+    ViewBag.Title = "RegistrarSedes";
+    var centrocosto = (SelectList)ViewBag.cc;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Sedes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Sedes</a></li>
+            <li class="active">Registrar Sede</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+        
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaSedes">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 30px;">Registrar</legend>
+
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Nombre</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.NomSede, new { htmlAttributes = new { @class = "form-control" ,@placeholder="INGRESE EL NOMBRE DE LA SEDE" } })
+                                    @Html.ValidationMessageFor(model => model.NomSede, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Dirección</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DireccSede, new { htmlAttributes = new { @class = "form-control", @placeholder = "INGRESE LA DIRECCION" } })
+                                    @Html.ValidationMessageFor(model => model.DireccSede, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Teléfono</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.TelfSede, new { htmlAttributes = new { @class = "form-control",@placeholder = "INGRESE EL TELEFONO" } })
+                                    @Html.ValidationMessageFor(model => model.TelfSede, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Centro Costo</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("Idcc", centrocosto, "[NO SELECCIONADO]", new { @class = "form-control select2", @placeholder = "INGRESE EL CENTRO COSTO" })
+                                    @Html.ValidationMessageFor(model => model.Idcc, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @*@Html.EditorFor(model => model.EstEspec)*@
+                                    <input type="checkbox" name="EstSede" id="EstSede" value="" checked />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <label></label>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <br />
+                                <center>
+                                    <button type="submit" value="Registrar" class="btn btn-danger" style="background-color:#13D003; border:0" id="grabar">Registrar</button>
+                                </center>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+
+
+            </form>
+
+        </div>
+    </section>
+</div>
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#grabar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../Sedes/ListaSedes");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../Sedes/ListaSedes";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>
+
+
+

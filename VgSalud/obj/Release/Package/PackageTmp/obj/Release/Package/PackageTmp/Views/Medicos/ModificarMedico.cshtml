@@ -1,0 +1,578 @@
+﻿@model VgSalud.Models.E_Medico
+
+@{
+    ViewBag.Title = "ModificarMedico";
+    var ListaServicios = (SelectList)ViewBag.ListaServicios;
+    var ListaEspecialidad = (SelectList)ViewBag.ListaEspecialidad;
+    var ListaEmpresa = (SelectList)ViewBag.ListaEmpresaTercero;
+    var modal = "";
+    if (ViewBag.modal != null) { modal = ViewBag.modal; } else { modal = ""; };
+    var ListaProfesion = (SelectList)ViewBag.ListaProfesion;
+
+    var listadoSede = (SelectList)ViewBag.ListaSedes;
+
+    var ListaUsuario = (SelectList)ViewBag.ListaUsuario;
+
+    var ListitaSedes = (List<VgSalud.Models.E_Sede>)ViewBag.Sedes;
+    var listaMedTipTap = (List<VgSalud.Models.E_Medico_TipoTarifa>)ViewBag.listaMedTip;
+    var ListaTipoTarifa = (SelectList)ViewBag.ListaTipoTarifa;
+    var tarifario = (SelectList)ViewBag.tarifario;
+    var TarifaMedico = (List<VgSalud.Models.E_Medico>)ViewBag.TarifaMedico;
+    var select = " selected ";
+
+}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#DniMed").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+                else {
+                    if (event.keyCode < 96 || event.keyCode > 105) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+        $("#DniMed").keypress(function (e) {
+            if ($("#DniMed").val().length == 8) {
+                return false;
+            }
+        });
+
+
+    });
+
+</script>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Médicos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Modificar Médico</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="ListarMedico">
+                        <center style="margin-left:18px;">
+                            <i class="fa fa-arrow-circle-left" style="font-size:25px;color:#13D003;"></i><br><strong style="color:black">Regresar Atras</strong>
+                        </center>
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+
+
+
+                <form method="post" action="" id="formulario">
+
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend style="color:black;margin-left:16px">Medico a Modificar: <strong style="color:coral;margin-left:27px"> @Model.NomMed</strong> </legend>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="CodMed" id="CodMed" value="@Model.CodMed" />
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Nombres</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.NomMed, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NomMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>DNI</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DniMed, new { htmlAttributes = new { @class = "form-control", @id = "DniMed" } })
+                                    <label id="errorMessage" style="display:none;color:red">Error: Ingrese Correctamente un Dni Valido!!</label>
+                                    @Html.ValidationMessageFor(model => model.DniMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo Colegiatura</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @*@Html.EditorFor(model => model.TipPrfMed, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("TipPrfMed", ListaProfesion, new { @class = "form-control select2", @id = "TipPrfMed" })
+                                    @Html.ValidationMessageFor(model => model.TipPrfMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Colegiatura</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ColgMed, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ColgMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>RNE</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.RneMed, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.RneMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Dirección</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DireccMed, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DireccMed, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Teléfono</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.TelfMed, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TelfMed, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Servicio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @*@Html.EditorFor(model => model.CodServ, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("CodServ", ListaServicios, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodServ" })
+                                    @Html.ValidationMessageFor(model => model.CodServ, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Especialidad</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="Espe" value="@ViewBag.nombreEspe" readonly="readonly" />
+                                    <input type="hidden" name="CodEspec" id="CodEspec" value="@Model.CodEspec" />
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Empresa Tercero</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="Empresa" value="@ViewBag.NomEmpresa" readonly="readonly" />
+                                    <input type="hidden" name="CodEmp" id="CodEmp" value="@Model.CodEmp" />
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Usuario</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @*@Html.EditorFor(model => model.CodEmp, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    <label id="errorMessage1" style="display:none;color:red">Error: El usuario ya se encuentra Asignado seleccione uno diferente!!</label>
+                                    @Html.ValidationMessageFor(model => model.CodUsu, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Observacion</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <textarea name="ObservMed" id="ObservMed" V rows="2" cols="89" class="form-control">@Model.ObservMed</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Pago por turno</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.PagoTurno, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Abreviatura</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control" name="abreviatura" style="width:100%">
+                                        <option @if (Model.abreviatura == "MED.") { @select ; } value="MED.">MED</option>
+                                        <option @if (Model.abreviatura == "TEC.") { @select ; } value="TEC.">TEC</option>
+                                        <option @if (Model.abreviatura == "LIC.") { @select ; } value="LIC.">LIC</option>
+                                        <option @if (Model.abreviatura == "ODO.") { @select ; } value="ODO.">ODO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group md">
+                                <div class="col-md-3">
+                                    <label>En lista</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.EnLista, new { @checked = "true" })
+                                    @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Registra F.E.</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.EjecFichaElec, new { @checked = "true" })
+                                    @Html.ValidationMessageFor(model => model.EjecFichaElec, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+
+                                    @Html.EditorFor(model => model.EstMed)
+                                    @Html.ValidationMessageFor(model => model.EstMed, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <fieldset>
+                            <legend style="margin-left: 30px;">Filtro</legend>
+                            <div class="col-md-12">
+
+                                <div class="col-md-6">
+                                    <label>Tipo Tarifa</label>
+                                    @Html.DropDownList("codTipTar", ListaTipoTarifa, new { @class = "form-control select2" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Porcentaje</label>
+                                    <input type="text" name="porcentaje" class="form-control" />
+                                </div>
+                                <div class="col-md-2">
+                                    <br />
+                                    <button class="btn btn-info" style="padding:7px 10px;margin-top:3px;background-color:#13D003;border:0px" type="submit" id="registrar1"><i class="fa fa-plus"></i></button>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <br />
+                        <fieldset>
+                            <legend style="margin-left: 30px;">Lista</legend>
+                            <div class="col-md-12" style="margin-left: 15px;">
+
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tarifa</th>
+                                            <th>Porcentaje</th>
+                                            <th><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in listaMedTipTap)
+                                        {
+                                        <tr>
+
+                                            <td>@Html.DisplayFor(modelItem => item.nomTip)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.porcentaje)</td>
+                                            <td>
+                                                <div class="tools">
+
+                                                    @*<form action="~/Medicos/Eliminar" method="post">*@
+                                                    <input type="hidden" name="CodMed" class="CodMed" value="@item.CodMed" />
+                                                    <button type="submit" name="CodTipTar1" value="@item.CodTipTar" class="btn btn-danger eliminar1"><i class="glyphicon glyphicon-refresh"></i></button>
+                                                    @*</form>*@
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </fieldset>
+
+                    </div>
+
+                    <div class="col-md-6"></div>
+
+                    <div class="col-md-6">
+
+                        <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                            <label></label>
+                            <center>
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2" style="padding:8px 13px;background-color:#13D003;border:0px" id="agregarID">Pago de Tarifas Especiales&nbsp&nbsp<i class="glyphicon glyphicon-list"></i></button>
+                            </center>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="modal fade" id="myModal2" role="dialog">
+                            <div class="modal-dialog">
+
+
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Distribucion de precios</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="col-md-12">
+
+                                            <div class="col-md-7">
+                                                <label>Tarifa</label>
+                                                @Html.DropDownList("CodTar", tarifario, new { @class = "form-control select2" , @style= "width:100%" })
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-12">
+                                                    <label>Porcentaje</label>
+                                                    <input type="text" name="porcentaje1" class="form-control" />
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <br />
+                                                <button class="btn btn-info" style="padding:7px 10px;margin-top:3px;background-color:#13D003;border:0px" type="submit" id="agregar"><i class="fa fa-plus"></i></button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <br />
+                                            <table id="example3" class="table table-bordered table-striped">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th>Tarifa</th>
+                                                        <th>Porcentaje</th>
+                                                        <th><i class="fa fa-trash-o"></i></th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @if (TarifaMedico != null)
+                                                    {
+                                                        foreach (var item in TarifaMedico)
+                                                        {
+                                                    <tr>
+
+                                                        <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.porcentaje1)</td>
+                                                        <td>
+                                                            <div class="tools">
+                                                                <button type="submit" name="CodTar1" value="@item.CodTar" class="btn btn-danger eliminar"><i class="fa fa-trash-o"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                    <br /><br /><br /><br /><br /><br />
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <center>
+                            <button type="button" id="modificar" value="Modificar" class="btn btn-danger" style="background-color:#13D003;border:0px">Modificar</button>
+                        </center>
+                    </div>
+
+
+                    <input type="hidden" name="Evento" id="Evento" />
+
+                </form>
+                <label></label>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var ver = false;
+
+        $("#registrar1").click(function () {
+            $("#Evento").val("1");
+        });
+
+        $("#agregar").click(function () {
+            $("#Evento").val("2");
+        });
+
+        $(".eliminar1").click(function () {
+            $("#Evento").val("3");
+        });
+        $(".eliminar").click(function () {
+            $("#Evento").val("4");
+        });
+
+        $("#modificar").click(function () {
+            $("#formulario").submit();
+        });
+
+        @if (modal != "") {
+          <text> $("#myModal2").modal("show");</text>
+        }
+
+
+        $("#DniMed").keyup(function () {
+            var dni = this.value;
+            $.get('@Url.Action("ValidarDniXMedico", "Medicos")', { dni: dni },
+                function (response) {
+                    if (response === true) {
+                        $("#errorMessage").show();
+
+                    } else {
+                        $("#errorMessage").hide();
+
+                    }
+                });
+        });
+
+
+
+        $("#CodUsu").change(function () {
+            debugger;
+            var codmed = "@Model.CodMed";
+            var codusu = this.value;
+            
+            $.get('@Url.Action("ValidandoUsuarioMedicoExistente", "Medicos")', { codusu: codusu, codmed: codmed },
+                function (response) {
+                    debugger
+                    if (response === true) {
+                        $("#errorMessage1").show();
+                        ver = false;
+                        $("#modificar").attr("disabled", true);
+                    } else {
+                        $("#errorMessage1").hide();
+                        ver = true;
+                        $("#modificar").attr("disabled", false);
+                    }
+                });
+        });
+
+
+        $('#CodServ').change(function (event) {
+            var sports = $("select#CodServ").val();
+            $.get('@Url.Action("Buscar_EspecialidadEmpresa_Servicio", "Servicios")', {
+                id: sports
+
+            }, function (response) {
+
+                $.each(response, function (index, value) {
+
+                    $('#Espe').val(value.Especialidad);
+                    $('#CodEspec').val(value.CodEspec);
+                    $('#CodEmp').val(value.CodEmp);
+                    $('#Empresa').val(value.Empresa);
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            var ALT = 18; var G = 71; var presiono1 = false;
+            $(document).keydown(function (e) {
+                if (e.keyCode == ALT) {
+                    presiono1 = true;
+                }
+                if ((presiono1 == true) && (e.keyCode == 123) && (ver == true)) {
+                    $("#modificar").click();
+                }
+                else if (presiono1 && (e.keyCode == 65)) {
+                    window.location.href = "ListarMedico";
+                }
+
+            });
+
+            $(document).keyup(function (e) {
+                if (e.keyCode == G) {
+                    presiono2 = false;
+                }
+            });
+
+        });
+
+
+
+
+
+    });
+
+</script>

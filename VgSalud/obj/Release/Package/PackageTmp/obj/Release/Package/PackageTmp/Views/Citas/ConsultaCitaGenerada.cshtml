@@ -1,0 +1,493 @@
+﻿@{
+    ViewBag.Title = "ConsultaCitaGenerada";
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    VgSalud.Controllers.UtilitarioController u = new VgSalud.Controllers.UtilitarioController();
+    VgSalud.Controllers.TarifarioController t = new VgSalud.Controllers.TarifarioController();
+    VgSalud.Models.E_Master regH = u.ListadoHoraServidor().FirstOrDefault();
+    var listaConsulta = (List<VgSalud.Models.E_Citas>)ViewBag.listaConsulta;
+    var listaCitasHoy = (List<VgSalud.Models.E_Citas>)ViewBag.listaCitasHoy;
+    var naranja = "bg-yellow-gradient";
+    var rojo = "bg-red-gradient";
+    var azul = "bg-blue-gradient";
+    var salto = "&nbsp";
+    Layout = null;
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+    var md2 = "class=col-md-2";
+    var md3 = "class=col-md-3";
+    int dimension = Int32.Parse(ViewBag.dimension);
+    int contadorGeneral = 0;
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+@if (listaConsulta != null)
+{
+
+
+    foreach (var e in listaConsulta)
+    {
+        int horaI = e.horaI.Hours * 60;
+        int tiempoITotal = horaI + e.horaI.Minutes;
+        int horaF = e.horaF.Hours * 60;
+        int tiempoFTotal = horaF + e.horaF.Minutes;
+        int minutos = tiempoFTotal - tiempoITotal;
+        int intervalo = e.intMin;
+        int copiaIntervalo = e.intMin;
+        int maximo = minutos / intervalo;
+        int numeracion = 1;
+        int inicia = 0;
+        int compara;
+        DateTime horaG = DateTime.Parse(e.horaI.ToString());
+        int cuentaLista = 1;
+        DateTime hora = DateTime.Parse(e.horaI.ToString());
+        TimeSpan horafin = TimeSpan.Parse(e.horaF.ToString());
+        if (listaCitasHoy.Count() != 0)
+        {
+            foreach (var o in listaCitasHoy)
+            {
+                DateTime hora1 = DateTime.Parse(o.horaI.ToString());
+                DateTime hora2 = DateTime.Parse(o.horaF.ToString());
+
+                TimeSpan diff1 = hora2.Subtract(hora1);
+
+                int nuevo = (diff1.Hours*60)+diff1.Minutes;
+
+                for (int i = 1; i <= maximo; i++)
+                {
+
+                    double aa = inicia * intervalo;
+                    DateTime newTime = hora.AddMinutes(aa);
+                    string inicial = newTime.ToString("HH:mm");
+                    DateTime horaISis = DateTime.Parse(o.horaI.ToString());
+                    string hvIF = newTime.ToString("hh:mm tt");
+                    string hvIIF = horaISis.ToString("hh:mm tt");
+                    double ab = (inicia + 1) * intervalo;
+                    DateTime newTime1 = hora.AddMinutes(ab);
+                    string final = newTime1.ToString("HH:mm");
+                    string hvIFF = newTime1.ToString("hh:mm tt");
+                    TimeSpan comparaLocalI = TimeSpan.Parse(inicial);
+                    TimeSpan comparaBDI = TimeSpan.Parse(o.horaI.ToString());
+                    TimeSpan comparaLocalF = TimeSpan.Parse(final);
+                    TimeSpan comparaBDF = TimeSpan.Parse(o.horaF.ToString());
+
+
+                    if (comparaLocalF <= horafin)
+                    {
+                        if (comparaBDI <= comparaLocalF && comparaLocalI < comparaBDI)
+                        {
+                            contadorGeneral++;
+                            TimeSpan diff2 = comparaBDI.Subtract(comparaLocalI);
+                            int nuevo2 = (diff2.Hours * 60) + diff2.Minutes;
+                            <div class="alto @if (dimension <= 1270) { Write("col-md-3"); } else { Write("col-md-2"); }" style="margin-bottom:2%">
+                                <form method="post" action="~/Citas/RegistraCita" style="height:100%;">
+                                    <div class="small-box bg-green" style="height:100%;">
+                                        <div class="inner">
+                                            <h3>@contadorGeneral</h3>
+                                            <table>
+                                                <tr style="font-size:14px">
+                                                    <td><b>H. Inicio: &nbsp</b> @hvIF</td>
+                                                </tr>
+                                                <tr style="font-size:14px">
+                                                    <td>
+                                                        <b>H. Final: &nbsp</b>
+                                                        @{
+    DateTime nuevaHora = DateTime.Parse(hvIF);
+    hora = nuevaHora;
+    nuevaHora = nuevaHora.AddMinutes(nuevo2);
+    intervalo = nuevo2;
+    decimal comparar = intervalo / copiaIntervalo;
+    compara = (int)Math.Ceiling(comparar);
+    numeracion = numeracion + compara - 1;
+    inicia = 0;
+    string muestraNH = nuevaHora.ToString("hh:mm tt");
+    Write(muestraNH);
+
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-size:14px">
+                                                    <td><b>Dr: &nbsp</b> @e.NomMed</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <input type="hidden" name="Turno" value="@ViewBag.turno" />
+                                        <input type="hidden" name="Historia" value="@ViewBag.idCliente" />
+                                        <input type="hidden" name="fechaCita" value="@ViewBag.fechaSeleccionada" />
+                                        <input type="hidden" name="Consultorio" value="@ViewBag.consultorio" />
+                                        <input type="hidden" name="intervalo" value="@copiaIntervalo" />
+                                        <input type="hidden" name="CodMed" value="@e.CodMed" />
+                                        <input type="hidden" name="CodServ" value="@e.CodServ" />
+                                        <input type="hidden" name="CodEspec" value="@e.CodEspec" />
+                                        <input type="hidden" name="NomMed" value="@e.NomMed" />
+                                        <input type="hidden" name="HoraInicio" value="@hvIF" />
+                                        <input type="hidden" name="HoraFin" value="@hvIFF" />
+                                        <input type="hidden" name="HoraInicio" value="@inicial" />
+                                        <input type="hidden" name="HoraFin" value="@final" />
+                                        <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                                        <input type="hidden" name="condicion" value="cita" />
+                                        <div class="icon">
+                                            <i class="fa fa-sticky-note"></i>
+                                        </div>
+                                        <a class="small-box-footer">
+                                            @{
+    var abc = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistraCita.cshtml");
+    if (abc != null)
+    {
+                                                    <input type="submit" value="Libre" style="background-color: transparent; border: 0px transparent" /> <i class="fa fa-arrow-circle-right"></i>
+    }
+                                            }
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                                                    inicia++;
+                                                    numeracion++;
+                                                }
+
+                                                else
+                                                {
+
+                                                    bool evalua = ((comparaBDI <= comparaLocalF && comparaBDI >= comparaLocalI) || (comparaBDF <= comparaLocalF && comparaBDF > comparaLocalI)) || (comparaBDI <= comparaLocalI && comparaBDF >= comparaLocalF);
+
+                                                    if (evalua == true)
+                                                    {
+                                                        contadorGeneral++;
+                                                        var enlace = "href=../Citas/CancelarCita/?id=" + o.CodCita + "&cadena=" + ViewBag.cadena;
+
+
+
+
+                            <div class="alto @if (dimension <= 1270) { Write("col-md-3"); } else { Write("col-md-2"); }" style="margin-bottom:2%">
+                                <form method="post" action="~/Citas/RegistraCita" style="height:100%;">
+                                    <div class="small-box
+                     @if (o.Estado.Equals("G"))
+{ @naranja;
+}
+else if (o.Estado.Equals("F"))
+{ @rojo }
+else if (o.Estado.Equals("A"))
+{ @azul }
+                      " style="height:100%;">
+                                        <div class="inner">
+                                            <div class="col-md-12" style="margin:0; padding:0;">
+                                                <div class="col-md-3">
+                                                    <h3>@contadorGeneral</h3>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <p style="font-size:14.9px;"><b>H. Inicio: &nbsp</b>@hvIIF</p>
+                                                    <p style="font-size:14.9px;">
+                                                        <b>H. Fin: &nbsp</b>@{
+                                                            DateTime nuevaHora = DateTime.Parse(hvIIF);
+                                                            hora = nuevaHora;
+                                                            nuevaHora = nuevaHora.AddMinutes(nuevo);
+                                                            intervalo = nuevo;
+                                                            decimal comparar = intervalo / copiaIntervalo;
+                                                            compara = (int)Math.Ceiling(comparar);
+                                                            numeracion = numeracion + compara - 1;
+                                                            inicia = 0;
+
+                                                            string muestraNH = nuevaHora.ToString("hh:mm tt");
+                                                            Write(muestraNH);
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            @if (o.Estado.Equals("G"))
+                                            {
+                                                DateTime da = regH.HoraServidor;
+                                                string fecha = ViewBag.fechaSeleccionada;
+                                                string horaCompara = comparaBDI.ToString();
+                                                string Finalss = fecha + " " + horaCompara;
+                                                DateTime dn = DateTime.Parse(Finalss);
+                                                int horas = (dn.Hour - da.Hour);
+                                                string demosd = "años: " + (dn.Year - da.Year).ToString() + " meses:" + (Math.Abs(dn.Month - da.Month)) + " dias: " + (dn.Day - da.Day) + " horas: " + (dn.Hour - da.Hour);
+                                                if (da.Year >= dn.Year)
+                                                {
+                                                    if (da.Month >= dn.Month)
+                                                    {
+                                                        if (da.Day >= dn.Day)
+                                                        {
+                                                            if (horas <= 6)
+                                                            {
+                                                                @Html.Label("Reserva vencida");
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @salto;
+                                                }
+                                            }
+                                            &nbsp
+                                            <p style="line-height:15px"><b>Paciente: &nbsp</b>@o.NombrePaciente</p>
+                                            <p style="line-height:15px"><b>Tarifa: &nbsp</b>@o.DescTar</p>
+
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fa fa-sticky-note"></i>
+                                        </div>
+                                        <a @if (o.Estado.Equals("G")) { var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCita.cshtml"); if (abc1 != null) { @enlace; } } class="small-box-footer" style="font-size: 30px;">
+                                            @if (o.Estado.Equals("G"))
+                                            {
+                                                string reservado = "Reservado";
+                                                @reservado;
+                                            }
+                                            else if (o.Estado.Equals("F"))
+                                            {
+                                                @Html.Label("Facturado");
+                                            }
+                                            else if (o.Estado.Equals("A"))
+                                            {
+                                                @Html.Label("Atendido");
+                                            } <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                    </form>
+</div>
+                                                                if (cuentaLista < listaCitasHoy.Count())
+                                                                {
+                                                                    numeracion++;
+                                                                    inicia++;
+                                                                    cuentaLista++;
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                            else
+                                                            {
+                                                                contadorGeneral++;
+
+                                                            <div class="alto @if (dimension <= 1270) { Write("col-md-3"); } else { Write("col-md-2"); }" style="margin-bottom:2%">
+                                                                <form method="post" action="~/Citas/RegistraCita" style="height:100%">
+                                                                    <div class="small-box bg-green" style="height:100%">
+                                                                        <div class="inner">
+                                                                            <h3>@contadorGeneral</h3>
+                                                                            <table>
+                                                                                <tr style="font-size:14px">
+                                                                                    <td><b>H. Inicio: &nbsp</b> @hvIF</td>
+                                                                                </tr>
+                                                                                <tr style="font-size:14px">
+                                                                                    <td>
+                                                                                        <b>H. Final: &nbsp</b>
+                                                                                        @{
+    DateTime nuevaHora = DateTime.Parse(hvIF);
+    hora = nuevaHora;
+    nuevaHora = nuevaHora.AddMinutes(copiaIntervalo);
+    inicia = 0;
+    intervalo = copiaIntervalo;
+    string muestraNH = nuevaHora.ToString("hh:mm tt");
+    Write(muestraNH);
+                                                                                        }
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr style="font-size:14px">
+                                                                                    <td><b>Dr: &nbsp</b> @e.NomMed</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                        <input type="hidden" name="Turno" value="@ViewBag.turno" />
+                                                                        <input type="hidden" name="Historia" value="@ViewBag.idCliente" />
+                                                                        <input type="hidden" name="fechaCita" value="@ViewBag.fechaSeleccionada" />
+                                                                        <input type="hidden" name="Consultorio" value="@ViewBag.consultorio" />
+                                                                        <input type="hidden" name="intervalo" value="@copiaIntervalo" />
+                                                                        <input type="hidden" name="CodMed" value="@e.CodMed" />
+                                                                        <input type="hidden" name="CodServ" value="@e.CodServ" />
+                                                                        <input type="hidden" name="CodEspec" value="@e.CodEspec" />
+                                                                        <input type="hidden" name="NomMed" value="@e.NomMed" />
+                                                                        <input type="hidden" name="HoraInicio" value="@hvIF" />
+                                                                        <input type="hidden" name="HoraFin" value="@hvIFF" />
+                                                                        <input type="hidden" name="HoraInicio" value="@inicial" />
+                                                                        <input type="hidden" name="HoraFin" value="@final" />
+                                                                        <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                                                                        <input type="hidden" name="condicion" value="cita" />
+                                                                        <div class="icon">
+                                                                            <i class="fa fa-sticky-note"></i>
+                                                                        </div>
+                                                                        <a class="small-box-footer">
+                                                                            @{
+    var abc = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistraCita.cshtml");
+    if (abc != null)
+    {
+                                                                                    <input type="submit" value="Libre" style="background-color: transparent; border: 0px transparent" /> <i class="fa fa-arrow-circle-right"></i>
+    }
+                                                                            }
+                                                                        </a>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+
+                                                                                        }
+                                                                                        numeracion++;
+                                                                                        inicia++;
+                                                                                        if (i == maximo)
+                                                                                        {
+                                                                                            hora = horaG;
+                                                                                            inicia = 0;
+                                                                                        }
+                                                                                    }
+
+
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (comparaLocalI <= horafin)
+                                                                                    {
+                                                                                        contadorGeneral++;
+
+                                                                                        TimeSpan diff2 = horafin.Subtract(comparaLocalI);
+                                                                                        int nuevo2 = (diff2.Hours * 60) + diff2.Minutes;
+                                                                                        <div class="alto @if (dimension <= 1270) { Write("col-md-3"); } else { Write("col-md-2"); }" style="margin-bottom:2%">
+                                                                                            <form method="post" action="~/Citas/RegistraCita" style="height:100%">
+                                                                                                <div class="small-box bg-green" style="height:100%;">
+                                                                                                    <div class="inner">
+                                                                                                        <h3>@contadorGeneral</h3>
+                                                                                                        <table>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td><b>H. Inicio: &nbsp</b> @hvIF</td>
+                                                                                                            </tr>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td>
+                                                                                                                    <b>H. Final: &nbsp</b>
+                                                                                                                    @{
+                                                                                                                        DateTime nuevaHora = DateTime.Parse(hvIF);
+                                                                                                                        hora = nuevaHora;
+                                                                                                                        nuevaHora = nuevaHora.AddMinutes(nuevo2);
+                                                                                                                        intervalo = nuevo2;
+                                                                                                                        decimal comparar = intervalo / copiaIntervalo;
+                                                                                                                        compara = (int)Math.Ceiling(comparar);
+                                                                                                                        numeracion = numeracion + compara - 1;
+                                                                                                                        inicia = 0;
+                                                                                                                        string muestraNH = nuevaHora.ToString("hh:mm tt");
+                                                                                                                        Write(muestraNH);
+
+                                                                                                                    }
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td><b>Dr: &nbsp</b> @e.NomMed</td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                    <input type="hidden" name="Turno" value="@ViewBag.turno" />
+                                                                                                    <input type="hidden" name="Historia" value="@ViewBag.idCliente" />
+                                                                                                    <input type="hidden" name="fechaCita" value="@ViewBag.fechaSeleccionada" />
+                                                                                                    <input type="hidden" name="Consultorio" value="@ViewBag.consultorio" />
+                                                                                                    <input type="hidden" name="intervalo" value="@copiaIntervalo" />
+                                                                                                    <input type="hidden" name="CodMed" value="@e.CodMed" />
+                                                                                                    <input type="hidden" name="CodServ" value="@e.CodServ" />
+                                                                                                    <input type="hidden" name="CodEspec" value="@e.CodEspec" />
+                                                                                                    <input type="hidden" name="NomMed" value="@e.NomMed" />
+                                                                                                    <input type="hidden" name="HoraInicio" value="@hvIF" />
+                                                                                                    <input type="hidden" name="HoraFin" value="@hvIFF" />
+                                                                                                    <input type="hidden" name="HoraInicio" value="@inicial" />
+                                                                                                    <input type="hidden" name="HoraFin" value="@final" />
+                                                                                                    <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                                                                                                    <input type="hidden" name="condicion" value="cita" />
+                                                                                                    <div class="icon">
+                                                                                                        <i class="fa fa-sticky-note"></i>
+                                                                                                    </div>
+                                                                                                    <a class="small-box-footer">
+                                                                                                        @{
+                                                                                                            var abc = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistraCita.cshtml");
+                                                                                                            if (abc != null)
+                                                                                                            {
+                                                                                                                <input type="submit" value="Libre" style="background-color: transparent; border: 0px transparent" /> <i class="fa fa-arrow-circle-right"></i>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+
+                                                                                                                                break;
+                                                                                                                            }
+
+
+                                                                                                                        }
+
+
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                for (int i = 1; i <= maximo; i++)
+                                                                                                                {
+                                                                                                                    double aa = inicia * intervalo;
+                                                                                                                    DateTime newTime = hora.AddMinutes(aa);
+                                                                                                                    string inicial = newTime.ToString("hh:mm tt");
+                                                                                                                    double ab = (inicia + 1) * intervalo;
+                                                                                                                    DateTime newTime1 = hora.AddMinutes(ab);
+                                                                                                                    string final = newTime1.ToString("hh:mm tt");
+
+                                                                                        <div class="alto @if (dimension <= 1270) { Write("col-md-3"); } else { Write("col-md-2"); }">
+                                                                                            <form method="post" action="~/Citas/RegistraCita">
+                                                                                                <div class="small-box bg-green" style="height:100%">
+                                                                                                    <div class="inner">
+                                                                                                        <h3>@numeracion</h3>
+                                                                                                        <table>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td><b>H. Inicio: &nbsp</b> @inicial</td>
+                                                                                                            </tr>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td><b>H. Final: &nbsp</b> @final</td>
+                                                                                                            </tr>
+                                                                                                            <tr style="font-size:14px">
+                                                                                                                <td><b>Dr: &nbsp</b> @e.NomMed</td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                    <input type="hidden" name="Turno" value="@ViewBag.turno" />
+                                                                                                    <input type="hidden" name="Historia" value="@ViewBag.idCliente" />
+                                                                                                    <input type="hidden" name="fechaCita" value="@ViewBag.fechaSeleccionada" />
+                                                                                                    <input type="hidden" name="Consultorio" value="@ViewBag.consultorio" />
+                                                                                                    <input type="hidden" name="intervalo" value="@intervalo" />
+                                                                                                    <input type="hidden" name="CodMed" value="@e.CodMed" />
+                                                                                                    <input type="hidden" name="CodServ" value="@e.CodServ" />
+                                                                                                    <input type="hidden" name="CodEspec" value="@e.CodEspec" />
+                                                                                                    <input type="hidden" name="NomMed" value="@e.NomMed" />
+                                                                                                    <input type="hidden" name="HoraInicio" value="@inicial" />
+                                                                                                    <input type="hidden" name="HoraFin" value="@final" />
+                                                                                                    <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                                                                                                    <input type="hidden" name="condicion" value="cita" />
+                                                                                                    <div class="icon">
+                                                                                                        <i class="fa fa-sticky-note"></i>
+                                                                                                    </div>
+                                                                                                    <a class="small-box-footer">
+                                                                                                        @{
+                                                                                                            var abc = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistraCita.cshtml");
+                                                                                                            if (abc != null)
+                                                                                                            {
+                                                                                                                <input type="submit" value="Libre" style="background-color: transparent; border: 0px transparent" /> <i class="fa fa-arrow-circle-right"></i>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+
+                                                                                                                            numeracion++;
+                                                                                                                            inicia++;
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                                            }
+
+                            
+
+<script type="text/javascript">
+
+        var heights = $(".alto").map(function () {
+            return $(this).height();
+        }).get(),
+
+maxHeight = Math.max.apply(null, heights);
+
+        $(".alto").height(maxHeight);
+     
+</script>

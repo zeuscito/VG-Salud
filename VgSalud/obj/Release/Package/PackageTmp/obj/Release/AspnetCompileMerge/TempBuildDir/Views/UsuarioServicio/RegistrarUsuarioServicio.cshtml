@@ -1,0 +1,82 @@
+﻿@model VgSalud.Models.E_Usuario_Servicio
+
+@{
+    ViewBag.Title = "RegistrarUsuarioServicio";
+    var listausuario =  (SelectList)ViewBag.listaUsuario;
+    var listaservicio =  (SelectList)ViewBag.listaServicio;
+}    
+
+<div class="content-wrapper">
+<section class="content-header">
+    <h1>Usuario Servicio</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-users"></i>Usuario Servicio</a></li>
+        <li class="active">Registrar Usuario Servicio</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Registrar Usuario Servicio</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+
+        <form method="post" action="">
+
+            <div class="box-body">
+                <div class="col-md-6">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label>Usuario</label>
+                        </div>
+                        <div class="col-md-9">
+
+                            @Html.DropDownList("CodUsu",listausuario, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.CodUsu, "", new { @class = "text-danger" }) 
+
+                      
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label>Servicio</label>
+                        </div>
+                        <div class="col-md-9">
+
+                            @Html.DropDownList("CodServ", listaservicio, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                            @Html.ValidationMessageFor(model => model.CodServ, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                <label></label>
+                <br /><br />
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <center>
+                                <button type="submit" value="Modificar" class="btn btn-danger">Registrar</button>
+                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</section>
+</div>

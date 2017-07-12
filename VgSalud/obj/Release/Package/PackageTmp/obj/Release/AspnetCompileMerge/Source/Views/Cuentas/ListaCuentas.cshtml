@@ -1,0 +1,112 @@
+﻿@model IEnumerable<VgSalud.Models.E_Cuentas>
+@{
+    ViewBag.Title = "ListaCuentas";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Cuentas</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Cuentas</a></li>
+            <li class="active">Consultar Cuentas</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    
+                    <br />
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Cuentas</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Cuenta</th>
+                                    <th>Historia</th>
+                                    <th>Nombre Paciente</th>
+                                    <th>Categoria Pac.</th>
+                                    <th>Sub Total</th>
+                                    <th>IGV</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Fecha de creación</th>
+                                    <th><i class="fa fa-list"></i> / <i class="fa fa-money"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Historia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.nomCompleto)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.CodcatPac)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.STotCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IgvCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TotCue)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstGene)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.FecCrea)</td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ListaCuentasDetalle.cshtml");
+                                                    if (abc1 != null)
+                                                    {
+                                                        <a title="Listado de Cuentas" href="ListaCuentasDetalle/@item.CodCue"><i class="fa fa-list"></i></a>
+                                                    }
+
+                                                }
+                                                @{
+                                                if (item.EstGene.Equals("G")) {  
+                                                 
+                                                
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "VerificaCuenta.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <text>
+                                                        /  
+                                                        <a title="Facturar" href="VerificaCuenta/@item.CodCue"><i class="fa fa-money"></i></a>
+                                                        </text>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCuenta.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        <text>
+                                                        /
+                                                        <a title="Eliminar" href="EliminarCuenta/?CodCue=@item.CodCue"><i class="fa fa-trash"></i></a>
+                                                        </text>
+                                                    }
+
+                                                }
+                                                
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+ 

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<VgSalud.Models.E_Usuario_Servicio>
+
+@{
+    ViewBag.Title = "ListarUsuarioServicio";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Usuario Servicio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario Servicio</a></li>
+            <li class="active">Usuario Servicio/li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarUsuarioServicio.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/UsuarioServicio/RegistrarUsuarioServicio" class="btn btn-danger">Registrar nuevo Usuario Servicio &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Usuario Servicio</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>Usuario</th>
+                                    <th>Servicio</th>
+
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NombreUSuario)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                        <td>
+                                            <div class="tools">
+
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarUsuarioServicio.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Eliminar" href="Eliminar/?id=@item.CodUsu&id1=@item.CodServ"><i class="fa fa-trash-o"></i></a>
+                                                    }
+
+                                                }                                                
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+

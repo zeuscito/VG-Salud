@@ -1,0 +1,112 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+
+    <script language="javascript" type="text/javascript">
+     javascript:window.history.forward(1);
+    </script>
+</head>
+
+<body>
+    <div class="login-wrap">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="login-html">
+                <img src="~/Content/img/logo.png" width="100%" />
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab"></label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+                <div class="login-form">
+                    <div class="sign-in-htm">
+                        <div class="group">
+                            <label for="user" class="label">Usuario</label>
+                            <input id="alias" name="AliasUsu" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Contraseña</label>
+                            <input id="Pass" name="Pass" type="password" class="input" data-type="password">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Sede</label>
+                            <select id="soflow" class="select" name="CodSede"></select>
+                        </div>
+                        <div class="group" style="margin-top:10%">
+                            <input type="submit" class="button" value="Ingresar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+
+    function ready(initCascadeDropDownForfirstSelect) {
+        if (document.readyState != 'loading') {
+            initCascadeDropDownForfirstSelect();
+        } else {
+            document.addEventListener('DOMContentLoaded', initCascadeDropDownForfirstSelect);
+        }
+    };
+
+    function initCascadeDropDownForfirstSelect() {
+        var triggerElement = document.getElementById("alias");
+        triggerElement.addEventListener('change', function(e) {
+            var value = triggerElement.value;
+            var items = '';
+            var targetElement = document.getElementById("soflow");
+            if (value === "" || value == null) {
+                targetElement.innerHTML = items;
+                targetElement.value = '';
+                var event = document.createEvent('HTMLEvents');
+                event.initEvent('change', true, false);
+                targetElement.dispatchEvent(event);
+                return;
+            }
+            var url = '@Url.Action("VerSedes", "Login")' + '?alias=' + value;
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    // Success!
+                    if(request.responseText != null){
+                    var data = JSON.parse(request.responseText);
+                    if (data) {
+                        data.forEach(function(item, i) {
+                            items += '<option value="' + item.CodSede + '">' + item.NomSede + '</option>';
+                        });
+                        targetElement.innerHTML = items;
+                    }
+                    }
+                } else {
+                    console.log(request.statusText);
+                }
+            };
+
+            request.onerror = function (error) {
+                console.log(error);
+            };
+
+            request.send();
+        });
+    };
+
+    ready(initCascadeDropDownForfirstSelect);
+
+    </script>
+
+
+</body>
+
+</html>

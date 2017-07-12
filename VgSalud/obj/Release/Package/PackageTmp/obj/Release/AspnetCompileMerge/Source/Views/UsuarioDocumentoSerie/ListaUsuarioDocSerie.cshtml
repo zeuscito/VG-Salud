@@ -1,0 +1,102 @@
+﻿@model IEnumerable<VgSalud.Models.E_UsuarioDocumentoSerie>
+
+@{
+    ViewBag.Title = "ListaUsuarioDocSerie";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Usuario Docuemento Serie</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario Docuemento Serie</a></li>
+            <li class="active">Consulta Usuario Docuemento Serie</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarUsuarioDocSerie.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/UsuarioDocumentoSerie/RegistrarUsuarioDocSerie" class="btn btn-danger">Asignar Usuario/Documento Serie &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                        }
+
+                    }
+
+
+                    <br />
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Consultorios</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Serie</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.AliasUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Serie)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Prioridad)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstUDs)</td>
+
+                                        <td>
+                                            <div class="tools">
+                                                @{
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarUsuarioDocSerie.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarUsuarioDocSerie/?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-edit"></i></a>
+                                                    }
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarUsuarioDocSerie.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        if (item.EstUDs == true)
+                                                        {
+                                                            <a title="Editar" href="EliminarUsuarioDocSerie/?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-trash"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Editar" href="ActivarUsuarioDocSerie/?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-plus"></i></a>
+                                                        }
+                                                    }
+
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                                    }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>

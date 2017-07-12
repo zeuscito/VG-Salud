@@ -1,0 +1,348 @@
+﻿@model VgSalud.Models.E_Tarifario
+
+@{
+    ViewBag.Title = "Modificar Tarifario";
+    VgSalud.Controllers.TipoMonedaController a = new VgSalud.Controllers.TipoMonedaController();
+    var listadoEspecialidad = (SelectList)ViewBag.listadoEspecialidad;
+    var listadoCategoria = (SelectList)ViewBag.listadoCategoria;
+    var listadoTipoTarifa = (SelectList)ViewBag.listadoTipoTarifa;
+    var listadoSubTipoTarifa = (SelectList)ViewBag.listadoSubTipoTarifa;
+    var listadoTipoMoneda = (List<VgSalud.Models.E_TipoMoneda>)a.ListadoTipoMoneda();
+    var listadocatePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.listadocatePaciente;
+    var name = " selected";
+    var catePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.catePaciente;
+
+    var listadoSede = (SelectList)ViewBag.ListaSedes;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tarifario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tarifario</a></li>
+            <li class="active">Modificar Tarifario</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Modificar Tarifario</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+
+
+            <div class="box-body">
+
+
+                <fieldset>
+                    
+
+                    <div class="col-md-6">
+                        <h3 style="color:coral">Datos de Tarifario</h3>
+                        <form method="post" action="">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Descripción</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DescTar, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescTar, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin:0;padding:0">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Precio</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", @id = "prec2" } })
+                                        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Especialidad</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodEspec", listadoEspecialidad, "--Seleccione una especialidad--", new { @class = "form-control select2", @id = "especialidad" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodTipTar", listadoTipoTarifa, "--Seleccione un tipo de tarifa--", new { @class = "form-control select2", @id = "tipoTarifa" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de sub tarifa</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodSTipTar", listadoSubTipoTarifa, "--Seleccione un tipo de Sub tarifa--", new { @class = "form-control select2", @id = "subTipoTarifa" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de moneda</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="CodTipMon" id="moneda" class="form-control select2">
+                                        @foreach (var lista in listadoTipoMoneda)
+                                        {
+                                            <option @{if (lista.CodTipMon.Equals("TM001")) { @name       }  } value="@lista.CodTipMon">@lista.DescTipMon</option>
+    }
+                                    </select>
+                                </div>
+                            </div>
+                           
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.CheckBoxFor(model => model.EstTar, new { @checked = "checked" })
+                                    @Html.ValidationMessageFor(model => model.EstTar, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <br /><br /><br />
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Afecta IGV?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.AfecIgcv, new { @checked = "checked" })
+                                        @Html.ValidationMessageFor(model => model.AfecIgcv, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Requiere pago a Dr.?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.ModPrecTar, new { @checked = "checked" })
+                                        @Html.ValidationMessageFor(model => model.ModPrecTar, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12" style="margin:0; padding:0">
+                                    <div class="col-md-3">
+                                        <label>¿Precio modificable?</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.ModPrecio)
+                                        @Html.ValidationMessageFor(model => model.ModPrecio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <input name="CodTar" value="@Model.CodTar" type="hidden" />
+
+                            <div class="col-md-12" style="margin-top:5%">
+                                <div class="form-group">
+                                    <center>
+                                        <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button> 
+                                        <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    </center>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <h3 style="color:coral">Asignacion precios categoria</h3>
+                        <form action="~/Tarifario/AsignarPrecioM" method="post">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Lista de categorias por cliente:<br />
+
+                                    @Html.DropDownList("CodCatPac", listadoCategoria, new { @class = "form-control select2" })
+                                </div>
+                                <div class="col-md-4">
+                                    Precio:<br />
+                                    <input name="Precio" value="0" type="text" id="prec" class="form-control" />
+                                    <input name="CodTar" value="@Model.CodTar" type="hidden" />
+                                    <input type="hidden" id="tipMonedaR" name="TipMoneda" />
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <button type="submit" class="btn btn-danger">Agregar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+
+
+
+
+                    <div class="col-md-6" style="margin-bottom:-100px">
+                        <div class="content">
+                            
+                            <center>
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td>Codigo</td>
+                                            <td>Descripcion</td>
+                                            <td>Precio</td>
+                                            <th><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in catePaciente)
+                                        {
+                                            <tr>
+                                                <td>@item.CodCatPac</td>
+                                                <td>@item.DescCatPac</td>
+                                                <td>@item.Precio</td>
+                                                <td>
+                                                    <div class="tools">
+                                                        <a href="~/Tarifario/DeleteM/?id=@item.CodCatPac&codigo=@Model.CodTar"><i class="fa fa-trash-o"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+
+                            </center>
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-md-6">
+                        <div class="content">
+                            <h3 style="color:coral">Precios Categoria</h3>
+                            <center>
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td>Codigo</td>
+                                            <td>Descripcion</td>
+                                            <td>Precio</td>
+                                            <th><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in listadocatePaciente)
+                                        {
+                                            <tr>
+                                                <td>@item.CodCatPac</td>
+                                                <td>@item.DescCatPac</td>
+                                                <td>@item.Precio</td>
+                                                <td>
+                                                    <div class="tools">
+                                                        <a href="~/Tarifario/EliminaDetalle/?id=@item.CodTarCate&codForm=@item.CodTar"><i class="fa fa-trash-o"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+
+                            </center>
+                        </div>
+                    </div>
+
+
+                </fieldset>
+
+
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        var moneda = $('#moneda').val();
+        $("#tipMonedaR").val(moneda);
+
+        $('#moneda').change(function (event) {
+            var codCuentaa = $('#moneda').val();
+            $("#tipMonedaR").val(codCuentaa);
+        });
+
+        $('#tipoTarifa').change(function (event) {
+            var sports = $("select#tipoTarifa").val();
+            $.get('@Url.Action("ObtenerSubTipoTarifa", "Tarifario")', {
+                TipoTar: sports
+            }, function (response) {
+
+                var select = $('#subTipoTarifa');
+                select.find('option').remove();
+                $('<option>').val("").text("Seleccione una sub tarifa").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodSTipTar).text(value.DescSTipTar).appendTo(select);
+                });
+            });
+        });
+
+
+        $("#prec").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+        $("#prec2").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+
+            if (event.keyCode == 46 || event.keyCode == 8) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+
+    });
+
+</script>

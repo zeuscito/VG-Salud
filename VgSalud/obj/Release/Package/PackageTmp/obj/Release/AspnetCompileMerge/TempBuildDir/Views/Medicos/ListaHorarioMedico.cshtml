@@ -1,0 +1,135 @@
+﻿@model IEnumerable<VgSalud.Models.E_HorarioMedico>
+
+@{
+    ViewBag.Title = "ListaHorarioMedico";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Médicos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Consultar Médico</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Buscar registros</h3>
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        <div class="box-body">
+                            <div class="col-md-2">
+                                <select name="mes" id="mes" class="form-control select2">
+                                    <option value="1">ENERO</option>
+                                    <option value="2">FEBRERO</option>
+                                    <option value="3">MARZO</option>
+                                    <option value="4">ABRIL</option>
+                                    <option value="5">MAYO</option>
+                                    <option value="6">JUNIO</option>
+                                    <option value="7">JULIO</option>
+                                    <option value="8">AGOSTO</option>
+                                    <option value="9">SETIEMBRE</option>
+                                    <option value="10">OCTUBRE</option>
+                                    <option value="11">NOVIEMBRE</option>
+                                    <option value="12">DICIEMBRE</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select name="anio" id="anioCombo" class="form-control select2">
+                                    <option value="@ViewBag.anioActual">@ViewBag.anioActual</option>
+                                    <option value="@ViewBag.anioSiguiente">@ViewBag.anioSiguiente</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" class="btn btn-danger" value="Buscar" />
+                            </div>
+                            @{
+
+                                var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "HorarioMedico.cshtml");
+                                if (abc1 != null)
+                                {
+                                    <div class="col-md-6" align="center">
+                                        <a href="~/Medicos/HorarioMedico/@ViewBag.codigo" class="btn btn-info">Registrar horario</a>
+                                    </div>
+                                }
+
+                            }
+                            
+                        </div>
+                    }
+
+                    <div class="box-header">
+                        <h3 class="box-title">Tabla de horarios del medico</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Dia</th>
+                                    <th>Hora entrada</th>
+                                    <th>Hora salida</th>
+                                    <th>Intervalo</th>
+                                    <th>Turno</th>
+                                    <th>Consultorio</th>
+                                    <th>Asistencia</th>
+                                    <th>Estado</th>
+
+
+                                    <th><i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+                                    DateTime d1 = DateTime.Parse(item.horaInicio.ToString());
+                                    string horI = d1.ToString("hh:mm tt").ToUpper();
+                                    DateTime d2 = DateTime.Parse(item.horaFin.ToString());
+                                    string horF = d2.ToString("hh:mm tt").ToUpper();
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodHor)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.dia)</td>
+                                        <td>@horI</td>
+                                        <td>@horF</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IntMin) Min.</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Consultorio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Asistencia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td>
+                                            <div class="tools">
+                                                <a title="Horario" href="~/Medicos/Elimina/?id=@item.CodHor&CodMed=@ViewBag.codigo"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#mes option[value="@ViewBag.mesSelect"]').attr("selected", true);
+        $('#anio option[value="@ViewBag.anioSelect"]').attr("selected", true);
+
+    });
+
+</script>

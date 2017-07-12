@@ -1,0 +1,152 @@
+﻿@model VgSalud.Models.E_TipoMoneda
+
+@{
+    ViewBag.Title = "RegistrarTipoMoneda";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tipo de Moneda</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tipo de Moneda</a></li>
+            <li class="active">Registrar Tipo de Moneda</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-header">
+
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaTipoMoneda">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend  style="margin-left: 29px;">Registrar</legend>
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            @*<div class="form-group">
+                <div class="col-md-3">
+                    <label>Código</label>
+                </div>
+                <div class="col-md-9">
+                   @Html.EditorFor(model => model.CodEspec, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Descripción</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DescTipMon, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescTipMon, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tipo de cambio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.TipoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TipoCambio, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Fecha</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="fecha" class="form-control datepicker" id="Fecha" />
+                                    @*@Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control datepicker", @id = "Fecha" } })*@
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="checkbox" name="EstTipMon" id="EstTipMon" value="" checked />
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                    
+                    <div class="col-md-6">
+
+                    </div>
+
+
+                    <label></label>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <center>
+                                <button type="submit" value="Registrar" class="btn btn-danger" style="background-color:#13D003; border:0" id="grabar">Registrar</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+</div>
+
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#grabar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../TipoMoneda/ListaTipoMoneda");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../TipoMoneda/ListaTipoMoneda";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+

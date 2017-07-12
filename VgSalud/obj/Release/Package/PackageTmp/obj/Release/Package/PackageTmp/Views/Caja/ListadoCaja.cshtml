@@ -1,0 +1,554 @@
+﻿@model IEnumerable<VgSalud.Models.E_Caja>
+@{
+    ViewBag.Title = "ListadoCaja";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+    var colorCancelado = "style=background-color:#f7c2bb;color:#fff";
+    decimal total = 0;
+    var listaMediosPago = (List<VgSalud.Models.E_Caja>)ViewBag.listaMediosPago;
+    var CajaPreResumen = (List<VgSalud.Models.E_Caja>)ViewBag.CajaPreResumen;
+    var CajaPreResumenDetalle = (List<VgSalud.Models.E_Caja>)ViewBag.CajaPreResumenDetalle;
+    var listaMediosEncabezado = (List<VgSalud.Models.E_Caja>)ViewBag.listaMediosEncabezado;
+
+    var mediosPago = (SelectList)ViewBag.mediosPago;
+    var pago = (List<VgSalud.Models.E_Caja>)ViewBag.pago;
+}
+
+<style>
+    tr span.expand {
+        width: 20px;
+        height: 20px;
+        background-image: url('../../Content/img/plus.png');
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    tr span.open {
+        background-image: url('../../Content/img/menos.png');
+    }
+
+    div.expand-wrapper {
+        white-space: nowrap;
+    }
+</style>
+
+
+
+<form action="" method="post" id="formulario">
+    <input type="hidden" name="Evento" id="evento" />
+    <input type="hidden" name="Detalle" value="@ViewBag.Detalle" id="detalle" />
+    <input type="hidden" name="Elimina" id="elimina" />
+    <input type="hidden" name="moneda" id="moneda" />
+    <input type="hidden" name="monto" id="montos" />
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>Caja</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-users"></i>Caja</a></li>
+                <li class="active">Consultar Caja</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <br />
+         
+                        @{
+
+                            var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "AutorizarAnulacion.cshtml");
+                            if (abc1 != null)
+                            {
+                                <div class="box-header">
+
+                                    <div style="float:left; padding:0% 1% 0 1%">
+                                        <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                        <br />
+                                    </div>
+
+                                    <div style="float:left; padding:0% 1% 0 1%">
+                                        <a href="~/Caja/AutorizarAnulacion"><center style="margin-left: 45px;"><i class="fa fa-plus-circle" style="font-size:25px;color:#13D003"></i><br /><strong style="color:black">Autorizar Anulacion</strong></center></a>
+                                    </div>
+
+                   
+                                </div>
+                            }
+
+
+                        }
+
+
+
+                        <div class="box-body">
+
+                            <div class="col-md-12" style="margin-bottom:3%">
+
+
+
+                                <div class="col-md-5">
+
+                                    <fieldset>
+
+                                        <legend style="padding-left: 30px;">Consulta de Facturas</legend>
+
+
+
+
+                                        <div class="col-md-12" style="margin-bottom:2%;padding-left:0px">
+
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Fecha Inicio</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="fechaE" id="fechaE" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaE" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Fecha Fin</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="text" name="fechaS" id="fechaS" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaS" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2" style="margin-top:23px">
+                                                <center style="margin-top: 5px;">
+                                                    <input type="submit" style="background-color:#13D003; border:#13D003" value="Buscar" class="btn btn-danger" />
+                                                </center>
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                    </fieldset>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <fieldset>
+
+                                        <legend>Buscar secuencia</legend>
+
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Secuencia</label>
+                                                    <input type="text" name="CodCaja" id="CodCaja" maxlength="10" class="form-control" value="@ViewBag.codigo" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3" style="margin-top:2%; margin-bottom:2%">
+                                            <input type="submit" style="background-color:#13D003; border:#13D003;margin-top: 12%;" value="Buscar" class="btn btn-danger" />
+                                        </div>
+
+
+
+
+                                    </fieldset>
+
+                                </div>
+
+                                @if(listaMediosPago != null) { 
+
+                                <div class="col-md-3">
+
+                                    <fieldset>
+
+                                        <legend>Medios de pago</legend>
+
+
+                                        <div class="col-md-12" style="margin-top:2%; margin-bottom:2%">
+                                            <div class="form-group">
+                                                @foreach (var a in listaMediosPago)
+                                                {
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-3">
+                                                            <label>@a.DescCodDoc</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            S/. @a.Total
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+
+                                    </fieldset>
+
+                                </div>
+                                }
+
+
+                            </div>
+
+                            <div class="col-md-12" style="padding-left:58px;padding-right:58px">
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Secuencia</th>
+                                            <th>Cuenta</th>
+                                            <th>Secuencia</th>
+                                            <th>Fecha de emision</th>
+                                            <th>Paciente</th>
+                                            <th>Cate. Pac.</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th><i class="fa fa-trash"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+                                            total = total + item.Total;
+                                            <tr @if (item.Estado == false) { @colorCancelado ; } else if (item.Total < 0) { @colorCancelado ; }>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCaja)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                <td>@item.AliasCodDoc @item.Serie-@item.NumDoc</td>
+                                                <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.DescCatPac)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                                <td>
+                                                    @if (item.Estado == true)
+                                                    {
+                                                        @(new HtmlString("ACTIVO"))
+                                                    }
+                                                    else
+                                                    {
+                                                        @(new HtmlString("ANULADO"))
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div class="tools">
+
+                                                        @{
+
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCaja.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                if (item.PorAnular == true && item.Estado == true)
+                                                                {
+
+                                                                    <a title="Eliminar" style="color:#000" href="~/Caja/EliminarCaja/@item.CodCaja"><i class="fa fa-trash"></i></a>
+
+                                                                }
+                                                            }
+
+                                                            <a title="Detalle" style="color:#000" href="~/Caja/DetalleCaja/@item.CodCaja"><i class="fa fa-list"></i></a>
+
+                                                            if (item.Estado == true)
+                                                            {
+
+                                                                <a title="Imprimir" target="_blank" style="color:#000" href="~/Caja/ImprimirCaja/?id=PDF&CodCaja=@item.CodCaja"><i class="fa fa-print"></i></a>
+
+                                                                <button class="TPag" name="item" type="submit" value="@item.CodCaja" style="background-color:transparent; border:0"><i class="fa fa-money"></i></button>
+
+                                                            }
+
+
+
+                                                        }
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                                            }
+
+                                    </tbody>
+
+                                </table>
+                                <h2 align="right">Total: S/. @total</h2>
+                            </div>
+                   
+
+
+
+                            <br /><br />
+                            <div class="col-md-3"></div>
+                            @if(CajaPreResumen != null) { 
+                            <div class="col-md-6">
+                                <center>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-6">
+                                                <label>Fecha de deposito: </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control datepicker" value="@ViewBag.Hoy" name="FecDeposito" /><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="RegistrarCaja" style="background-color:#13D003; border:0" class="btn btn-danger">Registrar Caja</button>
+                                </center>
+
+                                <br /><br />
+
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Fecha</th>
+                                            <th>Usuario</th>
+                                            <th>Tipo de pago</th>
+                                            <th>Total del Usuario</th>
+                                            <th>Total del Sistema</th>
+                                            <th>Diferencia</th>
+                                            <th><i class="fa fa-credit-card"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            int contador = 1;
+                                            foreach (var a in CajaPreResumen)
+                                            {
+                                                string nom = "diferencia" + contador;
+                                                string nom1 = "totUsu" + contador;
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => a.FechaEmision)</td>
+                                                    <td>@a.CodUsu - @a.AliasCodDoc</td>
+                                                    <td>@Html.DisplayFor(modelItem => a.TipoPago)</td>
+                                                    <td><input type="text" name="array" value="@a.Total" class="@nom1" /></td>
+                                                    <td>@Html.DisplayFor(modelItem => a.Total)</td>
+
+                                                    <script>
+                                                        $(".@nom1").keyup(function () {
+                                                            var demo = "@a.Total";
+                                                            var value = $(this).val();
+                                                            var Tot = demo - value;
+                                                            $(".@nom").val(Tot.toFixed(2));
+                                                        });
+                                                    </script>
+
+                                                    <td><input type="text" class="@nom" readonly value="0" /></td>
+                                                    <td>
+                                                        <div class="tools">
+
+                                                            <button class="TPag" name="item" type="button" style="background-color:transparent; border:0"><i class="fa fa-credit-card"></i></button>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                contador++;
+                                            }
+
+                                        }
+                                    </tbody>
+
+                                </table>
+
+
+                                <input type="hidden" name="CodUsu" value="@ViewBag.usuario" />
+                                <input type="hidden" name="fechaI" value="@ViewBag.fechaE" />
+                                <input type="hidden" name="fechaF" value="@ViewBag.fechaS" />
+
+                                
+                            </div>
+                            }
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="control-sidebar-bg">
+    </div>
+
+    @if (pago != null)
+    {
+
+        <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal-dialog">
+
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Distribucion de precios</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Medio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CODMEDIOS", mediosPago, new { @class = "medio form-control select2", @style = "width: 100%;" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Monto</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="Monto" id="Monto" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <center>
+                                <button type="button" id="registrarMonto" class="btn btn-danger">Registrar</button>
+                            </center>
+                        </div>
+
+
+                        <div class="col-md-12">
+
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Medios Pago</th>
+                                        <th>Importe</th>
+                                        <th>Importe Soles</th>
+                                        <th><i class="fa fa-trash-o"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @foreach (var item1 in pago)
+                                    {
+
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item1.item)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.CODMEDIOS)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.Importe)</td>
+                                            <td>@Html.DisplayFor(modelItem => item1.ImporteSoles)</td>
+                                            <td>
+                                                <div class="tools">
+                                                    <button class="EliminaMedioPag" name="item" type="submit" value="@item1.item"><i class="fa fa-trash-o"></i></button>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <input type="hidden" value="@ViewBag.CodCue" name="CodCue" />
+
+                    </div>
+                    <br /><br /><br /><br /><br /><br />
+                    <div class="modal-footer">
+                        <button type="button" id="cerrarPago" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    }
+
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#Monto").keyup(function () {
+            var value = $(this).val();
+            $("#montos").val(value);
+        });
+
+        var value = $(".medio").val();
+        $("#moneda").val(value);
+
+
+        $(".medio").change(function () {
+            var value = $(this).val();
+            $("#moneda").val(value);
+        });
+
+        $(".TPag").click(function () {
+            var value = $(this).val();
+            $("#detalle").val(value);
+            $("#evento").val("0");
+            $("#formulario").submit();
+        });
+
+        $("#registrarMonto").click(function () {
+            $("#evento").val("4");
+            $("#formulario").submit();
+        });
+
+        $("#cerrarPago").click(function () {
+            $("#evento").val("5");
+            $("#formulario").submit();
+        });
+
+        $("#RegistrarCaja").click(function () {
+            $("#evento").val("6");
+            $("#formulario").submit();
+        });
+
+        $(".EliminaMedioPag").click(function () {
+            var value = $(this).val();
+            $("#elimina").val(value);
+            $("#evento").val("3");
+            $("#formulario").submit();
+        });
+
+
+        @if (ViewBag.modal != "")
+        {
+            <Text>
+        $('#myModal2').modal('show');
+        </text>
+        }
+
+
+    });
+
+</script>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 123)) {
+            $("#RegistrarCaja").click();
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>

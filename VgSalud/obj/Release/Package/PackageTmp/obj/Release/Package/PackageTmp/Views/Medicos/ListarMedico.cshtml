@@ -1,0 +1,166 @@
+﻿@model IEnumerable<VgSalud.Models.E_Medico>
+
+@{
+    ViewBag.Title = "ListarMedico";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Médicos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Consultar Médico</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        @{
+
+                            <div style="float:left; padding:0% 1% 0 1%">
+                                <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                <br />
+                            </div>
+
+                            var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarMedico.cshtml");
+                            if (abc1 != null)
+                            {
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Medicos/RegistrarMedico"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /> <strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+                            }
+
+                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Medicos/Asistencia");
+                            if (abc2 != null)
+                            {
+                                <div style="float:left; padding:0% 1% 0 1%">
+
+                                    <a href="~/Medicos/Asistencia"><center><i class="fa fa-calendar-check-o" style="font-size:25px; color:orange"></i><br /><strong style="color:black">Control de Asistencia</strong></center></a>
+
+                                </div>
+                            }
+
+                        }
+                    </div>
+                    <br />
+
+                    <div class="box-body">
+                        <fieldset>
+                            <legend style="margin-left: 15px;">Lista</legend>
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Especialidad</th>
+                                            <th>Servicio</th>
+                                            <th>Codigo / Nombres</th>
+                                            <th>Tipo Colegiatura</th>
+                                            <th>Colegiatura</th>
+                                            <th>Rne</th>
+                                            <th>Teléfono</th>
+                                            <th>Estado</th>
+
+                                            <th><i class="fa fa-edit"></i> / <i class="fa fa-calendar"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.Especialidad)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Servicio)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodMed) - @Html.DisplayFor(modelItem => item.NomMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.TipPrfMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.ColgMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.RneMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.TelfMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.EstMed)</td>
+                                                <td>
+                                                    <div class="tools">
+
+
+                                                        <form action="ListaHorarioMedico" method="get">
+                                                            <p>
+                                                                @{
+                                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarMedico.cshtml");
+                                                                    if (abc3 != null)
+                                                                    {
+
+                                                                        <a title="Modificar" href="ModificarMedico?id=@item.CodMed"><i class="fa fa-edit"></i></a>
+
+                                                                    }
+
+                                                                    if (item.EnLista == true)
+                                                                    {
+                                                                        var abc4 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ListaHorarioMedico.cshtml");
+                                                                        if (abc4 != null)
+                                                                        {
+
+                                                                            <input type="hidden" name="id" value="@item.CodMed" />
+                                                                            <input type="hidden" name="accion" class="accion" />
+                                                                            <button class="horario" style="background-color:transparent; border:0" title="Horario" type="submit"><i class="fa fa-calendar"></i></button>
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            </p>
+
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                                    }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </fieldset>
+                      
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+
+    var ALT = 18; var N = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        if (presiono2 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarMedico");
+        }
+        else if (presiono2 && (e.keyCode == 119)) {
+            $(location).attr("href", "Asistencia");
+        }
+        else if (presiono2 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = false;
+        }
+    });
+
+
+    $(document).ready(function () {
+        $(".horario").click(function () {
+            $(".accion").val($(window).width());
+        });
+    });
+
+
+</script>

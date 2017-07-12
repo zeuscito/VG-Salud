@@ -1,0 +1,123 @@
+﻿@model IEnumerable<VgSalud.Models.E_Usuario>
+
+@{
+    ViewBag.Title = "listaUsuario";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Usuario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario</a></li>
+            <li class="active">Consultar Usuario</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistraUsuario.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Usuario/RegistraUsuario" class="btn btn-danger">Registrar nuevo usuario &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+                    
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Usuarios</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo Usuario</th>
+                                    <th>Alias</th>
+                                    <th>Dni</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>Nombre Usuario</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Estado Usuario</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th> 
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.codUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.aliasUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DniUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ApePaterUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ApeMaterUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.FecNacUsu)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstUsu)</td>
+                                  
+
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarUsuario.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarUsuario/@item.codUsu"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarUsuario.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        if (item.EstUsu == true)
+                                                        {
+                                                            <a title="Eliminar" href="eliminar/@item.codUsu"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Activar" href="Activar/@item.codUsu"><i class="fa fa-plus-square"></i></a>
+                                                        }
+                                                    }
+                                                    var abc4 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "CambiarContraseña.cshtml");
+                                                    if (abc4 != null)
+                                                    {
+                                                        <a title="Cambiar Contraseña" href="CambiarContraseña/@item.codUsu"><i class="fa fa-key"></i></a>
+                                                    }
+
+                                                }
+                                                                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+
+

@@ -1,0 +1,128 @@
+﻿@model IEnumerable<VgSalud.Models.E_Ficha_Electronica>
+
+@{
+    ViewBag.Title = "BandejaDeAtenciones";
+
+    var cita = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.cita;
+    var atenciones = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.atenciones;
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Bandeja de atenciones
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Ficha Electronica</a></li>
+            <li class="active">Bandeja de atenciones</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-3">
+                            <h2 class="box-title">Servicio de: @ViewBag.servicio</h2>
+                        </div>
+                        <div class="col-md-3">
+                            <form action="" method="post">  
+                                <div class="col-md-2">
+                                    <label>Turno: </label>
+                                </div>                              
+                                <div class="col-md-6">
+                                    <select class="form-control select2" name="Turno" id="Turno">
+                                        <option value="MAÑANA">MAÑANA</option>
+                                        <option value="TARDE">TARDE</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="submit" class="btn btn-danger" value="Buscar" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <div class="has-feedback">
+                                <form action="" method="post">
+                                    <input type="text" name="CodCue" class="form-control input-sm" value="@ViewBag.CodCue" placeholder="Buscar Cuenta">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </form>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            
+            <div id="listadito">
+                <div name="timediv" id="timediv">
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+
+<script>
+
+    $.ajaxSetup({ cache: false });
+
+    var turnoSS = "@ViewBag.turno";
+
+    var turnoDSS = turnoSS.replace("&#209;", "Ñ");
+
+    var seconds = 1;
+    var divid = "listadito";
+    var url = "BandejaDeAtencionesListado/?CodCue=" + "@ViewBag.CodCue" + "&turno=" + turnoDSS + "#";
+
+    function refreshdiv() {
+        var xmlHttp;
+        try {
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch (e) {
+                try {
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                catch (e) {
+                    alert("Tu explorador no soporta AJAX.");
+                    return false;
+                }
+            }
+        }
+
+        var timestamp = parseInt(new Date().getTime().toString().substring(0, 10));
+        var nocacheurl = url + "?t=" + timestamp;
+
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.readyState != null) {
+                document.getElementById(divid).innerHTML = xmlHttp.responseText;
+                setTimeout('refreshdiv()', seconds * 100000);
+            }
+        }
+        xmlHttp.open("GET", nocacheurl, true);
+        xmlHttp.send(null);
+    }
+
+
+</script>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        refreshdiv();
+
+        $('#Turno option[value=@ViewBag.turno]').prop('selected', 'selected').change();
+
+    });
+
+</script>

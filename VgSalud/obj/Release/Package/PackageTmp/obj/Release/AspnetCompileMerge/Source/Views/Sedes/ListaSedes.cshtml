@@ -1,0 +1,104 @@
+﻿@model IEnumerable<VgSalud.Models.E_Sede>
+
+@{
+    ViewBag.Title = "ListaSedes";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Sedes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Sedes</a></li>
+            <li class="active">Consultar Sedes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarSedes.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/Sedes/RegistrarSedes" class="btn btn-danger">Registrar nueva Sede &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista de Sedes</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Sede</th>
+                                    <th>Direccion</th>
+                                    <th>Teléfono</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodSede) </td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomSede)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DireccSede)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.TelfSede)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.EstSede) </td>
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarSedes.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarSedes/@item.CodSede"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                }
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

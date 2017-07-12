@@ -1,0 +1,137 @@
+﻿@model VgSalud.Models.E_HorarioMedico
+
+@{
+    Layout = null;
+    var lisdato = (List<VgSalud.Models.E_HorarioMedico>)ViewBag.lisdato;
+}
+<script src="~/plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Buscar registros</h3>
+                    </div>
+                    <form method="post" action="~/Medicos/VistaLista">
+                        <div class="box-body">
+                            <div class="col-md-2">
+                                <select name="mes" id="mes" class="form-control select2">
+                                    <option value="1">ENERO</option>
+                                    <option value="2">FEBRERO</option>
+                                    <option value="3">MARZO</option>
+                                    <option value="4">ABRIL</option>
+                                    <option value="5">MAYO</option>
+                                    <option value="6">JUNIO</option>
+                                    <option value="7">JULIO</option>
+                                    <option value="8">AGOSTO</option>
+                                    <option value="9">SETIEMBRE</option>
+                                    <option value="10">OCTUBRE</option>
+                                    <option value="11">NOVIEMBRE</option>
+                                    <option value="12"selected>DICIEMBRE</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select name="anio" id="anioCombo" class="form-control select2">
+                                    <option selected value="@ViewBag.anioActual">@ViewBag.anioActual</option>
+                                    <option value="@ViewBag.anioSiguiente">@ViewBag.anioSiguiente</option>
+                                </select>
+                            </div>
+                            <input type="text" name="cadena" id="cadena" />
+
+                            <div class="col-md-2">
+                                <input type="submit" class="btn btn-danger"  value="Buscar" />
+                            </div>
+                        </div>
+                    </form>
+                    @if (lisdato != null)
+                    {
+                    <div class="box-header">
+                        <h3 class="box-title">Tabla de horarios del medico</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Dia</th>
+                                    <th>Hora entrada</th>
+                                    <th>Hora salida</th>
+                                    <th>Intervalo</th>
+                                    <th>Turno</th>
+                                    <th>Consultorio</th>
+                                    <th>Asistencia</th>
+                                    <th>Estado</th>
+
+
+                                    <th><i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in lisdato)
+                                {
+                                    DateTime d1 = DateTime.Parse(item.horaInicio.ToString());
+                                    string horI = d1.ToString("hh:mm tt").ToUpper();
+                                    DateTime d2 = DateTime.Parse(item.horaFin.ToString());
+                                    string horF = d2.ToString("hh:mm tt").ToUpper();
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodHor)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.dia)</td>
+                                        <td>@horI</td>
+                                        <td>@horF</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IntMin) Min.</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Consultorio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Asistencia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td>
+                                            <div class="tools">
+                                                <a title="Horario" href="~/Medicos/Elimina/@item.CodHor"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+
+    var URLactual = window.location;
+    URLactual = String(URLactual);
+    var elem = URLactual.split('?');
+    dia = elem[1];
+    $("#cadena").val(dia);
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#mes').change(function (event) {
+            $('#anioCombo').change(function (event) {
+                var mesS = $("select#mes").val();
+                var anios = $("select#anioCombo").val()
+                $.get('@Url.Action("VistaLista", "Medicos")', {
+                    mes: mesS, anio: anios
+                });
+            });
+        });
+
+    });
+
+</script>

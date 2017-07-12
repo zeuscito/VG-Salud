@@ -1,0 +1,113 @@
+﻿@model IEnumerable<VgSalud.Models.E_Documento_Identidad>
+
+@{
+    ViewBag.Title = "ListaDocumentoIdentidad";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Documento Identidad</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario</a></li>
+            <li class="active">Consultar Documento Identidad</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarDocumentoIdentidad.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/DocumentoIdentidad/RegistrarDocumentoIdentidad" class="btn btn-danger">Registrar nuevo Documento Identidad &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista Documento De Identidad</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Documento</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodDocIdent)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NomDocIdent)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                       
+                                        <td>
+                                            
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarDocumentoIdentidad.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarDocumentoIdentidad/@item.CodDocIdent"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarDocumentoIdentidad.cshtml");
+                                                    if (abc3 != null)
+                                                    {
+                                                        if (item.Estado == true)
+                                                        {
+                                                            <a title="Eliminar" href="eliminar/@item.CodDocIdent"><i class="fa fa-trash-o"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="Activar" href="Activar/@item.CodDocIdent"><i class="fa fa-plus-square"></i></a>
+                                                        }
+                                                    }
+
+                                                }                                                
+                                                
+
+                                            </div>
+
+
+
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+
+
+

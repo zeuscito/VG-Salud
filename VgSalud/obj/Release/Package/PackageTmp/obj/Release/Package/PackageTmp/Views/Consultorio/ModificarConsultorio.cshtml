@@ -1,0 +1,154 @@
+﻿@model VgSalud.Models.E_Consultorio
+
+@{
+    ViewBag.Title = "ModificarConsultorio";
+    var ListaServicios = (SelectList)ViewBag.ListaServicios;
+}
+
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Consultorio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Consultorio</a></li>
+            <li class="active">Modificar Consultorio</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+          
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="../ListaConsultorio">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left: 30px;">Modificar</legend>
+
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <input type="hidden" name="IdConsul" id="IdConsul" value="@Model.IdConsul" />
+
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Consultorio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DescConsul, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescConsul, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Servicios</label>
+                                </div>
+                                <div class="col-md-9">
+
+                                    @Html.DropDownList("CodServ", ListaServicios, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CodSede, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label>Mixto</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.Mixto)
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label>Estado</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.EstConsul)
+                                        @Html.ValidationMessageFor(model => model.EstConsul, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <label></label>
+                        <br /><br />
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <center>
+                                        <button type="submit" value="Modificar" class="btn btn-danger" style="background-color:#13D003; border:0" id="modificar">Modificar</button>
+
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</div>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if ((presiono1 == true) && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 && (e.keyCode == 65)) {
+            $(location).attr("href", "../ListaConsultorio");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>
+
+

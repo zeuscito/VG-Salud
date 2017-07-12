@@ -1,0 +1,140 @@
+﻿@model IEnumerable<VgSalud.Models.E_UsuarioDocumentoSerie>
+
+@{
+    ViewBag.Title = "ListaUsuarioDocSerie";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Usuario / Documento Serie</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Usuario Docuemento Serie</a></li>
+            <li class="active">Consulta Usuario Docuemento Serie</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarUsuarioDocSerie.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/UsuarioDocumentoSerie/RegistrarUsuarioDocSerie"><center><i class="fa fa-check-square-o" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Asignar Usuario / Doc. Serie</strong></center></a>
+                                </div>
+
+                              
+                            </div>
+
+                        }
+
+                    }
+
+
+                    <br />
+                    <div class="box-body">
+
+                        <fieldset>
+                            <legend style="margin-left: 50px;">Lista</legend>
+                            <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Usuario</th>
+                                            <th>Serie</th>
+                                            <th>Prioridad</th>
+                                            <th>Estado</th>
+                                            <th style="text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-trash"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.AliasUsu)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Serie)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Prioridad)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.EstUDs)</td>
+
+                                                <td style="text-align:center">
+                                                    <div class="tools">
+                                                        @{
+                                                            var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarUsuarioDocSerie.cshtml");
+                                                            if (abc3 != null)
+                                                            {
+                                                                <a title="[EDITAR]" href="ModificarUsuarioDocSerie?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-edit"></i></a>
+                                                            }
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarUsuarioDocSerie.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                if (item.EstUDs == true)
+                                                                {
+                                                                    <a title="[ELIMINAR]" href="EliminarUsuarioDocSerie/?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-trash"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a title="[ACTIVAR]" href="ActivarUsuarioDocSerie/?CodUsu=@item.CodUsu&CodSerie=@item.CodDocSerie"><i class="fa fa-plus"></i></a>
+                                                                }
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                                            }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            
+                        </fieldset>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+<script>
+    var ALT = 18; var N = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        if (presiono2 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarUsuarioDocSerie");
+        }
+        else if (presiono2 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+    $(document).keyup(function (e) {
+
+        if (e.keyCode == N) {
+            presiono2 = false;
+        }
+    });
+</script>

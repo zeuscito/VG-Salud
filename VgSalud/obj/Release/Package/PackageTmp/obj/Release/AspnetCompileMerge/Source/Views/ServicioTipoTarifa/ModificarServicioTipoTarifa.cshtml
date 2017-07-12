@@ -1,0 +1,93 @@
+﻿@model VgSalud.Models.E_Servicio_TipoTarifa
+
+@{
+    ViewBag.Title = "ModificarServicioTipoTarifa";
+    var tipotarifa = (SelectList)ViewBag.tipotarifa;
+    var servicio = (SelectList)ViewBag.servicio;
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Medico Servicio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Medico Servicio</a></li>
+            <li class="active">Modificar Servicio Tipo Tarifa</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Modificar Servicio Tipo Tarifa</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-body">
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Medico</label>
+                            </div>
+                            <div class="col-md-9">
+
+                                @Html.DropDownList("CodtipoTar", tipotarifa, "[NO SELECCIONADO]", new { @class = "form-control select2", @disabled = true })
+                                @Html.ValidationMessageFor(model => model.CodtipoTar, "", new { @class = "text-danger" })
+                                <input type="hidden" name="CodtipoTar" value="@Model.CodtipoTar" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Servicio</label>
+                            </div>
+                            <div class="col-md-9">
+
+                                @Html.DropDownList("CodServ", servicio, "[NO SELECCIONADO]", new { @class = "form-control select2", @disabled = true })
+                                @Html.ValidationMessageFor(model => model.codserv, "", new { @class = "text-danger" })
+                                <input type="hidden" name="CodServ" value="@Model.codserv" />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Porcentaje</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.porcentaje, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.porcentaje, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <label></label>
+                    <br /><br />
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <center>
+                                    <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button>
+                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </section>
+</div>

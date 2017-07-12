@@ -1,0 +1,71 @@
+﻿@model VgSalud.Models.E_HorarioMedico
+
+@{
+    Layout = null;
+    var lisdato = (List<VgSalud.Models.E_HorarioMedico>)ViewBag.lisdato;
+}
+
+@if (lisdato != null)
+{
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Tabla de horarios del medico</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Dia</th>
+                                    <th>Hora entrada</th>
+                                    <th>Hora salida</th>
+                                    <th>Intervalo</th>
+                                    <th>Turno</th>
+                                    <th>Consultorio</th>
+                                    <th>Asistencia</th>
+                                    <th>Estado</th>
+
+
+                                    <th><i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in lisdato)
+                                {
+                                    DateTime d1 = DateTime.Parse(item.horaInicio.ToString());
+                                    string horI = d1.ToString("hh:mm tt").ToUpper();
+                                    DateTime d2 = DateTime.Parse(item.horaFin.ToString());
+                                    string horF = d2.ToString("hh:mm tt").ToUpper();
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodHor)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.dia)</td>
+                                        <td>@horI</td>
+                                        <td>@horF</td>
+                                        <td>@Html.DisplayFor(modelItem => item.IntMin) Min.</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Consultorio)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Asistencia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td>
+                                            <div class="tools">
+                                                <a title="Horario" href="~/Medicos/Elimina/@item.CodHor"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

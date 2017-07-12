@@ -1,0 +1,317 @@
+﻿@model VgSalud.Models.E_Citas
+
+@{
+    ViewBag.Title = "ListadoDeCitas";
+    var evaluaTipo = (List<VgSalud.Models.E_Citas>)ViewBag.evaluaTipo;
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Atenciones Programadas</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atenciones Programadas</a></li>
+            <li class="active"></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-body">
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%">
+                        <a href="~/Master/Index"><center style="margin-left: 12px;"><i class="fa fa-home" style="font-size:25px; color:#13D003;margin-left: 10px;"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
+                    </div>
+                </div>
+                <fieldset>
+                    <legend style="margin-left:2%; width:96%">Filtro</legend>
+
+                    <div class="col-md-12">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <form method="post" action="">
+
+                            <div class="col-md-3">
+                                <div class="col-md-3">
+                                    <label>Especialidad</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control select2" id="especialidad" name="especialidad" data-placeholder="Seleccione una especialidad" required></select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="col-md-3">
+                                    <label>Servicio</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control select2" id="servicio" name="servicio" data-placeholder="Seleccione un servicio" required></select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-3">
+                                    <label>Fecha</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control datepicker" name="fecha" id="fecha" required />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-3">
+                                    <label>Turno</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control select2" id="turno" name="turno" data-placeholder="Seleccione un turno" required>
+                                        <option value="MAÑANA">MAÑANA</option>
+                                        <option value="TARDE">TARDE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br /><br /><br /><br />
+                            <div class="col-md-12">
+                                <center>
+                                    <input type="submit" style="background-color:#13D003; border:#13D003" value="Buscar" class="btn btn-danger" />
+                                    @*<a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>*@
+                                </center>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                </fieldset>
+
+                @if (evaluaTipo != null)
+                {
+
+                    <fieldset>
+                        <legend style="margin-left:2%; width:96%">Lista</legend>
+                        <div class="col-md-12">
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Codigo Cuenta</th>
+                                            <th>Paciente</th>
+                                            <th>Especialidad</th>
+                                            <th>Servicio</th>
+                                            <th>Medico</th>
+                                            <th>Fecha de Cita</th>
+                                            <th>Hora Inicio</th>
+                                            <th>Hora Termino</th>
+                                            <th>Turno</th>
+                                            <th>Precio</th>
+                                            <th>IGV</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th><i class="fa fa-trash"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var item in evaluaTipo)
+                                            {
+
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCita)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NombrePaciente)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomEspec)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.fechaCitas)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.horaI)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.horaF)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.precio)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.igv)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                                <td>
+                                                    <div class="tools">
+                                                        @{
+
+                                                                var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCita.cshtml");
+                                                                if (abc1 != null)
+                                                                {
+                                                                    if (item.Estado == "G")
+                                                                    {
+                                                                     <button type="button" class="btn-info cancelar" data-toggle="modal" data-target="#myModal" CodCue="@item.CodCue" CodCita="@item.CodCita" precio="@item.precio" igv="@item.igv" total="@item.total" CodEspec="@ViewBag.especialidad" CodServ="@ViewBag.servicio" fechaCita="@ViewBag.fecha" Turno="@ViewBag.turno"><i class="fa fa-trash"></i></button>
+                                                                    }
+                                                                }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                                }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                                                            }
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <form action="~/Citas/CancelarUnaCita" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Eliminar Cita</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-md-12">
+                                        <div class="col-md-3">
+                                            <label>Observacion</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <textarea class="form-control" name="Obser" style="width:100%" id="comment" required></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br /><br /><br /><br /><br /><br />
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Cancelar Cita</button>
+                                    <button type="button" class="btn btn-group" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="CodCue" id="CodCue" />
+                            <input type="hidden" name="CodCita" id="CodCita" />
+                            <input type="hidden" name="precio" id="precio"/>
+                            <input type="hidden" name="igv" id="igv"/>
+                            <input type="hidden" name="total" id="total"/>
+                            <input type="hidden" name="CodEspec" id="CodEspec" />
+                            <input type="hidden" name="CodServ" id="CodServ"/>
+                            <input type="hidden" name="fechaCita" id="fechaCita" />
+                            <input type="hidden" name="Turno" id="Turno" />
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var espee = "@ViewBag.especialidad";
+        var servi = "@ViewBag.servicio";
+
+
+        $(".cancelar").on("click", function () {
+            var CodCue = this.attributes.CodCue.value;
+            var CodCita = this.attributes.CodCita.value;
+            var precio = this.attributes.precio.value;
+            var igv = this.attributes.igv.value;
+            var total = this.attributes.total.value;
+            var CodEspec = this.attributes.CodEspec.value;
+            var CodServ = this.attributes.CodServ.value;
+            var fechaCita = this.attributes.fechaCita.value;
+            var Turno = this.attributes.Turno.value; 
+            
+            $("#CodCue").val(CodCue);
+            $("#CodCita").val(CodCita);
+            $("#precio").val(precio);
+            $("#igv").val(igv);
+            $("#total").val(total);
+            $("#CodEspec").val(CodEspec);
+            $("#CodServ").val(CodServ);
+            $("#fechaCita").val(fechaCita);
+            $("#Turno").val(Turno);
+            $("#comment").val("");
+        
+        });
+
+
+
+
+        $('#especialidad option[value=@ViewBag.especialidad]').prop('selected', 'selected').change();
+
+        var d = new Date();
+
+        var total = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+
+        var fechasel = "@ViewBag.fecha";
+        if (fechasel != "") {
+            $("#fecha").val(fechasel);
+        } else {
+            $("#fecha").val(total);
+        }
+        $('#select2-especialidad-container').empty();
+        $('#especialidad > option[text="--Seleccione una especialidad--"]').attr('selected', true);
+        $('#especialidad option:contains("--Seleccione una especialidad--")').prop('selected', true);
+
+        $('#especialidad').change(function (event) {
+            var sports = $("select#especialidad").val();
+            $.get('@Url.Action("ObtenerServiciosGeneral", "Citas")', {
+                CodEspec: sports
+            }, function (response) {
+
+                $('#select2-servicio-container').empty();
+                var select = $('#servicio');
+                select.find('option').remove();
+                $('<option>').val("nulo").text("Seleccione un servicio").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select);
+                });
+            });
+        });
+
+
+
+
+        $.get('@Url.Action("ObtenerEspecialidad", "Citas")', function (response) {
+            var select = $('#especialidad');
+            select.find('option').remove();
+            $('<option>').val("nulo").text("Seleccione una especialidad").appendTo(select);
+            $.each(response, function (index, value) {
+                $('<option>').val(value.CodEspec).text(value.NomEspec).appendTo(select);
+                if (value.CodEspec == espee) {
+                    $('#especialidad option[value="' + value.CodEspec + '"]').attr('selected', true);
+                    $("#select2-especialidad-container").text(value.NomEspec);
+                    $.get('@Url.Action("ObtenerServiciosGeneral", "Citas")', {
+                        CodEspec: value.CodEspec
+                    }, function (response) {
+                        $('#select2-servicio-container').empty();
+                        var select = $('#servicio');
+                        select.find('option').remove();
+                        $('<option>').val("nulo").text("Seleccione un servicio").appendTo(select);
+                        $.each(response, function (index, value) {
+                            $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select);
+                            if (value.CodServ == servi) {
+                                $('#servicio option[value="' + value.CodServ + '"]').attr('selected', true);
+                                $("#select2-servicio-container").text(value.NomServ);
+                                $("#muestraServi").text(value.NomServ);
+                                var fechaVal = $("#fecha").val();
+                                $("#muestraFecha").text(fechaVal);
+                                $('#turno option[value=@ViewBag.turno]').prop('selected', 'selected').change();
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+
+    });
+
+</script>

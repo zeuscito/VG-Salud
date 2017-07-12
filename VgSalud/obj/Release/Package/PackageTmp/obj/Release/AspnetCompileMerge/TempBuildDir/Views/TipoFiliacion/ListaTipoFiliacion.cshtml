@@ -1,0 +1,98 @@
+﻿@model IEnumerable<VgSalud.Models.E_Tipo_Filiacion>
+
+@{
+    ViewBag.Title = "ListaTipoFiliacion";
+    VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    string CodUsu = Session["UserID"].ToString();
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Tipo Filiación </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Tipo Filiación</a></li>
+            <li class="active">Consultar Tipo Filiación</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    @{
+
+                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarTipoFiliacion.cshtml");
+                        if (abc1 != null)
+                        {
+                            <div class="box-header">
+                                <a href="~/TipoFiliacion/RegistrarTipoFiliacion" class="btn btn-danger">Registrar nueva Tipo Filiacion &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                            </div>
+                            <br />
+                        }
+
+                    }
+
+                    
+                    <div class="box-header">
+                        <h3 class="box-title">Lista Tipo de Filiaciones</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Tipo Filiación</th>
+                                    <th>Estado</th>
+                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CodTipFil)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DescTipFil)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        
+                                        <td>
+                                            <div class="tools">
+                                                @{
+
+                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarTipoFiliacion.cshtml");
+                                                    if (abc2 != null)
+                                                    {
+                                                        <a title="Editar" href="ModificarTipoFiliacion/@item.CodTipFil"><i class="fa fa-edit"></i></a>
+                                                    }
+
+                                                }
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>
+
+
+
+
+
+
+
+

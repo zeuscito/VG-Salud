@@ -1,0 +1,196 @@
+﻿@model VgSalud.Models.E_RolFormulario
+
+@{
+    ViewBag.Title = "RegistrarRolFormulario";
+    var perfil = (SelectList)ViewBag.perfil;
+    var lista = (List<VgSalud.Models.E_RolFormulario>)ViewBag.lista;
+    var modulos = (List<VgSalud.Models.E_Acceso>)ViewBag.modulos;
+    var activaTab = "class=active";
+    var activaVista = "in active";
+    var marca = "checked";
+    int cuenta = 0;
+    int cuentaTotal = 0;
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Rol Formulario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
+            <li class="active">Registrar</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="BuscarRolFormulario">
+                        <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+
+            </div>       
+
+            <div class="box-body">
+
+                <form method="post" action="">
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Registrar</legend>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Perfil</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodPerf", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodPerf" })
+                                    @Html.ValidationMessageFor(model => model.CodPerf, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                @*<div class="col-md-3">
+                                        <label>Cuenta</label>
+                                    </div>*@
+                                <div class="col-md-12">
+                                    <button type="submit" style="background-color:#13D003; border:0" class="btn btn-danger">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br /><br /><br />
+                                             
+
+                    </fieldset>
+                </form>
+
+                @if (lista != null)
+                {
+
+                    <div class="col-md-12">
+
+
+                        <ul class="nav nav-tabs">
+                            
+                            @foreach (var a in modulos)
+                            {
+                                cuenta++;
+                                <li @if (cuenta == 1){ @activaTab; }><a data-toggle="tab" href="#@a.NombreModulo.Replace(" ","")">@a.NombreModulo</a></li>
+                            }                            
+                        </ul>
+                        
+
+                        <form action="~/RolFormulario/RegistrarRolFormulario123" method="post" id="formulario">
+
+                            <input type="hidden" value="@ViewBag.Codperfil" name="CodPerf" />
+                            <div class="tab-content">
+
+                                @foreach (var a in modulos)
+                                {
+                                    cuentaTotal++;
+                                    var listanueva = lista.Where(x => x.idModulo==a.idModulo);
+                                    <div id="@a.NombreModulo.Replace(" ","")" class="tab-pane fade @if (cuentaTotal == 1){ @activaVista; }">
+
+                                        <div class="box box-default">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">@a.NombreModulo</h3>
+                                                <div class="box-tools pull-right">
+                                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="box-body">
+
+
+                                                <div class="col-md-12">
+
+                                                    @foreach (var i in listanueva) { 
+                                                    <div class="form-group col-md-2">
+                                                        <div class="col-md-12">
+                                                            <label><input type="checkbox" name="array" value="@i.IdForm" @if (i.Estado == 1) { @marca } /> @i.AliasForm</label>                                                            
+                                                        </div>
+                                                    </div>
+                                                    }
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                } 
+
+                                
+
+
+                                <div align="center">
+                                    <input type="submit" id="RegistraTodo" value="Grabar" style="background-color: #13D003" class="btn btn-info" />
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                    
+
+                }
+                
+              
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+
+        @*$('#CodPerf option[value="@ViewBag.CodPerf"]').prop('selected', 'selected').change();
+        $('#IdForm option[value="@ViewBag.IdForm"]').prop('selected', 'selected').change();*@
+
+    });
+
+
+    $(document).ready(function () {
+        var ALT = 18; var G = 71; var presiono1 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 && (e.keyCode == 123)) {
+                $("#grabar").click();
+            }
+            else if (presiono1 == true && (e.keyCode == 65)) {
+                window.location.href = "BuscarRolFormulario";
+            }
+        });
+
+
+        $(document).keyup(function (e) {
+
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
+
+    });
+
+</script>

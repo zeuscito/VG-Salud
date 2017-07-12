@@ -1,0 +1,170 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="~/css/style.css" rel="stylesheet" />
+
+    <script language="javascript" type="text/javascript">
+     javascript:window.history.forward(1);
+    </script>
+
+    <style>
+
+        /* -------------------- Page Styles (not required) */
+div { margin: 20px; }
+
+/* -------------------- Select Box Styles: bavotasan.com Method (with special adaptations by ericrasch.com) */
+/* -------------------- Source: http://bavotasan.com/2011/style-select-box-using-only-css/ */
+.styled-select {
+   background: url('../../Content/img/15xvbd5.png') no-repeat 96% 0;
+   height: 29px;
+   overflow: hidden;
+   width: 240px;
+}
+
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+}
+
+.styled-select.slate {
+   background: url('../../Content/img/15xvbd5.png') no-repeat right center;
+   height: 34px;
+   width: 240px;
+}
+
+.styled-select.slate select {
+   border: 1px solid #ccc;
+   font-size: 16px;
+   height: 34px;
+   width: 268px;
+}
+
+
+
+/* -------------------- Select Box Styles: stackoverflow.com Method */
+/* -------------------- Source: http://stackoverflow.com/a/5809186 */
+select#soflow, select#soflow-color {
+   -webkit-appearance: button;
+   -webkit-border-radius: 2px;
+   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -webkit-padding-end: 20px;
+   -webkit-padding-start: 2px;
+   -webkit-user-select: none;
+   background-image: url('../../Content/img/15xvbd5.png'), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+   background-position: 97% center;
+   background-repeat: no-repeat;
+   border: 1px solid #AAA;
+   color: #555;
+   font-size: inherit;
+   margin: 0;
+   overflow: hidden;
+   padding: 5px 10px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   width: 100%;
+}
+
+select#soflow-color {
+   color: #fff;
+   background-image: url('../../Content/img/15xvbd5.png'), -webkit-linear-gradient(#779126, #779126 40%, #779126);
+   background-color: #779126;
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+   padding-left: 15px;
+}
+
+    </style>
+
+</head>
+
+<body>
+    <div class="login-page">
+
+        <div class="form">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <input type="text" id="alias" name="AliasUsu" placeholder="Usuario" />
+                <input type="password" name="Pass" placeholder="Contraseña" />
+                <select id="soflow" name="CodSede">
+                    
+                </select>
+                <br /><br />
+                <button type="submit">Ingresar</button>
+                <h1>@ViewBag.demo</h1>
+            }
+
+        </div>
+    </div>
+
+    <script src="~/js/index.js"></script>
+    <script>
+
+    function ready(initCascadeDropDownForfirstSelect) {
+        if (document.readyState != 'loading') {
+            initCascadeDropDownForfirstSelect();
+        } else {
+            document.addEventListener('DOMContentLoaded', initCascadeDropDownForfirstSelect);
+        }
+    };
+
+    function initCascadeDropDownForfirstSelect() {
+        var triggerElement = document.getElementById("alias");
+        triggerElement.addEventListener('change', function(e) {
+            var value = triggerElement.value;
+            var items = '';
+            var targetElement = document.getElementById("soflow");
+            if (value === "" || value == null) {
+                targetElement.innerHTML = items;
+                targetElement.value = '';
+                var event = document.createEvent('HTMLEvents');
+                event.initEvent('change', true, false);
+                targetElement.dispatchEvent(event);
+                return;
+            }
+            var url = '@Url.Action("VerSedes", "Login")' + '?alias=' + value;
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    // Success!
+                    if(request.responseText != null){
+                    var data = JSON.parse(request.responseText);
+                    if (data) {
+                        data.forEach(function(item, i) {
+                            items += '<option value="' + item.CodSede + '">' + item.NomSede + '</option>';
+                        });
+                        targetElement.innerHTML = items;
+                    }
+                    }
+                } else {
+                    console.log(request.statusText);
+                }
+            };
+
+            request.onerror = function (error) {
+                console.log(error);
+            };
+
+            request.send();
+        });
+    };
+
+    ready(initCascadeDropDownForfirstSelect);
+
+    </script>
+
+
+</body>
+</html>

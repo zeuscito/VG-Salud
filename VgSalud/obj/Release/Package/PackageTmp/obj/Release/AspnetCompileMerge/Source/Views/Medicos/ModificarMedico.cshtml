@@ -1,0 +1,286 @@
+﻿<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Médicos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Modificar Médico</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Modificar Médico</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <form method="post" action="">
+
+                <div class="box-body">
+                    <div class="col-md-6">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <input type="hidden" name="CodMed" id="CodMed" value="@Model.CodMed" />
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Nombres</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.NomMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NomMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>DNI</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DniMed, new { htmlAttributes = new { @class = "form-control",@id="DniMed" } })
+                                @Html.ValidationMessageFor(model => model.DniMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Tipo Colegiatura</label>
+                            </div>
+                            <div class="col-md-9">
+                                @*@Html.EditorFor(model => model.TipPrfMed, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.DropDownList("TipPrfMed", ListaProfesion, new { @class= "form-control select2", @id= "TipPrfMed" })
+                                @Html.ValidationMessageFor(model => model.TipPrfMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Colegiatura</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ColgMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ColgMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>RNE</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.RneMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RneMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Dirección</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DireccMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DireccMed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+
+                        @*<div class="form-group">
+                            <div class="col-md-3">
+                                <label>Fecha de Ingreso</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.FecIngMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FecIngMed, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>*@
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Teléfono</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.TelfMed, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TelfMed, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Servicio</label>
+                            </div>
+                            <div class="col-md-9">
+                                @*@Html.EditorFor(model => model.CodServ, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.DropDownList("CodServ", ListaServicios, "[NO SELECCIONADO]", new { @class = "form-control select2",@id= "CodServ" })
+                                @Html.ValidationMessageFor(model => model.CodServ, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Especialidad</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="Espe" value="@ViewBag.nombreEspe" readonly="readonly" />
+                                <input type="hidden" name="CodEspec" id="CodEspec" value="@Model.CodEspec" />
+    
+                            </div>
+                        </div>
+                       
+                       
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Empresa Tercero</label>
+                            </div>
+                            <div class="col-md-9">
+                                @*@Html.EditorFor(model => model.CodEmp, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @*@Html.DropDownList("CodEmp", ListaEmpresa, "[NO SELECCIONADO]", new { @class = "form-control",@id= "CodEmp" })
+                                @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })*@
+
+                                <input type="text" class="form-control" id="Empresa" value="@ViewBag.NomEmpresa" readonly="readonly" />
+                                <input type="hidden" name="CodEmp" id="CodEmp" value="@Model.CodEmp" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Usuario</label>
+                            </div>
+                            <div class="col-md-9">
+                                @*@Html.EditorFor(model => model.CodEmp, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.CodUsu, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                       
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Observacion</label>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea name="ObservMed" id="ObservMed" V rows="2" cols="89">@Model.ObservMed</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Pago por turno</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.PagoTurno, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>En lista</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.EnLista)
+                                @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Registra F.E.</label>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.EjecFichaElec)
+                                @Html.ValidationMessageFor(model => model.EjecFichaElec, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label>Estado</label>
+                            </div>
+                            <div class="col-md-9">
+
+                                @Html.EditorFor(model => model.EstMed)
+                                @Html.ValidationMessageFor(model => model.EstMed, "", new { @class = "text-danger" })
+
+
+                            </div>
+                        </div>
+                       
+
+                    </div>
+
+
+                    <label></label>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <center>
+                                <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button> 
+                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                
+                            </center>
+                        </div>
+                    </div>
+                </div>
+        
+        </form>
+
+</div>
+    </section>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+       // $('<option>').val("").text("[NO SELECCIONADO]").appendTo('#CodSede');
+
+      //  $('#CodEmp').change(function (event) {
+
+
+            @*var sports = $("select#CodEmp").val();
+            $.get('@Url.Action("ListaSede_CodEmp", "Utilitario")', {
+                id: sports
+
+            }, function (response) {
+
+                var select = $('#CodSede');
+                select.find('option').remove();
+                $('<option>').val("").text("[NO SELECCIONADO]").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodSede).text(value.NomSede).appendTo(select);
+                });
+                $('#CodSede option[value="@Model.CodSede"]').attr('selected', true);
+            });*@
+
+
+        $('#CodServ').change(function (event) {
+            var sports = $("select#CodServ").val();
+            $.get('@Url.Action("Buscar_EspecialidadEmpresa_Servicio", "Servicios")', {
+                id: sports
+
+            }, function (response) {
+
+                $.each(response, function (index, value) {
+                   // $('<option>').val(value.CodSede).text(value.NomSede).appendTo(select);
+                    $('#Espe').val(value.Especialidad);
+                    $('#CodEspec').val(value.CodEspec);
+                    $('#CodEmp').val(value.CodEmp);
+                    $('#Empresa').val(value.Empresa);
+                });
+            });
+        });
+
+
+       
+       
+
+    });
+
+</script>

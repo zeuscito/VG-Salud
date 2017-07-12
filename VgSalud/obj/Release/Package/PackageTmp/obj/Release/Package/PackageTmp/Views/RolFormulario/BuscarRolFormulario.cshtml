@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "BuscarRolFormulario";
+    var lista = (List<VgSalud.Models.E_RolFormulario>)ViewBag.lista;
+    var perfil = (SelectList)ViewBag.perfil;
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Rol / Formulario</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Rol Formulario</a></li>
+            <li class="active">Consultar Rol Formulario</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+    
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left: 12px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+            <div class="box-body" style="margin-bottom:3%">
+                <fieldset>
+                    <legend style="margin-left:30px;">Filtro</legend>
+                    <form action="" method="post">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label>Descripcion de Perfil</label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("CodPerf", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodPerf" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input class="btn btn-danger" style="background-color:#13D003;border:0;" type="submit" value="Buscar" id="buscar" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <div style="float:left; padding:0% 1% 0 1%">
+                                <a href="~/RolFormulario/RegistrarRolFormulario"><center><i class="fa fa-plus-circle" style="font-size:25px;color:#13D003"></i><br /><strong style="color:black">Registrar</strong></center></a>
+                            </div>
+
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+
+            @if (lista != null)
+            {
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left: 30px;">Lista</legend>
+                        <div class="col-md-12">
+                            <table id="example1" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Alias Formulario</th>
+                                        <th>Descripcion Perfil</th>
+                                        <th><i class="fa fa-trash"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in lista)
+                                {
+
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.AliasForm)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DescPerf)</td>
+                                            <td>
+                                                <div class="tools">
+                                                    <a title="Eliminar" href="~/RolFormulario/Eliminar/?id=@item.CodPerf&id2=@item.IdForm&id3=@ViewBag.cod"><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+        </div>
+    </section>
+
+</div>
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 == true && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarRolFormulario");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>
