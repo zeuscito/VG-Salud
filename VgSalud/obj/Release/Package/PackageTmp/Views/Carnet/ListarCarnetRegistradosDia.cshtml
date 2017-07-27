@@ -51,7 +51,7 @@
                                                 <td>@Html.DisplayFor(modelItem => item.NroCarnet)</td>
                                                 <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
                                                 <td>@Html.DisplayFor(modelItem => item.Estado)</td>
-                                                <td style="text-align:center"><a title="Actualizar" class="btn btn-info" href="RegistroCarnet?idCarnet=@item.NroCarnet&Historia=@item.CodPaciente" action='@Url.Action("RegistroCarnet", "Carnet")'><i class="fa fa-pencil-square-o"></i> Actualizar</a></td>
+                                                <td style="text-align:center"><a title="Actualizar" class="btn btn-info" href="ModificarCarnetSanitario?IdCarnet=@item.NroCarnet&Historia=@item.CodPaciente" action='@Url.Action("ModificarCarnetSanitario", "Carnet")'><i class="fa fa-pencil-square-o"></i> Actualizar</a></td>
                                                 
                                                 
                                             </tr>

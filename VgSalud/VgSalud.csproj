@@ -267,6 +267,7 @@
     <Compile Include="Models\E_FrecuenciaReceta.cs" />
     <Compile Include="Models\E_Gastos.cs" />
     <Compile Include="Models\E_Historial.cs" />
+    <Compile Include="Models\E_Historia_Carnet.cs" />
     <Compile Include="Models\E_Honorario_Cabecera_Detalle.cs" />
     <Compile Include="Models\E_HorarioMedico.cs" />
     <Compile Include="Models\E_HorarioMedico_SobreCarga.cs" />
@@ -406,6 +407,7 @@
     <Content Include="Content\Scripts\icheck.min.js" />
     <Content Include="Content\Scripts\jQuery-2.2.0.min.js" />
     <Content Include="Content\Scripts\jquery.inputmask.js" />
+    <Content Include="Content\Scripts\jquery.limit.js" />
     <Content Include="Content\Scripts\jquery.slimscroll.min.js" />
     <Content Include="Content\Scripts\moment.min.js" />
     <Content Include="Content\Scripts\respond.min.js" />
@@ -1388,7 +1390,14 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Util.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\src\bootstrap-filestyle.js" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\src\bootstrap-filestyle.min.js" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\css\bootstrap.min.css" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\index.html" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\js\bootstrap.min.js" />
     <Content Include="Views\Acceso\ListarAcceso.cshtml" />
     <Content Include="Views\Acceso\ModificarAcceso.cshtml" />
     <Content Include="Views\Acceso\RegistrarAcceso.cshtml" />
@@ -1467,6 +1476,7 @@
     <Content Include="Views\HonorariosCabeceraDetalle\ListadeLiquidacion.cshtml" />
     <Content Include="Views\HonorariosCabeceraDetalle\RegistrarHonorarios.cshtml" />
     <Content Include="Views\HonorariosCabeceraDetalle\VerDetalleHonorarios.cshtml" />
+    <Content Include="Views\Informes\ListaPacienteResultadoApto.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
@@ -1579,6 +1589,15 @@
     <Content Include="VG_SALUDDataSet.xsc">
       <DependentUpon>VG_SALUDDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\upload.php" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\test\upload\.folder" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\bootstrap-filestyle.jquery.json" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\bower.json" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\LICENSE-MIT" />
+    <Content Include="Styles\bootstrap-filestyle-1.2.1\README.md" />
     <None Include="VG_SALUDDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>VG_SALUDDataSet.Designer.cs</LastGenOutput>
@@ -1717,14 +1736,27 @@
     <Content Include="Views\Carnet\Vista_1.cshtml" />
     <Content Include="Views\Laboratorio\ActualizarDatosAtencionLaboratorio.cshtml" />
     <Content Include="Views\Odontologia\ActualizarDatosAtencionOdontologia.cshtml" />
-    <Content Include="Views\Informes\ListaPacienteResultadoApto.cshtml" />
     <Content Include="Views\Medicina\ListarCarnet_MedicinaDelDia_EnEspera.cshtml" />
     <Content Include="Views\Carnet\Vista_Cabecera_Lab.cshtml" />
     <Content Include="Views\Laboratorio\ListaPacientesAtendidosDelDia.cshtml" />
     <Content Include="Views\Odontologia\ListaPacientesAtendidosDelDia.cshtml" />
+    <Content Include="Views\Carnet\ModificarCarnetSanitario.cshtml" />
+    <Content Include="Views\Carnet\Vista_Detalle_Lab.cshtml" />
+    <Content Include="Views\Laboratorio\ModificarDatosPacientesAtendidosDelDia.cshtml" />
+    <Content Include="Views\Carnet\Vista_Cabecera_Odo.cshtml" />
+    <Content Include="Views\Carnet\Vista_Detalle_Odo.cshtml" />
+    <Content Include="Views\Carnet\Vista_2.cshtml" />
+    <Content Include="Views\Carnet\Vista_Cabecera_Med.cshtml" />
+    <Content Include="Views\Carnet\Vista_Detalle_Med.cshtml" />
+    <Content Include="Views\Odontologia\ModificarDatosOdontograma_Y_CSOdontologia.cshtml" />
+    <Content Include="Views\Carnet\VerHistorialCarnet.cshtml" />
+    <Content Include="Views\Medicina\ActualizarDatosAtencionMedicina.cshtml" />
+    <Content Include="Views\Carnet\Vista_Cabecera_EntregaCarnet.cshtml" />
+    <Content Include="Views\Carnet\Vista_detalle_EntregaCarne.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Imagen\FotoCarnetSanidad\" />
     <Folder Include="Views\PagoResumen\" />
     <Folder Include="Views\Prueba\" />
     <Folder Include="Views\Recetas\" />

@@ -358,7 +358,7 @@ namespace VgSalud.Controllers
 
                         if (EPac.TelfCel == null) { cmd.Parameters.AddWithValue("@TelfCel", ""); } else { cmd.Parameters.AddWithValue("@TelfCel", EPac.TelfCel); }
 
-                        cmd.Parameters.AddWithValue("@CodTipPac", 1);
+                        cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac);
 
                         //if (EPac.CodTipPac == 0)
                         //{

@@ -162,6 +162,8 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#paciente">Datos paciente</a></li>
                         <li><a data-toggle="tab" href="#comunicacion">Información otros</a></li>
+
+
                     </ul>
 
                     <div class="tab-content">
@@ -636,7 +638,6 @@
                                         <div class="col-md-9">
                                             @Html.EditorFor(model => model.Ocup, new { htmlAttributes = new { @class = "form-control" } })
                                             @Html.ValidationMessageFor(model => model.Ocup, "", new { @class = "text-danger" })
-
 
                                         </div>
                                     </div>

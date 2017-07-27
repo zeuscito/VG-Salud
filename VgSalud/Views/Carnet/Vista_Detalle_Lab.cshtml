@@ -1,0 +1,49 @@
+﻿@{
+    var lista = (List<VgSalud.Models.E_Carnet_Sanitario>)ViewBag.lista_Detalle;
+    Layout = null;
+    int x = 0;
+    string li = "<li>";
+    string liC ="</li>";
+    string ul = "<ul class=\"todo-list ui-sortable\">";
+    string ulC = "</ul>";
+    string div = "<div class='col-md-6'>";
+    string divC = "</div>";
+}
+
+<div class="col-lg-12 col-md-12 col-xs-12">
+
+    @Html.Raw(div)
+    @Html.Raw(ul)
+        @foreach (var item in lista)
+        {
+            x++;
+            if (x == 6)
+            {
+                @Html.Raw(liC)
+                @Html.Raw(ulC)
+                @Html.Raw(divC)
+                @Html.Raw(div)
+                @Html.Raw(ul)
+            }
+           
+            @Html.Raw(li)
+                <!-- drag handle -->
+
+                <!-- todo text -->
+                <span class="text" style="font-size:25px">&nbsp;@x)&nbsp;&nbsp;&nbsp;<i class="fa fa-user-circle-o" aria-hidden="true"> &nbsp; @item.NombrePaciente &nbsp;-&nbsp; @item.NroDoc</i> </span>
+                <!-- Emphasis label -->
+                @*<small class="label label-danger" style="font-size:35px"><i class="fa fa-file-text-o"></i></small>*@
+                <!-- General tools such as edit or delete-->
+                @*<div class="tools">
+                    <i class="fa f"></i>
+                    <i class="fa fa-trash-o"></i>
+                </div>*@
+              @Html.Raw(liC)
+
+
+
+        }
+    @Html.Raw(ulC)
+    @Html.Raw(divC)
+    
+</div>

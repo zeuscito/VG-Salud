@@ -197,6 +197,7 @@ namespace VgSalud.Controllers
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@Id", lab.Id);
+                            
                             cmd.Parameters.AddWithValue("@MuestraSangre", lab.MuestraS);
                             cmd.Parameters.AddWithValue("@MuestraHeces", lab.MuestraH);
 
@@ -225,7 +226,17 @@ namespace VgSalud.Controllers
                             {
                                 cmd.Parameters.AddWithValue("@Observacion", "");
                             }
-                            cmd.Parameters.AddWithValue("@Apto", lab.Apto);
+
+                            if (lab.Apto != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", lab.Apto);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", "");
+                            }
+
+                            //cmd.Parameters.AddWithValue("@Apto", lab.Apto);
                             cmd.Parameters.AddWithValue("@Modifica", modifica);
                             cmd.Parameters.AddWithValue("@Sede", sede);
                             db.Open();
@@ -277,7 +288,17 @@ namespace VgSalud.Controllers
                             {
                                 cmd.Parameters.AddWithValue("@Observacion", "");
                             }
-                            cmd.Parameters.AddWithValue("@Apto", lab.Apto);
+
+                            if (lab.Apto != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", lab.Observacion);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", "");
+                            }
+
+                            //cmd.Parameters.AddWithValue("@Apto", lab.Apto);
                             cmd.Parameters.AddWithValue("@Modifica", modifica);
                             cmd.Parameters.AddWithValue("@Sede", sede);
                             db.Open();
@@ -290,7 +311,7 @@ namespace VgSalud.Controllers
 
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return RedirectToAction("ActualizarDatosAtencionLaboratorio");
             }
@@ -465,6 +486,145 @@ namespace VgSalud.Controllers
 
             return ListaPacientes;
         }
+
+
+
+        public ActionResult ModificarDatosPacientesAtendidosDelDia(int IdLaboratorio)
+        {
+            ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSLaboratorio(IdLaboratorio);
+
+            var MostrarDatosLaboratorio = Buscar_Y_MostrarDatosCSLaboratorioPorId(IdLaboratorio).FirstOrDefault();
+
+            //ViewBag.MuestraS = MostrarDatosLaboratorio.MuestraS;
+
+            ViewBag.MuestraS = MostrarDatosLaboratorio.MuestraS;
+            ViewBag.MuestraH = MostrarDatosLaboratorio.MuestraH;
+
+            ViewBag.RPR = MostrarDatosLaboratorio.RPR;
+            ViewBag.Parasitologico = MostrarDatosLaboratorio.Parasitologico;
+            
+            ViewBag.Observacion = MostrarDatosLaboratorio.Observacion;
+
+            ViewBag.Apto = MostrarDatosLaboratorio.Apto;
+
+            return View(MostrarDatosLaboratorio);
+        }
+
+
+        public List<E_CSLaboratorio> Buscar_Y_MostrarDatosCSLaboratorioPorId(int IdLaboratorio)
+        {
+            string CodSede = Session["CodSede"].ToString();
+
+            List<E_CSLaboratorio> Lista = new List<E_CSLaboratorio>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_Buscar_Y_MostrarDatosCSLaboratorioPorId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdLaboratorio", IdLaboratorio);
+                    cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                    using (
+                        SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_CSLaboratorio CSLab = new E_CSLaboratorio();
+
+                            CSLab.Id = dr.GetInt32(0);
+                            CSLab.MuestraS = dr.GetBoolean(1);
+                            CSLab.MuestraH = dr.GetBoolean(2);
+                            CSLab.Parasitologico = dr.GetString(3);
+                            CSLab.RPR = dr.GetString(4);
+                            CSLab.Observacion = dr.GetString(5);
+                            CSLab.Apto = dr.GetString(6);
+
+                            Lista.Add(CSLab);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ModificarDatosPacientesAtendidosDelDia(int Id,E_CSLaboratorio lab)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            UtilitarioController ut = new UtilitarioController();
+            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            string modifica = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+            lab.Id = Id;
+
+            try
+            {
+                using (db = new SqlConnection(cadena))
+                {
+
+                    using (cmd = new SqlCommand("Usp_ModificarDatosPacientesAtendidosDelDia", db))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", lab.Id);
+
+                        cmd.Parameters.AddWithValue("@MuestraSangre", lab.MuestraS);
+                        cmd.Parameters.AddWithValue("@MuestraHeces", lab.MuestraH);
+
+                        if (lab.RPR != null)
+                        {
+                            cmd.Parameters.AddWithValue("@RPR", lab.RPR);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@RPR", "");
+                        }
+
+                        if (lab.Parasitologico != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Parasitologico", lab.Parasitologico);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Parasitologico", "");
+                        }
+
+                        if (lab.Observacion != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Observacion", lab.Observacion);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Observacion", "");
+                        }
+
+                        if (lab.Apto != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", lab.Apto);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", "");
+                        }
+                        
+                        cmd.Parameters.AddWithValue("@Modifica", modifica);
+                        cmd.Parameters.AddWithValue("@Sede", sede);
+                        db.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        return RedirectToAction("ListaPacientesAtendidosDelDia");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("ModificarDatosPacientesAtendidosDelDia");
+            }
+            
+        }
+
+
 
     }
 }

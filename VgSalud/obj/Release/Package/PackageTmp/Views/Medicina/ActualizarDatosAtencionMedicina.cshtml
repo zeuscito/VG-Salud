@@ -1,0 +1,266 @@
+﻿@model VgSalud.Models.E_CSMedicina
+
+@{
+    ViewBag.Title = "AtiendePacienteMedicina";
+    //var lista = (List<VgSalud.Models.E_CSMedicina>)ViewBag.MostrarDatosMedicina;
+
+    var ListaFechaOdontograma = (List<VgSalud.Models.E_CSMedicina>)ViewBag.ListaFechaOdontograma;
+
+    string ApLab = (string)ViewBag.AptoLab;
+    string ApOdon = (string)ViewBag.AptoOdon;
+
+    string check = "checked";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Medicina</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa-fa-users"></i>Medicina</a></li>
+            <li class="active">Actualizar Datos</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <fieldset>
+                        <div class="box-body">
+                            <form method="post">
+                                <fieldset>
+                                    <legend style="margin-left:3%;width:96%">Datos</legend>
+                                    @*@foreach (var item in lista)
+                                    {*@
+                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@Model.Procedencia" />
+                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@Model.Manipulador" />
+                                        <div class="row">
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Paciente: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@Model.Paciente</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-5 ">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Edad: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@Model.Edad</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Tipo Carnet: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@Model.DesTipoCarnet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-5 ">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Manipulador: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@Model.Manipulador</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Nro. Carnet: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@Model.NumeroCarnet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    @*}*@
+                                </fieldset>
+                                <fieldset>
+                                    
+                                    <legend style="margin-left:3%;width:96%">Apto</legend>
+                                    <div class="row" style="text-align:center;">
+                                        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                            <div class="form-group">
+
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="text-align:center">
+                                                            <label style="font-size:large"><input type="checkbox" value="true" @if (@Model.AptoLab == "SI") { @check  } style="width:15px;height:15px;" name="AptoLab" id="AptoLab" disabled>Apto Laboratorio</label>
+                                                        </div>
+
+                                                        <div class="col-md-12" style="border:1px solid coral;width:97%;height:auto;border-radius:10px;">
+                                                            <div class="row" style="margin-top:2%">
+                                                                <div class="col-md-6" style="text-align:center;">
+                                                                    <label style="color:black;font-size:larger">@Model.TituloMuestraSangre</label>
+                                                                    <label style="color:dodgerblue;font-size:larger" >@Model.Lab_MuestraSangre</label>
+                                                                </div>
+
+                                                                <div class="col-md-6" style="text-align:center;">
+                                                                    <label style="color:black;font-size:larger">@Model.TituloMuestraHeces</label>
+                                                                    <label style="color:dodgerblue;font-size:larger">@Model.Lab_MuestraHeces</label>
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                            <div class="row"> 
+                                                                <div class="col-md-12" style="text-align:left;">
+                                                                    <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloRPR</label><br />
+                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_RPR</label>
+                                                                </div>
+                                                                <div class="col-md-12" style="text-align:left;">
+                                                                    <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloParasitologico</label><br />
+                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_Parasitologico</label>
+                                                                </div>
+                                                                <div class="col-md-12" style="text-align:left;">
+                                                                    <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloObservacion</label><br />
+                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_Observacion</label>
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="row" >
+                                                        <div class="col-md-12" style="text-align:center">
+                                                            <label style="font-size:large"><input type="checkbox" value="true" @if (@Model.AptoOdon == "SI") { @check   ; } style="width:15px;height:15px;" name="AptoOdon" id="AptoOdon" disabled>Apto Odontologia</label>
+                                                        </div>
+                                                        <div class="col-md-12"  style="text-align:center;border:1px solid coral;width:97%;height:auto;border-radius:10px;">
+                                                            <div class="row" style="margin-top:2%;">
+                                                                <div class="col-md-12" style="text-align:left;">
+                                                                    <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloObservacion</label><br />
+                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.OdoObservacion</label>
+                                                                </div>
+                                                                <div class="col-md-12" style="text-align:left;">
+                                                                    <label style="color:black;font-size:larger;margin-left:2%;">ODONTOGRAMAS: </label><br />
+                                                                    @foreach (var item in ListaFechaOdontograma)
+                                                                    {
+                                                                        <table style="width:100%;">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a style="font-size:larger;margin-left:7%;">ATENCIONES REALIZADAS: @item.FechaRegistroOdontograma</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                        
+                                                                    }
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                
+                                <fieldset>
+                                    <legend style="margin-left:3%;width:96%;">Resultados</legend>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-sm-offset-1 ">
+                                            <div class="form-group" id="IdObservaciones">
+                                                <div class="col-md-3">
+                                                    <label>Observaciones: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="Observaciones" id="Observaciones" style="height:70px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-5 ">
+                                            <div class="form-group" id="IdConclusiones">
+                                                <div class="col-md-3">
+                                                    <label>Conclusion: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="Conclusion" id="Conclusion"style="height:70px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                            <div class="form-group" style="margin-top:2%;text-align:center;">
+                                                <div class="col-sm-3 col-sm-offset-3">
+                                                    <div class="radio">
+                                                        <label style="font-size:large"><input type="radio" value="SI" style="width:15px;height:15px;" name="AptoMed"> APTO</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label style="font-size:large"><input type="radio"  value="NO" style="width:15px;height:15px;" name="AptoMed"> NO APTO</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-5 ">
+                                            <div class="form-group" id="IdGrupoFactor">
+                                                <div class="col-md-3">
+                                                    <label>Reevaluado: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="Reevaluado" id="Reevaluado" style="height:70px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div style="text-align:center">
+                                            <input type="submit" class="btn btn-success" value="Guardar" />
+                                        </div>
+                                        
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/javascript" src="/scripts/jquery.limit.js"></script>
+<script type="text/javascript">
+    $('#Reevaluado').limit('250', '#charsLeft');
+</script>
+<script type="text/javascript">
+    $('#Conclusion').limit('250', '#charsLeft');
+</script>
+
+<script type="text/javascript">
+    $('#Observaciones').limit('250', '#charsLeft');
+</script>
+

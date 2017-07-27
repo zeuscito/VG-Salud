@@ -34,7 +34,14 @@ namespace VgSalud.Models
 
         public int CodPaciente { get; set; }
         
+        public string ImagenCarnetSanidad { get; set; }
 
+
+
+        public string FileFotoCarnetSanidad { get; set; }
+
+
+        public string NombreCarnetFoto { get; set; }
 
     }
 }

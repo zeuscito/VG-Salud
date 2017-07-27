@@ -1,0 +1,299 @@
+﻿
+@model VgSalud.Models.E_CSLaboratorio
+
+
+@{
+    ViewBag.Title = "ModificarDatosPacientesAtendidosDelDia";
+    var lista = (List<VgSalud.Models.E_CSLaboratorio>)ViewBag.lista;
+
+    bool MuestraH = (bool)ViewBag.MuestraH;
+    bool MuestraS = (bool)ViewBag.MuestraS;
+
+    string RPR = (string)ViewBag.RPR;
+    string Parasitologico = (string)ViewBag.Parasitologico;
+    string Observacion = (string)ViewBag.Observacion;
+
+    string Apto = (string)ViewBag.Apto;
+    
+
+    string check = "checked";
+
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1> Laboratorio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Laboratorio</a></li>
+            <li class="active">Actualizar Datos</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <fieldset>
+                        <div class="box-body">
+                            <form method="post">
+                                <fieldset>
+                                    <legend style="margin-left:3%;width:96%;">Datos</legend>
+                                    @foreach (var item in lista)
+                                    {
+                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@item.Procedencia" />
+                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@item.Manipulador" />
+                                        <div class="row">
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Paciente: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@item.Paciente</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-5 ">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Edad: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@item.Edad</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Tipo Carnet: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@item.DesTipoCarnet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-5 ">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Manipulador: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@item.Manipulador</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 ">
+                                                <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Nro. Carnet: </label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label style="font-size:large;color:coral;">@item.NumeroCarnet</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    }
+
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend style="margin-left:3%;width:96%;">Entrega Muestras</legend>
+                                    <div class="row" style="text-align:center;">
+                                        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <div class="checkbox" id="checkboxMuestraSangre">
+                                                        <label style="font-size:large"><input type="checkbox" value="true" @if (MuestraS == true) { @check; } style="width:15px;height:15px;" name="MuestraS" id="MuestraS"> Muestra de Sangre</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="checkbox" id="checkboxMuestraHeces">
+                                                        <label style="font-size:large"><input type="checkbox" value="true" @if (MuestraH == true) { @check; } style="width:15px;height:15px;" name="MuestraH" id="MuestraH"> Muestra de Heces  </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend style="margin-left:3%;width:96%;"> Resultados</legend>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                            <div class="form-group" id="IdHIV">
+                                                <div class="col-md-3">
+                                                    <label>HIV: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="HIV" style="height:70px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 ">
+                                            <div class="form-group" id="IdGrupoFactor">
+                                                <div class="col-md-3">
+                                                    <label>Grupo Factor: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="GrupoFactor" style="height:70px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                            <div class="form-group" id="IdRPR">
+                                                <div class="col-md-3">
+                                                    <label>RPR: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @*@Html.EditorFor(model => model.RPR, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                    @*@Html.TextAreaFor(model => model.RPR, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                    <textarea class="form-control" name="RPR"  style="height:70px;">@Model.RPR</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 ">
+                                            <div class="form-group" id="IdParasitologico">
+                                                <div class="col-md-3">
+                                                    <label>Parasitologico: </label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="Parasitologico" style="height:70px;">@Model.Parasitologico</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <label>Observacion: </label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" name="Observacion" style="height:70px;">@Model.Observacion</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-5 ">
+                                            <div class="form-group">
+                                                <div class="col-sm-6 col-sm-offset-6">
+                                                    <div class="checkbox" id="IdCheckBoxReevaluado" style="display:none;">
+                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox" value="0" style="width:15px;height:15px;" name="Reevaluado"> Reevaluado</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group" style="margin-top:2%;text-align:center;">
+                                                <div class="col-sm-3 col-sm-offset-5">
+                                                    <div class="radio">
+                                                        <label style="font-size:large"><input type="radio" @if (Apto == "SI") { @check; } value="SI" style="width:15px;height:15px;" name="Apto"> APTO</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="radio">
+                                                        <label style="font-size:large"><input type="radio" @if (Apto == "NO") { @check; } value="NO" style="width:15px;height:15px;" name="Apto"> NO APTO</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12" style="text-align:center;margin-top:2%;margin-bottom:2%;">
+                                            <input  type="hidden" value="@Model.Id" name="Id" id="Id"/>
+                                            <button type="submit" title="Modificar Datos" class="btn btn-success" style="background-color:#13D003;border:0px;font-size:large;"><i class="fa fa-floppy-o"></i> Modificar</button>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        //validacion para mostrar los checksbox requeridos
+        ValidarChecksBoxMuestra();
+
+        //validamos los campos a actualizar por procedencia
+        ValidarCamposPorProcedencia();
+
+    });
+
+
+    function ValidarChecksBoxMuestra() {
+        var procedencia = $('#Procedencia').val();
+        var manipulador = $('#Manipulador').val();
+
+        if (procedencia == '1' && manipulador == 'SI' || manipulador == 'si' || manipulador == 'Si' || manipulador == 'sI') {
+            $('#checkboxMuestraSangre').show();
+            $('#checkboxMuestraHeces').show();
+        }
+        else
+            if (procedencia == '1' && manipulador == 'NO' || manipulador == 'no' || manipulador == 'No' || manipulador == 'nO') {
+                $('#checkboxMuestraHeces').hide();
+            }
+            else
+                if (procedencia == '2') {
+                    $('#checkboxMuestraSangre').show();
+                    $('#checkboxMuestraHeces').hide();
+                }
+    }
+
+
+    function ValidarCamposPorProcedencia() {
+        var procedencia = $('#Procedencia').val();
+        var manipulador = $('#Manipulador').val();
+
+
+        if (procedencia == '1' && manipulador == 'SI' || manipulador == 'si' || manipulador == 'Si' || manipulador == 'sI') {
+            $('#IdRPR').show();
+            $('#IdParasitologico').show();
+
+            $('#IdHIV').hide();
+            $('#IdGrupoFactor').hide();
+        }
+        else
+            if (procedencia == '1' && manipulador == 'NO' || manipulador == 'no' || manipulador == 'No' || manipulador == 'nO') {
+                $('#IdRPR').show();
+                $('#IdParasitologico').hide();
+
+                $('#IdHIV').hide();
+                $('#IdGrupoFactor').hide();
+            }
+            else
+                if (procedencia == '2') {
+                    $('#IdHIV').show();
+                    $('#IdGrupoFactor').show();
+                    $('#IdRPR').show();
+
+                    $('#IdParasitologico').hide();
+
+                }
+
+
+    }
+
+</script>

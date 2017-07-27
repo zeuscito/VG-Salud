@@ -590,6 +590,28 @@ namespace VgSalud.Controllers
                         //return null;
 
                     }
+                    else
+                    {
+                        E_Tarifa_CategoriaPaciente item = new E_Tarifa_CategoriaPaciente();
+
+                        item.CodCatPac = reg.CodCatPac;
+                        item.DescCatPac = reg.DescCatPac;
+
+                        if (tmo.TipoCambio == 0)
+                        {
+                            item.Precio = t.Precio;
+                        }
+                        else
+                        {
+                            item.Precio = t.Precio * tmo.TipoCambio;
+                        }
+
+
+                        formularios.Add(item);
+                        Session["catePaciente"] = formularios;
+
+                        ViewBag.mensaje = "registro Agregado";
+                    }
 
                 }
 
@@ -789,7 +811,10 @@ namespace VgSalud.Controllers
             ViewBag.listadoEspecialidad = new SelectList(e.ListadoEspecialidades().Where(x => x.EstEspec == true && x.CodSed == sede), "CodEspec", "NomEspec", tar.CodEspec);
             ViewBag.listadoCategoria = new SelectList(cat.listadoCategoriaCliente().Where(d => d.EstCatPac == true), "CodCatPac", "DescCatPac",tar.CodCatPac);
             ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica(), "idPFA", "Nombre", tar.idPFA);
+            ViewBag.listadoTipoTarifa = new SelectList(tt.ListadoTipoTarifa().Where(d => d.EstTipTar == true), "CodTipTar", "DescTipTar");
+            ViewBag.listadoSubTipoTarifa = new SelectList(st.ListadoSTipoTarifa().Where(d => d.EstTipTar == true), "CodSTipTar", "DescSTipTar");
             ViewBag.listadoCuentaContable = new SelectList(ListadoCuentaContable(), "IdCtaCont", "ConcatenadoCuenta", tar.IdCtaCont);
+           
             string modifica = Session["usuario"] + " " + DateTime.Now + " " + Environment.MachineName;
 
             SedesController Sed = new SedesController();
@@ -845,7 +870,7 @@ namespace VgSalud.Controllers
                     cmd.ExecuteNonQuery();
                 }
                 ViewBag.listadocatePaciente = (List<E_Tarifa_CategoriaPaciente>)ListadoCategoriaPacienteTarifa(tar.CodTar);
-                return RedirectPermanent("~/Tarifario/ModificarTarifa?id=" + tar.CodTar + "&var=" + tar.CodCatPac);
+                return View(tar);
 
             }
 

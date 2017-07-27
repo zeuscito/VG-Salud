@@ -4,8 +4,11 @@
 @{
     ViewBag.Title = "ListaPacienteResultadoApto";
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
+    //var listadetallegeneral = new VgSalud.Controllers.InformesController().ListaObservReevalGeneral();
     string CodUsu = Session["UserID"].ToString();
     int CodMed = 0;
+
+    var ListaDetalle = (List<VgSalud.Models.E_Informes>)ViewBag.Listar;
 }
 
 <div class="content-wrapper">
@@ -80,51 +83,55 @@
 
                     <br />
 
-                    <fieldset>
+                    <fieldset> 
+                       
 
                         <legend style="margin-left:3%; width:96%">Lista</legend>
-
+                        
                         <div class="box-body">
+                            
                             <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
+                               
                                 <table id="example1" class="table table-bordered table-striped">
+                                    
                                     <thead>
                                         <tr class="headTabla">
-                                            <th width="9%" style="text-align:center">Carnet</th>
-                                            <th width="9%" style="text-align:center">Numero de Documento</th>
-                                            <th width="11%" style="text-align:center">Paciente</th>
-                                            <th width="10%" style="text-align:center">Fecha Atencion Laboratorio</th>
-                                            <th width="9%" style="text-align:center">Observacion Laboratorio</th>
-                                            <th width="9%" style="text-align:center">Reevaluado Laboratorio</th>
-                                            <th width="10%" style="text-align:center">Fecha Atencion Odontologia</th>
-                                            <th width="9%" style="text-align:center">Observacion Odontologia</th>
-                                            <th width="9%" style="text-align:center">Reevaluado Odontologia</th>
-                                            <th width="7%" style="text-align:center">Resultado</th>
-
+                                            <th width="10%" style="text-align:center">Carnet</th>
+                                            <th width="10%" style="text-align:center">N° Documento</th>
+                                            <th width="18%" style="text-align:center">Paciente</th>
+                                            <th width="10%" style="text-align:center">Fec. Aten. Lab.</th>
+                                            <th width="10%" style="text-align:center">Apto Lab.</th>
+                                            <th width="10%" style="text-align:center">Fec. Aten. Odonto.</th>
+                                            <th width="10%" style="text-align:center">Apto Odonto.</th>
+                                            <th width="10%" style="text-align:center">Fec. Aten. Med.</th>
+                                            <th width="10%" style="text-align:center">Apto Med.</th>
+                                            <th width="10%" style="text-align:center">Detalle</th>
+                                            <th width="10%" style="text-align:center">Pasar Medicina</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
                                         @foreach (var item in Model)
                                         {
-
-                                            <tr>
+                                        <tr>
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Carnet)</td>
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.NumDoc)</td>
-                                                <td style="text-align:center">
-                                                    @Html.DisplayFor(modelItem => item.ApePat) &nbsp;
-                                                @Html.DisplayFor(modelItem => item.ApeMat) &nbsp;
-                                                @Html.DisplayFor(modelItem => item.NomPac)
-                                            </td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenLab)</td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionLab)</td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoLab)</td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenOdon)</td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionOdon)</td>
-                                            <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoOndon)</td>
-                                            <td style="text-align:center"><button type="button" class="resultado btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" historia="@item.Historia"><i class="fa fa-file-text-o"></i> Resultado</button></td>
-
-
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ApePat) &nbsp;@Html.DisplayFor(modelItem => item.ApeMat) <br />@Html.DisplayFor(modelItem => item.NomPac)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenLab)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.AptoLab)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenOdo)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.AptoOdon)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenMed)</td>
+                                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.AptoMed)</td>
+                                                <td style="text-align:center" ><button title="Detalle" data-toggle="modal" data-target="#myModal" class="resultado btn btn-warning" DatoIdCarnet="@item.nroCarnet" ><i class="fa fa-sign-in"></i> Detalle</button></td>
+                                                @if (item.AptoOdon == "SI" && item.AptoOdon != "NE" || item.AptoLab=="SI" && item.AptoLab == "NO")
+                                                {
+                                                    <td style="text-align:center"><a title="Enviar" class="btn btn-success" href="PasarMedicina?id=@item.IdMedicina" action='@Url.Action("PasarMedicina", "Informes")'><i class="fa fa-sign-in"></i> Pasar</a></td>
+                                                }
+                                                else 
+                                                {
+                                                    <td style="text-align:center"><a title="Enviar" class="btn btn-success" href="PasarMedicina?id=@item.IdMedicina" action='@Url.Action("PasarMedicina", "Informes")' disabled><i class="fa fa-sign-in"></i> Pasar</a></td>
+                                                }
+                                            @*<td style="text-align:center"><button type="button" class="resultado btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" historia="@item.Historia"><i class="fa fa-file-text-o"></i> Resultado</button></td>*@
                                         </tr>
 
                                         }
@@ -133,6 +140,7 @@
 
                                 </table>
                             </div>
+                           
                         </div>
 
                     </fieldset>
@@ -143,110 +151,76 @@
 
 </div>
 
-<div class="modal" id="myModal" role="dialog">
-    <div class="modal-dialog">
 
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Resultado </h4>
-            </div>
-            <div class="col-md-12">
-                <table id="example3" class="table table-bordered table-responsive">
-                    <thead>
-                        <tr>
-                            <th width="33%" style="text-align:center">LABORATORIO</th>
-                            <th width="33%" style="text-align:center">ODONTOLOGIA</th>
-                            <th width="33%" style="text-align:center">MEDICINA</th>
-                            <th width="33%" style="text-align:center">ACCION</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        @*@foreach (var item in Model)
-                            {
-                                <tr>
-
-                                    <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoLab)</td>
-                                    <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoOdon)</td>
-                                    <td style="text-align:center">Apto:@Html.DisplayFor(modelItem => item.AptoMed)</td>
-
-                                </tr>
-
-                            }*@
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            @foreach (var item in Model)
-            {
-                CodMed = item.IdMedicina;
-                <div class="modal-footer">
-                    <input type="hidden" value="@item.AptoLab" name="AptoLab" id="AptoLab" />
-                    <input type="hidden" value="@item.AptoOdon" name="AptoOdon" id="AptoOdon" />
-                    <input type="hidden" value="1" id="evento" name="evento" />
-
-                    @*<button type="submit" style="text-align:left" class="btn btn-success" ><i class="fa fa-arrow-right"></i> Pasar Medicina</button>*@
-
-                </div>
-            }
-            <a href="~/Informes/PasarMedicina?IdMedicina=@CodMed" class="btn btn-success" action='@Url.Action("PasarMedicina", "Informes")'><i class="fa fa-arrow-right" style="font-size:25px; color:#13D003"></i> Pasar a Medicina</a>
-            <button type="button" style="text-align:right" class="btn btn-default" title="Cerrar" data-dismiss="modal"><i class="fa fa-sign-out"></i> Cerrar</button>
-        </div>
-
-    </div>
-</div>
-
-<div class="modal" id="ModalAlertaDanger" role="dialog" style="width:50%;text-align:right;">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Informes Detalle</h4>
             </div>
             <div class="modal-body">
-                <p>This is a small modal.</p>
+
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th style="background-color:#fa8072">Observ. Lab</th>
+                            <th style="background-color:#fa8072">Reeval. Lab</th>
+                            <th></th>
+                            <th style="background-color:#fa8072">Observ. Odont.</th>
+                            <th style="background-color:#fa8072">Reeval. Odont.</th>
+                            <th></th>
+                            <th style="background-color:#fa8072">Observ. Med.</th>
+                            <th style="background-color:#fa8072">Reeval. Med.</th>
+                        </tr>
+
+                    </thead>
+                    <tbody id="tbody2">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionLab)</td>
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoLab )</td>
+                                <td></td>
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ObservacionOdon)</td>
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoOndon)</td>
+                                <td></td>
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Observaciones)</td>
+                                <td style="text-align:center">@Html.DisplayFor(modelItem => item.ReevaluadoMed)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default"data-dismiss="modal">Close</button>
             </div>
+            <input type="hidden" name="IdNroCarnet" id="IdNroCarnet"/>
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        $(".eliminar").click(function () {
-            $("#evento").val("3");
-        });
+      $(document).ready(function () {
 
-        $(".resultado").on("click", function () {
-    
-            var historia = this.attributes.historia.value;
-            $.get('@Url.Action("GetDetalle","Informes")', { codigo: historia },
-                function (response) {
-                    $("#tbody").empty();
-                    $("#tbody").append(response);
-                });
+          $(".resultado").on("click", function () {
+             
+              debugger;
+              var dato = this.attributes.DatoIdCarnet.value;
 
-        });
+              $('#IdNroCarnet').val(dato);
+
+              var dato2 = $('#IdNroCarnet').val();
+
+              $.get('@Url.Action("ObtenerDetalle", "Informes")', { id: dato,},
+                  function (response) {
+                      
+                      $("#tbody2").empty();
+                      $("#tbody2").append(response);
+                  });
+
+          });
     });
-
-
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-

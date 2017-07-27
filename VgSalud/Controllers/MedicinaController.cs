@@ -159,5 +159,289 @@ namespace VgSalud.Controllers
 
             return ListaCarnetOdo;
         }
+
+
+        public List<E_CSMedicina> MostrarDatosDeListaDeCarnetSanidadCSMedicina(int Id)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            List<E_CSMedicina> ListaCarnetMed = new List<E_CSMedicina>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_MostrarDatosDeListaDeCarnetSanidadCSMedicina", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", Id);
+                    cmd.Parameters.AddWithValue("@Sede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        E_CSMedicina med = new E_CSMedicina();
+
+                        med.Id = int.Parse(dr["Id"].ToString());
+                        med.CodCue = int.Parse(dr["CodCue"].ToString());
+                        med.Paciente = dr["NombrePaciente"].ToString();
+                        med.DesTipoCarnet = dr["DescCarnet"].ToString();
+                        med.Manipulador = dr["Manipulador"].ToString();
+                        med.Prioridad = Convert.ToInt32(dr["Prioridad"].ToString());
+                        med.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
+                        med.Edad = Convert.ToInt32(dr["edad"]);
+                        med.NumeroCarnet = dr["NumeroCarnet"].ToString();
+                        med.Procedencia = dr["Procedencia"].ToString();
+                        med.NroCarnet = Convert.ToInt32(dr["NroCarnet"]);
+
+                        med.AptoOdon = dr["AptoOdo"].ToString();
+                        med.AptoLab = dr["AptoLab"].ToString();
+
+                        med.MuestraSangre = Convert.ToBoolean(dr["LabMuestraSangre"].ToString());
+                        if (med.MuestraSangre==true)
+                        {
+                            med.Lab_MuestraSangre = "SI";
+                            med.TituloMuestraSangre = "MUESTRA SANGRE: ";
+                        }
+                        else
+                        {
+                            med.Lab_MuestraSangre = "NO";
+                            med.TituloMuestraSangre = "MUESTRA SANGRE: ";
+                        }
+
+                        med.MuestraHeces = Convert.ToBoolean(dr["LabMuestraHeces"].ToString());
+                        if (med.MuestraHeces == true)
+                        {
+                            med.Lab_MuestraHeces = "SI";
+                            med.TituloMuestraHeces= "MUESTRA HECES: ";
+                        }
+                        else
+                        {
+                            med.Lab_MuestraHeces = "NO";
+                            med.TituloMuestraHeces = "MUESTRA HECES: ";
+                        }
+
+                        if(med.Lab_RPR !=null || med.Lab_RPR != "")
+                        {
+                            med.TituloRPR = "RPR: ";
+                            med.Lab_RPR = dr["LabRPR"].ToString();
+                        }
+                        else
+                        {
+                            med.TituloRPR = "RPR: ";
+                        }
+
+                        if (med.Lab_Parasitologico != null || med.Lab_Parasitologico != "")
+                        {
+                            med.TituloParasitologico = "PARASITOLOGICO: ";
+                            med.Lab_Parasitologico = dr["LabParasitologico"].ToString();
+                        }
+                        else
+                        {
+                            med.TituloParasitologico = "PARASITOLOGICO: ";
+                        }
+
+
+                        if (med.Lab_Observacion != null || med.Lab_Observacion != "")
+                        {
+                            med.TituloObservacion = "OBSERVACIÓN: ";
+                            med.Lab_Observacion = dr["LabObservacion"].ToString();
+                        }
+                        else
+                        {
+                            med.TituloObservacion = "OBSERVACIÓN: ";
+                        }
+
+                        if (med.OdoObservacion != null || med.OdoObservacion != "")
+                        {
+                            med.TituloObservacion = "OBSERVACIÓN: ";
+                            med.OdoObservacion = dr["OdoObservacion"].ToString();
+                        }
+                        else
+                        {
+                            med.TituloObservacion = "OBSERVACIÓN: ";
+                        }
+
+
+                        med.IdOdontologia = Convert.ToInt32(dr["IdOdontologia"].ToString());
+                        
+
+                        ListaCarnetMed.Add(med);
+
+                    }
+
+
+                }
+            }
+
+            return ListaCarnetMed;
+        }
+
+        public ActionResult ActualizarDatosAtencionMedicina(int id,E_CSMedicina Med )
+        {
+            
+            var MostrarDatosMedicina = MostrarDatosDeListaDeCarnetSanidadCSMedicina(id).FirstOrDefault();
+            
+
+            ViewBag.ListaFechaOdontograma = ListadoDeFechaDeOdontogramasRegistrados(id);
+            // por terminar
+            
+
+            return View(MostrarDatosMedicina);
+        }
+
+
+        [HttpPost]
+        public ActionResult ActualizarDatosAtencionMedicina(int Id, string procedencia, E_CSMedicina med)
+        {
+            string sede = Session["CodSede"].ToString();
+            UtilitarioController ut = new UtilitarioController();
+            var horasis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            string modifica = Session["usuario"] + " " + horasis.HoraServidor.ToString() + " " + Environment.MachineName;
+            med.Id = Id;
+            
+            med.Procedencia = procedencia;
+            try
+            {
+                using (db = new SqlConnection(cadena))
+                {
+                    if (med.Procedencia == "1".ToString())
+                    {
+                        using (cmd = new SqlCommand("Usp_ActualizarDatosCSMedicinaCS", db))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@Id",med.Id);
+                            cmd.Parameters.AddWithValue("@Manipulador", med.Manipulador);
+                            if (med.Conclusion!=null)
+                            {
+                                cmd.Parameters.AddWithValue("@Conclusion",med.Conclusion);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Conclusion", "");
+                            }
+                            if (med.AptoMed != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", med.AptoMed);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", "");
+                            }
+                            if (med.Reevaluado != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Reevaluado", med.Reevaluado);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Reevaluado", "");
+                            }
+                            if (med.Observaciones != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Observaciones", med.Observaciones);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Observaciones", "");
+                            }
+                            cmd.Parameters.AddWithValue("@Modifica", modifica);
+                            cmd.Parameters.AddWithValue("@Sede", sede);
+                            db.Open();
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
+
+                        }
+                    }
+                    else
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", med.Id);
+                        cmd.Parameters.AddWithValue("@Manipulador", med.Manipulador);
+                        if (med.Conclusion != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Conclusion", med.Conclusion);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Conclusion", "");
+                        }
+                        if (med.AptoMed != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", med.AptoMed);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", "");
+                        }
+                        if (med.Reevaluado != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Reevaluado", med.Reevaluado);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Reevaluado", "");
+                        }
+                        if (med.Observaciones != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Observaciones", med.Observaciones);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Observaciones", "");
+                        }
+                        cmd.Parameters.AddWithValue("@Modifica", modifica);
+                        cmd.Parameters.AddWithValue("@Sede", sede);
+                        db.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
+                    }
+
+                }
+            } 
+            catch (Exception ex)
+            {
+                return RedirectToAction("ActualizarDatosAtencionLaboratorio");
+            }
+        }
+
+
+
+
+
+        public List<E_CSMedicina> ListadoDeFechaDeOdontogramasRegistrados(int id)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            List<E_CSMedicina> ListaFechaOdo = new List<E_CSMedicina>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_ListarFechaRegistroOdontograma", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdOdontograma", id);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        E_CSMedicina med = new E_CSMedicina();
+
+                        med.FechaRegistroOdontograma = Convert.ToDateTime(dr["FechaRegistro"].ToString());
+
+                        ListaFechaOdo.Add(med);
+
+                    }
+
+
+                }
+            }
+
+            return ListaFechaOdo;
+        }
+
+
+        
     }
+
 }
