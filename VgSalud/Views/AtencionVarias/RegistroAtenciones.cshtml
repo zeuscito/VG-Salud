@@ -89,7 +89,7 @@
                     {
                         <div style="float:left; padding:0% 1% 0 1%">
                             <a href="~/Citas/ConsultaCita?id=@ViewBag.historia&CodCue=@cuenta" title="ALT + C">
-                                <center><i class="fa fa-calendar-plus-o" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atenciones<br /> Programadas</strong></center>
+                                <center><i class="fa fa-calendar-plus-o" style="font-size:25px; color:gray"></i><br><strong style="color:black">Atenciones<br /> Programadas</strong></center>
                             </a>
                         </div>
 
@@ -97,7 +97,7 @@
 
                     <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
                         <a href="~/Pacientes/ListaPacientes">
-                            <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                            <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:red"></i><br><strong style="color:black">Atras</strong></center>
                         </a>
                     </div>
 
@@ -229,8 +229,8 @@
                             </div>
                             <div class="col-md-12" style="margin-top:2%;">
                                 <center>
-                                    <input type="submit" class="btn btn-danger" value="Registrar" style="background-color:#13D003;border:0px" /> 
-                     
+                                    @*<input type="submit" class="btn btn-success" value="Registrar" style="background-color:#13D003;border:0px" />*@ 
+                                    <button type="submit" style="margin-top:11px;" value="Registrar"  class="btn btn-success"><span class="fa fa-floppy-o"></span> Registrar</button>
                                 </center>
                             </div>
                         </fieldset>
@@ -349,8 +349,10 @@
                                 <input type="hidden" name="Total" value="@total" />
                                 <input type="hidden" name="Historia" value="@ViewBag.historia" />
                                 <input type="hidden" name="CodCue" id="cuentaFinal" />
-                                <input type="submit" value="Registrar todo" id="grabar" class="btn btn-danger" style="background-color:#13D003;border:0px" />
+                                @*<input type="submit" value="Registrar todo" id="grabar" class="btn btn-danger" style="background-color:#13D003;border:0px" />*@
+                                <button type="submit" style="margin-top:11px;" value="Registrar todo" id="grabar" class="btn btn-success"><span class="fa fa-floppy-o"></span> Registrar Todo</button>
                             </center>
+                            
                         </div>
                     </form>
                 }

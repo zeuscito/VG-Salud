@@ -38,7 +38,7 @@
                         <div class="col-md-6">
                             <div style="float:left; padding:0% 1% 0 1%">
                                 <a href="~/Pacientes/ModificarPacientes?id=@Model.Historia" title="ALT + M">
-                                    <center><i class="fa fa-edit" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Editar</strong></center>
+                                    <center><i class="fa fa-edit" style="font-size:25px; color:#00c0ef"></i><br><strong style="color:black">Editar</strong></center>
                                 </a>
                             </div>
                             @{ var abc7 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
@@ -46,7 +46,7 @@
                                 {
                                     <div style="float:left; padding:0% 1% 0 1%">
                                         <a href="../Citas/ConsultaCita?id=1" title="ALT + C">
-                                            <center><i class="fa fa-calendar-plus-o" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atenciones<br> Programadas</strong></center>
+                                            <center><i class="fa fa-calendar-plus-o" style="font-size:25px; color:gray"></i><br><strong style="color:black">Atenciones<br> Programadas</strong></center>
                                         </a>
                                     </div>
                                 }
@@ -67,14 +67,14 @@
                                 {
                                     <div style="float:left; padding:0% 1% 0 1%" title="ALT + B">
                                         <a href="../Carnet/RegistroCarnet?historia=@Model.Historia">
-                                            <center><i class="fa fa-calendar-minus-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
+                                            <center><i class="fa fa-address-card-o" style="font-size:25px; color:darkred"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
                                         </a>
                                     </div>
                                 }
                             }
                             <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
                                 <a href="./ListaPacientes">
-                                    <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                                    <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:red"></i><br><strong style="color:black">Atras</strong></center>
                                 </a>
                             </div>
                         </div>

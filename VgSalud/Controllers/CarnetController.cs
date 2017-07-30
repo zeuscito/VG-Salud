@@ -798,6 +798,8 @@ namespace VgSalud.Controllers
             return View();
         }
 
+
+
         public JsonResult GetFiltroDniFecha(string dni = "", string fecha = "")
         {
             var lista = Usp_Entrega_Carnet_Dni_Buscar(dni, fecha);
@@ -807,16 +809,16 @@ namespace VgSalud.Controllers
                 foreach (var item in lista)
                 {
                     resultadoHTML += $"<li>" +
-                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;'>" +
+                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
                                    "<h3>" +
                                    item.NombrePaciente +
                                    " - " + item.NroDoc +
                                    "</h3>" +
-                                   "<button type='button' style='margin-left:35px;' class='llamar btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                   "<button type='button' style='margin-left:35px;' class='"+ item.Historia +" llamar btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
                                     "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia +">Si</button>" +
                                    "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
                                    "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
-                               
+                                
                                    "</a></li>";
                 }
 
@@ -825,9 +827,6 @@ namespace VgSalud.Controllers
             return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
 
         }
-
-
-
         public ActionResult VerHistorialCarnet(string Nombre = null, string Dni = null)
         {
             ViewBag.Nombre = Nombre;
@@ -886,8 +885,7 @@ namespace VgSalud.Controllers
             }
         }
 
-
-        public int Usp_Actualizar_CarnetSanidad_Entregado(int carnet, int historia)
+        public int Usp_Actualizar_CarnetSanidad_Entregado1(int carnet, int historia)
         {
             using (db = new SqlConnection(cadena))
             {
@@ -909,15 +907,12 @@ namespace VgSalud.Controllers
             }
 
         }
-
-
-
         public JsonResult Usp_Actualizar_CarnetSanidad_Entregado(int historia = 0, string dni = "", string fecha = "", int carnet = 0)
         {
             string resultadoHTML = "";
             if (carnet != 0 && historia != 0)
             {
-                int resultado = Usp_Actualizar_CarnetSanidad_Entregado(carnet, historia);
+                int resultado = Usp_Actualizar_CarnetSanidad_Entregado1(carnet, historia);
             }
 
 
@@ -929,42 +924,83 @@ namespace VgSalud.Controllers
                 {
                     foreach (var item in lista)
                     {
+
                         resultadoHTML += $"<li>" +
-                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;'>" +
-                                   "<h3>" +
-                                   item.NombrePaciente +
-                                   " - " + item.NroDoc +
-                                   "</h3><button type='button' style='margin-left:35px;' class='btn btn-success' class='llamar' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button><button type='button' class='imprimir' style='margin-left:35px;' class='btn btn-primary'>Imprimir</button></a></li>";
+                                                     "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
+                                                      "<h3>" +
+                                                      item.NombrePaciente +
+                                                      " - " + item.NroDoc +
+                                                      "</h3>" +
+                                                      "<button type='button' style='margin-left:35px;' class='" + item.Historia + " llamar btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                                       "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia + ">Si</button>" +
+                                                      "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
+                                                      "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
+
+                                                      "</a></li>";
+
+
                     }
                 }
-                resultadoHTML += "<script src=\"Scripts/Util.js\"></scritp>";
-                return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
+        
             }
             else
             {
-
                 var lista = usp_get_Entrega_Carnet();
                 if (lista != null)
                 {
                     foreach (var item in lista)
                     {
                         resultadoHTML += $"<li>" +
-                                                   "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;'>" +
-                                                    "<h3>" +
-                                                    item.NombrePaciente +
-                                                    " - " + item.NroDoc +
-                                                    "</h3>" +
-                                                    "<button type='button' style='margin-left:35px;' class='btn btn-success llamar' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
-                                                    "<button type='button' class='imprimir' style='margin-left:35px;' class='btn btn-primary'>Imprimir</button>" +
-                                                    "<button type='button' style='margin-left:35px;' class=" + item.NroCarnet + "Si" + " carnet=" + item.NroCarnet + "btn btn-primary" + ">Si</button>" +
-                                                    "<button type='button' style='margin-left:35px;' class=" + item.NroCarnet + "Si" + " carnet=" + item.NroCarnet + "btn btn-primary" + ">No</button>" +
-                                                    "</a></li>";
+                                                    "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
+                                                     "<h3>" +
+                                                     item.NombrePaciente +
+                                                     " - " + item.NroDoc +
+                                                     "</h3>" +
+                                                     "<button type='button' style='margin-left:35px;' class='" + item.Historia + " llamar btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                                      "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia + ">Si</button>" +
+                                                     "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
+                                                     "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
+
+                                                     "</a></li>";
                     }
-                    resultadoHTML += "<script src=\"Scripts/Util.js\"></scritp>";
-                    return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
+                 
+                  
                 }
             }
+         
+            resultadoHTML += "<script src=\"/Scripts/Util.js\"></scritp>";
             return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Get_Actualizar_Entrega_Carnet_Sanidad_index(int historia = 0, int carnet = 0) {
+            if (carnet != 0 && historia != 0)
+            {
+                int resultado = Usp_Actualizar_CarnetSanidad_Entregado1(carnet, historia);
+            }
+            var lista = Usp_En_Espera_GetEntregar();
+            string resultadoHTML = "";
+            if (lista != null)
+            {
+                foreach (var item in lista)
+                {
+                    resultadoHTML += $"<li>" +
+                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
+                                   "<h3>" +
+                                   item.NombrePaciente +
+                                   " - " + item.NroDoc +
+                                   "</h3>" +
+                                   "<button type='button' style='margin-left:35px;' class='" + item.Historia + " llamar1 btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                    "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si1 btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia + ">Si</button>" +
+                                   "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No1 btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
+                                   "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
+
+                                   "</a></li>";
+                }
+
+            }
+            resultadoHTML += "<script src=\"/Scripts/Util.js\"></scritp>";
+            return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
+
         }
 
 
@@ -999,9 +1035,6 @@ namespace VgSalud.Controllers
             return listatipo;
         }
 
-
-
-
         public List<E_Carnet_Sanitario> usp_get_Entrega_Carnet()
         {
             List<E_Carnet_Sanitario> listatipo = new List<E_Carnet_Sanitario>();
@@ -1030,7 +1063,6 @@ namespace VgSalud.Controllers
             }
             return listatipo;
         }
-
 
         public List<E_Carnet_Sanitario> Usp_get_Entregar_CarnetSanidad()
         {
@@ -1085,13 +1117,64 @@ namespace VgSalud.Controllers
             return listatipo;
         }
 
+        public List<E_Carnet_Sanitario> Usp_En_Espera_GetEntregar()
+        {
+            List<E_Carnet_Sanitario> listatipo = new List<E_Carnet_Sanitario>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_En_Espera_GetEntregar", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        //p.Historia , p.NomPac , p.NumDoc
+                        E_Carnet_Sanitario car = new E_Carnet_Sanitario();
+                        car.Historia = int.Parse(dr["Historia"].ToString());
+                        car.NombrePaciente = dr["NomPac"].ToString();
+                        car.NroDoc = dr["NumDoc"].ToString();
+                        listatipo.Add(car);
+
+                    }
+
+                }
+            }
+            return listatipo;
+        }
+        public JsonResult Get_Entregar_Carnet_Inicio() {
+
+            var lista = usp_get_Entrega_Carnet();
+            string resultadoHTML = "";
+            if (lista != null)
+            {
+                foreach (var item in lista)
+                {
+                    resultadoHTML += $"<li>" +
+                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
+                                   "<h3>" +
+                                   item.NombrePaciente +
+                                   " - " + item.NroDoc +
+                                   "</h3>" +
+                                   "<button type='button' style='margin-left:35px;' class='" + item.Historia + " llamar1 btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                    "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia + ">Si</button>" +
+                                   "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
+                                   "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
+
+                                   "</a></li>";
+                }
+
+            }
+            resultadoHTML += "<script src=\"/Scripts/Util.js\"></scritp>";
+            return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Vista_Cabecera_EntregaCarnet()
         {
             ViewBag.listaCabEnt = Usp_get_Entregar_CarnetSanidad_Top();
             return View();
         }
-
-     
         public ActionResult Vista_detalle_EntregaCarne()
         {
             ViewBag.listaDetEnt = Usp_get_Entregar_CarnetSanidad();

@@ -182,7 +182,7 @@
                                             <label>Fecha Nacimiento</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" name="FecNac" value="01/10/1990" class="form-control" id="fecha" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask required />
+                                            <input type="text" name="FecNac" value="dd/mm/yyyy" class="form-control fecha" id="fecha" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask required />
 
                                             @*@Html.EditorFor(model => model.FecNac, new { htmlAttributes = new { @class = "form-control datepicker", @id = "fecha" }  })*@
                                             @Html.ValidationMessageFor(model => model.FecNac, "", new { @class = "text-danger" })
@@ -194,7 +194,7 @@
                                             <label>Edad:</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control" id="edad" />
+                                            <input type="text" class="form-control" id="edad" disabled />
                                         </div>
                                     </div>
 
@@ -856,9 +856,10 @@
         
         
 
-        $("#fecha").blur(function (e) {
+        $(".fecha").blur(function (e) {
+            debugger;
             var fechita = this.value;
-            $.get('@Url.Action("getedadActual", "Pacientes")', { fecha: fechita },
+            $.get('@Url.Action("getedad", "Pacientes")', { fecha: fechita },
                 function (response) {
 
                     var array = response.split(',');
@@ -876,15 +877,15 @@
 
         $("#obsDisc").fadeOut();
 
-        $("#fecha").click(function () {
-            var fecha = this.value;
+        //$("#fecha").click(function () {
+        //    var fecha = this.value;
 
-            $("#fecha").keyup(function (e) {
-                if (e.keyCode == 13) {
-                    $("#fecha").val(fecha);
-                }
-            });
-        });
+        //    $("#fecha").keyup(function (e) {
+        //        if (e.keyCode == 13) {
+        //            $("#fecha").val(fecha);
+        //        }
+        //    });
+        //});
 
         $('#Discap').on('change', function () {
             if ($(this).is(':checked')) {
