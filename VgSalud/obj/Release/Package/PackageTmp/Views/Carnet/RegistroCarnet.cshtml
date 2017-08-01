@@ -259,43 +259,16 @@
 
 <script type="text/javascript" language="javascript">
     $(window).load(function () {
-
-        //$("input[name=TipoCarnetS]").click(function () {
-        //    $("input[name=TipoCarnetS]").css('border', '1px solid red');
-        //    $('#TipoCarnet').css("background-color", "red");
-        //});
-
-        //$(function () {
-        //    $('#file-input').change(function (e) {
-        //        addImage(e);
-        //    });
-
-        //    function addImage(e) {
-        //        var file = e.target.files[0],
-        //        imageType = /image.*/;
-
-        //        if (!file.type.match(imageType))
-        //            return;
-
-        //        var reader = new FileReader();
-        //        reader.onload = fileOnload;
-        //        reader.readAsDataURL(file);
-        //    }
-
-        //    function fileOnload(e) {
-        //        var result = e.target.result;
-        //        $('#imgSalida').attr("src", result);
-        //    }
-        //});
-
-
-
         $(function () {
+            debugger;
             $('#FileFotoCarnetSanidad').change(function (e) {
+
                 addImage(e);
+
             });
 
             function addImage(e) {
+                debugger;
                 var file = e.target.files[0],
                 imageType = /image.*/;
 
@@ -308,6 +281,7 @@
             }
 
             function fileOnload(e) {
+                debugger;
                 var result = e.target.result;
                 $('#imgSalida').attr("src", result);
             }

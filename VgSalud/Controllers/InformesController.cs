@@ -144,8 +144,6 @@ namespace VgSalud.Controllers
                 throw;
             }
                 
-           
-           
 
         }
       

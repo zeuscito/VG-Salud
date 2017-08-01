@@ -1,33 +1,40 @@
 ﻿@model VgSalud.Models.E_CSOdontologia
 
 @{
-    ViewBag.Title = "ActualizarDatosAtencionOdontologia";
-    var lista = (List<VgSalud.Models.E_CSOdontologia>)ViewBag.lista;
+    ViewBag.Title = "ModificarDatosOdontograma_Y_CSOdontologia";
+    string check = "checked";
 }
 
 <div class="content-wrapper">
     <section class="content-header">
-        <h1> Laboratorio</h1>
+        <h1> Odontologia</h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i>Laboratorio</a></li>
-            <li class="active">Actualizar Datos</li>
+            <li><a href="#"><i class="fa fa-smile-o"></i>Odontologia</a></li>
+            <li class="active">Modificar Odontograma</li>
         </ol>
     </section>
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
+                    <div class="box-header">
+                        <div style="float:left;margin-top:1%;margin-left:1%;">
+                            <a href="./ListaPacientesAtendidosDelDia">
+                                <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                            </a>
+                        </div>
+                    </div>
                     <fieldset>
                         <div class="box-body">
                             <form method="post">
                                 <fieldset>
                                     <legend style="margin-left:3%;width:96%;">Datos</legend>
-                                    @foreach (var item in lista)
-                                    {
-                                        <input type="hidden" name="DetalleArreglo" id="DetalleArreglo" value="@item.DetalleArreglo"/>
-                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@item.Procedencia" />
-                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@item.Manipulador" />
-                                        <input type="hidden" name="IdO" id="IdO" value="@item.Id" />
+                                    @*@foreach (var item in lista)
+                                    {*@
+                                        <input type="hidden" name="DetalleArreglo" id="DetalleArreglo" value="@Model.DetalleArreglo"/>
+                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@Model.Procedencia" />
+                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@Model.Manipulador" />
+                                        <input type="hidden" name="IdO" id="IdO" value="@Model.Id" />
                                         <div class="row">
                                             <div class="col-xs-12 ">
                                                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
@@ -36,7 +43,7 @@
                                                             <label>Paciente: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Paciente</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Paciente</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -46,7 +53,7 @@
                                                             <label>Edad: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Edad</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Edad</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -59,7 +66,7 @@
                                                             <label>Tipo Carnet: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.DesTipoCarnet</label>
+                                                            <label style="font-size:large;color:coral;">@Model.DesTipoCarnet</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -69,7 +76,7 @@
                                                             <label>Manipulador: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Manipulador</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Manipulador</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -82,14 +89,14 @@
                                                             <label>Nro. Carnet: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.NumeroCarnet</label>
+                                                            <label style="font-size:large;color:coral;">@Model.NumeroCarnet</label>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                    }
+                                    @*}*@
 
                                 </fieldset>
 
@@ -116,6 +123,11 @@
                                                                 <tr>
                                                                     <td style="width:25%;">
                                                                         <table style="width:60px;height:60px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente18.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>18</td>
@@ -161,11 +173,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD18P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente17.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>17</td>
@@ -211,11 +227,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD17P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente16.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>16</td>
@@ -261,11 +281,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD16P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente15.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>15</td>
@@ -311,7 +335,6 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD15P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -322,6 +345,11 @@
                                                                 <tr>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente14.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>14</td>
@@ -367,11 +395,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD14P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:60px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente13.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>13</td>
@@ -417,11 +449,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD13P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente12.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>12</td>
@@ -467,11 +503,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD12P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorDerecho/Diente11.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>11</td>
@@ -517,7 +557,6 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD11P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -536,6 +575,11 @@
                                                                 <tr>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente21.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>21</td>
@@ -581,11 +625,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD21P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente22.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>22</td>
@@ -631,11 +679,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD22P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente23.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>23</td>
@@ -681,11 +733,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD23P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente24.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>24</td>
@@ -731,7 +787,6 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD24P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -742,6 +797,11 @@
                                                                 <tr>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente25.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>25</td>
@@ -787,11 +847,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD25P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente26.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>26</td>
@@ -837,11 +901,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD26P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente27.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>27</td>
@@ -887,11 +955,15 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD27P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
                                                                     </td>
                                                                     <td style="width:25%">
                                                                         <table style="width:60px;height:80px;">
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteSuperiorIzquierdo/Diente28.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>28</td>
@@ -956,12 +1028,7 @@
                                                             <table style="width:100%">
                                                                 <tr>
                                                                     <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
-                                                                            <tr>
-                                                                                <td></td>
-                                                                                <td>48</td>
-                                                                                <td></td>
-                                                                            </tr>
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1001,17 +1068,23 @@
                                                                         <div id="ModalD48" style="width:60px;height:60px;margin-top:-60px;display:none;">
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
-                                                                        <div id="ModalD48P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
+                                                                        <div id="ModalD48P" style="width:60px;height:60px;margin-top:-180px;display:none;border:3px solid #13D003">
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>47</td>
+                                                                                <td>48</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente48.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1052,16 +1125,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD47P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>46</td>
+                                                                                <td>47</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente47.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1102,16 +1181,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD46P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>45</td>
+                                                                                <td>46</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente46.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1152,8 +1237,19 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD45P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
+                                                                        <table style="width:60px;height:120px;">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>45</td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente45.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1162,12 +1258,7 @@
                                                             <table style="width:100%">
                                                                 <tr>
                                                                     <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
-                                                                            <tr>
-                                                                                <td></td>
-                                                                                <td>44</td>
-                                                                                <td></td>
-                                                                            </tr>
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1208,16 +1299,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD44P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>43</td>
+                                                                                <td>44</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente44.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1258,16 +1355,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD43P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>42</td>
+                                                                                <td>43</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente43.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1308,16 +1411,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD42P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>41</td>
+                                                                                <td>42</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente42.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1358,8 +1467,19 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD41P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
+                                                                        <table style="width:60px;height:120px;">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>41</td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorDerecho/Diente41.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1376,12 +1496,7 @@
                                                             <table style="width:100%">
                                                                 <tr>
                                                                     <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
-                                                                            <tr>
-                                                                                <td></td>
-                                                                                <td>31</td>
-                                                                                <td></td>
-                                                                            </tr>
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1422,16 +1537,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD31P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>32</td>
+                                                                                <td>31</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente31.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1467,21 +1588,28 @@
                                                                                 </td>
                                                                                 <td></td>
                                                                             </tr>
+
                                                                         </table>
                                                                         <div id="ModalD32" style="width:60px;height:60px;margin-top:-60px;display:none;">
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD32P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>33</td>
+                                                                                <td>32</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente32.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1522,16 +1650,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD33P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>34</td>
+                                                                                <td>33</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente33.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1572,8 +1706,19 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD34P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
+                                                                        <table style="width:60px;height:120px;">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>34</td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente34.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1582,12 +1727,7 @@
                                                             <table style="width:100%">
                                                                 <tr>
                                                                     <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
-                                                                            <tr>
-                                                                                <td></td>
-                                                                                <td>35</td>
-                                                                                <td></td>
-                                                                            </tr>
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1628,16 +1768,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD35P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>36</td>
+                                                                                <td>35</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente35.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1678,16 +1824,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD36P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>37</td>
+                                                                                <td>36</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente36.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1728,16 +1880,22 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD37P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
-                                                                    </td>
-                                                                    <td style="width:25%">
-                                                                        <table style="width:60px;height:80px;">
+                                                                        <table style="width:60px;height:120px;">
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td>38</td>
+                                                                                <td>37</td>
                                                                                 <td></td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente37.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="width:25%">
+                                                                        <table style="width:60px;height:60px;">
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td style="width:20px;height:20px;">
@@ -1778,8 +1936,19 @@
                                                                             <label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>
                                                                         </div>
                                                                         <div id="ModalD38P" style="width:60px;height:60px;margin-top:-60px;display:none;border:3px solid #13D003">
-                                                                            @*<label style="font-size:80px;color:orange;font-weight:500;margin-top:-25px;">X</label>*@
                                                                         </div>
+                                                                        <table style="width:60px;height:120px;">
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>38</td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="width:60px;height:100px;">
+                                                                                    <img src="~/Imagen/DientesOdontograma/CuadranteInferiorIzquierdo/Diente38.png" style="width:100%;height:100%;" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1787,7 +1956,7 @@
 
                                                     </fieldset>
                                                 </div>
-                                            </div>
+                                            </div>  
                                         </div>
                                     </div>
                                 </fieldset>
@@ -1801,7 +1970,7 @@
                                                     <label>Observacion: </label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <textarea class="form-control" name="Observacion" style="height:70px;"></textarea>
+                                                    <textarea class="form-control" name="Observacion" style="height:70px;" id="Observacion">@Model.Observacion</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -1820,12 +1989,12 @@
                                             <div class="form-group" style="margin-top:2%;text-align:center;">
                                                 <div class="col-sm-3 col-sm-offset-5">
                                                     <div class="radio">
-                                                        <label style="font-size:large"><input type="radio" value="SI" style="width:15px;height:15px;" name="Apto"> APTO</label>
+                                                        <label style="font-size:large"><input type="radio" @if (@Model.Apto == "SI") { @check; } value="SI" style="width:15px;height:15px;" name="Apto"> APTO</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="radio">
-                                                        <label style="font-size:large"><input type="radio" value="NO" style="width:15px;height:15px;" name="Apto"> NO APTO</label>
+                                                        <label style="font-size:large"><input type="radio" @if (@Model.Apto == "NO") { @check; } value="NO" style="width:15px;height:15px;" name="Apto"> NO APTO</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -5213,6 +5382,7 @@
             }
             else
                 if (Accion != "") {
+                    var div = "D17LL";
                     var ArregloActual = $('#NuevoArregloOdontograma').val();
                     RealizarAccion(Accion, div, ArregloActual);
                 }
@@ -7118,6 +7288,856 @@
                 }
         });
 
+
+
+        // --- CLICK EN EL MODAL EXTRACCION
+        //-- cuadrante superior derecho --
+        $("#ModalD18").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD18";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD17").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD17";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD16").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD16";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD15").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD15";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD14").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD14";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD13").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD13";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD12").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD12";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD11").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD11";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE SUPERIOR IZQUIERDO
+        $("#ModalD21").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD21";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD22").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD22";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD23").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD23";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD24").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD24";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD25").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD25";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD26").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD26";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD27").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD27";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD28").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD28";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE INFERIOR DERECHO
+        $("#ModalD48").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD48";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD47").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD47";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD46").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD46";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD45").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD45";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD44").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD44";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD43").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD43";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD42").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD42";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD41").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD41";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE INFERIOR IZQUIERDO
+        $("#ModalD31").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD31";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD32").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD32";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD33").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD33";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD34").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD34";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD35").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD35";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD36").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD36";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD37").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD37";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD38").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD38";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        // --- CLICK EN EL MODAL PUENTE
+        //-- cuadrante superior derecho --
+        $("#ModalD18P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD18P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD17P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD17P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD16P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD16P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD15P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD15P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD14P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD14P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD13P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD13P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD12P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD12P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD11P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD11P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE SUPERIOR IZQUIERDO
+        $("#ModalD21P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD21P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD22P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD22P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD23P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD23P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD24P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD24P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD25P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD25P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD26P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD26P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD27P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD27P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+        
+        $("#ModalD28P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD28P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE INFERIOR DERECHO
+        $("#ModalD48P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD48P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD47P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD47P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD46P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD46P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD45P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD45P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD44P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD44P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD43P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD43P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD42P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD42P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD41P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD41P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+
+        //CUADRANTE INFERIOR IZQUIERDO
+        $("#ModalD31P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD31P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD32P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD32P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD33P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD33P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD34P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD34P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD35P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD35P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD36P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD36P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD37P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD37P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
+
+        $("#ModalD38P").click(function () {
+            var Accion = $("#Accion").val();
+            if (Accion == "" || Accion == null) {
+                alert("Seleccione Tratamaiento");
+            }
+            else
+                if (Accion == '5') {
+                    var div = "ModalD38P";
+                    var ArregloActual = $('#NuevoArregloOdontograma').val();
+                    RealizarAccion(Accion, div, ArregloActual);
+                }
+        });
     });
 
     function RealizarAccion(Accion, div, ArregloActual)
@@ -8096,7 +9116,12 @@
                 NuevoOdontograma[148] = ValueHidden;
                 $('#NuevoArregloOdontograma').val(NuevoOdontograma);
             }
-            if (div == "D36LB")
+            if (div == "D36LB") {
+                $('#D36LB').css('background-color', '#dd4b39');
+                var ValueHidden = 'D36LB' + '-' + Accion;
+                NuevoOdontograma[149] = ValueHidden;
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
 
             // -- Diente 37
             if (div == "D37LT") {
@@ -9238,6 +10263,9 @@
 
                 $('#NuevoArregloOdontograma').val(NuevoOdontograma);
                 $('#ModalD18').show('fast');
+
+                var dato = $('#NuevoArregloOdontograma').val();
+                alert(dato);
             }
 
             if (div == "D17LT" || div == "D17LL" || div == "D17LC" || div == "D17LR" || div == "D17LB") {
@@ -10748,6 +11776,1476 @@
             }
 
         }
+
+        if (Accion == '5') {
+            //CUADRANTE SUPERIOR DERECHO
+            //-- Diente 18
+            if (div == "D18LT") {
+                $('#D18LT').css('background-color', 'transparent');
+                NuevoOdontograma[0] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D18LL") {
+                $('#D18LL').css('background-color', 'transparent');
+                NuevoOdontograma[1] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D18LC") {
+                $('#D18LC').css('background-color', 'transparent');
+                NuevoOdontograma[2] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D18LR") {
+                $('#D18LR').css('background-color', 'transparent');
+                NuevoOdontograma[3] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D18LB") {
+                $('#D18LB').css('background-color', 'transparent');
+                NuevoOdontograma[4] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+
+            }
+
+            // -- Diente 17
+            if (div == "D17LT") {
+                $('#D17LT').css('background-color', 'transparent');
+                NuevoOdontograma[5] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D17LL") {
+                $('#D17LL').css('background-color', 'transparent');
+                NuevoOdontograma[6] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D17LC") {
+                $('#D17LC').css('background-color', 'transparent');
+                NuevoOdontograma[7] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D17LR") {
+                $('#D17LR').css('background-color', 'transparent');
+                NuevoOdontograma[8] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D17LB") {
+                $('#D17LB').css('background-color', 'transparent');
+                NuevoOdontograma[9] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 16
+            if (div == "D16LT") {
+                $('#D16LT').css('background-color', 'transparent');
+                NuevoOdontograma[10] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D16LL") {
+                $('#D16LL').css('background-color', 'transparent');
+                NuevoOdontograma[11] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D16LC") {
+                $('#D16LC').css('background-color', 'transparent');
+                NuevoOdontograma[12] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D16LR") {
+                $('#D16LR').css('background-color', 'transparent');
+                NuevoOdontograma[13] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D16LB") {
+                $('#D16LB').css('background-color', 'transparent');
+                NuevoOdontograma[14] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 15
+            if (div == "D15LT") {
+                $('#D15LT').css('background-color', 'transparent');
+                NuevoOdontograma[15] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D15LL") {
+                $('#D15LL').css('background-color', 'transparent');
+                NuevoOdontograma[16] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D15LC") {
+                $('#D15LC').css('background-color', 'transparent');
+                NuevoOdontograma[17] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D15LR") {
+                $('#D15LR').css('background-color', 'transparent');
+                NuevoOdontograma[18] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D15LB") {
+                $('#D15LB').css('background-color', 'transparent');
+                NuevoOdontograma[19] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 14
+            if (div == "D14LT") {
+                $('#D14LT').css('background-color', 'transparent');
+                NuevoOdontograma[20] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D14LL") {
+                $('#D14LL').css('background-color', 'transparent');
+                NuevoOdontograma[21] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D14LC") {
+                $('#D14LC').css('background-color', 'transparent');
+                NuevoOdontograma[22] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D14LR") {
+                $('#D14LR').css('background-color', 'transparent');
+                NuevoOdontograma[23] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D14LB") {
+                $('#D14LB').css('background-color', 'transparent');
+                NuevoOdontograma[24] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 13
+            if (div == "D13LT") {
+                $('#D13LT').css('background-color', 'transparent');
+                NuevoOdontograma[25] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D13LL") {
+                $('#D13LL').css('background-color', 'transparent');
+                NuevoOdontograma[26] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D13LC") {
+                $('#D13LC').css('background-color', 'transparent');
+                NuevoOdontograma[27] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D13LR") {
+                $('#D13LR').css('background-color', 'transparent');
+                NuevoOdontograma[28] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D13LB") {
+                $('#D13LB').css('background-color', 'transparent');
+                NuevoOdontograma[29] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 12
+            if (div == "D12LT") {
+                $('#D12LT').css('background-color', 'transparent');
+                NuevoOdontograma[30] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D12LL") {
+                $('#D12LL').css('background-color', 'transparent');
+                NuevoOdontograma[31] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D12LC") {
+                $('#D12LC').css('background-color', 'transparent');
+                NuevoOdontograma[32] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D12LR") {
+                $('#D12LR').css('background-color', 'transparent');
+                NuevoOdontograma[33] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D12LB") {
+                $('#D12LB').css('background-color', 'transparent');
+                NuevoOdontograma[34] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 11
+            if (div == "D11LT") {
+                $('#D11LT').css('background-color', 'transparent');
+                NuevoOdontograma[35] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D11LL") {
+                $('#D11LL').css('background-color', 'transparent');
+                NuevoOdontograma[36] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D11LC") {
+                $('#D11LC').css('background-color', 'transparent');
+                NuevoOdontograma[37] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D11LR") {
+                $('#D11LR').css('background-color', 'transparent');
+                NuevoOdontograma[38] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D11LB") {
+                $('#D11LB').css('background-color', 'transparent');
+                NuevoOdontograma[39] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+
+            //CUADRANTE SUPERIOR IZQUIERDO
+            // -- Diente 21
+            if (div == "D21LT") {
+                $('#D21LT').css('background-color', 'transparent');
+                NuevoOdontograma[40] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D21LL") {
+                $('#D21LL').css('background-color', 'transparent');
+                NuevoOdontograma[41] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D21LC") {
+                $('#D21LC').css('background-color', 'transparent');
+                NuevoOdontograma[42] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D21LR") {
+                $('#D21LR').css('background-color', 'transparent');
+                NuevoOdontograma[43] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D21LB") {
+                $('#D21LB').css('background-color', 'transparent');
+                NuevoOdontograma[44] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 22
+            if (div == "D22LT") {
+                $('#D22LT').css('background-color', 'transparent');
+                NuevoOdontograma[45] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D22LL") {
+                $('#D22LL').css('background-color', 'transparent');
+                NuevoOdontograma[46] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D22LC") {
+                $('#D22LC').css('background-color', 'transparent');
+                NuevoOdontograma[47] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D22LR") {
+                $('#D22LR').css('background-color', 'transparent');
+                NuevoOdontograma[48] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D22LB") {
+                $('#D22LB').css('background-color', 'transparent');
+                NuevoOdontograma[49] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 23
+            if (div == "D23LT") {
+                $('#D23LT').css('background-color', 'transparent');
+                NuevoOdontograma[50] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D23LL") {
+                $('#D23LL').css('background-color', 'transparent');
+                NuevoOdontograma[51] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D23LC") {
+                $('#D23LC').css('background-color', 'transparent');
+                NuevoOdontograma[52] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D23LR") {
+                $('#D23LR').css('background-color', 'transparent');
+                NuevoOdontograma[53] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D23LB") {
+                $('#D23LB').css('background-color', 'transparent');
+                NuevoOdontograma[54] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 24
+            if (div == "D24LT") {
+                $('#D24LT').css('background-color', 'transparent');
+                NuevoOdontograma[55] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D24LL") {
+                $('#D24LL').css('background-color', 'transparent');
+                NuevoOdontograma[56] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D24LC") {
+                $('#D24LC').css('background-color', 'transparent');
+                NuevoOdontograma[57] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D24LR") {
+                $('#D24LR').css('background-color', 'transparent');
+                NuevoOdontograma[58] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D24LB") {
+                $('#D24LB').css('background-color', 'transparent');
+                NuevoOdontograma[59] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 25
+            if (div == "D25LT") {
+                $('#D25LT').css('background-color', 'transparent');
+                NuevoOdontograma[60] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D25LL") {
+                $('#D25LL').css('background-color', 'transparent');
+                NuevoOdontograma[61] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D25LC") {
+                $('#D25LC').css('background-color', 'transparent');
+                NuevoOdontograma[62] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D25LR") {
+                $('#D25LR').css('background-color', 'transparent');
+                NuevoOdontograma[63] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D25LB") {
+                $('#D25LB').css('background-color', 'transparent');
+                NuevoOdontograma[64] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 26
+            if (div == "D26LT") {
+                $('#D26LT').css('background-color', 'transparent');
+                NuevoOdontograma[65] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D26LL") {
+                $('#D26LL').css('background-color', 'transparent');
+                NuevoOdontograma[66] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D26LC") {
+                $('#D26LC').css('background-color', 'transparent');
+                NuevoOdontograma[67] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D26LR") {
+                $('#D26LR').css('background-color', 'transparent');
+                NuevoOdontograma[68] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D26LB") {
+                $('#D26LB').css('background-color', 'transparent');
+                NuevoOdontograma[69] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 27
+            if (div == "D27LT") {
+                $('#D27LT').css('background-color', 'transparent');
+                NuevoOdontograma[70] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D27LL") {
+                $('#D27LL').css('background-color', 'transparent');
+                NuevoOdontograma[71] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D27LC") {
+                $('#D27LC').css('background-color', 'transparent');
+                NuevoOdontograma[72] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D27LR") {
+                $('#D27LR').css('background-color', 'transparent');
+                NuevoOdontograma[73] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D27LB") {
+                $('#D27LB').css('background-color', 'transparent');
+                NuevoOdontograma[74] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 28
+            if (div == "D28LT") {
+                $('#D28LT').css('background-color', 'transparent');
+                NuevoOdontograma[75] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D28LL") {
+                $('#D28LL').css('background-color', 'transparent');
+                NuevoOdontograma[76] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D28LC") {
+                $('#D28LC').css('background-color', 'dd4b39');
+                NuevoOdontograma[77] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D28LR") {
+                $('#D28LR').css('background-color', 'transparent');
+                NuevoOdontograma[78] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D28LB") {
+                $('#D28LB').css('background-color', 'transparent');
+                NuevoOdontograma[79] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            //CUADRANTE INFERIOR DERECHO
+            // -- Diente 48
+            if (div == "D48LT") {
+                $('#D48LT').css('background-color', 'transparent');
+                NuevoOdontograma[80] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D48LL") {
+                $('#D48LL').css('background-color', 'transparent');
+                NuevoOdontograma[81] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D48LC") {
+                $('#D48LC').css('background-color', 'transparent');
+                NuevoOdontograma[82] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D48LR") {
+                $('#D48LR').css('background-color', 'transparent');
+                NuevoOdontograma[83] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D48LB") {
+                $('#D48LB').css('background-color', 'transparent');
+                NuevoOdontograma[84] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 47
+            if (div == "D47LT") {
+                $('#D47LT').css('background-color', 'transparent');
+                NuevoOdontograma[85] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D47LL") {
+                $('#D47LL').css('background-color', 'transparent');
+                NuevoOdontograma[86] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D47LC") {
+                $('#D47LC').css('background-color', 'transparent');
+                NuevoOdontograma[87] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D47LR") {
+                $('#D47LR').css('background-color', 'transparent');
+                NuevoOdontograma[88] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D47LB") {
+                $('#D47LB').css('background-color', 'transparent');
+                NuevoOdontograma[89] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 46
+            if (div == "D46LT") {
+                $('#D46LT').css('background-color', 'transparent');
+                NuevoOdontograma[90] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D46LL") {
+                $('#D46LL').css('background-color', 'transparent');
+                NuevoOdontograma[91] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D46LC") {
+                $('#D46LC').css('background-color', 'transparent');
+                NuevoOdontograma[92] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D46LR") {
+                $('#D46LR').css('background-color', 'transparent');
+                NuevoOdontograma[93] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D46LB") {
+                $('#D46LB').css('background-color', 'transparent');
+                NuevoOdontograma[94] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 45
+            if (div == "D45LT") {
+                $('#D45LT').css('background-color', 'transparent');
+                NuevoOdontograma[95] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D45LL") {
+                $('#D45LL').css('background-color', 'transparent');
+                NuevoOdontograma[96] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D45LC") {
+                $('#D45LC').css('background-color', 'transparent');
+                NuevoOdontograma[97] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D45LR") {
+                $('#D45LR').css('background-color', 'transparent');
+                NuevoOdontograma[98] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D45LB") {
+                $('#D45LB').css('background-color', 'transparent');
+                NuevoOdontograma[99] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 44
+            if (div == "D44LT") {
+                $('#D44LT').css('background-color', 'transparent');
+                NuevoOdontograma[100] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D44LL") {
+                $('#D44LL').css('background-color', 'transparent');
+                NuevoOdontograma[101] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D44LC") {
+                $('#D44LC').css('background-color', 'transparent');
+                NuevoOdontograma[102] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D44LR") {
+                $('#D44LR').css('background-color', 'transparent');
+                NuevoOdontograma[103] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D44LB") {
+                $('#D44LB').css('background-color', 'transparent');
+                NuevoOdontograma[104] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 43
+            if (div == "D43LT") {
+                $('#D43LT').css('background-color', 'transparent');
+                NuevoOdontograma[105] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D43LL") {
+                $('#D43LL').css('background-color', 'transparent');
+                NuevoOdontograma[106] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D43LC") {
+                $('#D43LC').css('background-color', 'transparent');
+                NuevoOdontograma[107] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D43LR") {
+                $('#D43LR').css('background-color', 'transparent');
+                NuevoOdontograma[108] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D43LB") {
+                $('#D43LB').css('background-color', 'transparent');
+                NuevoOdontograma[109] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 42
+            if (div == "D42LT") {
+                $('#D42LT').css('background-color', 'transparent');
+                NuevoOdontograma[110] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D42LL") {
+                $('#D42LL').css('background-color', 'transparent');
+                NuevoOdontograma[111] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D42LC") {
+                $('#D42LC').css('background-color', 'transparent');
+                NuevoOdontograma[112] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D42LR") {
+                $('#D42LR').css('background-color', 'transparent');
+                NuevoOdontograma[113] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D42LB") {
+                $('#D42LB').css('background-color', 'transparent');
+                NuevoOdontograma[114] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 41
+            if (div == "D41LT") {
+                $('#D41LT').css('background-color', 'transparent');
+                NuevoOdontograma[115] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D41LL") {
+                $('#D41LL').css('background-color', 'transparent');
+                NuevoOdontograma[116] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D41LC") {
+                $('#D41LC').css('background-color', 'transparent');
+                NuevoOdontograma[117] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D41LR") {
+                $('#D41LR').css('background-color', 'transparent');
+                NuevoOdontograma[118] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D41LB") {
+                $('#D41LB').css('background-color', 'transparent');
+                NuevoOdontograma[119] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            //CUADRANTE INFERIOR IZQUIERDO
+            // -- Diente 31
+            if (div == "D31LT") {
+                $('#D31LT').css('background-color', 'transparent');
+                NuevoOdontograma[120] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D31LL") {
+                $('#D31LL').css('background-color', 'transparent');
+                NuevoOdontograma[121] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D31LC") {
+                $('#D31LC').css('background-color', 'transparent');
+                NuevoOdontograma[122] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D31LR") {
+                $('#D31LR').css('background-color', 'transparent');
+                NuevoOdontograma[123] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D31LB") {
+                $('#D31LB').css('background-color', 'transparent');
+                NuevoOdontograma[124] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 32
+            if (div == "D32LT") {
+                $('#D32LT').css('background-color', 'transparent');
+                NuevoOdontograma[125] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D32LL") {
+                $('#D32LL').css('background-color', 'transparent');
+                NuevoOdontograma[126] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D32LC") {
+                $('#D32LC').css('background-color', 'transparent');
+                NuevoOdontograma[127] ="";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D32LR") {
+                $('#D32LR').css('background-color', 'transparent');
+                NuevoOdontograma[128] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D32LB") {
+                $('#D32LB').css('background-color', 'transparent');
+                NuevoOdontograma[129] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 33
+            if (div == "D33LT") {
+                $('#D33LT').css('background-color', 'transparent');
+                NuevoOdontograma[130] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D33LL") {
+                $('#D33LL').css('background-color', 'transparent');
+                NuevoOdontograma[131] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D33LC") {
+                $('#D33LC').css('background-color', 'transparent');
+                NuevoOdontograma[132] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D33LR") {
+                $('#D33LR').css('background-color', 'transparent');
+                NuevoOdontograma[133] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D33LB") {
+                $('#D33LB').css('background-color', 'transparent');
+                NuevoOdontograma[134] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 34
+            if (div == "D34LT") {
+                $('#D34LT').css('background-color', 'transparent');
+                NuevoOdontograma[135] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D34LL") {
+                $('#D34LL').css('background-color', 'transparent');
+                NuevoOdontograma[136] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D34LC") {
+                $('#D34LC').css('background-color', 'transparent');
+                NuevoOdontograma[137] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D34LR") {
+                $('#D34LR').css('background-color', 'transparent');
+                NuevoOdontograma[138] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D34LB") {
+                $('#D34LB').css('background-color', 'transparent');
+                NuevoOdontograma[139] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 35
+            if (div == "D35LT") {
+                $('#D35LT').css('background-color', 'transparent');
+                NuevoOdontograma[140] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D35LL") {
+                $('#D35LL').css('background-color', 'transparent');
+                NuevoOdontograma[141] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D35LC") {
+                $('#D35LC').css('background-color', 'transparent');
+                NuevoOdontograma[142] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D35LR") {
+                $('#D35LR').css('background-color', 'transparent');
+                NuevoOdontograma[143] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D35LB") {
+                $('#D35LB').css('background-color', 'transparent');
+                NuevoOdontograma[144] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 36
+            if (div == "D36LT") {
+                $('#D36LT').css('background-color', 'transparent');
+                NuevoOdontograma[145] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D36LL") {
+                $('#D36LL').css('background-color', 'transparent');
+                NuevoOdontograma[146] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D36LC") {
+                $('#D36LC').css('background-color', 'transparent');
+                NuevoOdontograma[147] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D36LR") {
+                $('#D36LR').css('background-color', 'transparent');
+                NuevoOdontograma[148] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D36LB") {
+                $('#D36LB').css('background-color', 'transparent');
+                NuevoOdontograma[149] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 37
+            if (div == "D37LT") {
+                $('#D37LT').css('background-color', 'transparent');
+                NuevoOdontograma[150] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D37LL") {
+                $('#D37LL').css('background-color', 'transparent');
+                NuevoOdontograma[151] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D37LC") {
+                $('#D37LC').css('background-color', 'transparent');
+                NuevoOdontograma[152] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D37LR") {
+                $('#D37LR').css('background-color', 'transparent');
+                NuevoOdontograma[153] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D37LB") {
+                $('#D37LB').css('background-color', 'transparent');
+                NuevoOdontograma[154] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+            // -- Diente 38
+            if (div == "D38LT") {
+                $('#D38LT').css('background-color', 'transparent');
+                NuevoOdontograma[155] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D38LL") {
+                $('#D38LL').css('background-color', 'transparent');
+                NuevoOdontograma[156] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D38LC") {
+                $('#D38LC').css('background-color', 'transparent');
+                NuevoOdontograma[157] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D38LR") {
+                $('#D38LR').css('background-color', 'transparent');
+                NuevoOdontograma[158] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+            if (div == "D38LB") {
+                $('#D38LB').css('background-color', 'transparent');
+                NuevoOdontograma[159] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+            }
+
+
+            //******* MODAL EXTRACCION
+            //CUADRANTE SUPERIOR DERECHO
+            if (div == "ModalD18") {
+                NuevoOdontograma[0] = "";
+                NuevoOdontograma[1] = "";
+                NuevoOdontograma[2] = "";
+                NuevoOdontograma[3] = "";
+                NuevoOdontograma[4] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD18').hide('fast');
+            }
+            if (div == "ModalD17") {
+                NuevoOdontograma[5] = "";
+                NuevoOdontograma[6] = "";
+                NuevoOdontograma[7] = "";
+                NuevoOdontograma[8] = "";
+                NuevoOdontograma[9] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD17').hide('fast');
+            }
+            if (div == "ModalD16") {
+                NuevoOdontograma[10] = "";
+                NuevoOdontograma[11] = "";
+                NuevoOdontograma[12] = "";
+                NuevoOdontograma[13] = "";
+                NuevoOdontograma[14] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD16').hide('fast');
+            }
+            if (div == "ModalD15") {
+                NuevoOdontograma[15] = "";
+                NuevoOdontograma[16] = "";
+                NuevoOdontograma[17] = "";
+                NuevoOdontograma[18] = "";
+                NuevoOdontograma[19] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD15').hide('fast');
+            }
+            if (div == "ModalD14") {
+                NuevoOdontograma[20] = "";
+                NuevoOdontograma[21] = "";
+                NuevoOdontograma[22] = "";
+                NuevoOdontograma[23] = "";
+                NuevoOdontograma[24] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD14').hide('fast');
+            }
+            if (div == "ModalD13") {
+                NuevoOdontograma[25] = "";
+                NuevoOdontograma[26] = "";
+                NuevoOdontograma[27] = "";
+                NuevoOdontograma[28] = "";
+                NuevoOdontograma[29] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD13').hide('fast');
+            }
+            if (div == "ModalD12") {
+                NuevoOdontograma[30] = "";
+                NuevoOdontograma[31] = "";
+                NuevoOdontograma[32] = "";
+                NuevoOdontograma[33] = "";
+                NuevoOdontograma[34] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD12').hide('fast');
+            }
+            if (div == "ModalD11") {
+                NuevoOdontograma[35] = "";
+                NuevoOdontograma[36] = "";
+                NuevoOdontograma[37] = "";
+                NuevoOdontograma[38] = "";
+                NuevoOdontograma[39] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD11').hide('fast');
+            }
+
+            //CUADRANTE SUPERIOR IZQUIERDO
+            if (div == "ModalD21") {
+                NuevoOdontograma[40] = "";
+                NuevoOdontograma[41] = "";
+                NuevoOdontograma[42] = "";
+                NuevoOdontograma[43] = "";
+                NuevoOdontograma[44] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD21').hide('fast');
+            }
+            if (div == "ModalD22") {
+                NuevoOdontograma[45] = "";
+                NuevoOdontograma[46] = "";
+                NuevoOdontograma[47] = "";
+                NuevoOdontograma[48] = "";
+                NuevoOdontograma[49] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD22').hide('fast');
+            }
+            if (div == "ModalD23") {
+                NuevoOdontograma[50] = "";
+                NuevoOdontograma[51] = "";
+                NuevoOdontograma[52] = "";
+                NuevoOdontograma[53] = "";
+                NuevoOdontograma[54] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD23').hide('fast');
+            }
+            if (div == "ModalD24") {
+                NuevoOdontograma[55] = "";
+                NuevoOdontograma[56] = "";
+                NuevoOdontograma[57] = "";
+                NuevoOdontograma[58] = "";
+                NuevoOdontograma[59] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD24').hide('fast');
+            }
+            if (div == "ModalD25") {
+                NuevoOdontograma[60] = "";
+                NuevoOdontograma[61] = "";
+                NuevoOdontograma[62] = "";
+                NuevoOdontograma[63] = "";
+                NuevoOdontograma[64] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD25').hide('fast');
+            }
+            if (div == "ModalD26") {
+                NuevoOdontograma[65] = "";
+                NuevoOdontograma[66] = "";
+                NuevoOdontograma[67] = "";
+                NuevoOdontograma[68] = "";
+                NuevoOdontograma[69] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD26').hide('fast');
+            }
+            if (div == "ModalD27") {
+                NuevoOdontograma[70] = "";
+                NuevoOdontograma[71] = "";
+                NuevoOdontograma[72] = "";
+                NuevoOdontograma[73] = "";
+                NuevoOdontograma[74] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD27').hide('fast');
+            }
+            if (div == "ModalD28") {
+                NuevoOdontograma[75] = "";
+                NuevoOdontograma[76] = "";
+                NuevoOdontograma[77] = "";
+                NuevoOdontograma[78] = "";
+                NuevoOdontograma[79] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD28').hide('fast');
+            }
+
+            //CUADRANTE INFERIOR DERECHO
+            if (div == "ModalD48") {
+                NuevoOdontograma[80] = "";
+                NuevoOdontograma[81] = "";
+                NuevoOdontograma[82] = "";
+                NuevoOdontograma[83] = "";
+                NuevoOdontograma[84] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD48').hide('fast');
+            }
+            if (div == "ModalD47") {
+                NuevoOdontograma[85] = "";
+                NuevoOdontograma[86] = "";
+                NuevoOdontograma[87] = "";
+                NuevoOdontograma[88] = "";
+                NuevoOdontograma[89] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD47').hide('fast');
+            }
+            if (div == "ModalD46") {
+                NuevoOdontograma[90] = "";
+                NuevoOdontograma[91] = "";
+                NuevoOdontograma[92] = "";
+                NuevoOdontograma[93] = "";
+                NuevoOdontograma[94] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD46').hide('fast');
+            }
+            if (div == "ModalD45") {
+                NuevoOdontograma[95] = "";
+                NuevoOdontograma[96] = "";
+                NuevoOdontograma[97] = "";
+                NuevoOdontograma[98] = "";
+                NuevoOdontograma[99] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD45').hide('fast');
+            }
+            if (div == "ModalD44") {
+                NuevoOdontograma[100] = "";
+                NuevoOdontograma[101] = "";
+                NuevoOdontograma[102] = "";
+                NuevoOdontograma[103] = "";
+                NuevoOdontograma[104] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD44').hide('fast');
+            }
+            if (div == "ModalD43") {
+                NuevoOdontograma[105] = "";
+                NuevoOdontograma[106] = "";
+                NuevoOdontograma[107] = "";
+                NuevoOdontograma[108] = "";
+                NuevoOdontograma[109] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD43').hide('fast');
+            }
+            if (div == "ModalD42") {
+                NuevoOdontograma[110] = "";
+                NuevoOdontograma[111] = "";
+                NuevoOdontograma[112] = "";
+                NuevoOdontograma[113] = "";
+                NuevoOdontograma[114] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD42').hide('fast');
+            }
+            if (div == "ModalD41") {
+                NuevoOdontograma[115] = "";
+                NuevoOdontograma[116] = "";
+                NuevoOdontograma[117] = "";
+                NuevoOdontograma[118] = "";
+                NuevoOdontograma[119] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD41').hide('fast');
+            }
+
+            //CUADRANTE INFERIOR IZQUIERDO
+            if (div == "ModalD31") {
+                NuevoOdontograma[120] = "";
+                NuevoOdontograma[121] = "";
+                NuevoOdontograma[122] = "";
+                NuevoOdontograma[123] = "";
+                NuevoOdontograma[124] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD31').hide('fast');
+            }
+            if (div == "ModalD32") {
+                NuevoOdontograma[125] = "";
+                NuevoOdontograma[126] = "";
+                NuevoOdontograma[127] = "";
+                NuevoOdontograma[128] = "";
+                NuevoOdontograma[129] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD32').hide('fast');
+            }
+            if (div == "ModalD33") {
+                NuevoOdontograma[130] = "";
+                NuevoOdontograma[131] = "";
+                NuevoOdontograma[132] = "";
+                NuevoOdontograma[133] = "";
+                NuevoOdontograma[134] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD33').hide('fast');
+            }
+            if (div == "ModalD34") {
+                NuevoOdontograma[135] = "";
+                NuevoOdontograma[136] = "";
+                NuevoOdontograma[137] = "";
+                NuevoOdontograma[138] = "";
+                NuevoOdontograma[139] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD34').hide('fast');
+            }
+            if (div == "ModalD35") {
+                NuevoOdontograma[140] = "";
+                NuevoOdontograma[141] = "";
+                NuevoOdontograma[142] = "";
+                NuevoOdontograma[143] = "";
+                NuevoOdontograma[144] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD35').hide('fast');
+            }
+            if (div == "ModalD36") {
+                NuevoOdontograma[145] = "";
+                NuevoOdontograma[146] = "";
+                NuevoOdontograma[147] = "";
+                NuevoOdontograma[148] = "";
+                NuevoOdontograma[149] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD36').hide('fast');
+            }
+            if (div == "ModalD37") {
+                NuevoOdontograma[150] = "";
+                NuevoOdontograma[151] = "";
+                NuevoOdontograma[152] = "";
+                NuevoOdontograma[153] = "";
+                NuevoOdontograma[154] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD37').hide('fast');
+            }
+            if (div == "ModalD38") {
+                NuevoOdontograma[155] = "";
+                NuevoOdontograma[156] = "";
+                NuevoOdontograma[157] = "";
+                NuevoOdontograma[158] = "";
+                NuevoOdontograma[159] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD38').hide('fast');
+            }
+
+
+            //******* MODAL PUENTE
+            //CUADRANTE SUPERIOR DERECHO
+            if (div == "ModalD18P") {
+                NuevoOdontograma[0] = "";
+                NuevoOdontograma[1] = "";
+                NuevoOdontograma[2] = "";
+                NuevoOdontograma[3] = "";
+                NuevoOdontograma[4] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD18P').hide('fast');
+            }
+            if (div == "ModalD17P") {
+                NuevoOdontograma[5] = "";
+                NuevoOdontograma[6] = "";
+                NuevoOdontograma[7] = "";
+                NuevoOdontograma[8] = "";
+                NuevoOdontograma[9] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD17P').hide('fast');
+            }
+            if (div == "ModalD16P") {
+                NuevoOdontograma[10] = "";
+                NuevoOdontograma[11] = "";
+                NuevoOdontograma[12] = "";
+                NuevoOdontograma[13] = "";
+                NuevoOdontograma[14] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD16P').hide('fast');
+            }
+            if (div == "ModalD15P") {
+                NuevoOdontograma[15] = "";
+                NuevoOdontograma[16] = "";
+                NuevoOdontograma[17] = "";
+                NuevoOdontograma[18] = "";
+                NuevoOdontograma[19] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD15P').hide('fast');
+            }
+            if (div == "ModalD14P") {
+                NuevoOdontograma[20] = "";
+                NuevoOdontograma[21] = "";
+                NuevoOdontograma[22] = "";
+                NuevoOdontograma[23] = "";
+                NuevoOdontograma[24] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD14P').hide('fast');
+            }
+            if (div == "ModalD13P") {
+                NuevoOdontograma[25] = "";
+                NuevoOdontograma[26] = "";
+                NuevoOdontograma[27] = "";
+                NuevoOdontograma[28] = "";
+                NuevoOdontograma[29] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD13P').hide('fast');
+            }
+            if (div == "ModalD12P") {
+                NuevoOdontograma[30] = "";
+                NuevoOdontograma[31] = "";
+                NuevoOdontograma[32] = "";
+                NuevoOdontograma[33] = "";
+                NuevoOdontograma[34] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD12P').hide('fast');
+            }
+            if (div == "ModalD11P") {
+                NuevoOdontograma[35] = "";
+                NuevoOdontograma[36] = "";
+                NuevoOdontograma[37] = "";
+                NuevoOdontograma[38] = "";
+                NuevoOdontograma[39] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD11P').hide('fast');
+            }
+
+            //CUADRANTE SUPERIOR IZQUIERDO
+            if (div == "ModalD21P") {
+                NuevoOdontograma[40] = "";
+                NuevoOdontograma[41] = "";
+                NuevoOdontograma[42] = "";
+                NuevoOdontograma[43] = "";
+                NuevoOdontograma[44] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD21P').hide('fast');
+            }
+            if (div == "ModalD22P") {
+                NuevoOdontograma[45] = "";
+                NuevoOdontograma[46] = "";
+                NuevoOdontograma[47] = "";
+                NuevoOdontograma[48] = "";
+                NuevoOdontograma[49] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD22P').hide('fast');
+            }
+            if (div == "ModalD23P") {
+                NuevoOdontograma[50] = "";
+                NuevoOdontograma[51] = "";
+                NuevoOdontograma[52] = "";
+                NuevoOdontograma[53] = "";
+                NuevoOdontograma[54] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD23P').hide('fast');
+            }
+            if (div == "ModalD24P") {
+                NuevoOdontograma[55] = "";
+                NuevoOdontograma[56] = "";
+                NuevoOdontograma[57] = "";
+                NuevoOdontograma[58] = "";
+                NuevoOdontograma[59] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD24P').hide('fast');
+            }
+            if (div == "ModalD25P") {
+                NuevoOdontograma[60] = "";
+                NuevoOdontograma[61] = "";
+                NuevoOdontograma[62] = "";
+                NuevoOdontograma[63] = "";
+                NuevoOdontograma[64] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD25P').hide('fast');
+            }
+            if (div == "ModalD26P") {
+                NuevoOdontograma[65] = "";
+                NuevoOdontograma[66] = "";
+                NuevoOdontograma[67] = "";
+                NuevoOdontograma[68] = "";
+                NuevoOdontograma[69] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD26P').hide('fast');
+            }
+            if (div == "ModalD27P") {
+                NuevoOdontograma[70] = "";
+                NuevoOdontograma[71] = "";
+                NuevoOdontograma[72] = "";
+                NuevoOdontograma[73] = "";
+                NuevoOdontograma[74] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD27P').hide('fast');
+            }
+            if (div == "ModalD28P") {
+                NuevoOdontograma[75] = "";
+                NuevoOdontograma[76] = "";
+                NuevoOdontograma[77] = "";
+                NuevoOdontograma[78] = "";
+                NuevoOdontograma[79] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD28P').hide('fast');
+            }
+
+            //CUADRANTE INFERIOR DERECHO
+            if (div == "ModalD48P") {
+                NuevoOdontograma[80] = "";
+                NuevoOdontograma[81] = "";
+                NuevoOdontograma[82] = "";
+                NuevoOdontograma[83] = "";
+                NuevoOdontograma[84] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD48P').hide('fast');
+            }
+            if (div == "ModalD47P") {
+                NuevoOdontograma[85] = "";
+                NuevoOdontograma[86] = "";
+                NuevoOdontograma[87] = "";
+                NuevoOdontograma[88] = "";
+                NuevoOdontograma[89] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD47P').hide('fast');
+            }
+            if (div == "ModalD46P") {
+                NuevoOdontograma[90] = "";
+                NuevoOdontograma[91] = "";
+                NuevoOdontograma[92] = "";
+                NuevoOdontograma[93] = "";
+                NuevoOdontograma[94] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD46P').hide('fast');
+            }
+            if (div == "ModalD45P") {
+                NuevoOdontograma[95] = "";
+                NuevoOdontograma[96] = "";
+                NuevoOdontograma[97] = "";
+                NuevoOdontograma[98] = "";
+                NuevoOdontograma[99] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD45P').hide('fast');
+            }
+            if (div == "ModalD44P") {
+                NuevoOdontograma[100] = "";
+                NuevoOdontograma[101] = "";
+                NuevoOdontograma[102] = "";
+                NuevoOdontograma[103] = "";
+                NuevoOdontograma[104] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD44P').hide('fast');
+            }
+            if (div == "ModalD43P") {
+                NuevoOdontograma[105] = "";
+                NuevoOdontograma[106] = "";
+                NuevoOdontograma[107] = "";
+                NuevoOdontograma[108] = "";
+                NuevoOdontograma[109] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD43P').hide('fast');
+            }
+            if (div == "ModalD42P") {
+                NuevoOdontograma[110] = "";
+                NuevoOdontograma[111] = "";
+                NuevoOdontograma[112] = "";
+                NuevoOdontograma[113] = "";
+                NuevoOdontograma[114] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD42P').hide('fast');
+            }
+            if (div == "ModalD41P") {
+                NuevoOdontograma[115] = "";
+                NuevoOdontograma[116] = "";
+                NuevoOdontograma[117] = "";
+                NuevoOdontograma[118] = "";
+                NuevoOdontograma[119] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD41P').hide('fast');
+            }
+
+            //CUADRANTE INFERIOR IZQUIERDO
+            if (div == "ModalD31P") {
+                NuevoOdontograma[120] = "";
+                NuevoOdontograma[121] = "";
+                NuevoOdontograma[122] = "";
+                NuevoOdontograma[123] = "";
+                NuevoOdontograma[124] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD31P').hide('fast');
+            }
+            if (div == "ModalD32P") {
+                NuevoOdontograma[125] = "";
+                NuevoOdontograma[126] = "";
+                NuevoOdontograma[127] = "";
+                NuevoOdontograma[128] = "";
+                NuevoOdontograma[129] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD32P').hide('fast');
+            }
+            if (div == "ModalD33P") {
+                NuevoOdontograma[130] = "";
+                NuevoOdontograma[131] = "";
+                NuevoOdontograma[132] = "";
+                NuevoOdontograma[133] = "";
+                NuevoOdontograma[134] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD33P').hide('fast');
+            }
+            if (div == "ModalD34P") {
+                NuevoOdontograma[135] = "";
+                NuevoOdontograma[136] = "";
+                NuevoOdontograma[137] = "";
+                NuevoOdontograma[138] = "";
+                NuevoOdontograma[139] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD34P').hide('fast');
+            }
+            if (div == "ModalD35P") {
+                NuevoOdontograma[140] = "";
+                NuevoOdontograma[141] = "";
+                NuevoOdontograma[142] = "";
+                NuevoOdontograma[143] = "";
+                NuevoOdontograma[144] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD35P').hide('fast');
+            }
+            if (div == "ModalD36P") {
+                NuevoOdontograma[145] = "";
+                NuevoOdontograma[146] = "";
+                NuevoOdontograma[147] = "";
+                NuevoOdontograma[148] = "";
+                NuevoOdontograma[149] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD36P').hide('fast');
+            }
+            if (div == "ModalD37P") {
+                NuevoOdontograma[150] = "";
+                NuevoOdontograma[151] = "";
+                NuevoOdontograma[152] = "";
+                NuevoOdontograma[153] = "";
+                NuevoOdontograma[154] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD37P').hide('fast');
+            }
+            if (div == "ModalD38P") {
+                NuevoOdontograma[155] = "";
+                NuevoOdontograma[156] = "";
+                NuevoOdontograma[157] = "";
+                NuevoOdontograma[158] = "";
+                NuevoOdontograma[159] = "";
+                $('#NuevoArregloOdontograma').val(NuevoOdontograma);
+                $('#ModalD38P').hide('fast');
+            }
+
+        }
+
 
 
 

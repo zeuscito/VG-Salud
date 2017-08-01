@@ -38,7 +38,9 @@ namespace VgSalud.Models
         public string DetalleArreglo { get; set; }
 
         public int CodOdontograma { get; set; }
+
         
+
 
     }
 }

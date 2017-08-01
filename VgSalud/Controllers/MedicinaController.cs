@@ -310,7 +310,6 @@ namespace VgSalud.Controllers
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@Id",med.Id);
-                            cmd.Parameters.AddWithValue("@Manipulador", med.Manipulador);
                             if (med.Conclusion!=null)
                             {
                                 cmd.Parameters.AddWithValue("@Conclusion",med.Conclusion);
@@ -333,7 +332,7 @@ namespace VgSalud.Controllers
                             }
                             else
                             {
-                                cmd.Parameters.AddWithValue("@Reevaluado", "");
+                                cmd.Parameters.AddWithValue("@Reevaluado", "NO");
                             }
                             if (med.Observaciones != null)
                             {
@@ -427,10 +426,11 @@ namespace VgSalud.Controllers
                     {
                         E_CSMedicina med = new E_CSMedicina();
 
+                        med.CodOdontograma = Convert.ToInt32(dr["CodOdontograma"].ToString());
                         med.FechaRegistroOdontograma = Convert.ToDateTime(dr["FechaRegistro"].ToString());
 
                         ListaFechaOdo.Add(med);
-
+                        
                     }
 
 
@@ -441,7 +441,237 @@ namespace VgSalud.Controllers
         }
 
 
-        
+
+
+        public JsonResult VerHistorialOdontogramaPorFecha(int CodOdo)
+        {
+            E_CSMedicina Med = new E_CSMedicina();
+
+            
+            //var datoprueba = i.nroCarnet;
+
+            string Tbody = "";
+            if (CodOdo != 0)
+            {
+                //var IdCarnet = i.IdNroCarnet;
+
+                var resultado = ListarDatosDeOdontograma(CodOdo);
+                foreach (var item in resultado)
+                {
+                    Tbody = item.ArregloOdontograma;
+                }
+                return Json(Tbody, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
+        public List<E_CSMedicina> ListarDatosDeOdontograma(int CodOdo)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            List<E_CSMedicina> ListaArregloOdo = new List<E_CSMedicina>();
+
+            try
+            {
+                using (db = new SqlConnection(cadena))
+                {
+                    using (cmd = new SqlCommand("Usp_MostrarDatosDeOdontogramaPorCodOdontograma", db))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CodOdontograma", CodOdo);
+                        cmd.Parameters.AddWithValue("@CodSede", sede);
+                        db.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+
+                        while (dr.Read())
+                        {
+                            E_CSMedicina med = new E_CSMedicina();
+
+                            med.ArregloOdontograma = dr["ArregloOdontograma"].ToString();
+
+                            ListaArregloOdo.Add(med);
+
+                        }
+
+                    }
+                }
+
+                return ListaArregloOdo;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
+        }
+
+
+
+        public ActionResult ListaPacientesAtendidosDelDia()
+        {
+            ViewBag.Lista = ListarPacientesAtendidosEnElDia_CSMedicina();
+            return View();
+        }
+
+
+        public List<E_CSMedicina> ListarPacientesAtendidosEnElDia_CSMedicina()
+        {
+            string sede = Session["CodSede"].ToString();
+
+            List<E_CSMedicina> ListaPacientes = new List<E_CSMedicina>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_ListadoPacientesAtendidosEnElDia_CSMedicina", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        E_CSMedicina Med = new E_CSMedicina();
+
+                        Med.Id = int.Parse(dr["Id"].ToString());
+                        Med.CodCue = int.Parse(dr["CodCue"].ToString());
+                        Med.Paciente = dr["NombrePaciente"].ToString();
+                        Med.DesTipoCarnet = dr["DescCarnet"].ToString();
+                        Med.Manipulador = dr["Manipulador"].ToString();
+                        Med.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
+                        Med.Edad = Convert.ToInt32(dr["Edad"]);
+                        ListaPacientes.Add(Med);
+
+                    }
+
+
+                }
+            }
+
+            return ListaPacientes;
+        }
+
+
+        public ActionResult ModificarDatosPacientesAtendidos(int id)
+        {
+            var MostrarDatosMedicina = MostrarDatosDeListaDeCarnetSanidadCSMedicina(id).FirstOrDefault();
+            
+            ViewBag.ListaFechaOdontograma = ListadoDeFechaDeOdontogramasRegistrados(id);
+
+            var DatosDeCSMedicina = ListarDatosDeCSMedicinaPorId(id).FirstOrDefault();
+            ViewBag.Conclusion = DatosDeCSMedicina.Conclusion;
+            ViewBag.AptoMed = DatosDeCSMedicina.AptoMed;
+            ViewBag.Reevaluado = DatosDeCSMedicina.Reevaluado;
+            ViewBag.Observaciones = DatosDeCSMedicina.Observaciones;
+            //ViewBag.DatosDeCSMedicina = ListarDatosDeCSMedicinaPorId(id);
+
+            return View(MostrarDatosMedicina);
+        }
+
+
+        public List<E_CSMedicina> ListarDatosDeCSMedicinaPorId(int id)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            List<E_CSMedicina> ListarDatos = new List<E_CSMedicina>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_MostrarDatosDeCSMedicinaPorId", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@IdMedicina", id);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        E_CSMedicina med = new E_CSMedicina();
+
+                        med.Conclusion = dr["Conclusion"].ToString();
+                        med.AptoMed = dr["Apto"].ToString();
+                        med.Reevaluado = dr["Reevaluado"].ToString();
+                        med.Observaciones = dr["Observaciones"].ToString();
+
+                        ListarDatos.Add(med);
+
+                    }
+
+
+                }
+            }
+
+            return ListarDatos;
+        }
+
+        [HttpPost]
+        public ActionResult ModificarDatosPacientesAtendidos(int Id,E_CSMedicina med)
+        {
+            string sede = Session["CodSede"].ToString();
+            UtilitarioController ut = new UtilitarioController();
+            var horasis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            string modifica = Session["usuario"] + " " + horasis.HoraServidor.ToString() + " " + Environment.MachineName;
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_ActualizarDatosCSMedicinaCS", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", Id);
+                    if (med.Conclusion != null)
+                    {
+                        cmd.Parameters.AddWithValue("@Conclusion", med.Conclusion);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Conclusion", "");
+                    }
+                    if (med.AptoMed != null)
+                    {
+                        cmd.Parameters.AddWithValue("@Apto", med.AptoMed);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Apto", "");
+                    }
+                    if (med.Reevaluado != null)
+                    {
+                        cmd.Parameters.AddWithValue("@Reevaluado", med.Reevaluado);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Reevaluado", "NO");
+                    }
+                    if (med.Observaciones != null)
+                    {
+                        cmd.Parameters.AddWithValue("@Observaciones", med.Observaciones);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Observaciones", "");
+                    }
+                    cmd.Parameters.AddWithValue("@Modifica", modifica);
+                    cmd.Parameters.AddWithValue("@Sede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    return RedirectToAction("ListaPacientesAtendidosDelDia");
+
+                }
+            }
+            
+        }
+
+
+
+
+
     }
 
 }

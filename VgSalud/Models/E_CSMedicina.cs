@@ -64,9 +64,10 @@ namespace VgSalud.Models
 
 
         public DateTime FechaRegistroOdontograma { get; set; }
-        
+        public int CodOdontograma { get; set; }
 
 
+        public string ArregloOdontograma { get; set; }
 
 
     }

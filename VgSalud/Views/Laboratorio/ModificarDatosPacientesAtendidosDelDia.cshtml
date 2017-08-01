@@ -25,7 +25,7 @@
     <section class="content-header">
         <h1> Laboratorio</h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i>Laboratorio</a></li>
+            <li><a href="#"><i class="fa fa-flask"></i>Laboratorio</a></li>
             <li class="active">Actualizar Datos</li>
         </ol>
     </section>
@@ -33,6 +33,14 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
+                    <div class="box-header">
+                        <div style="float:left;margin-top:1%;margin-left:1%;">
+                            <a href="./ModificarDatosPacientesAtendidosDelDia">
+                                <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                            </a>
+                        </div>
+                    </div>
+
                     <fieldset>
                         <div class="box-body">
                             <form method="post">
@@ -158,8 +166,6 @@
                                                     <label>RPR: </label>
                                                 </div>
                                                 <div class="col-md-9">
-                                                    @*@Html.EditorFor(model => model.RPR, new { htmlAttributes = new { @class = "form-control" } })*@
-                                                    @*@Html.TextAreaFor(model => model.RPR, new { htmlAttributes = new { @class = "form-control" } })*@
                                                     <textarea class="form-control" name="RPR"  style="height:70px;">@Model.RPR</textarea>
                                                 </div>
                                             </div>

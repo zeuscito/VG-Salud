@@ -243,9 +243,9 @@ namespace VgSalud.Controllers
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@IdOdontologia", IdOdontologia);
 
-                        if (odo.ArregloOdontograma != null)
+                        if (odo.NuevoArregloOdontograma != null)
                         {
-                            cmd.Parameters.AddWithValue("@ArregloOdontograma", odo.ArregloOdontograma);
+                            cmd.Parameters.AddWithValue("@ArregloOdontograma", odo.NuevoArregloOdontograma);
                         }
                         else
                         {
@@ -339,9 +339,10 @@ namespace VgSalud.Controllers
 
         public ActionResult ModificarDatosOdontograma_Y_CSOdontologia(int Id)
         {
-            ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSOdontologia_ParaModificar(Id);
+            var MostraDatos = MostrarDatosDeListaDeCarnetSanidadCSOdontologia_ParaModificar(Id).FirstOrDefault();
+            //ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSOdontologia_ParaModificar(Id);
             
-            return View();
+            return View(MostraDatos);
         }
 
 
@@ -372,11 +373,13 @@ namespace VgSalud.Controllers
                         odo.Paciente = dr["NombrePaciente"].ToString();
                         odo.DesTipoCarnet = dr["DescCarnet"].ToString();
                         odo.Manipulador = dr["Manipulador"].ToString();
-                        odo.Prioridad = Convert.ToInt32(dr["Prioridad"].ToString());
-                        odo.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
+                        odo.Prioridad = Convert.ToInt32(dr["Prioridad"]);
+                        odo.idEstado = Convert.ToInt32(dr["IdEstado"]);
                         odo.Edad = Convert.ToInt32(dr["edad"]);
                         odo.NumeroCarnet = dr["NumeroCarnet"].ToString();
                         odo.Procedencia = dr["Procedencia"].ToString();
+                        odo.Observacion = dr["OdoObservacion"].ToString();
+                        odo.Apto = dr["OdoApto"].ToString();
                         ListaCarnetOdo.Add(odo);
 
                     }

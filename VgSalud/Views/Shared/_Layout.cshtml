@@ -1,10 +1,11 @@
 ﻿
+
 @{
     var EntregaCarnetPac = new VgSalud.Controllers.CarnetController().usp_get_Entrega_Carnet();
 }
 
 @if (Session["UserID"] == null || Session["usuario"] == null || Session["nombre"] == null ||
-                                                        Session["apellido"] == null || Session["nomSede"] == null || Session["codSede"] == null)
+                                                                    Session["apellido"] == null || Session["nomSede"] == null || Session["codSede"] == null)
 {
     <html>
     <head>
@@ -213,20 +214,20 @@ else
                                         <!-- inner menu: contains the actual data -->
                                         <ul class="menu" id="menu">
                                             @*@foreach (var item in EntregaCarnetPac)
-                                            {
-                                                <li>
-                                                    <a href="#">
-                                                        <h4>
-                                                            @item.NombrePaciente  -  @item.NroDoc
+                                                {
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4>
+                                                                @item.NombrePaciente  -  @item.NroDoc
 
-                                                        </h4>
-                                                        <button type="button" style='margin-left:25px;' class='btn btn-success llamar' historia="@item.Historia" carnet="@item.NroCarnet">llamar</button>
-                                                        <button type='button' style='margin-left:25px;' class='btn btn-primary' historia="@item.Historia" carnet="@item.NroCarnet">Imprimir</button>
-                                                        <button type='button' class="Si @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>Si</button>
-                                                        <button type='button' class="No @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>No</button>
-                                                    </a>
-                                                </li>
-                                            }*@
+                                                            </h4>
+                                                            <button type="button" style='margin-left:25px;' class='btn btn-success llamar' historia="@item.Historia" carnet="@item.NroCarnet">llamar</button>
+                                                            <button type='button' style='margin-left:25px;' class='btn btn-primary' historia="@item.Historia" carnet="@item.NroCarnet">Imprimir</button>
+                                                            <button type='button' class="Si @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>Si</button>
+                                                            <button type='button' class="No @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>No</button>
+                                                        </a>
+                                                    </li>
+                                                }*@
 
                                         </ul>
                                     </li>
@@ -649,4 +650,4 @@ else
 
     </body>
 </html>
-                                        }
+                                        }                          }

@@ -412,6 +412,7 @@
     <Content Include="Content\Scripts\moment.min.js" />
     <Content Include="Content\Scripts\respond.min.js" />
     <Content Include="Content\Scripts\select2.full.min.js" />
+    <Content Include="Content\Scripts\Util.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Styles\AdminLTE.min.css" />
     <Content Include="Content\Styles\all.css" />
@@ -428,6 +429,7 @@
     <Content Include="Content\Styles\style.css" />
     <Content Include="Content\Styles\_all-skins.min.css" />
     <Content Include="css\export.css" />
+    <Content Include="css\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="css\multiple-select.css" />
     <Content Include="css\style.css" />
     <Content Include="css\toastr.css" />
@@ -493,8 +495,40 @@
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente41.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente42.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente43.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente44.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente45.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente46.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente47.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorDerecho\Diente48.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente31.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente32.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente33.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente34.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente35.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente36.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente37.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteInferiorIzquierdo\Diente38.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente11.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente12.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente13.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente14.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente15.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente16.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente17.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorDerecho\Diente18.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente21.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente22.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente23.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente24.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente25.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente26.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente27.png" />
+    <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente28.png" />
+    <Content Include="Imagen\FotoCarnetSanidad\2017-00214.jpg" />
     <Content Include="js\chart.js" />
     <Content Include="js\ckreditor.js" />
     <Content Include="js\index.js" />
@@ -1378,7 +1412,11 @@
     <Content Include="Content\scss\_variables.scss" />
     <Content Include="Content\Scripts\jquery.PrintArea.js" />
     <Content Include="Content\ficha2.cshtml" />
+    <Content Include="css\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="css\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="css\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Properties\PublishProfiles\VG.pubxml" />
+    <None Include="Properties\PublishProfiles\VgSalud.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1753,18 +1791,18 @@
     <Content Include="Views\Medicina\ActualizarDatosAtencionMedicina.cshtml" />
     <Content Include="Views\Carnet\Vista_Cabecera_EntregaCarnet.cshtml" />
     <Content Include="Views\Carnet\Vista_detalle_EntregaCarne.cshtml" />
+    <Content Include="Views\Medicina\ListaPacientesAtendidosDelDia.cshtml" />
+    <Content Include="Views\Medicina\ModificarDatosPacientesAtendidos.cshtml" />
+    <Content Include="Views\Carnet\RegistrarCarnetSanidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Imagen\FotoCarnetSanidad\" />
+    <Folder Include="fonts\" />
     <Folder Include="Views\PagoResumen\" />
     <Folder Include="Views\Prueba\" />
     <Folder Include="Views\Recetas\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

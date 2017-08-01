@@ -390,21 +390,27 @@ namespace VgSalud.Controllers
 
                         if (FileFotoCarnetSanidad != null)
                         {
-                            string extension = Path.GetExtension(FileFotoCarnetSanidad.FileName);
-                            
+                            //string extension = Path.GetExtension(FileFotoCarnetSanidad.FileName);
+                            //byte[] data;
+                            //using (Stream inputStream = FileFotoCarnetSanidad.InputStream)
+                            //{
+                            //    MemoryStream memoryStream = inputStream as MemoryStream;
+                            //    if (memoryStream == null)
+                            //    {
+                            //        memoryStream = new MemoryStream();
+                            //        inputStream.CopyTo(memoryStream);
+                            //    }
+                            //    data = memoryStream.ToArray();
+                            //    string Base64 = Convert.ToBase64String(data);
+                            //}
 
                             //------
-                            if (extension==".jpg")
-                            {
-                                string Name = Path.GetFileName(FileFotoCarnetSanidad.FileName);
+                            //if (extension==".jpg")
+                            //{
+                               
 
-                                FileFotoCarnetSanidad.SaveAs(path + Name);
-
-                                //string CodSede = Session["CodSede"].ToString();
-                                
-
-                                //------
-                                SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
+                            //------
+                            SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
                                 using (SqlCommand cmd = new SqlCommand("Usp_insert_carnet_sanitario", con, tr))
                                 {
 
@@ -437,15 +443,26 @@ namespace VgSalud.Controllers
                                     codCarnet = Convert.ToInt32(cmd.ExecuteScalar());
                                     string Nombre = Convert.ToString(cmd.Parameters["@NombreFotoCarnet"].Value);
 
-                                  
-                                }
 
-                               
+                                    string Name = Path.GetFileName(FileFotoCarnetSanidad.FileName);
 
-                                //------
+                                    FileFotoCarnetSanidad.SaveAs(path + Name);
 
-                                // --- Para Laboratorio
-                                using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSLaboratorio", con, tr))
+                                    if (System.IO.File.Exists(path + Name))
+                                    {
+
+                                        System.IO.File.Copy(path + Name, path + Nombre);
+                                        System.IO.File.Delete(path + Name);
+                                    }
+
+                            }
+
+                            
+
+                            //------
+
+                            // --- Para Laboratorio
+                            using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSLaboratorio", con, tr))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
                                     cmd.Parameters.AddWithValue("@Id", 0);
@@ -559,7 +576,7 @@ namespace VgSalud.Controllers
                                     }
                                 }
                             }//------
-                        }//------ TERMINA EL IF FILE
+                        //}//------ TERMINA EL IF FILE
                         else
                         {
                             //Response.Write("<script language=javascript>alert('Formato de Imagen no permitido ..');</script>");
@@ -656,13 +673,16 @@ namespace VgSalud.Controllers
         }
 
 
-        public ActionResult ModificarCarnetSanitario(int Historia, int IdCarnet)
+        public ActionResult ModificarCarnetSanitario(int Historia, int IdCarnet, E_Carnet_Sanitario CS)
         {
 
             var EditDatos = ListarCarnetPorIdCarnet(IdCarnet).FirstOrDefault();
             ViewBag.TipoCarnet = EditDatos.TipoCarnet;
             ViewBag.Manipulador = EditDatos.Manipulador;
             ViewBag.Campana = EditDatos.Campana;
+            ViewBag.FotoCarnet = EditDatos.FotoCarnet;
+            ViewBag.IdCarnetSanidad = EditDatos.IdCarnetSanidad;
+            
             return View(EditDatos);
         }
 
@@ -693,8 +713,8 @@ namespace VgSalud.Controllers
                             CS.Manipulador = dr.GetString(2);
                             CS.Campana = dr.GetString(3);
                             CS.Empresa = dr.GetString(4);
-
-                            //Pac.DiscaObs = (dr["DiscaObs"] is DBNull) ? string.Empty : dr["DiscaObs"].ToString();
+                            CS.FotoCarnet = "/Imagen/FotoCarnetSanidad/"+ dr.GetString(5);
+                            CS.IdCarnetSanidad = dr.GetInt32(6);
 
                             Lista.Add(CS);
                         }
@@ -705,6 +725,149 @@ namespace VgSalud.Controllers
                 return Lista;
             }
         }
+
+
+        [HttpPost]
+        public ActionResult ModificarCarnetSanitario(int IdCarnetSanidad, E_Carnet_Sanitario CS, HttpPostedFileWrapper FileFotoCarnetSanidad)
+        {
+            string CodSede = Session["CodSede"].ToString();
+            
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
+                {
+                con.Open();
+
+                string path = Server.MapPath("~/Imagen/FotoCarnetSanidad/");
+
+                    if (FileFotoCarnetSanidad != null)
+                    {
+                        //string extension = Path.GetExtension(FileFotoCarnetSanidad.FileName);
+
+                        //if (extension==".jpg")
+                        //{
+                        
+                        using (SqlCommand cmd = new SqlCommand("Usp_ModificarCarnetSanidad_PorIdCarnetSanidad", con))
+                        {
+
+                            try
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+
+                                cmd.Parameters.AddWithValue("@IdCarnetSanidad", IdCarnetSanidad);
+                                cmd.Parameters.AddWithValue("@TipoCarnet", CS.TipoCarnet);
+                                cmd.Parameters.AddWithValue("@Manipulador", CS.Manipulador);
+                                cmd.Parameters.AddWithValue("@Campana", CS.Campana);
+                                if(CS.Empresa!=null)
+                                {
+                                    cmd.Parameters.AddWithValue("@NomEmpresa", CS.Empresa);
+                                }
+                                else
+                                {
+                                    cmd.Parameters.AddWithValue("@NomEmpresa", "");
+                                }
+                                cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                                SqlParameter DatoNombre = cmd.Parameters.Add("@NombreFotoCarnet", SqlDbType.VarChar, 200);
+                                DatoNombre.Direction = ParameterDirection.Output;
+                                int resultado = cmd.ExecuteNonQuery();
+                                string Nombre = Convert.ToString(cmd.Parameters["@NombreFotoCarnet"].Value);
+
+                                string Name = Path.GetFileName(FileFotoCarnetSanidad.FileName);
+                                FileFotoCarnetSanidad.SaveAs(path + Name);
+
+                                if (System.IO.File.Exists(path + Name))
+                                {
+                                    System.IO.File.Delete(path + Nombre);
+                                    System.IO.File.Copy(path + Name, path + Nombre);
+                                    System.IO.File.Delete(path + Name);
+                                }
+
+
+                                if (resultado > 0)
+                                {
+                                    ViewBag.mensaje = "2";
+                                }
+                                else
+                                {
+                                    ViewBag.mensaje = "3";
+                                }
+                                return RedirectToAction("ListarCarnetRegistradosDia");
+                            }
+                            catch (Exception e)
+                            {
+                                
+                            }
+
+                            
+                        }
+
+                        //}
+                    
+                    }
+                    else
+                    {
+                        using (SqlCommand cmd = new SqlCommand("Usp_ModificarCarnetSanidad_PorIdCarnetSanidad", con))
+                        {
+
+                            try
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+
+                                cmd.Parameters.AddWithValue("@IdCarnetSanidad", IdCarnetSanidad);
+                                cmd.Parameters.AddWithValue("@TipoCarnet", CS.TipoCarnet);
+                                cmd.Parameters.AddWithValue("@Manipulador", CS.Manipulador);
+                                cmd.Parameters.AddWithValue("@Campana", CS.Campana);
+                                if(CS.Empresa!=null)
+                                {
+                                    cmd.Parameters.AddWithValue("@NomEmpresa", CS.Empresa);
+                                }
+                                else
+                                {
+                                    cmd.Parameters.AddWithValue("@NomEmpresa", "");
+                                }
+                                
+                                cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                                SqlParameter DatoNombre = cmd.Parameters.Add("@NombreFotoCarnet", SqlDbType.VarChar, 200);
+                                DatoNombre.Direction = ParameterDirection.Output;
+                                int resultado = cmd.ExecuteNonQuery();
+                                string Nombre = Convert.ToString(cmd.Parameters["@NombreFotoCarnet"].Value);
+
+
+                                if (resultado > 0)
+                                {
+                                    ViewBag.mensaje = "2";
+                                }
+                                else
+                                {
+                                    ViewBag.mensaje = "3";
+                                }
+                                return RedirectToAction("ListarCarnetRegistradosDia");
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+
+
+                        }
+                    }
+                    
+               
+                }
+            }
+            catch (Exception e)
+            {
+
+                return RedirectPermanent("../Master");
+
+            }
+
+            return RedirectToAction("ListarCarnetRegistradosDia");
+
+        }
+            
+
+
 
 
 
@@ -798,8 +961,6 @@ namespace VgSalud.Controllers
             return View();
         }
 
-
-
         public JsonResult GetFiltroDniFecha(string dni = "", string fecha = "")
         {
             var lista = Usp_Entrega_Carnet_Dni_Buscar(dni, fecha);
@@ -809,16 +970,16 @@ namespace VgSalud.Controllers
                 foreach (var item in lista)
                 {
                     resultadoHTML += $"<li>" +
-                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;text-align: center;'>" +
+                                  "<a href ='#' style='border-bottom-style:dotted;border-bottom-color:black;'>" +
                                    "<h3>" +
                                    item.NombrePaciente +
                                    " - " + item.NroDoc +
                                    "</h3>" +
-                                   "<button type='button' style='margin-left:35px;' class='"+ item.Historia +" llamar btn btn-success' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
+                                   "<button type='button' style='margin-left:35px;' class='llamar btn btn-success " +item.Historia+"' historia=" + item.Historia + " carnet=" + item.NroCarnet + ">LLamar</button>" +
                                     "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " Si btn btn-success" + "' carnet=" + item.NroCarnet + " historia=" + item.Historia +">Si</button>" +
                                    "<button type='button' style='margin-left:35px;' class='" + item.NroCarnet + " No btn btn-danger" + "' carnet=" + item.NroCarnet + ">No</button>" +
                                    "<button type='button' class='imprimir btn btn-primary' style='margin-left:35px;' >Imprimir</button>" +
-                                
+                               
                                    "</a></li>";
                 }
 
@@ -827,6 +988,9 @@ namespace VgSalud.Controllers
             return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
 
         }
+
+
+
         public ActionResult VerHistorialCarnet(string Nombre = null, string Dni = null)
         {
             ViewBag.Nombre = Nombre;
@@ -941,7 +1105,7 @@ namespace VgSalud.Controllers
 
                     }
                 }
-        
+
             }
             else
             {
@@ -963,16 +1127,17 @@ namespace VgSalud.Controllers
 
                                                      "</a></li>";
                     }
-                 
-                  
+
+
                 }
             }
-         
+
             resultadoHTML += "<script src=\"/Scripts/Util.js\"></scritp>";
             return Json(resultadoHTML, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Get_Actualizar_Entrega_Carnet_Sanidad_index(int historia = 0, int carnet = 0) {
+        public JsonResult Get_Actualizar_Entrega_Carnet_Sanidad_index(int historia = 0, int carnet = 0)
+        {
             if (carnet != 0 && historia != 0)
             {
                 int resultado = Usp_Actualizar_CarnetSanidad_Entregado1(carnet, historia);
@@ -1143,7 +1308,8 @@ namespace VgSalud.Controllers
             }
             return listatipo;
         }
-        public JsonResult Get_Entregar_Carnet_Inicio() {
+        public JsonResult Get_Entregar_Carnet_Inicio()
+        {
 
             var lista = usp_get_Entrega_Carnet();
             string resultadoHTML = "";
@@ -1180,6 +1346,288 @@ namespace VgSalud.Controllers
             ViewBag.listaDetEnt = Usp_get_Entregar_CarnetSanidad();
             return View();
         }
+
+        // Mantenimiento Independiente
+        public ActionResult RegistrarCarnetSanidad(E_Carnet_Sanitario car)
+        {
+            string sede = Session["CodSede"].ToString();
+            ViewBag.listadoTari = new SelectList(cit.ListadoTarifaAtencion().Where(x => x.CodEspec == "ES005" && x.CodSede == sede), "CodTar", "DescTar");
+
+            if(car.CodCue != 0)
+            {
+                int CodCue = car.CodCue;
+                var ListaPaciente = ListaPacientesPorCodCue(CodCue).FirstOrDefault();
+                ViewBag.Historia = ListaPaciente.Historia;
+                ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
+                ViewBag.NroDocumento = ListaPaciente.NroDoc;
+                ViewBag.Edad = ListaPaciente.Edad;
+            }
+            else
+            {
+                ViewBag.Historia = 0;
+                ViewBag.NombrePaciente = "";
+                ViewBag.NroDocumento = "";
+                ViewBag.Edad = "";
+            }
+            
+
+
+            return View(car);
+        }
+
+        public List<E_Carnet_Sanitario> ListaPacientesPorCodCue(int CodCue)
+        {
+            
+            string sede = Session["CodSede"].ToString();
+            List<E_Carnet_Sanitario> listaPaciente = new List<E_Carnet_Sanitario>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("Usp_ListaPacientePorIdCuenta", db))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodCue", CodCue);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    try
+                    {
+                        while (dr.Read())
+                        {
+                            E_Carnet_Sanitario car = new E_Carnet_Sanitario();
+                            car.Historia = Convert.ToInt32(dr["Historia"].ToString());
+                            car.NombrePaciente = dr["NombrePaciente"].ToString();
+                            car.NroDoc = dr["NumDoc"].ToString();
+                            car.Edad = dr["Edad"].ToString();
+                            listaPaciente.Add(car);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                    
+
+
+                }
+            }
+            return listaPaciente;
+        }
+
+        [HttpPost]
+        public ActionResult RegistrarCarnetSanidad(E_Carnet_Sanitario car, HttpPostedFileWrapper FileFotoCarnetSanidad)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            UtilitarioController ut = new UtilitarioController();
+            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+            string usuario = Session["UserID"].ToString();
+
+            int Resu = 0;
+           
+
+                try
+                {
+                    int codCarnet = 0;
+                    using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
+                    {
+                        con.Open();
+
+                        string path = Server.MapPath("~/Imagen/FotoCarnetSanidad/");
+
+                        if (FileFotoCarnetSanidad != null)
+                        {
+                            //string extension = Path.GetExtension(FileFotoCarnetSanidad.FileName);
+                            //byte[] data;
+                            //using (Stream inputStream = FileFotoCarnetSanidad.InputStream)
+                            //{
+                            //    MemoryStream memoryStream = inputStream as MemoryStream;
+                            //    if (memoryStream == null)
+                            //    {
+                            //        memoryStream = new MemoryStream();
+                            //        inputStream.CopyTo(memoryStream);
+                            //    }
+                            //    data = memoryStream.ToArray();
+                            //    string Base64 = Convert.ToBase64String(data);
+                            //}
+
+                            //------
+                            //if (extension==".jpg")
+                            //{
+
+
+                            //------
+                            SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
+                            using (SqlCommand cmd = new SqlCommand("Usp_insert_carnet_sanitario", con, tr))
+                            {
+
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@Manipulador", car.Manipulador);
+                                cmd.Parameters.AddWithValue("@TipoCarnet", car.TipoCarnet);
+                                cmd.Parameters.AddWithValue("@Campana", car.Campana);
+                                cmd.Parameters.AddWithValue("@FecRecojo", "");
+                                cmd.Parameters.AddWithValue("@EstadoCarnet", car.EstadoCarnet);
+                                if (car.Empresa != null)
+                                {
+                                    cmd.Parameters.AddWithValue("@Empresa", car.Empresa);
+                                }
+                                else
+                                {
+                                    cmd.Parameters.AddWithValue("@Empresa", "");
+                                }
+
+                                cmd.Parameters.AddWithValue("@QR", "");
+                                cmd.Parameters.AddWithValue("@CodCue", Resu);
+                                cmd.Parameters.AddWithValue("@Estado", true);
+                                cmd.Parameters.AddWithValue("@Crea", Crea);
+                                cmd.Parameters.AddWithValue("@Modifica", "");
+                                cmd.Parameters.AddWithValue("@Elimina", "");
+                                cmd.Parameters.AddWithValue("@CodSede", sede);
+                                cmd.Parameters.AddWithValue("@historia", car.Historia);
+                                cmd.Parameters.AddWithValue("@Evento", 1);
+                                SqlParameter DatoNombre = cmd.Parameters.Add("@NombreFotoCarnet", SqlDbType.VarChar, 200);
+                                DatoNombre.Direction = ParameterDirection.Output;
+                                codCarnet = Convert.ToInt32(cmd.ExecuteScalar());
+                                string Nombre = Convert.ToString(cmd.Parameters["@NombreFotoCarnet"].Value);
+
+
+                                string Name = Path.GetFileName(FileFotoCarnetSanidad.FileName);
+
+                                FileFotoCarnetSanidad.SaveAs(path + Name);
+
+                                if (System.IO.File.Exists(path + Name))
+                                {
+
+                                    System.IO.File.Copy(path + Name, path + Nombre);
+                                    System.IO.File.Delete(path + Name);
+                                }
+
+                            }
+
+
+
+                            //------
+
+                            // --- Para Laboratorio
+                            using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSLaboratorio", con, tr))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@Id", 0);
+                                cmd.Parameters.AddWithValue("@IdProcencia", codCarnet);
+                                cmd.Parameters.AddWithValue("@Manipulacion", car.Manipulador);
+                                cmd.Parameters.AddWithValue("@Procedencia", "1");
+                                cmd.Parameters.AddWithValue("@HIV", "");
+                                cmd.Parameters.AddWithValue("@GrupoFactor", "");
+                                cmd.Parameters.AddWithValue("@Parasitologico", "");
+                                cmd.Parameters.AddWithValue("@RPR", "");
+                                cmd.Parameters.AddWithValue("@Apto", "NE");
+                                cmd.Parameters.AddWithValue("@Reevaluado", "");
+                                cmd.Parameters.AddWithValue("@Observacion", "");
+                                cmd.Parameters.AddWithValue("@Prioridad", 2);
+                                cmd.Parameters.AddWithValue("@MuestraSangre", false);
+                                cmd.Parameters.AddWithValue("@MuestraHeces", false);
+                                cmd.Parameters.AddWithValue("@fechaReg", ut.ListadoHoraServidor().FirstOrDefault().HoraServidor);
+                                cmd.Parameters.AddWithValue("@fechaAten", ut.ListadoHoraServidor().FirstOrDefault().HoraServidor);
+                                cmd.Parameters.AddWithValue("@IdEstado", 5);
+                                cmd.Parameters.AddWithValue("@Crea", Crea);
+                                cmd.Parameters.AddWithValue("@Modifica", "");
+                                cmd.Parameters.AddWithValue("@Elimina", "");
+                                cmd.Parameters.AddWithValue("@CodSede", sede);
+                                cmd.Parameters.AddWithValue("@Evento", 1);
+                                int codlab = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+                            }
+                            //------
+                            //------
+                            //Para odontologia
+                            using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSOdontologia", con, tr))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@Id", 0);
+                                cmd.Parameters.AddWithValue("@IdProcencia", codCarnet);
+                                cmd.Parameters.AddWithValue("@Manipulacion", car.Manipulador);
+                                cmd.Parameters.AddWithValue("@Procedencia", "1");
+                                cmd.Parameters.AddWithValue("@CodOdontograma", 0);
+                                cmd.Parameters.AddWithValue("@Apto", "NE");
+                                cmd.Parameters.AddWithValue("@Reevaluado", "");
+                                cmd.Parameters.AddWithValue("@Observacion", "");
+                                cmd.Parameters.AddWithValue("@Prioridad", 2);
+                                cmd.Parameters.AddWithValue("@FechaReg", "");
+                                cmd.Parameters.AddWithValue("@fechaAten", "");
+                                cmd.Parameters.AddWithValue("@IdEstado", 5);
+                                cmd.Parameters.AddWithValue("@Crea", Crea);
+                                cmd.Parameters.AddWithValue("@Modifica", "");
+                                cmd.Parameters.AddWithValue("@Elimina", "");
+                                cmd.Parameters.AddWithValue("@CodSede", sede);
+                                cmd.Parameters.AddWithValue("@Evento", 1);
+                                int CodOdont = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                            }
+                            //------
+
+                            //------
+                            // Para Medicina
+                            using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSMedicina", con, tr))
+                            {
+                                try
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+                                    cmd.Parameters.AddWithValue("@Id", 0);
+                                    cmd.Parameters.AddWithValue("@IdProcencia", codCarnet);
+                                    cmd.Parameters.AddWithValue("@Manipulacion", car.Manipulador);
+                                    cmd.Parameters.AddWithValue("@Procedencia", "1");
+                                    cmd.Parameters.AddWithValue("@Conclucion", "");
+                                    cmd.Parameters.AddWithValue("@Apto", "NE");
+                                    cmd.Parameters.AddWithValue("@Reevaluado", "");
+                                    cmd.Parameters.AddWithValue("@Observacion", "");
+                                    cmd.Parameters.AddWithValue("@Prioridad", 2);
+                                    cmd.Parameters.AddWithValue("@FechaReg", "");
+                                    cmd.Parameters.AddWithValue("@fechaAten", "");
+                                    cmd.Parameters.AddWithValue("@IdEstado", 8);
+                                    cmd.Parameters.AddWithValue("@Crea", Crea);
+                                    cmd.Parameters.AddWithValue("@Modifica", "");
+                                    cmd.Parameters.AddWithValue("@Elimina", "");
+                                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                                    cmd.Parameters.AddWithValue("@Evento", 1);
+                                    int CodMed = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                                }
+
+
+                                catch (Exception e)
+                                {
+                                    con.Close();
+                                }
+                            }
+
+                            //------
+
+                            //Listamos el valor de Nombre Foto Carnet
+
+
+                            //
+
+                           
+                        }//------
+                        //}//------ TERMINA EL IF FILE
+                        else
+                        {
+                            //Response.Write("<script language=javascript>alert('Formato de Imagen no permitido ..');</script>");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    return RedirectPermanent("../Master");
+
+                }
+
+            return View(car);
+        }
+
+
+
 
     }
 }

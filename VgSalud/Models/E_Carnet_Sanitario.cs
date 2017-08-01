@@ -42,6 +42,8 @@ namespace VgSalud.Models
 
 
         public string NombreCarnetFoto { get; set; }
-
+        public int IdCarnetSanidad { get; set; }
+        
+        public string Edad { get; set; }
     }
 }

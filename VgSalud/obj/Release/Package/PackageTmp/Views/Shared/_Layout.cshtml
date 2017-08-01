@@ -1,10 +1,11 @@
 ﻿
+
 @{
     var EntregaCarnetPac = new VgSalud.Controllers.CarnetController().usp_get_Entrega_Carnet();
 }
 
 @if (Session["UserID"] == null || Session["usuario"] == null || Session["nombre"] == null ||
-                                                        Session["apellido"] == null || Session["nomSede"] == null || Session["codSede"] == null)
+                                                                    Session["apellido"] == null || Session["nomSede"] == null || Session["codSede"] == null)
 {
     <html>
     <head>
@@ -186,10 +187,10 @@ else
                             <li class="dropdown user user-menu">
                                 <a href="~/Login/CerrarSesion" style="background-color:transparent;border: 0px;" class="btn btn-default btn-flat">Cerrar Sesión</a>
                             </li>
-                            <li class="dropdown messages-menu">
+                            <li class="dropdown messages-menu popup">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-envelope-o"></i>
-                                    <span class="label label-success">4</span>
+                                    <span class="label " style="background-color:black">@EntregaCarnetPac.Count().ToString()</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="header">
@@ -212,21 +213,21 @@ else
                                     <li>
                                         <!-- inner menu: contains the actual data -->
                                         <ul class="menu" id="menu">
-                                            @foreach (var item in EntregaCarnetPac)
-                                            {
-                                                <li>
-                                                    <a href="#">
-                                                        <h4>
-                                                            @item.NombrePaciente  -  @item.NroDoc
+                                            @*@foreach (var item in EntregaCarnetPac)
+                                                {
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4>
+                                                                @item.NombrePaciente  -  @item.NroDoc
 
-                                                        </h4>
-                                                        <button type="button" style='margin-left:25px;' class='btn btn-success llamar' historia="@item.Historia" carnet="@item.NroCarnet">llamar</button>
-                                                        <button type='button' style='margin-left:25px;' class='btn btn-primary' historia="@item.Historia" carnet="@item.NroCarnet">Imprimir</button>
-                                                        <button type='button' class="Si @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>Si</button>
-                                                        <button type='button' class="No @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>No</button>
-                                                    </a>
-                                                </li>
-                                            }
+                                                            </h4>
+                                                            <button type="button" style='margin-left:25px;' class='btn btn-success llamar' historia="@item.Historia" carnet="@item.NroCarnet">llamar</button>
+                                                            <button type='button' style='margin-left:25px;' class='btn btn-primary' historia="@item.Historia" carnet="@item.NroCarnet">Imprimir</button>
+                                                            <button type='button' class="Si @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>Si</button>
+                                                            <button type='button' class="No @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>No</button>
+                                                        </a>
+                                                    </li>
+                                                }*@
 
                                         </ul>
                                     </li>
@@ -619,22 +620,27 @@ else
             $(document).ready(function () {
                 $(".Si").fadeOut();
                 $(".No").fadeOut();
+
+                $.get('@Url.Action("Get_Entregar_Carnet_Inicio", "Carnet")', { },
+                    function (response) {
+                        $("#menu").empty();
+                        $("#menu").append(response);
+                        $(".Si").fadeOut();
+                        $(".No").fadeOut();
+                    });
+
                 $("#buscar").on("click", function () {
                     var dni = $("#dni").val();
                     var fecha = $("#fecha").val();
                     $.get('@Url.Action("GetFiltroDniFecha", "Carnet")', { dni: dni, fecha: fecha },
                         function (response) {
                             $("#menu").empty();
-                            $(".dropdown").addClass("open");
+                            $(".popup").addClass("open");
                             $("#menu").append(response);
                             $(".Si").fadeOut();
                             $(".No").fadeOut();
                         });
                 });
-
-           
-
-        
 
             });
 
@@ -644,4 +650,4 @@ else
 
     </body>
 </html>
-                                        }
+                                        }                          }

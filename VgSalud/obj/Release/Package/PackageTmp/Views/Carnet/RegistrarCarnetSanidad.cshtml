@@ -1,0 +1,214 @@
+﻿
+@model VgSalud.Models.E_Carnet_Sanitario
+
+@{
+    ViewBag.Title = "RegistrarCarnetSanidad";
+    
+    var listadoTari = (SelectList)ViewBag.listadoTari;
+    
+}
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Styles/bootstrap-filestyle-1.2.1/src/bootstrap-filestyle.min.js"></script>
+</head>
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Carnet Sanitario </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
+            <li class="active">Registrar Carnet</li>
+        </ol>
+    </section>
+    <section class="content" id="yaRegistro">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Carnet</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="~/Pacientes/ListaPacientes">
+                        <center style="MARGIN-LEFT: 28PX;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="box-body">
+
+                <form method="post" action="~/Carnet/RegistroCarnet" enctype="multipart/form-data">
+                    <input type="hidden" name="Historia" value="@Model.Historia" />
+                    <div class="col-md-12">
+                        <div class="col-md-5 col-md-offset-1">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Tarifa</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("CodTar", listadoTari, "[SELECCIONE TARIFA]", new { @class = "form-control select2", @style = "width:100%", @id = "codtar" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Tipo de carnet</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="col-xs-12 col-md-4" style="text-align:left;">
+                                            <label style="font-size:120%;color:coral"><input type="radio" value="2" name="TipoCarnet" style="width:16px;height:16px;"> NORMAL</label>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6" style="text-align:left;">
+                                            <label style="font-size:120%;color:coral"><input type="radio" value="1" name="TipoCarnet" style="width:16px;height:16px;"> ADULTO MAYOR</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Manipulador</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <label style="font-size:120%;color:coral"><input type="radio" value="SI" name="Manipulador" style="width:16px;height:16px;"> SI</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label style="font-size:120%;color:coral"><input type="radio" value="NO" name="Manipulador" style="width:16px;height:16px;"> NO</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Campaña</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <label style="font-size:120%;color:coral"><input type="radio" value="SI" name="Campana" style="width:16px;height:16px;"> SI</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label style="font-size:120%;color:coral"><input type="radio" value="NO" name="Campana" style="width:16px;height:16px;"> NO</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Empresa</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="empresa" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="EstadoCarnet" value="TRAMITE" />
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="panel panel-warning" style="border:2px solid coral;height:auto;">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <label>Seleccione Foto de Carnet</label>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <input type="file" name="FileFotoCarnetSanidad" id="FileFotoCarnetSanidad" class="filestyle img-responsive" data-placeholder="Seleccione Foto" data-buttonText="Subir Foto" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-1">
+                                                    <img id="imgSalida" width="100%" height="100%" src="" class="img-bordered img-responsive" name="imgSalida" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top:2%;">
+                        <center>
+                            <input type="submit" class="btn btn-danger" value="Guardar" style="background-color:#13D003;border:0px" />
+                        </center>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+
+        </div>
+
+
+    </section>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+    $(window).load(function () {
+        $(function () {
+            debugger;
+            $('#FileFotoCarnetSanidad').change(function (e) {
+
+                addImage(e);
+
+            });
+
+            function addImage(e) {
+                debugger;
+                var file = e.target.files[0],
+                imageType = /image.*/;
+
+                if (!file.type.match(imageType))
+                    return;
+
+                var reader = new FileReader();
+                reader.onload = fileOnload;
+                reader.readAsDataURL(file);
+            }
+
+            function fileOnload(e) {
+                debugger;
+                var result = e.target.result;
+                $('#imgSalida').attr("src", result);
+            }
+        });
+
+    });
+</script>

@@ -5,47 +5,51 @@
 
     string Manipulador = (string)ViewBag.Manipulador;
 
-    string Campana = (string)ViewBag.Campana; 
-    
+    string Campana = (string)ViewBag.Campana;
+
+    string FotoCarnet = (string)ViewBag.FotoCarnet;
+
+    int IdCarnetSanidad = (int)ViewBag.IdCarnetSanidad;
+
     string check = "checked";
 
  }
 
 
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Styles/bootstrap-filestyle-1.2.1/src/bootstrap-filestyle.min.js"></script>
+</head>
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Carnet Sanitario </h1>
+        <h1>Carnet Sanidad </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
-            <li class="active">Registrar Carnet</li>
+            <li><a href="#"><i class="fa fa-address-card-o"></i>Carnet Sanidad</a></li>
+            <li class="active">Modificar Carnet Sanidad</li>
         </ol>
     </section>
     <section class="content" id="yaRegistro">
         <div class="box box-default">
 
-            <div class="box-header with-border">
-                <h3 class="box-title">Registrar Carnet</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="./ListarCarnetRegistradosDia">
+                        <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
                 </div>
             </div>
 
-            <div class="box-header">
-                @*@{
-                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
-                        <a href="~/Carnet/ListarCarnetRegistradosDia">
-                            <center style="MARGIN-LEFT: 28PX;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
-                        </a>
-                    </div>
-                }*@
+            <div class="box-header with-border" style="width:90%;margin-left:5%;">
+                <h3 class="box-title" style="text-align:left">Modificar Carnet</h3>
+                @*<div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>*@
             </div>
-
 
             <div class="box-body">
 
-                <form method="post" action="~/Carnet/RegistroCarnet" enctype="multipart/form-data">
-                    @*<input type="hidden" name="Historia" value="@Model.Historia" />*@
+                <form method="post" action="~/Carnet/ModificarCarnetSanitario" enctype="multipart/form-data">
                     <div class="col-md-12">
                         <div class="col-md-5 col-md-offset-1">
                             <div class="row">
@@ -128,16 +132,6 @@
 
                             <input type="hidden" name="EstadoCarnet" value="TRAMITE" />
 
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Fecha de Vencimiento</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control datepicker" name="FechaVencimiento" /> <!-- class="form-control datepicker" -->
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-md-4">
@@ -147,7 +141,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <table>
                                                         <tr>
                                                             <td>
@@ -156,13 +150,14 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                
+                                                                <input type="file" name="FileFotoCarnetSanidad" id="FileFotoCarnetSanidad" class="filestyle img-responsive"  data-placeholder="Seleccione Foto" data-buttonText="Subir Foto" />
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <div class="col-md-3 col-md-offset-3">
-                                                    <img id="imgSalida" width="100%" height="100%" src="" class="img-bordered img-responsive" />
+                                                <div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-1">
+                                                  
+                                                    <img id="imgSalida" width="100%" height="100%" src="..@FotoCarnet" class="img-bordered img-responsive" name="imgSalida" />
                                                 </div>
                                             </div>
                                         </div>
@@ -177,10 +172,10 @@
                     </div>
                     <div class="col-md-12" style="margin-top:2%;">
                         <center>
-                            <input type="submit" class="btn btn-success" value="Modificar" style="background-color:#13D003;border:0px" />
+                            <button type="submit" class="btn btn-info" style="font-size:large"><span class="fa fa-pencil-square-o"></span> Modificar</button>
                         </center>
                     </div>
-
+                    <input type="hidden" value="@IdCarnetSanidad" name="IdCarnetSanidad" id="IdCarnetSanidad"/>
                 </form>
             </div>
 
@@ -193,16 +188,18 @@
     </section>
 </div>
 
-
 <script type="text/javascript" language="javascript">
     $(window).load(function () {
-
         $(function () {
-            $('#file-input').change(function (e) {
+            debugger;
+            $('#FileFotoCarnetSanidad').change(function (e) {
+
                 addImage(e);
+
             });
 
             function addImage(e) {
+                debugger;
                 var file = e.target.files[0],
                 imageType = /image.*/;
 
@@ -215,14 +212,12 @@
             }
 
             function fileOnload(e) {
+                debugger;
                 var result = e.target.result;
                 $('#imgSalida').attr("src", result);
             }
-
-
         });
+
     });
-
-
 </script>
 
