@@ -196,7 +196,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:53</publishTime>
     </File>
     <File Include="bin/VgSalud.dll">
-      <publishTime>07/31/2017 18:46:07</publishTime>
+      <publishTime>08/03/2017 08:49:56</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>06/17/2017 19:51:54</publishTime>
@@ -3556,7 +3556,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Caja/ImprimirTicket.cshtml">
-      <publishTime>07/27/2017 11:15:23</publishTime>
+      <publishTime>08/02/2017 13:34:36</publishTime>
     </File>
     <File Include="Views/Caja/ListadoCaja.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3574,13 +3574,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/20/2017 17:35:09</publishTime>
     </File>
     <File Include="Views/Carnet/ListarCarnetRegistradosDia.cshtml">
-      <publishTime>07/31/2017 18:38:58</publishTime>
+      <publishTime>07/31/2017 19:08:06</publishTime>
     </File>
     <File Include="Views/Carnet/ModificarCarnetSanitario.cshtml">
       <publishTime>07/29/2017 18:43:25</publishTime>
     </File>
     <File Include="Views/Carnet/RegistrarCarnetSanidad.cshtml">
-      <publishTime>07/31/2017 18:42:57</publishTime>
+      <publishTime>08/02/2017 12:25:37</publishTime>
     </File>
     <File Include="Views/Carnet/RegistroCarnet.cshtml">
       <publishTime>07/29/2017 17:10:26</publishTime>
@@ -3589,7 +3589,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/26/2017 15:03:46</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_1.cshtml">
-      <publishTime>07/13/2017 01:17:25</publishTime>
+      <publishTime>01/08/2017 17:56:59</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_2.cshtml">
       <publishTime>07/26/2017 00:33:32</publishTime>
@@ -3798,8 +3798,11 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="Views/HonorariosCabeceraDetalle/VerDetalleHonorarios.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
+    <File Include="Views/Informes/GenerarQR.cshtml">
+      <publishTime>08/02/2017 11:03:14</publishTime>
+    </File>
     <File Include="Views/Informes/ListaPacienteResultadoApto.cshtml">
-      <publishTime>07/25/2017 15:42:35</publishTime>
+      <publishTime>08/02/2017 13:40:13</publishTime>
     </File>
     <File Include="Views/Laboratorio/ActualizarDatosAtencionLaboratorio.cshtml">
       <publishTime>07/29/2017 18:01:32</publishTime>
@@ -3907,7 +3910,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/29/2017 18:26:22</publishTime>
     </File>
     <File Include="Views/Odontologia/ModificarDatosOdontograma_Y_CSOdontologia.cshtml">
-      <publishTime>07/31/2017 17:06:50</publishTime>
+      <publishTime>01/08/2017 16:34:44</publishTime>
     </File>
     <File Include="Views/Pacientes/BusquedaPaciente.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>

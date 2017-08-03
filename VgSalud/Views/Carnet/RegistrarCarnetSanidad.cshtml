@@ -10,7 +10,8 @@
     string NombrePaciente = (string)ViewBag.NombrePaciente;
     string NroDocumento = (string)ViewBag.NroDocumento;
     string Edad = (string)ViewBag.Edad;
-
+    int CodCue = (int)ViewBag.CodCuenta;
+    
 }
 
 <head>
@@ -70,7 +71,8 @@
                         <div class="col-md-5 col-md-offset-1">
                             <div class="row">
                                 <div class="form-group">
-                                    <input type="hidden" name="IdHistoria" id="IdHistoria" value="@Historia" />
+                                    <input type="hidden" name="CodCuenta" id="CodCuenta" value="@CodCue" />
+                                    <input type="hidden" name="Historia" id="Historia" value="@Historia" />
                                     
                                         <div class="col-md-3">
                                             <label>Paciente</label>

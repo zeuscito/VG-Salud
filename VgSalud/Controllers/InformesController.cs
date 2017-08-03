@@ -214,6 +214,17 @@ namespace VgSalud.Controllers
           
         }
 
+
+
+
+        public ActionResult GenerarQR()
+        {
+
+
+            return View();
+        }
+
+
         
     }
 }

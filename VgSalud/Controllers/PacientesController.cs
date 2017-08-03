@@ -80,7 +80,7 @@ namespace VgSalud.Controllers
             UtilitarioController Uti = new UtilitarioController();
             ViewBag.ListaSexo = new SelectList(Uti.ListadoSexo(), "CodSexo", "NomSexo", EPac.CodSexo);
             ViewBag.ListaCivil = new SelectList(Uti.ListadoEstadoCivil(), "CodEstCivil", "NomEstCivil", EPac.CodEstCivil);
-            ViewBag.ListaPais = new SelectList(Uti.ListadoPais().Where(x => x.CodPais == "1  "), "CodPais", "NomPais", EPac.CodPais);
+            ViewBag.ListaPais = new SelectList(Uti.ListadoPais().Where(x => x.CodPais == "1"), "CodPais", "NomPais", EPac.CodPais);
 
             ViewBag.ListaPais = new SelectList(Uti.ListadoPais(), "CodPais", "NomPais", EPac.CodPais);
 

@@ -528,7 +528,6 @@
     <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente26.png" />
     <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente27.png" />
     <Content Include="Imagen\DientesOdontograma\CuadranteSuperiorIzquierdo\Diente28.png" />
-    <Content Include="Imagen\FotoCarnetSanidad\2017-00214.jpg" />
     <Content Include="js\chart.js" />
     <Content Include="js\ckreditor.js" />
     <Content Include="js\index.js" />
@@ -1794,10 +1793,12 @@
     <Content Include="Views\Medicina\ListaPacientesAtendidosDelDia.cshtml" />
     <Content Include="Views\Medicina\ModificarDatosPacientesAtendidos.cshtml" />
     <Content Include="Views\Carnet\RegistrarCarnetSanidad.cshtml" />
+    <Content Include="Views\Informes\GenerarQR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
+    <Folder Include="Imagen\FotoCarnetSanidad\" />
     <Folder Include="Views\PagoResumen\" />
     <Folder Include="Views\Prueba\" />
     <Folder Include="Views\Recetas\" />

@@ -45,5 +45,7 @@ namespace VgSalud.Models
         public int IdCarnetSanidad { get; set; }
         
         public string Edad { get; set; }
+
+        public int  CodCue { get; set; }
     }
 }

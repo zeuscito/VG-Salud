@@ -1353,14 +1353,48 @@ namespace VgSalud.Controllers
             string sede = Session["CodSede"].ToString();
             ViewBag.listadoTari = new SelectList(cit.ListadoTarifaAtencion().Where(x => x.CodEspec == "ES005" && x.CodSede == sede), "CodTar", "DescTar");
 
-            if(car.CodCue != 0)
+            if (car.CodCue != 0)
             {
                 int CodCue = car.CodCue;
                 var ListaPaciente = ListaPacientesPorCodCue(CodCue).FirstOrDefault();
-                ViewBag.Historia = ListaPaciente.Historia;
-                ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
-                ViewBag.NroDocumento = ListaPaciente.NroDoc;
-                ViewBag.Edad = ListaPaciente.Edad;
+                if (car.Historia != 0)
+                {
+                    ViewBag.Historia = ListaPaciente.Historia;
+                }
+                else
+                {
+                    ViewBag.Historia = 0;
+                }
+
+                if (car.NombrePaciente != null)
+                {
+                    ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
+                }
+                else
+                {
+                    ViewBag.NombrePaciente = "";
+                }
+
+                if (car.NroDoc != null)
+                {
+                    ViewBag.NroDocumento = ListaPaciente.NroDoc;
+                }
+                else
+                {
+                    ViewBag.NroDocumento = "";
+                }
+
+                if (car.Edad != null)
+                {
+                    ViewBag.Edad = ListaPaciente.Edad;
+                }
+                else
+                {
+                    ViewBag.Edad = "";
+                }
+
+                ViewBag.CodCuenta = CodCue;
+
             }
             else
             {
@@ -1368,8 +1402,9 @@ namespace VgSalud.Controllers
                 ViewBag.NombrePaciente = "";
                 ViewBag.NroDocumento = "";
                 ViewBag.Edad = "";
+                ViewBag.CodCuenta = 0;
             }
-            
+
 
 
             return View(car);
@@ -1416,17 +1451,78 @@ namespace VgSalud.Controllers
         }
 
         [HttpPost]
-        public ActionResult RegistrarCarnetSanidad(E_Carnet_Sanitario car, HttpPostedFileWrapper FileFotoCarnetSanidad)
+        public ActionResult RegistrarCarnetSanidad(int? CodCuenta, E_Carnet_Sanitario car, HttpPostedFileWrapper FileFotoCarnetSanidad)
         {
+
             string sede = Session["CodSede"].ToString();
+            ViewBag.listadoTari = new SelectList(cit.ListadoTarifaAtencion().Where(x => x.CodEspec == "ES005" && x.CodSede == sede), "CodTar", "DescTar");
 
-            UtilitarioController ut = new UtilitarioController();
-            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-            string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
-            string usuario = Session["UserID"].ToString();
 
-            int Resu = 0;
-           
+            if (car.CodCue != 0)
+            {
+                int CodCue = car.CodCue;
+                var ListaPaciente = ListaPacientesPorCodCue(CodCue).FirstOrDefault();
+
+                if(ListaPaciente.Historia != 0)
+                {
+                    ViewBag.Historia = ListaPaciente.Historia;
+                }
+                else
+                {
+                    ViewBag.Historia = 0;
+                }
+
+                if (ListaPaciente.NombrePaciente != null)
+                {
+                    ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
+                }
+                else
+                {
+                    ViewBag.NombrePaciente ="";
+                }
+
+                if (ListaPaciente.NroDoc != null)
+                {
+                    ViewBag.NroDocumento = ListaPaciente.NroDoc;
+                }
+                else
+                {
+                    ViewBag.NroDocumento = "";
+                }
+
+                if (ListaPaciente.Edad != null)
+                {
+                    ViewBag.Edad = ListaPaciente.Edad;
+                }
+                else
+                {
+                    ViewBag.Edad ="";
+                }
+                
+                ViewBag.CodCuenta = CodCue;
+                
+            }
+            else
+            {
+                ViewBag.Historia = 0;
+                ViewBag.NombrePaciente = "";
+                ViewBag.NroDocumento = "";
+                ViewBag.Edad = "";
+                ViewBag.CodCuenta = 0;
+            }
+
+
+            var IdHistoria = car.Historia;
+            if (IdHistoria != 0 && CodCuenta !=0)
+            {
+                var Cod = CodCuenta;
+                
+                UtilitarioController ut = new UtilitarioController();
+                var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+                string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+                string usuario = Session["UserID"].ToString();
+
+                
 
                 try
                 {
@@ -1460,7 +1556,7 @@ namespace VgSalud.Controllers
 
                             //------
                             SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
-                            using (SqlCommand cmd = new SqlCommand("Usp_insert_carnet_sanitario", con, tr))
+                            using (SqlCommand cmd = new SqlCommand("Usp_insert_carnet_sanitario", con,tr))
                             {
 
                                 cmd.CommandType = CommandType.StoredProcedure;
@@ -1479,13 +1575,13 @@ namespace VgSalud.Controllers
                                 }
 
                                 cmd.Parameters.AddWithValue("@QR", "");
-                                cmd.Parameters.AddWithValue("@CodCue", Resu);
+                                cmd.Parameters.AddWithValue("@CodCue", CodCuenta);
                                 cmd.Parameters.AddWithValue("@Estado", true);
                                 cmd.Parameters.AddWithValue("@Crea", Crea);
                                 cmd.Parameters.AddWithValue("@Modifica", "");
                                 cmd.Parameters.AddWithValue("@Elimina", "");
                                 cmd.Parameters.AddWithValue("@CodSede", sede);
-                                cmd.Parameters.AddWithValue("@historia", car.Historia);
+                                cmd.Parameters.AddWithValue("@historia", IdHistoria);
                                 cmd.Parameters.AddWithValue("@Evento", 1);
                                 SqlParameter DatoNombre = cmd.Parameters.Add("@NombreFotoCarnet", SqlDbType.VarChar, 200);
                                 DatoNombre.Direction = ParameterDirection.Output;
@@ -1506,9 +1602,6 @@ namespace VgSalud.Controllers
 
                             }
 
-
-
-                            //------
 
                             // --- Para Laboratorio
                             using (SqlCommand cmd = new SqlCommand("usp_Insertar_CSLaboratorio", con, tr))
@@ -1599,15 +1692,10 @@ namespace VgSalud.Controllers
                                     con.Close();
                                 }
                             }
+                            
+                            tr.Commit();
 
-                            //------
-
-                            //Listamos el valor de Nombre Foto Carnet
-
-
-                            //
-
-                           
+                            return RedirectToAction("ListarCarnetRegistradosDia");
                         }//------
                         //}//------ TERMINA EL IF FILE
                         else
@@ -1622,8 +1710,17 @@ namespace VgSalud.Controllers
                     return RedirectPermanent("../Master");
 
                 }
+            }
+            //else
+            //{
+            //    return RedirectToAction("RegistrarCarnetSanidad");
+            //}
+
+
 
             return View(car);
+
+
         }
 
 

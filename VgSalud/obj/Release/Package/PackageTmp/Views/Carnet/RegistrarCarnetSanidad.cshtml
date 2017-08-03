@@ -3,8 +3,14 @@
 
 @{
     ViewBag.Title = "RegistrarCarnetSanidad";
-    
+
     var listadoTari = (SelectList)ViewBag.listadoTari;
+
+    int Historia = (int)ViewBag.Historia;
+    string NombrePaciente = (string)ViewBag.NombrePaciente;
+    string NroDocumento = (string)ViewBag.NroDocumento;
+    string Edad = (string)ViewBag.Edad;
+    int CodCue = (int)ViewBag.CodCuenta;
     
 }
 
@@ -31,7 +37,7 @@
             </div>
             <div class="box-header">
                 <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
-                    <a href="~/Pacientes/ListaPacientes">
+                    <a href="~/Carnet/ListarCarnetRegistradosDia">
                         <center style="MARGIN-LEFT: 28PX;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
                     </a>
                 </div>
@@ -40,9 +46,72 @@
 
             <div class="box-body">
 
-                <form method="post" action="~/Carnet/RegistroCarnet" enctype="multipart/form-data">
-                    <input type="hidden" name="Historia" value="@Model.Historia" />
-                    <div class="col-md-12">
+                <form method="post" action="~/Carnet/RegistrarCarnetSanidad" enctype="multipart/form-data">
+                    @*<input type="hidden" name="Historia" value="@Model.Historia" />*@
+
+                    <div class="col-md-12 ">
+                        <div class="col-md-5 col-md-offset-1">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Cod. Cuenta</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" name="CodCue" id="CodCue" placeholder="Ingrese Codigo Cuenta.." class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-warning"><span class="fa fa-search"> </span> Consultar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 ">
+                        <div class="col-md-5 col-md-offset-1">
+                            <div class="row">
+                                <div class="form-group">
+                                    <input type="hidden" name="CodCuenta" id="CodCuenta" value="@CodCue" />
+                                    <input type="hidden" name="Historia" id="Historia" value="@Historia" />
+                                    
+                                        <div class="col-md-3">
+                                            <label>Paciente</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" value="@NombrePaciente" disabled style="width:100%;"/>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 ">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Nro. Documento</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" value="@NroDocumento" disabled />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label>Edad</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" value="@Edad" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    
+                    <div class="col-md-12" style="margin-top:2%;">
+                        <div class="col-md-10 col-md-offset-1" >
+                            <legend style="width:100%">Registrar Carnet</legend>
+                        </div>
+                        
                         <div class="col-md-5 col-md-offset-1">
                             <div class="row">
                                 <div class="form-group">
@@ -161,6 +230,8 @@
 
                         </div>
                     </div>
+
+                   
                     <div class="col-md-12" style="margin-top:2%;">
                         <center>
                             <input type="submit" class="btn btn-danger" value="Guardar" style="background-color:#13D003;border:0px" />
