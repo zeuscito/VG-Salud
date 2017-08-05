@@ -339,7 +339,7 @@
         });
 
 
-        $('#especialidad').change(function (event) {
+        @*$('#especialidad').change(function (event) {
             var sports = $("select#especialidad").val();
             $.get('@Url.Action("ObtenerPerfilFichaElectronica", "Tarifario")', {
                 CodEspec: sports
@@ -353,7 +353,7 @@
                     $('<option>').val(value.idPFA).text(value.Nombre).appendTo(select);
                 });
             });
-        });
+        });*@
 
 
         $("#prec").keydown(function (event) {

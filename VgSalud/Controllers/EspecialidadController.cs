@@ -71,7 +71,6 @@ namespace VgSalud.Controllers
                     {
                         try
                         {
-
                             cmd.Parameters.AddWithValue("@CodEspec", "");
                             cmd.Parameters.AddWithValue("@NomEspec", EEsp.NomEspec.ToUpper());
                             cmd.Parameters.AddWithValue("@DescEspec", EEsp.DescEspec.ToUpper());

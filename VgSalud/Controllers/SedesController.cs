@@ -58,7 +58,7 @@ namespace VgSalud.Controllers
 
                             cmd.ExecuteNonQuery();
                             cmd.Dispose();
-                            ViewBag.Mensaje = "Se registro Satisfactoriamente";
+                            ViewBag.mensaje = "Se registro Satisfactoriamente";
                         }
                         catch (Exception ex)
                         {

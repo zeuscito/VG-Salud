@@ -196,7 +196,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:53</publishTime>
     </File>
     <File Include="bin/VgSalud.dll">
-      <publishTime>08/03/2017 08:49:56</publishTime>
+      <publishTime>08/04/2017 18:07:34</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>06/17/2017 19:51:54</publishTime>
@@ -3556,7 +3556,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Caja/ImprimirTicket.cshtml">
-      <publishTime>08/02/2017 13:34:36</publishTime>
+      <publishTime>04/08/2017 15:11:45</publishTime>
     </File>
     <File Include="Views/Caja/ListadoCaja.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3595,7 +3595,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/26/2017 00:33:32</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_Cabecera_EntregaCarnet.cshtml">
-      <publishTime>07/26/2017 00:33:49</publishTime>
+      <publishTime>04/08/2017 01:48:32</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_Cabecera_Lab.cshtml">
       <publishTime>07/31/2017 17:26:58</publishTime>
@@ -3607,7 +3607,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/31/2017 17:27:11</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_detalle_EntregaCarne.cshtml">
-      <publishTime>07/26/2017 00:41:05</publishTime>
+      <publishTime>04/08/2017 01:48:44</publishTime>
     </File>
     <File Include="Views/Carnet/Vista_Detalle_Lab.cshtml">
       <publishTime>07/31/2017 17:11:51</publishTime>
@@ -3733,7 +3733,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Estadistica/EstadisticaFacturacionXMes.cshtml">
-      <publishTime>06/17/2017 19:52:47</publishTime>
+      <publishTime>04/08/2017 01:59:18</publishTime>
     </File>
     <File Include="Views/ExamenLaboratorio/RegistroExamenLaboratorio.cshtml">
       <publishTime>06/28/2017 16:37:02</publishTime>
@@ -4051,7 +4051,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/30/2017 21:13:49</publishTime>
+      <publishTime>03/08/2017 17:47:19</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -4072,10 +4072,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Tarifario/ModificarTarifa.cshtml">
-      <publishTime>06/17/2017 19:52:47</publishTime>
+      <publishTime>04/08/2017 00:58:31</publishTime>
     </File>
     <File Include="Views/Tarifario/RegistrarTarifario.cshtml">
-      <publishTime>07/12/2017 11:11:51</publishTime>
+      <publishTime>04/08/2017 01:00:20</publishTime>
     </File>
     <File Include="Views/Tarifario/VistaDemo.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>

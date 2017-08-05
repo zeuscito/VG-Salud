@@ -439,7 +439,7 @@
                     </div>
                     <!-- /.box-body -->
                 </div>
-                5
+                
             </div>
 
             <div class="col-md-6">
@@ -473,7 +473,7 @@
                                             {
                                                 consulta += item.Total;
                                             }
-                                            else if (item.NomTipTar == "PROCEDIMIENTO")
+                                            else if (item.NomTipTar == "PROCEDIMIENTOS")
                                             {
                                                 procedimiento += item.Total;
                                             }
@@ -767,20 +767,20 @@
         //4
         var data = {
             labels: [
-                @foreach (var item in ListaDiasSexo) {
+                @foreach (var item in ListaDiasTar) {
                     <text>
                        "@item.dia",
                     </text>
                 }
             ],
             datasets: [
-                 @foreach(var demo in ListaSexo)
+                 @foreach(var demo in ListatipTar)
         {
 
             <text>
      {
 
-         label: "@demo.nomSexo",
+         label: "@demo.NomTipTar",
          fillColor: "rgba(@demo.color1,0.3)",
          strokeColor: "rgba(@demo.color1,1)",
          pointColor: "rgba(@demo.color1,1)",
@@ -789,18 +789,18 @@
          pointHighlightStroke: "rgba(@demo.color1,1)",
          data: [
 
-         @foreach (var item1 in FacturacionXPacienteXSexo)
+         @foreach (var item1 in FacturacionXTipoTarifa)
          {
              //var evaluaDemo = FacturacionXPacienteXSexo.Where(x => x.nomSexo== demo.nomSexo);
-             if (item1.nomSexo == demo.nomSexo)
+             if (item1.NomTipTar == demo.NomTipTar)
              {
-                 foreach (var demin in ListaDiasSexo)
+                 foreach (var demin in ListaDiasTar)
                  {
-                     var estado = FacturacionXPacienteXSexo.Find(x => x.dia == demin.dia && x.nomSexo == item1.nomSexo);
+                     var estado = FacturacionXTipoTarifa.Find(x => x.dia == demin.dia && x.NomTipTar == item1.NomTipTar);
                      if (estado != null)
                      {
                         <text>
-                        "@estado.TotPaciente",
+                        "@estado.Total",
                         </text>
                     }
                     else
