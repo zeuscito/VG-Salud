@@ -1,0 +1,587 @@
+﻿@model VgSalud.Models.E_Ficha_Electronica
+
+@{
+    ViewBag.Title = "RegistroDeProcedimientosMedicos";
+    var listaDiagnostico = "";
+    var activaTab = "class=active";
+    var activaVista = "in active";
+    var listaCie10 = (SelectList)ViewBag.listaCie10;
+    var Listadiagnostico = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.Listadiagnostico;
+    var perfil = (SelectList)ViewBag.perfil;
+    var listaEspe = (List<VgSalud.Models.E_Especialidades>)ViewBag.listaEspe;
+    var listaFormaFarm = (SelectList)ViewBag.listaFormaFarm;
+    var listaFrecuencia = (SelectList)ViewBag.listaFrecuencia;
+    List<SelectListItem> items = new List<SelectListItem>();
+    items.Add(new SelectListItem { Text = "VÍA ORAL", Value = "VÍA ORAL", Selected = true });
+    items.Add(new SelectListItem { Text = "VÍA SUBLINGUAL", Value = "VÍA SUBLINGUAL" });
+    items.Add(new SelectListItem { Text = "VÍA RECTAL", Value = "VÍA RECTAL" });
+    items.Add(new SelectListItem { Text = "VÍA PARENTERAL", Value = "VÍA PARENTERAL" });
+    items.Add(new SelectListItem { Text = "VÍA RESPIRATORIA", Value = "VÍA RESPIRATORIA" });
+    items.Add(new SelectListItem { Text = "VÍA TÓPICA", Value = "VÍA TÓPICA" });
+    items.Add(new SelectListItem { Text = "VÍA OFTÁLMICA", Value = "VÍA OFTÁLMICA" });
+    items.Add(new SelectListItem { Text = "VÍA ÓTICA", Value = "VÍA ÓTICA" });
+    items.Add(new SelectListItem { Text = "VÍA TRANSDÉRMICA", Value = "VÍA TRANSDÉRMICA" });
+
+    List<SelectListItem> itemsDiag = new List<SelectListItem>();
+    itemsDiag.Add(new SelectListItem { Text = "DIAGNÓSTICO DE CERTEZA", Value = "DIAGNÓSTICO DE CERTEZA" });
+    itemsDiag.Add(new SelectListItem { Text = "DIAGNÓSTICO PRESUNTIVO", Value = "DIAGNÓSTICO PRESUNTIVO" });
+    itemsDiag.Add(new SelectListItem { Text = "DIAGNÓSTICO CONTINUADOR", Value = "DIAGNÓSTICO CONTINUADOR" });
+
+    var ListaRecetas = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.ListaRecetas;
+    var contenido = ViewBag.contenido;
+}
+
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Procedimiento
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Procedimiento</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <h3 style="color:#fff">
+                    @ViewBag.historia - @ViewBag.nombrePac -  @ViewBag.edad AÑOS<br />
+                    @ViewBag.servicio - @ViewBag.tarifa
+                </h3>
+
+                <ul class="nav nav-tabs">
+                    <li @if (ViewBag.tab == "1") { @activaTab  }><a data-toggle="tab" href="#procedimiento">Procedimiento</a></li>
+
+                    <li @if (ViewBag.tab == "2") { @activaTab  }><a data-toggle="tab" href="#diagnostico">Diagnostico</a></li>
+                    
+                    <li @if (ViewBag.tab == "3") { @activaTab    }><a data-toggle="tab" href="#recetas">Recetas / Interconsulta</a></li>
+
+                </ul>
+
+                
+
+
+                <form action="" method="post" id="formulario">
+
+                    <input type="hidden" name="evento" id="evento" />
+                    <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                    <input type="hidden" name="Item" value="@ViewBag.item" />
+                    <input type="hidden" name="Asistente" value="@ViewBag.Asistente" />
+                    <input type="hidden" name="idProc" value="@ViewBag.idProc" />
+                    <input type="hidden" name="FecRegAsist" value="@ViewBag.FecRegAsist" />
+                    <input type="hidden" name="Historia" value="@ViewBag.Historia" />
+                    
+                    <div class="tab-content">
+
+
+
+                        <div id="procedimiento" class="tab-pane fade  @if (ViewBag.tab == "1") { @activaVista; }">
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Examen Fisico</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                </div>
+
+
+                                <div class="box-body">
+
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FC</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FC, new { htmlAttributes = new { @class = "form-control", @value = "", @id= "FC" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>PA</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.PA, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "PA" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FR</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FR, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "FR" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Ax.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "Tax" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Rectal.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tanal, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "Tanal" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <br />
+                                            <div class="col-md-12">
+                                                <div class="btn btn-info" id="TraerDatosAhora">Cargar ultimo registro del paciente</div>
+                                            </div>                                            
+                                        </div>
+
+                                        @*<div class="form-group col-md-12">
+                                            <div class="col-md-12">
+                                                <label>Perfil</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                @Html.DropDownList("idPFA", perfil, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "idPFA", @style = "width:100%;" })
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-info" id="CambiarPerfil"><i class="fa fa-refresh"></i></button>
+                                            </div>
+                                        </div>*@
+
+                                        <div class="form-group col-md-12">
+                                            <div class="col-md-12">
+                                                <label>Relato del procedimiento</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="box-body pad">
+                                                    @Html.TextArea("DescripcionProc",  new { @class= "textarea", @id= "contenido", @style = "width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" })
+                                                </div>
+                                            </div>                                            
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="diagnostico" class="tab-pane fade  @if (ViewBag.tab == "2") { @activaVista; }">
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Diagnostico</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+
+
+
+                                    <fieldset>
+                                        <legend></legend>
+
+                                        <div class="col-md-10">
+
+                                            <div class="form-group col-md-6">
+                                                <div class="col-md-3">
+                                                    <label>CIE10</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.DropDownList("CIe10", listaCie10, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Cie10", @style = "width:100%;" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <div class="col-md-3">
+                                                    <label>Tipo de diagnostico</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.DropDownList("tipoDiagnostico", itemsDiag, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Cie10", @style = "width:100%;" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2">
+
+                                            <input type="button" id="AgregaDiagnostico" class="btn btn-danger" value="Agregar" />
+
+                                        </div>
+
+                                        @if (Listadiagnostico != null)
+                                        {
+
+                                            <div class="col-md-12" style="margin-top:3%">
+
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Lista de Diagnosticos</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <table id="example4" class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr class="headTabla">
+                                                                <th>CIE10</th>
+                                                                <th>Descripcion</th>
+                                                                <th><i class="fa fa-trash"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+
+
+                                                            @foreach (var item in Listadiagnostico)
+                                                            {
+
+                                                                <tr>
+                                                                    <td>@Html.DisplayFor(modelItem => item.CIe10)</td>
+                                                                    <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                                                    <td><button class="EliminaDiagnostico" name="EliminaDiagnostico" value="@item.CIe10"><i class="fa fa-trash"></i></button></td>
+                                                                </tr>
+
+                                                            }
+
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="recetas" class="tab-pane fade  @if (ViewBag.tab == "3") { @activaVista; }">
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Recetas / Interconsulta</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                </div>
+
+
+                                <div class="box-body">
+                                    
+
+                                    <div class="col-md-12">
+
+                                        <fieldset>
+                                            <legend>Interconsulta</legend>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Interconsulta</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.InterConsulta, new { htmlAttributes = new { @class = "form-control", @id = "fruits" } })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <label>Fecha de prox. cita</label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.ProxCita, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+
+
+
+                                        <fieldset>
+                                            <legend>Receta</legend>
+
+
+                                            <div class="form-group col-md-3">
+                                                <div class="col-md-12">
+                                                    <label>Descripcion</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group col-md-2">
+                                                <div class="col-md-12">
+                                                    <label>Concentracion</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Concentra, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <div class="col-md-12">
+                                                    <label>Forma Farmec.</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.DropDownList("FormaFarmec", listaFormaFarm, new { @class = "form-control select2", @id = "FormaFarmec", @style = "width:100%;" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <div class="col-md-12">
+                                                    <label>Dosis</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Dosis, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <div class="col-md-12">
+                                                    <label>Frecuencia</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.DropDownList("Frecuencia", listaFrecuencia, new { @class = "form-control select2", @id = "Frecuencia", @style = "width:100%;" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <div class="col-md-12">
+                                                    <label>Via Administracion</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.DropDownList("ViaAdmin", items, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "Cie10", @style = "width:100%;" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <div class="col-md-12">
+                                                    <label>Duracion</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Duracion, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group col-md-2">
+                                                <div class="col-md-12">
+                                                    <label>Cantidad</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-5">
+                                                <div class="col-md-12">
+                                                    <label>Observaciones</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.Obsv, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-md-12" align="center" style="margin-top:3%">
+
+                                        <input type="submit" class="btn btn-danger" id="AgregarReceta" value="Agregar receta" />
+
+                                    </div>
+                                    @if (ListaRecetas != null)
+                                    {
+                                        <div class="col-md-12" style="margin-top:3%">
+
+                                            <div class="box-header">
+                                                <h3 class="box-title">Lista de Recetas</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <table id="example4" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr class="headTabla">
+                                                            <th>Descripcion</th>
+                                                            <th>Consentración</th>
+                                                            <th>Forma Farmec.</th>
+                                                            <th>Dosis</th>
+                                                            <th>Fecuencia</th>
+                                                            <th>Via Administracion</th>
+                                                            <th>Duracion</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Obvs.</th>
+                                                            <th><i class="fa fa-trash"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                        @foreach (var item in ListaRecetas)
+                                                        {
+                                                            VgSalud.Controllers.RecetasController re = new VgSalud.Controllers.RecetasController();
+                                                            VgSalud.Models.E_FormaFarmaceutica ff = re.ListadoFormaFarmaceutica().Find(x => x.idFormFarm == item.FormaFarmec);
+                                                            VgSalud.Models.E_FrecuenciaReceta fr = re.ListadoFrecuenciaRecetas().Find(x => x.idFrec == item.Frecuencia);
+
+                                                            <tr>
+                                                                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.Concentra)</td>
+                                                                <td>@Html.DisplayFor(modelItem => ff.Descripcion)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.Dosis)</td>
+                                                                <td>@Html.DisplayFor(modelItem => fr.Descripcion)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.ViaAdmin)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.Duracion)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                                                <td>@Html.DisplayFor(modelItem => item.Obsv)</td>
+                                                                <td><button class="EliminaReceta" name="idRecetaSesion" value="@item.idRecetaSesion"><i class="fa fa-trash"></i></button></td>
+                                                            </tr>
+
+                                                        }
+
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div align="center">
+                            <input type="button" id="RegistraTodo" value="Registar Ficha Electronica" class="btn btn-info" />
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<script>
+
+    var data = [
+        @foreach (var i in listaEspe) {
+            <text>
+                "@i.NomEspec",
+            </text>
+        }
+    ];
+
+
+    $(document).ready(function () {
+
+
+
+
+        $("textarea#contenido").html("");
+        $('textarea#contenido').html("@ViewBag.contenido");
+
+        $('#idPFA option[value=@ViewBag.CodPerf]').prop('selected', 'selected').change();
+
+        $("#RegistraTodo").click(function () {
+            $("#evento").val("1");
+            $("#formulario").submit();
+        });
+
+        $("#CambiarPerfil").click(function () {
+            $("#evento").val("2");
+            $("#formulario").submit();
+        });
+
+        $("#AgregaDiagnostico").click(function () {
+            $("#evento").val("3");
+            $("#formulario").submit();
+        });
+
+        $(".EliminaDiagnostico").click(function () {
+            $("#evento").val("4");
+            $("#formulario").submit();
+        });
+
+        $("#AgregarReceta").click(function () {
+            $("#evento").val("5");
+            $("#formulario").submit();
+        });
+
+        $(".EliminaReceta").click(function () {
+            $("#evento").val("6");
+            $("#formulario").submit();
+        });
+
+
+
+
+        var historia = "@ViewBag.historia";
+        var servicio = "@ViewBag.CodServMed";
+
+        $('#TraerDatosAhora').click(function (event) {
+            $.get('@Url.Action("TraerDatos", "FichaElectronica")', {
+                Historia: historia, CodServ: servicio
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $('#FC').val(value.FC);
+                    $('#PA').val(value.PA);
+                    $('#FR').val(value.FR);
+                    $('#Tax').val(value.Tax);
+                    $('#Tanal').val(value.Tanal);
+                    var demoo = $(".wysihtml5-editor").html();
+                    alert("H: " + demoo);
+                });
+            });
+        });
+
+
+
+        $("#fruits").autocomplete(data);
+
+        var borraData = "@ViewBag.borraDatos";
+
+        if (borraData == "1") {
+            $("#descripcionReceta").val("");
+            $("#ConcentracionReceta").val("");
+            $("#dosis").val("");
+            $("#duracion").val("");
+            $("#cantidadReceta").val("");
+            $("#obsReceta").val("");
+        }
+
+        $('#contenido').data("wysihtml5").editor.setValue('new content');
+
+    });
+
+</script>

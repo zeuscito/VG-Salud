@@ -767,20 +767,20 @@
         //4
         var data = {
             labels: [
-                @foreach (var item in ListaDiasTar) {
+                @foreach (var item in ListaDiasSexo) {
                     <text>
                        "@item.dia",
                     </text>
                 }
             ],
             datasets: [
-                 @foreach(var demo in ListatipTar)
+                 @foreach(var demo in ListaSexo)
         {
 
             <text>
      {
 
-         label: "@demo.NomTipTar",
+         label: "@demo.nomSexo",
          fillColor: "rgba(@demo.color1,0.3)",
          strokeColor: "rgba(@demo.color1,1)",
          pointColor: "rgba(@demo.color1,1)",
@@ -789,18 +789,18 @@
          pointHighlightStroke: "rgba(@demo.color1,1)",
          data: [
 
-         @foreach (var item1 in FacturacionXTipoTarifa)
+         @foreach (var item1 in FacturacionXPacienteXSexo)
          {
              //var evaluaDemo = FacturacionXPacienteXSexo.Where(x => x.nomSexo== demo.nomSexo);
-             if (item1.NomTipTar == demo.NomTipTar)
+             if (item1.nomSexo == demo.nomSexo)
              {
-                 foreach (var demin in ListaDiasTar)
+                 foreach (var demin in ListaDiasSexo)
                  {
-                     var estado = FacturacionXTipoTarifa.Find(x => x.dia == demin.dia && x.NomTipTar == item1.NomTipTar);
+                     var estado = FacturacionXPacienteXSexo.Find(x => x.dia == demin.dia && x.nomSexo == item1.nomSexo);
                      if (estado != null)
                      {
                         <text>
-                        "@estado.Total",
+                        "@estado.TotPaciente",
                         </text>
                     }
                     else
@@ -825,8 +825,6 @@
             responsive: true
         };
         var lineChart = new Chart(ctx).Line(data, options);
-
-
         //5
         var data = {
             labels: [

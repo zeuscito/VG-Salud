@@ -463,8 +463,44 @@ namespace VgSalud.Controllers
             }
         }
 
+        public List<E_Servicios> ListadoServiciosVentaRapida(string sede, int historia)
+        {
+            List<E_Servicios> Lista = new List<E_Servicios>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_lista_Servicio_EspecialidadXSede", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    cmd.Parameters.AddWithValue("@historia", historia);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Servicios Ser = new E_Servicios();
 
-       
+                            Ser.CodServ = dr.GetString(0);
+                            Ser.NomServ = dr.GetString(1).ToUpper();
+                            Ser.CodEspec = dr.GetString(2);
+                            Ser.CodEmp = dr.GetString(3);
+                            Ser.CodSede = dr.GetString(4);
+                            Ser.EstServ = dr.GetBoolean(5);
+                            Ser.Especialidad = dr.GetString(6).ToUpper();
+                            Ser.Empresa = dr.GetString(7).ToUpper();
+                            Ser.Sede = dr.GetString(8).ToUpper();
+                            Ser.CodTar = dr.GetString(9);
+                            Ser.precio = dr["Precio"] is DBNull ? 0 : dr.GetDecimal(10);
+                            Lista.Add(Ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
 
 
         public List<E_Servicios> BuscaServicio_CodEsp(string codigo, string codSede)

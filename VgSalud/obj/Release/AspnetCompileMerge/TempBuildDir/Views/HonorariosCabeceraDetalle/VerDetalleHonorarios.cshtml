@@ -1,0 +1,289 @@
+﻿@model VgSalud.Models.E_Honorario_Cabecera_Detalle
+
+@{
+    ViewBag.Title = "VerDetalleHonorarios";
+    var lista = (List<VgSalud.Models.E_Honorario_Cabecera_Detalle>)ViewBag.detalle;
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Honorarios</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Honorarios</a></li>
+            <li class="active">Registrar Honorarios</li>
+        </ol>
+    </section>
+
+    <section class="content">
+
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+                <h3 class="box-title" style="margin-left: 35px;">Datos de Honorario</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="~/HonorariosCabeceraDetalle/ListadeLiquidacion">
+                        <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="box-body">
+                <fieldset>
+                    @using (Html.BeginForm())
+                    {
+                        <div class="col-md-12">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-12">
+                                <div class="panel-group">
+
+                                    <div class="panel panel-primary">
+
+                                        <div class="panel-body">
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label style="text-align:left">Servicios</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="CodServ" class="form-control"  value="@Model.CodServ" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                           
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Medico</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+                                                        <input type="text" name="CodMed" class="form-control" value="@Model.CodMed" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Tipo Cuentas</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="TipoDoc" class="form-control" value="@Model.TipoDoc" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Tipo Pago</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+
+                                                        <input type="text" name="TipoPago" class="form-control" value="@Model.TipoPago" readonly />
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6">
+                                                <br />
+                                                <div class="panel panel-default">
+                                          
+                                                    <div class="panel-body">
+                                                        <div class="col-md-12">
+                                                      
+                                                            <div class="col-md-4">
+                                                                <div class="col-md-12">
+                                                                    <label>Fecha Liquidacion</label>
+                                                                    <input type="text" name="FechaLiquidacion" class="form-control" value="@Model.FechaLiquidacion.ToShortDateString()" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="col-md-12">
+                                                                    <label>Fecha Inicio</label>
+                                                                    <input type="text" name="FechaInicio" class="form-control" value="@Model.FechaInicio.ToShortDateString()" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+
+                                                                <div class="col-md-12">
+                                                                    <label>Fecha Final</label>
+                                                                    <input type="text" name="FechaFinal" id="FechaFinal" class="form-control" value="@Model.FechaFinal.ToShortDateString()"  readonly  />
+                                                                </div>
+                                                            </div>
+                                                   
+                                                        </div>
+
+
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div> 
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <input type="hidden" id="cadena2" name="cadena2" />
+                    }
+                    <div class="col-md-12">
+
+
+
+                            <div class="col-md-12"></div>
+                            <div class="col-md-12"></div>
+                            <div class="col-md-12">
+
+                                <div class="box-header">
+                                    <h3 class="box-title">Lista de Liquidacion</h3>
+                                </div>
+
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                
+                                            <thead>
+                                                <tr>
+                                                    <th>CodCuenta</th>
+                                                    <th>Item</th>
+                                                    <th>Docuemento</th>
+                                                    <th>Precio</th>
+                                                    <th>Porcentaje</th>
+                                                    <th>Total</th>
+                                                    <th>Fecha Aten.</th>
+                                                    <th>Fecha Fac.</th>
+                                                    <th>Tarifa</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Turno</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var item in lista)
+                                                {
+                                                    <tr>
+                                                        <td>@Html.DisplayFor(modelItem => item.CodCuenta)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.ItemCita)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.NroDocumentos)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Tot_Tarifa)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.PorcentajeTarifa) %</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.APagar)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.FechaAtencion)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Tarifa)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                                   
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+
+                                        </table>
+
+                                        <div id="porTurno">
+                                            <br /><br />
+                                            <div class="col-md-3" style="float:right">
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label>Total a pagar</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="Total" class="form-control" value="@Model.Total" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3" style="float:right">
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label>Pago por turno</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="PagoTotalTurno" class="form-control" value="@Model.PagoTotalTurno" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3" style="float:right">
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label>Cantidad Turnos</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="CantTurno" class="form-control" value="@Model.CantTurno" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div id="porPorcentaje">
+
+                                            <div class="col-md-3" style="float:right">
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label>Total Fac.</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="text" name="TotalFac" class="form-control" value="@Model.TotalFac" readonly />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+</div>
+
+                            </div>
+
+
+                     
+
+                    </div>
+
+                </fieldset>
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+
+
+

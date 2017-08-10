@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "ReporteGastos";
+    var centrocosto = (SelectList)ViewBag.centro;
+    var listado = (List<VgSalud.Models.E_Gastos>)ViewBag.listado;
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Facturacion de Gastos</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de facturacion de Gastos</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%">
+                        <a href="~/Master/Index"><center style="margin-left: 65px;"><i class="fa fa-home" style="font-size:25px;color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
+                    </div>
+
+                </div>
+
+
+                <fieldset>
+                    <legend style="padding-left: 90px;padding-right: 89px;">Filtro</legend>
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <form action="" method="post">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-md-2"></div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Sede</label>
+                                            @Html.DropDownList("Idcc", centrocosto, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha Inicio</label>
+                                            <input type="text" name="FechaI" value="@ViewBag.fechaI" maxlength="10" class="form-control  datepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label>Fecha Final</label>
+                                            <input type="text" name="FechaF" value="@ViewBag.fechaF" maxlength="10" class="form-control  datepicker" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <br />
+                                    <button type="submit" class="btn btn-danger" style="margin-top: 5px;background-color:#13D003;border:0" name="accion" value="1"><i class="glyphicon glyphicon-search"></i></button>
+                                </div>
+
+                                <div class="col-md-1"></div>
+                            </form>
+
+                        </div>
+                    </div>
+                </fieldset>
+            }
+
+            @if (listado != null)
+            {
+                <h4 style="padding:0%;text-align: right;padding-right: 105px;">
+                    Exportar:
+                    <a href="~/Reportes/GeneraReporteGastos/?id=PDF&FechaI=@ViewBag.fechaI&FechaF=@ViewBag.fechaF&Idcc=@ViewBag.idd" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                    <a href="~/Reportes/GeneraReporteGastos/?id=Word&FechaI=@ViewBag.fechaI&FechaF=@ViewBag.fechaF&Idcc=@ViewBag.idd" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                    <a href="~/Reportes/GeneraReporteGastos/?id=Excel&FechaI=@ViewBag.fechaI&FechaF=@ViewBag.fechaF&Idcc=@ViewBag.idd" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                </h4>
+
+                <div class="box-body">
+                    <div class="col-md-12" style="padding-left: 80px;padding-right: 89px;">
+                        <fieldset>
+                            <legend>Lista</legend>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Codigo</th>
+                                        <th>Nro Operacion</th>
+                                        <th>Razon Social</th>
+                                        <th>Ruc</th>
+                                        <th>Fecha Emision</th>
+                                        <th>Importe</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in listado)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.IdgastosC)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.NroOperacion)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.RazonS)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Ruc)</td>
+                                            <td>@item.FechaEmision.ToShortDateString()</td>
+                                            <td>@Html.DisplayFor(modelItem => item.TotalBruto)</td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </fieldset>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+        <br /><br /><br />
+
+
+
+    </section>
+    }
+</div>
+
+
+

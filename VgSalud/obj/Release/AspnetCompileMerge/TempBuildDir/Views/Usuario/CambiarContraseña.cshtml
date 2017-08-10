@@ -1,12 +1,12 @@
 ﻿@model VgSalud.Models.E_Usuario
 
 @{
-    ViewBag.Title = "CambiarContraseña";
+    ViewBag.Title = "Cambiar Contraseña";
 }
 
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Especialidades</h1>
+        <h1>Usuario</h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-users"></i>Usuario</a></li>
             <li class="active">Cambiar Contraseña</li>
@@ -15,7 +15,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Cambiar Contraseña</h3>
+    
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -23,71 +23,64 @@
             </div>
 
             <form method="post" action="" name="form1">
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="../listaUsuario">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="box-body">
-                    <div class="col-md-6">
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Cambiar Contraseña</legend>
+                        <div class="col-md-6">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="codUsu" value="@Model.codUsu" id="codUsu" />
+                            <input type="hidden" name="aliasUsu" value="@Model.aliasUsu" id="aliasUsu" />
+                            <input type="hidden" name="pwdUsu" value="@Model.pwdUsu" id="pwdUsu" />
 
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Contraseña Nueva</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control" name="passwordNew" id="passwordNew" />
 
-                        <input type="hidden" name="codUsu" value="@Model.codUsu" id="codUsu"/> 
-                        <input type="hidden"  name="aliasUsu" value="@Model.aliasUsu" id="aliasUsu"/>
-                        <input type="hidden" name="pwdUsu" value="@Model.pwdUsu" id="pwdUsu" />
+                                    @Html.ValidationMessageFor(model => model.passwordNew, "", new { @class = "text-danger" })
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Contraseña Anterior</label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="password" class="form-control" name="passwordLast" id="passwordLast" />
-                                <label id="errorMessage" style="display:none;color:red">Error: Ingrese Correctamente la Contraseña Anterior</label>
-                                @Html.ValidationMessageFor(model => model.pwdUsu, "", new { @class = "text-danger" })
-
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Contraseña Actual</label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="password" class="form-control" name="passwordNew" id="passwordNew" />
-                             
-                                @Html.ValidationMessageFor(model => model.passwordNew, "", new { @class = "text-danger" })
+                                </div>
 
                             </div>
 
-                        </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Repetir Contraseña Nueva</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" class="form-control" name="passwordRepit" id="passwordRepit" />
+                                    <label id="error" style="display:none;color:red">Error: Ingrese la misma contraseña</label>
+                                    @Html.ValidationMessageFor(model => model.passwordRepit, "", new { @class = "text-danger" })
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Repetir Contraseña Nueva</label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="password"  class="form-control" name="passwordRepit" id="passwordRepit" />
-                               <label id="error" style="display:none;color:red"  >Error: Ingrese la misma contraseña</label>
-                                @Html.ValidationMessageFor(model => model.passwordRepit, "", new { @class = "text-danger" })
+                                </div>
 
                             </div>
 
                         </div>
-
-                    </div>
-                    <div class="col-md-6"></div>
-
-
-                    <label></label>
-                    <br /><br />
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <center>
-                                    <button type="submit" value="Modificar" class="btn btn-danger" id="modificar">Modificar</button>
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
-                                </center>
+                        <div class="col-md-6"></div>
+                        <label></label>
+                        <br /><br />
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <br />
+                                    <center>
+                                        <button type="submit" value="Modificar" style="background-color:#13D003;border:0" class="btn btn-danger" id="modificar">Modificar</button>
+                                    </center>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
 
             </form>
@@ -103,12 +96,10 @@
 
 
     $(document).ready(function () {
-        $("#passwordNew").attr("disabled", true);
-        $("#passwordRepit").attr("disabled", true);
+        //$("#passwordNew").attr("disabled", true);
+        //$("#passwordRepit").attr("disabled", true);
         $("#modificar").attr("disabled", true);
-
-
-        $("#passwordLast").keyup(function () {
+        @*$("#passwordLast").keyup(function () {
        
             var pass = this.value;
             var al = $('#aliasUsu').val();
@@ -129,9 +120,7 @@
                         $("#errorMessage").show(); 
                     }
             });
-        });
-
-
+        });*@
         $("#passwordRepit").keyup(function () {
 
             var value = this.value;
@@ -151,5 +140,27 @@
 
 </script>
 
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../listaUsuario");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>
 
 

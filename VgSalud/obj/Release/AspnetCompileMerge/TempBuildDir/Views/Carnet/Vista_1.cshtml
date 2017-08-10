@@ -1,0 +1,104 @@
+﻿
+@{
+    Layout = null;
+
+ }
+<head>
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+    <link href="~/Content/Styles/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/ionicons.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/Content/Styles/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/Content/Styles/_all-skins.min.css">
+ 
+    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+   
+    <link href="~/plugins/morris/morris.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Styles/jquery-ui.css" />
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <script src="~/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/plugins/morris/raphael-min.js"></script>
+    <script src="~/Content/Scripts/bootstrap.min.js"></script>
+    <script src="~/Content/Scripts/jquery.inputmask.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+    <script src="~/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+
+    <script src="~/Content/Scripts/app.min.js"></script>
+
+    <script src="~/Content/Scripts/demo.js"></script>
+
+    <script src="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="~/Content/Scripts/html5shiv.min.js"></script>
+    <script src="~/Content/Scripts/respond.min.js"></script>
+
+    
+</head>
+
+
+    <div class="content" style="background-color: #383434;">
+        <div class="row">
+            <div class="box">
+                <div class="box-body">
+
+                    <div class="row" style="height:50%;">
+                        <fieldset>
+                            <legend style="margin-left:40px;font-size:30px">Odontologia - En Espera</legend>
+                            <div class="col-md-12" >
+                                <div id="cabecera-odontologia" style="text-align:center;">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="detalle-odontologia">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="row" style="height:50%;">
+                        <fieldset>
+                            <legend style="margin-left:40px;font-size:30px">Laboratorio - En Espera</legend>
+                            <div class="col-md-12">
+                                <div id="cabecera-laboratorio" style="text-align:center">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+
+                                <div id="detalle-laboratorio">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script src="~/Content/Scripts/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    function CargarData() {
+        $("#cabecera-laboratorio").load("./Vista_Cabecera_Lab");
+    }
+    function CargarDetalleLab() {
+        $("#detalle-laboratorio").load("./Vista_Detalle_Lab");
+    }
+    function CargarDataOdo() {
+        $("#cabecera-odontologia").load("./Vista_Cabecera_Odo");
+    }
+    function CargarDetalleOdo() {
+        $("#detalle-odontologia").load("./Vista_Detalle_Odo");
+    }
+    $(document).ready(function () {
+        setInterval(CargarData, 1000);
+        setInterval(CargarDetalleLab, 1000);
+        setInterval(CargarDataOdo, 1000);
+        setInterval(CargarDetalleOdo, 1000);
+    });
+</script>

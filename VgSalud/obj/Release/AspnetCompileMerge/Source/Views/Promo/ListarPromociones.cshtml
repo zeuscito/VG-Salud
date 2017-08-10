@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "ListarPromociones";
+    var lista = (List<VgSalud.Models.E_Promo>)ViewBag.lista;
+
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Promociones</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Promo</a></li>
+            <li class="active">Consultar Paquetes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="./RegistrarPromocion"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend style="margin-left:2%; width:96%">Lista</legend>
+
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Id</th>
+                                        <th>Descripcion</th>
+                                        <th>Especialidad</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th><i class="fa fa-trash-o"></i></th>
+                                   </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in lista)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.IdPC)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DescEsp)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.TotalC)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.estado)</td>
+
+                                            <td>
+                                                <div class="tools">
+                                                    <a title="Editar" href="Modificar?id=@item.IdPC"><i class="fa fa-edit"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </fieldset>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

@@ -7,6 +7,8 @@
     var listadoCategoria = (SelectList)ViewBag.listadoCategoria;
     var listadoTipoTarifa = (SelectList)ViewBag.listadoTipoTarifa;
     var listadoSubTipoTarifa = (SelectList)ViewBag.listadoSubTipoTarifa;
+    var listadoCuentaContable = (SelectList)ViewBag.listadoCuentaContable;
+    var listadoPerfilito = (SelectList)ViewBag.listadoPerfilFE;
     var listadoTipoMoneda = (List<VgSalud.Models.E_TipoMoneda>)a.ListadoTipoMoneda();
     var listadocatePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.listadocatePaciente;
     var name = " selected";
@@ -17,7 +19,6 @@
 
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Tarifario</h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-users"></i>Tarifario</a></li>
             <li class="active">Modificar Tarifario</li>
@@ -26,7 +27,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Modificar Tarifario</h3>
+
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -34,19 +35,24 @@
             </div>
 
 
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                    <a href="~/Tarifario/ListarTarifario">
+                        <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                    </a>
+                </div>
+            </div>
+
 
             <div class="box-body">
-
-
-                <fieldset>
-                    
+                <form action="" method="post">
 
                     <div class="col-md-6">
-                        <h3 style="color:coral">Datos de Tarifario</h3>
-                        <form method="post" action="">
+                        
+                        <fieldset>
+                            <legend style="color:coral;margin-left:15px"><strong>Datos de Tarifario</strong></legend>
+                            <br />
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
                             <div class="form-group">
                                 <div class="col-md-3">
                                     <label>Descripción</label>
@@ -68,6 +74,19 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-12" style="margin:0;padding:0">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Duracion (min)</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.EditorFor(model => model.TiempoApox, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <div class="col-md-3">
@@ -98,19 +117,36 @@
 
                             <div class="form-group">
                                 <div class="col-md-3">
+                                    <label>Perfil Ficha Electronica</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("idPFA", listadoPerfilito, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    @*<select name="idPFA" id="PerfFicha" class="form-control select2" style="width:100%"></select>*@
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Cuenta Contable</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("IdCtaCont", listadoCuentaContable, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "idCuenta" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
                                     <label>Tipo de moneda</label>
                                 </div>
                                 <div class="col-md-9">
                                     <select name="CodTipMon" id="moneda" class="form-control select2">
                                         @foreach (var lista in listadoTipoMoneda)
                                         {
-                                            <option @{if (lista.CodTipMon.Equals("TM001")) { @name       }  } value="@lista.CodTipMon">@lista.DescTipMon</option>
+                                            <option @{if (lista.CodTipMon.Equals("TM001")) { @name                 } } value="@lista.CodTipMon">@lista.DescTipMon</option>
     }
                                     </select>
                                 </div>
                             </div>
-                           
-
 
                             <div class="form-group">
                                 <div class="col-md-3">
@@ -161,117 +197,91 @@
                             <div class="col-md-12" style="margin-top:5%">
                                 <div class="form-group">
                                     <center>
-                                        <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button> 
-                                        <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                        <button type="submit" value="Modificar" style="background-color:#13D003; border:0" id="modificar" class="btn btn-danger">Modificar</button>
+                                    
                                     </center>
                                 </div>
                             </div>
-                        </form>
+
+                        </fieldset>
 
                     </div>
+
                     <div class="col-md-6">
-
-                        <h3 style="color:coral">Asignacion precios categoria</h3>
-                        <form action="~/Tarifario/AsignarPrecioM" method="post">
+                        <fieldset>
+                            <legend style="color:coral;margin-left:48px"><strong>Asignacion de Precios</strong></legend>
                             <div class="col-md-12">
-                                <div class="col-md-4">
-                                    Lista de categorias por cliente:<br />
-
-                                    @Html.DropDownList("CodCatPac", listadoCategoria, new { @class = "form-control select2" })
+                                <div class="col-md-2"></div>
+                                <div class="col-md-3">
+                                    <label>Categorias</label> 
+                                    @Html.DropDownList("CodCatPac", listadoCategoria, "[TODOS]", new { @class = "form-control select2" })
                                 </div>
-                                <div class="col-md-4">
-                                    Precio:<br />
-                                    <input name="Precio" value="0" type="text" id="prec" class="form-control" />
+                                <div class="col-md-3">
+                                  <label>Precio</label>
+
+                                    <input name="PrecioD" value="0" type="text" id="prec" class="form-control" />
                                     <input name="CodTar" value="@Model.CodTar" type="hidden" />
                                     <input type="hidden" id="tipMonedaR" name="TipMoneda" />
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <br />
-                                    <button type="submit" class="btn btn-danger">Agregar</button>
+                                    <button type="submit" name="Evento" value="1" class="btn btn-danger" style="margin-top: 4px;"><i class="glyphicon glyphicon-plus"></i></button>
                                 </div>
+                                <div class="col-md-2"></div>
                             </div>
-                        </form>
 
+                            <div class="col-md-12">
+
+                                <div class="col-md-12">
+                                    <div class="content">
+                                        @*<h3 style="color:coral">Precios Categoria</h3>*@
+                                        <center>
+                                            <table @*id="example1"*@ class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr class="headTabla">
+                                                        <td>Codigo</td>
+                                                        <td>Descripcion</td>
+                                                        <td>Precio</td>
+                                                        <th style="text-align:center"><i class="glyphicon glyphicon-refresh"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in listadocatePaciente)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.CodCatPac</td>
+                                                            <td>@item.DescCatPac</td>
+                                                            <td>@item.Precio</td>
+                                                            <td  style="text-align:center">
+                                                                <div class="tools">
+                                                                    <a href="~/Tarifario/EliminaDetalle/?id=@item.CodTarCate&codForm=@item.CodTar" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+                                        </center>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
                     </div>
+                </form>
+
+                <div class="col-md-6"></div>
 
 
 
 
 
 
-                    <div class="col-md-6" style="margin-bottom:-100px">
-                        <div class="content">
-                            
-                            <center>
-                                <table id="example2" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <td>Codigo</td>
-                                            <td>Descripcion</td>
-                                            <td>Precio</td>
-                                            <th><i class="fa fa-trash-o"></i></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in catePaciente)
-                                        {
-                                            <tr>
-                                                <td>@item.CodCatPac</td>
-                                                <td>@item.DescCatPac</td>
-                                                <td>@item.Precio</td>
-                                                <td>
-                                                    <div class="tools">
-                                                        <a href="~/Tarifario/DeleteM/?id=@item.CodCatPac&codigo=@Model.CodTar"><i class="fa fa-trash-o"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-
-                                    </tbody>
-                                </table>
-
-                            </center>
-                        </div>
-                    </div>
-                    
-
-                    <div class="col-md-6">
-                        <div class="content">
-                            <h3 style="color:coral">Precios Categoria</h3>
-                            <center>
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <td>Codigo</td>
-                                            <td>Descripcion</td>
-                                            <td>Precio</td>
-                                            <th><i class="fa fa-trash-o"></i></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in listadocatePaciente)
-                                        {
-                                            <tr>
-                                                <td>@item.CodCatPac</td>
-                                                <td>@item.DescCatPac</td>
-                                                <td>@item.Precio</td>
-                                                <td>
-                                                    <div class="tools">
-                                                        <a href="~/Tarifario/EliminaDetalle/?id=@item.CodTarCate&codForm=@item.CodTar"><i class="fa fa-trash-o"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-
-                                    </tbody>
-                                </table>
-
-                            </center>
-                        </div>
-                    </div>
 
 
-                </fieldset>
+
 
 
 
@@ -310,6 +320,44 @@
         });
 
 
+
+        var perfil = "@ViewBag.idPFA";
+        var Espec = $("select#especialidad").val();
+        $.get('@Url.Action("ObtenerPerfilFichaElectronica", "Tarifario")', {
+            CodEspec: Espec
+        }, function (response) {
+
+            var select = $('#PerfFicha');
+            select.find('option').remove();
+            $('<option>').val("").text("[SELECCIONE UN PERFIL]").appendTo(select);
+            $("#select2-PerfFicha-container").text("[SELECCIONE UN PERFIL]");
+            $.each(response, function (index, value) {
+                $('<option>').val(value.idPFA).text(value.Nombre).appendTo(select);
+                if (perfil == value.idPFA) {
+                    $('#PerfFicha option[value=' + value.idPFA + ']').prop('selected', 'selected').change();
+                    $("#select2-PerfFicha-container").text(value.Nombre);
+                }
+            });
+        });
+
+
+        @*$('#especialidad').change(function (event) {
+            var sports = $("select#especialidad").val();
+            $.get('@Url.Action("ObtenerPerfilFichaElectronica", "Tarifario")', {
+                CodEspec: sports
+            }, function (response) {
+
+                var select = $('#PerfFicha');
+                select.find('option').remove();
+                $('<option>').val("").text("[SELECCIONE UN PERFIL]").appendTo(select);
+                $("#select2-PerfFicha-container").text("[SELECCIONE UN PERFIL]");
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.idPFA).text(value.Nombre).appendTo(select);
+                });
+            });
+        });*@
+
+
         $("#prec").keydown(function (event) {
             if (event.shiftKey) {
                 event.preventDefault();
@@ -343,6 +391,34 @@
         });
 
 
+    });
+
+</script>
+
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../ListarTarifario");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../ListarTarifario";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
     });
 
 </script>

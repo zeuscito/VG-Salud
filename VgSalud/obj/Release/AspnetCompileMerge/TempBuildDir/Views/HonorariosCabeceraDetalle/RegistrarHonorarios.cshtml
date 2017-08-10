@@ -3,13 +3,13 @@
 @{
     ViewBag.Title = "RegistrarHonorarios";
     var lista = (List<VgSalud.Models.E_Honorario_Cabecera_Detalle>)ViewBag.lista;
+    var tarifario = (List<VgSalud.Models.E_Tarifario>)ViewBag.tarifario;
     var Vliquidacion = ViewBag.Liquidacion;
     var Vfechainicio = ViewBag.fechaInicio;
     var VfechaFinal = ViewBag.fechaFinal;
     var VfechaIC = ViewBag.fechaIC;
     var VfechaFC = ViewBag.fechaFC;
     var marca = "checked";
-    string tipoRango = ViewBag.tipoRango;
 
 }
 
@@ -34,6 +34,13 @@
                 </div>
             </div>
 
+            <div class="box-header">
+
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003;margin-left: 15px;"></i><br /><strong style="color:black;margin-left: 15px;">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
 
             <div class="box-body">
                 <fieldset>
@@ -54,25 +61,19 @@
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">
                                                         <div class="col-md-6">
-                                                            <label class="col-md-3">Tipo Liquidacion</label>
-                                                            <div class="col-md-3">
-                                                                <label><input type="radio" name="tipoLiquitacion" id="Rservicio" value="1">Servicio</label>
+                                                            <div class="col-md-4">
+                                                                <label>Servicio</label>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label><input type="radio" name="tipoLiquitacion" id="Rmedico" value="2">Medico</label>
+                                                            <div class="col-md-8">
+                                                                <select id="servicio" name="servicio" class="form-control select2"></select>
                                                             </div>
-                                                            <div class="col-md-3"></div>
                                                         </div>
 
                                                         <div class="col-md-6">
-                                                            <label class="col-md-3">Reporte de</label>
+                                                            <label class="col-md-3">Liquidar por</label>
                                                             <div class="col-md-3" id="porcentaje">
-                                                                <label><input type="radio" name="comoPagar" value="1" @if (ViewBag.comoPagar == "1") { @marca     ; }>Porcentaje</label>
+                                                                <label><input type="radio" name="TipoLiqui" id="porcen" value="1" @if (ViewBag.TipoLiqui == 1) { @marca          ; } checked>Porcentaje</label>
                                                             </div>
-                                                            <div class="col-md-3" id="turno">
-                                                                <label><input type="radio" name="comoPagar" value="2" @if (ViewBag.comoPagar == "2") { @marca     ; }>Turno</label>
-                                                            </div>
-                                                            <div class="col-md-3"></div>
                                                         </div>
 
                                                     </div>
@@ -86,28 +87,6 @@
                                             <div class="col-md-12"></div>
                                             <div class="col-md-12"></div>
 
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label style="text-align:left">Servicios</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <select id="servicio" name="CodServ" class="form-control select2"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label>Medico</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <select name="CodMed" id="medico" class="form-control select2"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -115,7 +94,7 @@
                                                         <label>Tipo Cuentas</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <select id="Tipoc" name="TipoDoc" class="form-control select2">
+                                                        <select id="Tipoc" name="TipoCuenta" class="form-control select2">
                                                             <option selected value="T">Ambos</option>
                                                             <option value="F">Facturado </option>
                                                             <option value="G">Cuentas Emitidas</option>
@@ -152,8 +131,8 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>
-                                                                            <input type="radio" id="Tipo" value="1" name="Tipo1"
-                                                                                   @if (tipoRango.Equals("1")) { @marca                      ; }>Fecha de Atencion
+                                                                            <input type="radio" id="TipoRango" value="1" name="TipoRango"
+                                                                                   @if (ViewBag.tipoRango == 1) { @marca   ; }>Fecha de Atencion
                                                                         </label>
                                                                     </div>
 
@@ -161,8 +140,8 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>
-                                                                            <input type="radio" id="Tipo" value="2" name="Tipo1"
-                                                                                   @if (tipoRango.Equals("2")) { @marca                      ; }>Fecha de Pago
+                                                                            <input type="radio" id="TipoRango" value="2" name="TipoRango"
+                                                                                   @if (ViewBag.tipoRango == 2) { @marca   ; }>Fecha de Pago
                                                                         </label>
                                                                     </div>
 
@@ -177,7 +156,7 @@
                                                                         <label>Fecha Liquidacion</label>
                                                                     </div>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" name="FechaLiquidacion" id="FechaLiquidacion" maxlength="10" class="form-control  datepicker" value="@ViewBag.Liquidacion" />
+                                                                        <input type="text" name="fechaLiqui" id="FechaLiquidacion" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaLiqui" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -193,7 +172,7 @@
                                                                         <label>Fecha Inicio</label>
                                                                     </div>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" name="FechaInicio" id="fechai" maxlength="10" class="form-control  datepicker" value="@VfechaIC" />
+                                                                        <input type="text" name="fechaI" id="fechai" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaI" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -204,7 +183,7 @@
                                                                         <label>Fecha Final</label>
                                                                     </div>
                                                                     <div class="col-md-9">
-                                                                        <input type="text" name="FechaFinal" id="FechaFinal" maxlength="10" class="form-control  datepicker" value="@VfechaFC" />
+                                                                        <input type="text" name="fechaf" id="FechaFinal" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaF" />
                                                                     </div>
                                                                 </div>
 
@@ -215,7 +194,7 @@
 
 
                                                         <div class="col-md-offset-5">
-                                                            <button class="btn btn-primary" type="submit" id="buscar">Buscar</button>
+                                                            <button class="btn btn-primary" type="submit" id="buscar" style="background-color:#13D003; border:#13D003;margin-top: 11px;">Buscar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -252,22 +231,17 @@
                                         <table id="example3" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Sede</th>
-                                                    <th>Historia</th>
                                                     <th>CodCuenta</th>
                                                     <th>Item</th>
-                                                    <th>CodDocSerie</th>
-                                                    <th>Serie Documento</th>
-                                                    <th>Nro Documento</th>
+                                                    <th>Documento</th>
                                                     <th>Precio</th>
                                                     <th>Porcentaje</th>
                                                     <th>Total</th>
-                                                    <th>Fecha Atencion</th>
-                                                    <th>Fecha Emision</th>
+                                                    <th>Fecha Aten.</th>
+                                                    <th>Fecha Fac.</th>
                                                     <th>Tarifa</th>
                                                     <th>Cantidad</th>
                                                     <th>Turno</th>
-                                                    <th>Estado</th>
                                                     <th><input type="checkbox" name="todos" id="todos" onclick="marcarTodos()" /></th>
                                                 </tr>
                                             </thead>
@@ -279,23 +253,26 @@
                                                     cambiaTotal = item.Total.ToString().Replace(",", ".");
 
                                                     <tr>
-                                                        <td>@Html.DisplayFor(modelItem => item.CodSede)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.Historia)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.CodCuenta)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.ItemCita)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.CodDocSerie)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.SerieDocumento)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.NumDoc)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.SerieDocumento) - @Html.DisplayFor(modelItem => item.NumDoc)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.CTprecio)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.PorcentajeTarifa) %</td>
                                                         <td>@Html.DisplayFor(modelItem => item.Total)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.FechaAtencion)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.FechaEmision)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.Tarifa)</td>
+                                                        @foreach (var ta in tarifario)
+                                                        {
+                                                            if (ta.CodTar == item.Tarifa)
+                                                            {
+                                                                <td>
+                                                                    @ta.DescTar
+                                                                </td>
+                                                            }
+                                                        }
                                                         <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
                                                         <td>@Html.DisplayFor(modelItem => item.Turno)</td>
-                                                        <td>@Html.DisplayFor(modelItem => item.EstadoD)</td>
-                                                        <td><input title="[Seleccionar Todo]" type="checkbox" name="arreglo" id="marca" onclick="sumar()" value="@item.CodSede|@item.Historia|@item.CodCuenta|@item.ItemCita|@item.CodDocSerie|@item.SerieDocumento|@item.NumDoc|@item.CTprecio|@item.PorcentajeTarifa|@cambiaTotal|@item.FechaAtencion|@item.Tarifa|@item.Cantidad|@item.Turno|@item.EstadoD|@item.CodMed|@item.CodServ|@item.SecFactCaja|@item.FechaEmision|@cuenta" /></td>
+                                                        <td><input title="[Seleccionar Todo]" class="dd" type="checkbox" name="arreglo" id="marca" onclick="sumar()" value="@item.CodSede|@item.Historia|@item.CodCuenta|@item.ItemCita|@item.CodDocSerie|@item.SerieDocumento|@item.NumDoc|@item.CTprecio|@item.PorcentajeTarifa|@cambiaTotal|@item.FechaAtencion|@item.Tarifa|@item.Cantidad|@item.Turno|@item.EstadoD|@item.CodMed|@item.CodServ|@item.SecFactCaja|@item.FechaEmision|@cuenta|@item.primario" /></td>
 
                                                     </tr>
                                                     cuenta++;
@@ -313,7 +290,7 @@
                                             <div class="col-md-3" style="float:right">
                                                 <div class="form-group">
                                                     <div class="col-md-5">
-                                                        <label>Total</label>
+                                                        <label>Total Pagar (T)</label>
                                                     </div>
                                                     <div class="col-md-7">
                                                         <input type="text" name="IdDemoT" id="IdDemoT" class="form-control" readonly />
@@ -350,7 +327,7 @@
                                             <div class="col-md-3" style="float:right">
                                                 <div class="form-group">
                                                     <div class="col-md-5">
-                                                        <label>Total a Pagar</label>
+                                                        <label>Total Pagar (%)</label>
                                                     </div>
                                                     <div class="col-md-7">
                                                         <input type="text" name="Total" id="SumaTotal" class="form-control" readonly />
@@ -365,20 +342,24 @@
                                     </div>
 
 
-                                    <input type="hidden" name="TipoLiquidacion" value="@ViewBag.tipoLiquitacion" />
+                                    <input type="hidden" name="TipoLiquidacion" value="1" />
                                     <input type="hidden" name="CodServ" value="@ViewBag.servicio" />
                                     <input type="hidden" name="CodMed" value="@ViewBag.medico" />
-                                    <input type="hidden" name="TipoPago" value="@ViewBag.TipoPago" />
-                                    <input type="hidden" name="TipoDoc" value="@ViewBag.TipoCuenta" />
+                                    <input type="hidden" name="TipoPago" value="@ViewBag.tipoPago" />
+                                    <input type="hidden" name="TipoDoc" value="@ViewBag.tipoCuenta" />
                                     <input type="hidden" name="TipoRango" value="@ViewBag.tipoRango" />
-                                    <input type="hidden" name="comoPagar" value="@ViewBag.comoPagar" />
+                                    <input type="hidden" name="comoPagar" value="@ViewBag.TipoLiqui" />
 
-                                    <input type="hidden" name="FechaLiquidacion" value="@ViewBag.Liquidacion" />
-                                    <input type="hidden" name="FechaInicio" value="@ViewBag.fechaIC" />
-                                    <input type="hidden" name="FechaFinal" value="@ViewBag.fechaFC" />
+                                    <input type="hidden" name="PagaTurno" id="PagoxTurno" value="0" />
+                                    <input type="hidden" name="Cantidad" id="Cant" value="0" />
+                                    <input type="hidden" name="PagoTotalTurno" id="TotalTurno" value="0" />
+
+                                    <input type="hidden" name="FechaLiquidacion" value="@ViewBag.fechaLiqui" />
+                                    <input type="hidden" name="FechaInicio" value="@ViewBag.fechaI" />
+                                    <input type="hidden" name="FechaFinal" value="@ViewBag.fechaF" />
 
                                     <div class="col-md-offset-5">
-                                        <button type="button" class="btn btn-danger" id="registrar" name="Registrar">Registrar</button>
+                                        <button type="submit" class="btn btn-danger" id="registrar" name="Registrar" style="background-color:#13D003; border:#13D003;">Registrar</button>
                                         <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
 
                                     </div>
@@ -386,7 +367,7 @@
                                 }
 
                             </div>
-                                                       
+
 
                         </form>
 
@@ -411,14 +392,12 @@
 
 <script>
 
-    var demo = "123456789";
-    var inicio = "0";
-
     function marcarTodos() {
         if (document.formulario1.todos.checked) {
             for (i = 0; i < document.formulario1.length; i++) {
                 if ((document.formulario1.elements[i].id) == "marca") {
                     document.formulario1.elements[i].checked = true;
+                    $("#registrar").attr("disabled", false);
                 }
             }
         }
@@ -426,42 +405,27 @@
             for (i = 0; i < document.formulario1.length; i++) {
                 if ((document.formulario1.elements[i].id) == "marca") {
                     document.formulario1.elements[i].checked = false;
+                    $("#registrar").attr("disabled", true);
 
                 }
             }
-            $.get('@Url.Action("ObtenerGroupBy", "HonorariosCabeceraDetalle")', { fechaEmision: demo, fechaAtencion: demo, turno: demo, id: demo, tipoRango: demo, inicio: inicio, final: demo, codMed: demo },
-                 function (data) {
-
-                     $.each(data, function (index, value) {
-                         $("#IdDemo").val(value.Cantidad);
-                         $("#IdDemo1").val(value.Precio);
-                         totalTurno = value.Cantidad * value.Precio;
-                         $("#IdDemoT").val(totalTurno);
-                     });
-                 });
         }
+
         sumar();
     }
 
 
     function sumar() {
-
-
-
+        debugger;
         obj = document.formulario1['arreglo'];
-
         totalChecks = obj.length;
-        var codMed = "@ViewBag.medico";
-        var tipoRango = "@tipoRango";
-        var totalTurno = 0;
-
 
 
         if (totalChecks == null) {
             var dame = $("#marca").val();
             valor = dame.split('|');
             $("#SumaTotal").val(parseFloat(valor[9]));
-
+            $("#registrar").attr("disabled", true);
         }
         else {
             var totalSumado = 0.00;
@@ -470,108 +434,34 @@
                 if (obj[i].checked == true) {
                     valor = obj[i].value.split('|');
                     totalSumado = totalSumado + parseFloat(valor[9]);
-
-                    $.get('@Url.Action("ObtenerGroupBy", "HonorariosCabeceraDetalle")', { fechaEmision: valor[18], fechaAtencion: valor[10], turno: valor[13], id: valor[19], tipoRango: tipoRango, inicio: indice, final: totalChecks, codMed: codMed },
-                 function (data) {
-
-                     $.each(data, function (index, value) {
-                         $("#IdDemo").val(value.Cantidad);
-                         $("#IdDemo1").val(value.Precio);
-                         totalTurno = value.Cantidad * value.Precio;
-                         $("#IdDemoT").val(totalTurno);
-                     });
-                 });
-
-
                     indice++;
-
                 }
             }
-            $("#SumaTotal").val(totalSumado);
+            $("#SumaTotal").val(totalSumado.toFixed(2));
+            var sumar = $("#SumaTotal").val();
+            if (sumar == '0.00') {
+                $("#registrar").attr("disabled", true);
+            }
+            else {
+                $("#registrar").attr("disabled", false);
+            }
+           
         }
     }
 
     $(document).on("ready", function () {
+        $("#registrar").attr("disabled", true);
+        $("#SumaTotal").val('0.00');
+        var medico = "@ViewBag.medico";
+        var TipoLiqui = "@ViewBag.TipoLiqui";
 
-        var medicoSelect = "@ViewBag.medico";
-
-        $("#turno").fadeOut();
-
-
-        var comoPago = "@ViewBag.comoPagar";
-
-        if (comoPago == "1") {
-            $("#porTurno").fadeOut();
+        if (TipoLiqui == 1) {
             $("#porPorcentaje").fadeIn();
-        } else {
-            $("#porPorcentaje").fadeOut();
-            $("#porTurno").fadeIn();
+            $("#porTurno").fadeOut();
         }
 
-
-        var TipoLiq = "@ViewBag.tipoLiquitacion";
-        if (TipoLiq == "2") {
-
-            $("#servicio").change(function () {
-            $("#medico").find('option').remove();
-            $("<option>").val("NULL").text("").appendTo("#medico");
-            $("#select2-medico-container").empty();
-            $("#medico").find('option').empty();
-            $("#medico").attr("disabled", false);
-            var value = $(this).val();
-            $.get('@Url.Action("ListarMedicos", "HonorariosCabeceraDetalle")', { codserv: value },
-                function (data) {
-                    var select = $('#medico');
-                    select.find('option').remove();
-                    $('<option>').val("T").text("TODOS").appendTo(select);
-                    $.each(data, function (index, value) {
-                        $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
-                        if (value.CodMed == medicoSelect) {
-                            $('#medico option[value="' + value.CodMed + '"]').attr('selected', true);
-                            $("#select2-medico-container").text(value.NomMed);
-                        }
-                    });
-                });
-            });
-
-
-        }
-
-        var codserV = "@ViewBag.servicio";
-        var codMedV = "@ViewBag.medico";
-        var R = "@ViewBag.Rcheck";
-
-        if (codserV != "" || codMedV != "") {
-
-            if (R == "1") {
-                $("#porcentaje").fadeIn();
-                $("#turno").fadeOut();
-
-                $("#Rservicio").attr('checked', true);
-                $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
-                function (response) {
-
-                    var select = $("#servicio");
-                    select.find('option').remove();
-                    $('<option>').val("NULL").text("[NO SELECCIONADO]").appendTo(select);
-                    $.each(response, function (index, value) {
-                        $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select).enabled;
-
-                    });
-                    $('#servicio option[value=@ViewBag.servicio]').prop('selected', 'selected').change();
-                });
-
-
-
-            } else if (R == "2") {
-                $("#porcentaje").fadeIn();
-                $("#turno").fadeIn();
-
-                $("#Rmedico").attr('checked', true);
-                //servicio
-                $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
+        $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
               function (response) {
-
                   var select = $("#servicio");
                   select.find('option').remove();
                   $('<option>').val("NULL").text("[NO SELECCIONADO]").appendTo(select);
@@ -579,165 +469,10 @@
                       $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select).enabled;
                   });
                   $('#servicio option[value=@ViewBag.servicio]').prop('selected', 'selected').change();
-
               });
 
-
-
-                $.get('@Url.Action("ListarMedicos", "HonorariosCabeceraDetalle")', { codserv: codserV },
-                  function (data) {
-                      var select = $('#medico');
-                      select.find('option').remove();
-                      $('<option>').val("T").text("TODOS").appendTo(select);
-                      $.each(data, function (index, value) {
-                          $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
-                      });
-                      $('#medico option[value=@ViewBag.medico]').prop('selected', 'selected').change();
-                  });
-
-
-            }
-
-        } else {
-            $("#Rservicio").attr('checked', true);
-
-            $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
-              function (response) {
-                  $("#medico").attr("disabled", true);
-
-                  var select = $("#servicio");
-                  select.find('option').remove();
-                  $('<option>').val("NULL").text("[NO SELECCIONADO]").appendTo(select);
-                  $.each(response, function (index, value) {
-                      $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select).enabled;
-                  });
-                  $('#servicio option[value=NULL]').prop('selected', 'selected').change();
-              });
-
-
-        }
-
-        $('#Tipop option[value=@ViewBag.TipoPago]').prop('selected', 'selected').change();
-        $('#Tipoc option[value=@ViewBag.TipoCuenta]').prop('selected', 'selected').change();
-
-        $("#buscar").click(function () {
-            var servicio = $("#servicio").val();
-            var medico = $("#medico").val();
-            var fechai = $("#fechai").val();
-            var fechaf = $("#FechaFinal").val();
-            var tipop = $("#Tipop").val();
-            var tipoC = $("#Tipoc").val();
-            var cadena = fechai + "," + fechaf + "," + tipop + "," + tipoC + "," + medico + "," + servicio;
-            $("#cadena").val(cadena);
-
-
-            //cadena 2
-            var servico = $("#servicio").val();
-            var medico = $("#medico").val();
-            var Rservicio = $("#servicio").val();
-            var Rmedico = $("#medico").val();
-            var fecha = $("#FechaLiquidacion").val();
-            var fechaInicio = $("#FechaInicio").val();
-            var FechaFinal = $("#FechaFinal").val();
-            var Rcheck = $('input:radio[name=tipoLiquitacion]:checked').val();
-
-            var cadena2 = fecha + "," + fechaInicio + "," + FechaFinal + "," + medico + "," + servicio + "," + Rcheck;
-
-
-            $("#cadena2").val(cadena2);
-
-
-        });
-
-        var global2 = false;
-        var global = false;
-
-        $("#Rmedico").click(function () {
-            $("#porcentaje").fadeIn();
-            $("#turno").fadeIn();
-
-            $("#Rservicio").attr('checked', false);
-            $("#medico").attr("disabled", false);
-            if ($(this).is(':checked')) {
-                global = true;
-                $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
-                    function (response) {
-                        var select = $("#servicio");
-                        select.find('option').remove();
-                        $('<option>').val("NULL").text("SELECCIONE UN SERVICIO").appendTo(select);
-                        $("#select2-servicio-container").text("SELECCIONE UN SERVICIO");
-                        $.each(response, function (index, value) {
-                            $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select).enabled;
-                        });
-                    });
-            }
-
-        });
-
-        $("#servicio").change(function () {
-
-            if (global == true) {
-                $("#medico").find('option').remove();
-                $("<option>").val("NULL").text("").appendTo("#medico");
-                -$("#medico").find('option').empty();
-                $("#medico").attr("disabled", false);
-                var value = $(this).val();
-                $.get('@Url.Action("ListarMedicos", "HonorariosCabeceraDetalle")', { codserv: value },
-                    function (data) {
-                        var select = $('#medico');
-                        select.find('option').remove();
-                        $('<option>').val("T").text("TODOS").appendTo(select);
-                        $.each(data, function (index, value) {
-                            $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
-                        });
-                    });
-
-            }
-            if (global == false && global2 == true) {
-
-                $("#medico").attr("disabled", true);
-
-            }
-        });
-
-        $("#Rservicio").click(function () {
-            global = false;
-            global2 = true;
-
-            $("#porcentaje").fadeIn();
-            $("#turno").fadeOut();
-
-            $("#select2-medico-container").empty();
-            $("#Rmedico").attr('checked', false);
-
-            if ($(this).is(':checked')) {
-                if (global2 == true) {
-                    $("#medico").attr("disabled", true);
-                    $("#medico").text("")
-
-                }
-                $.get('@Url.Action("ListaServicios","HonorariosCabeceraDetalle")', {},
-                 function (response) {
-                     var select = $("#servicio");
-                     select.find('option').remove();
-                     $('<option>').val("NULL").text("[NO SELECCIONADO]").appendTo(select);
-                     $("#select2-servicio-container").text("SELECCIONE UN SERVICIO");
-                     $.each(response, function (index, value) {
-                         $('<option>').val(value.CodServ).text(value.NomServ).appendTo(select).enabled;
-                     });
-
-                 });
-
-            }
-        });
-
-        $('#medico option[value=@ViewBag.medico]').prop('selected', 'selected').change();
-
-
-        $("#registrar").click(function () {
-            $("#formulario1").submit();
-        });
-
+        $('#Tipoc option[value=@ViewBag.tipoCuenta]').prop('selected', 'selected').change();
+        $('#Tipop option[value=@ViewBag.tipoPago]').prop('selected', 'selected').change();
 
     });
 

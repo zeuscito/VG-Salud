@@ -9,25 +9,25 @@
 
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Citas</h1>
+        <h1>Atenciones Programadas</h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i>Cita</a></li>
-            <li class="active">Listado de Cita</li>
+            <li><a href="#"><i class="fa fa-users"></i>Atenciones Programadas</a></li>
+            <li class="active"></li>
         </ol>
     </section>
     <section class="content">
         <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title">Listado de cita</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+
+            <div class="box-body">
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%">
+                        <a href="~/Master/Index"><center style="margin-left: 12px;"><i class="fa fa-home" style="font-size:25px; color:#13D003;margin-left: 10px;"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
+                    </div>
                 </div>
-            </div>
+                <fieldset>
+                    <legend style="margin-left:2%; width:96%">Filtro</legend>
 
-            
-
-                <div class="box-body">
                     <div class="col-md-12">
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -80,8 +80,8 @@
                             <br /><br /><br /><br />
                             <div class="col-md-12">
                                 <center>
-                                    <input type="submit" class="btn btn-danger" value="Buscar" />
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    <input type="submit" style="background-color:#13D003; border:#13D003" value="Buscar" class="btn btn-danger" />
+                                    @*<a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>*@
                                 </center>
                             </div>
 
@@ -89,157 +89,162 @@
                         </form>
                     </div>
 
-                    @if (evaluaTipo!=null) {
-                        
+                </fieldset>
+
+                @if (evaluaTipo != null)
+                {
+
+                    <fieldset>
+                        <legend style="margin-left:2%; width:96%">Lista</legend>
                         <div class="col-md-12">
-
-                            <br />
-                                <div class="box-header">
-                                    <h3 class="box-title">Lista de Citas</h3>
-                                </div>
-                                <div class="box-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Codigo Cuenta</th>
-                                                <th>Paciente</th>
-                                                <th>Especialidad</th>
-                                                <th>Servicio</th>
-                                                <th>Medico</th>
-                                                <th>Fecha de Cita</th>
-                                                <th>Hora Inicio</th>
-                                                <th>Hora Termino</th>
-                                                <th>Turno</th>
-                                                <th>Precio</th>
-                                                <th>IGV</th>
-                                                <th>Total</th>
-                                                <th>Estado</th>
-                                                <th><i class="fa fa-trash"></i></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Codigo Cuenta</th>
+                                            <th>Paciente</th>
+                                            <th>Especialidad</th>
+                                            <th>Servicio</th>
+                                            <th>Medico</th>
+                                            <th>Fecha de Cita</th>
+                                            <th>Hora Inicio</th>
+                                            <th>Hora Termino</th>
+                                            <th>Turno</th>
+                                            <th>Precio</th>
+                                            <th>IGV</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th><i class="fa fa-trash"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
 
-                                            @foreach (var item in evaluaTipo)
+                                        @foreach (var item in evaluaTipo)
                                             {
 
-                                                <tr>
-                                                    <td>@Html.DisplayFor(modelItem => item.CodCita)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.NombrePaciente)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.NomEspec)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.fechaCitas)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.horaI)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.horaF)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.Turno)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.precio)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.igv)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.total)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.Estado)</td>
-                                                    <td>
-                                                        <div class="tools">
-                                                            @{
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCita)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NombrePaciente)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomEspec)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.fechaCitas)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.horaI)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.horaF)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Turno)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.precio)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.igv)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                                <td>
+                                                    <div class="tools">
+                                                        @{
 
                                                                 var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarCita.cshtml");
                                                                 if (abc1 != null)
                                                                 {
                                                                     if (item.Estado == "G")
                                                                     {
-                                                                        <text>
-                                                                            <button type="button" class="btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash"></i></button>
-
-                                                                            <div class="modal fade" id="myModal" role="dialog">
-                                                                                <div class="modal-dialog">
-
-                                                                                    <form action="~/Citas/CancelarUnaCita" method="post">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                                <h4 class="modal-title">Eliminar Cita</h4>
-                                                                                            </div>
-                                                                                            <div class="modal-body">
-
-                                                                                                <div class="col-md-12">
-                                                                                                    <div class="col-md-3">
-                                                                                                        <label>Observacion</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-9">
-                                                                                                        <textarea class="form-control" name="Obser" style="width:100%" id="comment" required></textarea>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                                <input type="hidden" value="@item.CodCue" name="CodCue" />
-                                                                                                <input type="hidden" value="@item.CodCita" name="CodCita" />
-                                                                                                <input type="hidden" value="@item.precio" name="precio" />
-                                                                                                <input type="hidden" value="@item.igv" name="igv" />
-                                                                                                <input type="hidden" value="@item.total" name="total" />
-                                                                                                <input type="hidden" value="@ViewBag.especialidad" name="CodEspec" />
-                                                                                                <input type="hidden" value="@ViewBag.servicio" name="CodServ" />
-                                                                                                <input type="hidden" value="@ViewBag.fecha" name="fechaCita" />
-                                                                                                <input type="hidden" value="@ViewBag.turno" name="Turno" />
-
-                                                                                            </div>
-                                                                                            <br /><br /><br /><br /><br /><br />
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="submit" class="btn btn-danger">Cancelar Cita</button>
-                                                                                                <button type="button" class="btn btn-group" data-dismiss="modal">Cerrar</button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </form>
-
-                                                                                </div>
-                                                                            </div>
-
-
-                                                                        </text>
+                                                                     <button type="button" class="btn-info cancelar" data-toggle="modal" data-target="#myModal" CodCue="@item.CodCue" CodCita="@item.CodCita" precio="@item.precio" igv="@item.igv" total="@item.total" CodEspec="@ViewBag.especialidad" CodServ="@ViewBag.servicio" fechaCita="@ViewBag.fecha" Turno="@ViewBag.turno"><i class="fa fa-trash"></i></button>
                                                                     }
                                                                 }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                                }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
 
                                                             }
-                                                            
-                                                            
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            }
 
-                                        </tbody>
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <form action="~/Citas/CancelarUnaCita" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Eliminar Cita</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-md-12">
+                                        <div class="col-md-3">
+                                            <label>Observacion</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <textarea class="form-control" name="Obser" style="width:100%" id="comment" required></textarea>
+                                        </div>
+                                    </div>
 
-                                    </table>
+                                </div>
+                                <br /><br /><br /><br /><br /><br />
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Cancelar Cita</button>
+                                    <button type="button" class="btn btn-group" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
 
-                    }
-                    
-             </div>
+                            <input type="hidden" name="CodCue" id="CodCue" />
+                            <input type="hidden" name="CodCita" id="CodCita" />
+                            <input type="hidden" name="precio" id="precio"/>
+                            <input type="hidden" name="igv" id="igv"/>
+                            <input type="hidden" name="total" id="total"/>
+                            <input type="hidden" name="CodEspec" id="CodEspec" />
+                            <input type="hidden" name="CodServ" id="CodServ"/>
+                            <input type="hidden" name="fechaCita" id="fechaCita" />
+                            <input type="hidden" name="Turno" id="Turno" />
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
 </div>
-
-
 <script>
-
-
     $(document).ready(function () {
-
-
-
-
-
 
         var espee = "@ViewBag.especialidad";
         var servi = "@ViewBag.servicio";
 
 
+        $(".cancelar").on("click", function () {
+            var CodCue = this.attributes.CodCue.value;
+            var CodCita = this.attributes.CodCita.value;
+            var precio = this.attributes.precio.value;
+            var igv = this.attributes.igv.value;
+            var total = this.attributes.total.value;
+            var CodEspec = this.attributes.CodEspec.value;
+            var CodServ = this.attributes.CodServ.value;
+            var fechaCita = this.attributes.fechaCita.value;
+            var Turno = this.attributes.Turno.value; 
+            
+            $("#CodCue").val(CodCue);
+            $("#CodCita").val(CodCita);
+            $("#precio").val(precio);
+            $("#igv").val(igv);
+            $("#total").val(total);
+            $("#CodEspec").val(CodEspec);
+            $("#CodServ").val(CodServ);
+            $("#fechaCita").val(fechaCita);
+            $("#Turno").val(Turno);
+            $("#comment").val("");
+        
+        });
+
+
+
 
         $('#especialidad option[value=@ViewBag.especialidad]').prop('selected', 'selected').change();
-
-
-
-
 
         var d = new Date();
 
@@ -251,13 +256,9 @@
         } else {
             $("#fecha").val(total);
         }
-
         $('#select2-especialidad-container').empty();
         $('#especialidad > option[text="--Seleccione una especialidad--"]').attr('selected', true);
         $('#especialidad option:contains("--Seleccione una especialidad--")').prop('selected', true);
-
-
-
 
         $('#especialidad').change(function (event) {
             var sports = $("select#especialidad").val();

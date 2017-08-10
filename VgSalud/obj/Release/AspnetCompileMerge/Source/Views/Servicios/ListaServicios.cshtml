@@ -28,34 +28,40 @@
                         if (abc1 != null)
                         {
                             <div class="box-header">
-                                <a href="~/Servicios/RegistrarServicios" class="btn btn-danger">Registrar nuevo Servicio &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="RegistrarServicios"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
                             </div>
                             <br />
                         }
 
                     }
-                    
-                    <div class="box-header">
-                        <h3 class="box-title">Lista de Servicios</h3>
-                    </div>
-                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Servicio</th>
-                                    <th>Especialidad</th>
-                                    <th>Empresa</th>
-                                    <th>Sede</th>
-                                    <th>Estado</th>
-                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+
+                    <fieldset>
+                        <legend style="margin-left: 50px;">Lista</legend>
+                        <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="headTabla">
+                                        <th>Codigo</th>
+                                        <th>Servicio</th>
+                                        <th>Especialidad</th>
+                                        <th>Empresa</th>
+                                        <th>Sede</th>
+                                        <th>Estado</th>
+                                        <th><i class="fa fa-edit"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
-                                @foreach (var item in Model)
-                                {
+                                    @foreach (var item in Model)
+                                    {
 
                                     <tr>
                                         <td>@Html.DisplayFor(modelItem => item.CodServ)</td>
@@ -68,23 +74,25 @@
                                             <div class="tools">
                                                 @{
 
-                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarServicios.cshtml");
-                                                    if (abc2 != null)
-                                                    {
-                                                        <a title="Editar" href="ModificarServicios/@item.CodServ"><i class="fa fa-edit"></i></a>
-                                                    }
+                                                        var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarServicios.cshtml");
+                                                        if (abc2 != null)
+                                                        {
+                                                <a title="Editar" href="ModificarServicios/@item.CodServ"><i class="fa fa-edit"></i></a>
+                                                        }
 
                                                 }
                                             </div>
                                         </td>
                                     </tr>
 
-                                }
+                                                        }
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
-                    </div>
+                            </table>
+                        </div>
+                    </fieldset>
+
                 </div>
             </div>
         </div>
@@ -94,3 +102,23 @@
 </div>
 
 
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarServicios");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>

@@ -1,113 +1,88 @@
-﻿@{
+﻿ @{
     Layout = null;
 }
+
 <!DOCTYPE html>
+
 <html>
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     <link href="~/css/style.css" rel="stylesheet" />
-
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <script src="~/js/toastr.js"></script>
     <script language="javascript" type="text/javascript">
      javascript:window.history.forward(1);
     </script>
+<script>
+    $(document).ready(function () {
 
-    <style>
+        if ("@ViewBag.validation" != "") {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": false,
+                "showDuration": 100,
+                "hideDuration": 5000,
+                "timeOut": 5000,
+                "extendedTimeOut": 500,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
-        /* -------------------- Page Styles (not required) */
-div { margin: 20px; }
+            toastr.error("@ViewBag.validation", "Aviso del Sistema", 'Aviso del Sistema', { timeOut: 500 })
+        }
 
-/* -------------------- Select Box Styles: bavotasan.com Method (with special adaptations by ericrasch.com) */
-/* -------------------- Source: http://bavotasan.com/2011/style-select-box-using-only-css/ */
-.styled-select {
-   background: url('../../Content/img/15xvbd5.png') no-repeat 96% 0;
-   height: 29px;
-   overflow: hidden;
-   width: 240px;
-}
+    });
+</script>
 
-.styled-select select {
-   background: transparent;
-   border: none;
-   font-size: 14px;
-   height: 29px;
-   padding: 5px; /* If you add too much padding here, the options won't show in IE */
-   width: 268px;
-}
-
-.styled-select.slate {
-   background: url('../../Content/img/15xvbd5.png') no-repeat right center;
-   height: 34px;
-   width: 240px;
-}
-
-.styled-select.slate select {
-   border: 1px solid #ccc;
-   font-size: 16px;
-   height: 34px;
-   width: 268px;
-}
-
-
-
-/* -------------------- Select Box Styles: stackoverflow.com Method */
-/* -------------------- Source: http://stackoverflow.com/a/5809186 */
-select#soflow, select#soflow-color {
-   -webkit-appearance: button;
-   -webkit-border-radius: 2px;
-   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-   -webkit-padding-end: 20px;
-   -webkit-padding-start: 2px;
-   -webkit-user-select: none;
-   background-image: url('../../Content/img/15xvbd5.png'), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
-   background-position: 97% center;
-   background-repeat: no-repeat;
-   border: 1px solid #AAA;
-   color: #555;
-   font-size: inherit;
-   margin: 0;
-   overflow: hidden;
-   padding: 5px 10px;
-   text-overflow: ellipsis;
-   white-space: nowrap;
-   width: 100%;
-}
-
-select#soflow-color {
-   color: #fff;
-   background-image: url('../../Content/img/15xvbd5.png'), -webkit-linear-gradient(#779126, #779126 40%, #779126);
-   background-color: #779126;
-   -webkit-border-radius: 20px;
-   -moz-border-radius: 20px;
-   border-radius: 20px;
-   padding-left: 15px;
-}
-
-    </style>
 
 </head>
 
+
+
+
 <body>
-    <div class="login-page">
-
-        <div class="form">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                <input type="text" id="alias" name="AliasUsu" placeholder="Usuario" />
-                <input type="password" name="Pass" placeholder="Contraseña" />
-                <select id="soflow" name="CodSede">
-                    
-                </select>
-                <br /><br />
-                <button type="submit">Ingresar</button>
-                <h1>@ViewBag.demo</h1>
-            }
-
-        </div>
+    <div class="login-wrap">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="login-html">
+                <img src="~/Content/img/logo.png" width="100%" />
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab"></label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+                <div class="login-form">
+                    <div class="sign-in-htm">
+                        <div class="group">
+                            <label for="user" class="label">Usuario</label>
+                            <input id="alias" name="AliasUsu" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Contraseña</label>
+                            <input id="Pass" name="Pass" type="password" class="input" data-type="password">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Sede</label>
+                            <select id="soflow" class="select" name="CodSede"></select>
+                        </div>
+                        <div class="group" style="margin-top:10%">
+                            <input type="submit" class="button" value="Ingresar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
-    <script src="~/js/index.js"></script>
     <script>
 
     function ready(initCascadeDropDownForfirstSelect) {
@@ -167,4 +142,5 @@ select#soflow-color {
 
 
 </body>
+
 </html>

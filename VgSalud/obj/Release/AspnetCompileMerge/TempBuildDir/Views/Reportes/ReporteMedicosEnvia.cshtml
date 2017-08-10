@@ -1,0 +1,240 @@
+﻿@model IEnumerable<VgSalud.Models.E_Reporte>
+
+@{
+    ViewBag.Title = "ReporteMedicosEnvia";
+    var ListaServicio = (SelectList)ViewBag.ListaServicio;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Facturacion por Sede</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de facturacion por sede</li>
+        </ol>
+    </section>
+    <section class="content">
+
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+            
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+
+
+                <div class="box-body">
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center style="margin-left: 20px;"><i class="fa fa-home" style="font-size:25px; color:#13D003;"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+                    </div>
+
+                    <fieldset>
+                        <legend style="margin-left: 45px; width:96%">Filtro</legend>
+                        <div class="col-md-12">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+
+                                <div class="col-md-3" style="padding-left:0px;padding-right:0px">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Fecha inicio</label>
+                                                <input type="text" class="form-control datepicker" name="FechaI" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Fecha final</label>
+                                                <input type="text" class="form-control datepicker" name="FechaF" value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3" style="padding-left:0px;padding-right:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Servicio</label>
+                                            @Html.DropDownList("servicio", ListaServicio, "[TODOS]", new { @class = "form-control select2", @id = "servicio", @multiple = "multiple" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3" style="padding-left:0px;padding-right:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Medico:</label>
+                                            <select class="form-control select2" multiple="multiple" id="medico" name="medico"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3" style="padding-left:0px;padding-right:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Tarifas:</label>
+                                            <select class="form-control select2" id="producto" name="producto" multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12" style="margin-top:2%">
+                                <div class="form-group">
+                                    <center>
+                                        <input type="submit" value="Consultar" style="background-color:#13D003;border:0" class="btn btn-danger" />
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                    @if (Model != null)
+                    {
+                        <div class="col-md-12">
+                            <div class="col-md-10">
+                                <div class="col-md-8">
+                                    @if (ViewBag.servicioV != null && ViewBag.medicoV != null && ViewBag.productoV != null)
+                                    {
+                                        <h4 style="color:coral">Reporte de:</h4><h5>@ViewBag.servicioV &nbsp / &nbsp @ViewBag.medicoV &nbsp/&nbsp @ViewBag.productoV</h5>
+                                    }
+                                </div>
+                                <div class="col-md-4">
+                                    <h4 style="color:coral">Rango de Fecha:</h4><h5>@ViewBag.FechaI &nbsp / &nbsp @ViewBag.FechaF </h5>
+                                </div>
+                               
+                            </div>
+                            <div class="col-md-2">
+                                <h4 style="padding:2%">
+                                    Exportar:
+                                    <a href="~/Reportes/GeneraMedicosEnvia/?id=PDF&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio&medico=@ViewBag.medico&producto=@ViewBag.producto" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                                    <a href="~/Reportes/GeneraMedicosEnvia/?id=Word&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio&medico=@ViewBag.medico&producto=@ViewBag.producto" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                                    <a href="~/Reportes/GeneraMedicosEnvia/?id=Excel&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio&medico=@ViewBag.medico&producto=@ViewBag.producto" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                                </h4>
+                            </div>
+
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <fieldset>
+                                <legend style="margin-left: 29px;width:96%">Lista</legend>
+                                <div class="box-body">
+
+                                    <div class="col-md-12" style="padding-right: 40px;">
+                                        <table id="example3" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr class="headTabla">
+                                                    <th>Servicio</th>
+                                                    <th>Medico</th>
+                                                    <th>Tarifa</th>
+                                                    <th>Catidad</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.NomMed)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.cantidad)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.total)</td>
+
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                               
+
+
+                                </div>
+                            </fieldset>
+                        </div>
+                  
+
+
+
+
+
+
+                    }
+
+
+                </div>
+
+            }
+        </div>
+        <br />
+
+
+
+    </section>
+  
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("servicio").val("").text("");
+
+        $('#servicio').change(function (event) {
+            var CodServ = "" + $("select#servicio").val();
+            $.get('@Url.Action("ObtenerMedico", "Reportes")', {
+                CodServ: CodServ
+            }, function (response) {
+
+                $('#select2-medico-container').empty();
+                var select = $('#medico');
+                select.find('option').remove();
+                $('<option>').val("T").text("[TODOS]").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodMed).text(value.NomMed).appendTo(select);
+                });
+            });
+        });
+
+        $('#servicio').change(function (event) {
+            var CodServ = "" + $("select#servicio").val();
+            $.get('@Url.Action("ObtenerTarifa", "Reportes")', {
+                CodServ: CodServ
+            }, function (response) {
+
+                $('#select2-medico-container').empty();
+                var select = $('#producto');
+                select.find('option').remove();
+                $('<option>').val("T").text("[TODOS]").appendTo(select);
+                $.each(response, function (index, value) {
+                    $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                });
+            });
+        });
+
+    });
+
+</script>

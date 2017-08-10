@@ -19,7 +19,7 @@ namespace VgSalud.Models
 
         [Required(ErrorMessage = "Tipo Tarifa requerido")]
         public string CodTipTar { get; set; }
-        [Required(ErrorMessage = "STipo Tarifa requerido")]
+        //[Required(ErrorMessage = "STipo Tarifa requerido")]
         public string CodSTipTar { get; set; }
         [Required(ErrorMessage = "Moneda requerido")]
         public string CodTipMon { get; set; }

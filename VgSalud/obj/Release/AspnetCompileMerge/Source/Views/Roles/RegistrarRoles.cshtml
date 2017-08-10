@@ -78,8 +78,8 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <center>
-                                    <button type="submit" value="Modificar" class="btn btn-danger">Registrar</button>
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    <button type="submit" value="Modificar" class="btn btn-danger" id="grabar" >Registrar</button>
+                                    <a value="Cancelar" href="./ListarRoles" class="btn btn-info">Cancelar</a>
                                 </center>
                             </div>
                         </div>
@@ -92,4 +92,27 @@
     </section>
 </div>
 
+<script>
 
+    $(document).ready(function () {
+        var ALT = 18; var G = 71; var presiono1 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 && (e.keyCode == G)) {
+                $("#grabar").click();
+            }
+        });
+
+
+        $(document).keyup(function (e) {
+
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
+
+    });
+</script>

@@ -1,105 +1,153 @@
-﻿@if (Session["UserID"] == null) { 
-<html>
-<head>
-<meta http-equiv="Refresh" content="0;url=../Login">
-</head>
-<body style="display:none">
-    @RenderBody()
-</body>
+﻿
+
+@{
+    var EntregaCarnetPac = new VgSalud.Controllers.CarnetController().usp_get_Entrega_Carnet();
+}
+
+@if (Session["UserID"] == null || Session["usuario"] == null || Session["nombre"] == null ||
+                                                                    Session["apellido"] == null || Session["nomSede"] == null || Session["codSede"] == null)
+{
+    <html>
+    <head>
+        <meta http-equiv="Refresh" content="0;url=../Login">
+    </head>
+    <body style="display:none">
+        @RenderBody()
+    </body>
 </html>
 
-} else {
+}
+else
+{
     string CodUsu = Session["UserID"].ToString();
     VgSalud.Controllers.AccesoController ma = new VgSalud.Controllers.AccesoController();
     var listaModulo = ma.ListaModulos(CodUsu).ToList();
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - VG Salud</title>
-    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
-    <link href="~/Content/Styles/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/Styles/ionicons.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Content/Styles/daterangepicker-bs3.css">
-    <link rel="stylesheet" href="~/Content/Styles/all.css">
-    <link rel="stylesheet" href="~/Content/Styles/bootstrap-colorpicker.min.css">
-    <link rel="stylesheet" href="~/Content/Styles/bootstrap-timepicker.css">
-    <link rel="stylesheet" href="~/Content/Styles/all.css">
-    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Content/Styles/AdminLTE.min.css">
-    <link rel="stylesheet" href="~/Content/Styles/_all-skins.min.css">
-    <link rel="stylesheet" href="dist/css/modal.css">
-    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
-    <link rel="stylesheet" href="~/plugins/datepicker/datepicker3.css">
-    <link rel="stylesheet" href="~/plugins/iCheck/all.css">
-    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-    <link rel="stylesheet" href="~/plugins/timepicker/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.min.css">
-    <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.print.css" media="print">
-    <!--<script src="~/Content/Scripts/html5shiv.min.js"></script>-->
-    <!--<script src="~/Content/Scripts/respond.min.js"></script>-->
-    @*<script src="~/Content/Scripts/jQuery-2.2.0.min.js"></script>*@
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Content/Scripts/bootstrap.min.js"></script>
-    <script src="~/Content/Scripts/select2.full.min.js"></script>
-    <script src="~/Content/Scripts/jquery.inputmask.js"></script>
-    <script src="~/plugins/input-mask/jquery.inputmask.js"></script>
-    <script src="~/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-    <script src="~/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-    <script src="~/Content/Scripts/moment.min.js"></script>
-    <script src="~/Content/Scripts/daterangepicker.js"></script>
-    <!--<script src="~/Content/Scripts/bootstrap-colorpicker.min.js"></script>-->
-    <!--<script src="~/Content/Scripts/bootstrap-timepicker.min.js"></script>-->
-    <!--<script src="~/Content/Scripts/jquery.slimscroll.min.js"></script>-->
-    <!--<script src="~/Content/Scripts/icheck.min.js"></script>-->
-    <script src="~/Content/Scripts/fastclick.js"></script>
-    <script src="~/Content/Scripts/app.min.js"></script>
-    <script src="~/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-    <script src="~/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Content/Scripts/demo.js"></script>
-    <!--<script src="~/Content/Scripts/ckeditor.js"></script>-->
-    <!--<script src="~/Content/Scripts/bootstrap3-wysihtml5.all.min.js"></script>-->
-    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/plugins/datatables/dataTables.bootstrap.min.js"></script>
-    <script src="~/Content/Scripts/moment.min.js"></script>
-    <script src="~/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <script src="~/Content/Scripts/ckeditor.js"></script>
-    <script src="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-    <script src="~/Content/Scripts/html5shiv.min.js"></script>
-    <script src="~/Content/Scripts/respond.min.js"></script>
-    <script src="~/plugins/fullcalendar/fullcalendar.min.js"></script>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - VG Salud</title>
+        <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+        <link href="~/Content/Styles/font-awesome.min.css" rel="stylesheet" />
+        <link href="~/Content/Styles/ionicons.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/Content/Styles/daterangepicker-bs3.css">
+        <link rel="stylesheet" href="~/plugins/iCheck/all.css" />
+        <link rel="stylesheet" href="~/Content/Styles/bootstrap-colorpicker.min.css">
+        <link rel="stylesheet" href="~/Content/Styles/bootstrap-timepicker.css">
+        <link href="~/plugins/select2/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/Content/Styles/AdminLTE.min.css">
+        <link rel="stylesheet" href="~/Content/Styles/_all-skins.min.css">
+        <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" href="~/plugins/datepicker/datepicker3.css">
+        <link rel="stylesheet" href="~/plugins/iCheck/all.css">
+        <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+        <link rel="stylesheet" href="~/plugins/timepicker/bootstrap-timepicker.min.css">
+        <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.min.css">
+        <link rel="stylesheet" href="~/plugins/fullcalendar/fullcalendar.print.css" media="print">
+        <link href="~/plugins/jQueryUI/jquery.autocomplete.css" rel="stylesheet" />
+        <link href="~/plugins/morris/morris.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/Content/Styles/jquery-ui.css" />
+        <link href="~/css/toastr.css" rel="stylesheet" />
+        <script src="~/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="~/Scripts/jquery-1.10.2.js"></script>
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/plugins/morris/raphael-min.js"></script>
+        <script src="~/plugins/morris/morris.min.js"></script>
+        <script src="~/plugins/chartjs/Chart.js"></script>
+        <script src="~/Content/Scripts/bootstrap.min.js"></script>
+        <script src="~/Content/Scripts/select2.full.min.js"></script>
+        <script src="~/Content/Scripts/jquery.inputmask.js"></script>
+        <script src="~/plugins/input-mask/jquery.inputmask.js"></script>
+        <script src="~/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+        <script src="~/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+        <script src="~/Content/Scripts/moment.min.js"></script>
+        <script src="~/Content/Scripts/daterangepicker.js"></script>
+        <script src="~/Content/Scripts/fastclick.js"></script>
+        <script src="~/Content/Scripts/app.min.js"></script>
+        <script src="~/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+        <script src="~/plugins/iCheck/icheck.min.js"></script>
+        <script src="~/Content/Scripts/demo.js"></script>
+        <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/plugins/datatables/dataTables.bootstrap.min.js"></script>
+        <script src="~/Content/Scripts/moment.min.js"></script>
+        <script src="~/plugins/datepicker/bootstrap-datepicker.js"></script>
+        <script src="~/Content/Scripts/ckeditor.js"></script>
+        <script src="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+        <script src="~/Content/Scripts/html5shiv.min.js"></script>
+        <script src="~/Content/Scripts/respond.min.js"></script>
+        <script src="~/plugins/fullcalendar/fullcalendar.min.js"></script>
+        <script src="~/plugins/jQueryUI/jquery.autocomplete.js"></script>
+        <script src="~/plugins/jQueryUI/jquery.autocomplete.min.js"></script>
+        <script src="~/plugins/jQueryUI/jquery.autocomplete.pack.js"></script>
+        <script src="~/js/toastr.js"></script>
+        <script>
 
-    
-    <script>
-    $(function () {
-        var mensaje = '@ViewBag.mensaje';
-        if (mensaje != "")
-            alert(mensaje);
-    });
-    </script>
+            $(function () {
+                var mensaje = "@ViewBag.mensaje";
+                if (mensaje != "") {
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "rtl": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": 300,
+                        "hideDuration": 1000000000000,
+                        "timeOut": 50000000000,
+                        "extendedTimeOut": 10000000000,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    if (mensaje == "1") {
+                        toastr.success("Se Registro Correctamente", "Aviso del sistema", "Aviso del sistema", { timeOut: 500000 })
+                    }
+                    else if (mensaje == "2") {
+                        toastr.success("Se Actualizo Con Exito", "Aviso del sistema", "Aviso del sistema", { timeOut: 500000 })
+                    }
+                    else if (mensaje == "3") {
+                        toastr.error("Error Datos No Validos", "Aviso del Sistema", 'Aviso del Sistema', { timeOut: 500000 })
+                    }
+                    else {
+                        toastr.error(mensaje, "Aviso del Sistema", 'Aviso del Sistema', { timeOut: 500000 })
+                    }
+                }
+                var success = "@ViewBag.success";
+                if (success != "") {
+                    toastr.success("@ViewBag.success", "Aviso del sistema", "Aviso del sistema", { timeOut: 500000 })
+                }
 
-    <script type="text/javascript">
 
-        $(document).ready(function () {
 
-            $('input').attr('autocomplete', 'off');
+            });
 
-        });
+        </script>
 
-    </script>
+        <script type="text/javascript">
 
-</head>
+            $(document).ready(function () {
 
-<body class="skin-blue sidebar-mini sidebar-collapse">
-    <div class="wrapper">
+                $('input').attr('autocomplete', 'off');
 
-        
+            });
+
+        </script>
+
+    </head>
+
+    <body class="skin-blue sidebar-mini sidebar-collapse">
+        <div class="wrapper">
+
+
             <header class="main-header">
-                <a href="../../index2.html" class="logo">
-                    <span class="logo-mini"><b>VG</b>SALUD</span>
+                <a class="logo">
+                    <span class="logo-mini"><b>VG</b></span>
                     <span class="logo-lg"><b>VG SALUD </b></span>
                 </a>
                 <nav class="navbar navbar-static-top" role="navigation">
@@ -119,13 +167,13 @@
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <img src="~/Content/Images/avatar.png" class="user-image" alt="User Image">
-                                    <span class="hidden-xs">HOLA @Html.Label(Session["nombre"].ToString())!</span>
+                                    <span class="hidden-xs">HOLA @Html.Label(Session["usuario"].ToString())!</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
                                         <img src="~/Content/Images/avatar.png" class="img-circle" alt="User Image">
                                         <p>
-                                            @Html.Label(Session["nombre"].ToString())
+                                            @Html.Label(Session["nombre"].ToString() + " " + Session["apellido"].ToString())
                                         </p>
                                     </li>
                                     <li class="user-footer">
@@ -133,10 +181,61 @@
                                             <a href="~/Login/CerrarSesion" class="btn btn-default btn-flat">Cerrar Sesión</a>
                                         </div>
                                     </li>
+
                                 </ul>
                             </li>
                             <li class="dropdown user user-menu">
-                                <a href="~/Login/CerrarSesion" style="background-color:transparent" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                                <a href="~/Login/CerrarSesion" style="background-color:transparent;border: 0px;" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                            </li>
+                            <li class="dropdown messages-menu popup">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label " style="background-color:black">@EntregaCarnetPac.Count().ToString()</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" placeholder="Dni" name="Dni" id="dni" style="text-align:center" />
+
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input type="date" class="form-control" placeholder="Fecha" name="fecha" id="fecha" style="text-align:center" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" id="buscar" class="btn btn-success">Buscar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <!-- inner menu: contains the actual data -->
+                                        <ul class="menu" id="menu">
+                                            @*@foreach (var item in EntregaCarnetPac)
+                                                {
+                                                    <li>
+                                                        <a href="#">
+                                                            <h4>
+                                                                @item.NombrePaciente  -  @item.NroDoc
+
+                                                            </h4>
+                                                            <button type="button" style='margin-left:25px;' class='btn btn-success llamar' historia="@item.Historia" carnet="@item.NroCarnet">llamar</button>
+                                                            <button type='button' style='margin-left:25px;' class='btn btn-primary' historia="@item.Historia" carnet="@item.NroCarnet">Imprimir</button>
+                                                            <button type='button' class="Si @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>Si</button>
+                                                            <button type='button' class="No @item.NroCarnet" carnet="@item.NroCarnet" style='margin-left:25px;' style="display:none" class='btn btn-primary'>No</button>
+                                                        </a>
+                                                    </li>
+                                                }*@
+
+                                        </ul>
+                                    </li>
+                                    <li class="footer">
+
+                                        <a href="#">Entrega de Carnet</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
@@ -152,86 +251,263 @@
                             <img src="~/Content/Images/avatar.png" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
-                            <p>@Html.Label(Session["nombre"].ToString())</p>
+                            <p>
+                                @Html.Label(Session["nombre"].ToString())<br />
+                                @Html.Label(Session["apellido"].ToString())
+                            </p>
                         </div>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="header">Menu de Navegación</li>
                         <li class="treeview">
                             <a href="~/Master/Index">
-                                <i class="fa fa-home" style="font-size: 20px;"></i> <span style="padding-left: 5%; font-size: 16px;">INICIO</span>
+                                <i class="fa fa-home" style="font-size: 20px;"></i> <span style="padding-left: 5%; font-size: 13px;">INICIO</span>
                             </a>
                         </li>
 
-                        @foreach (var i in listaModulo) { 
+                        @foreach (var i in listaModulo)
+                        {
 
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="@i.icono" style="font-size: 20px;"></i>
-                                <span style="padding-left: 5%; font-size: 16px;">@i.NombreModulo</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu" style="margin-top:-7px">
-                                @{
-                                    var listaCategoria = ma.ListaCategorias(i.idModulo, CodUsu).ToList();
-                                 }
-                                @foreach (var e in listaCategoria)
-                                {
-                                    var listaFormularioMenu = ma.ListaFormularioMenu(e.idCat, CodUsu).ToList();
-                                    if (listaFormularioMenu.Count() > 1)
-                                    {
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-circle-o"></i> @e.NomCat
-                                                <span class="pull-right-container">
-                                                    <i class="fa fa-angle-left pull-right"></i>
-                                                </span>
-                                            </a>
-                                            <ul class="treeview-menu menu-open" style="display: block;">
-                                                @foreach (var o in listaFormularioMenu) { 
-                                                <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @o.AliasForm</a></li>
-                                                }                                               
-                                            </ul>
-                                        </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="@i.icono" style="font-size: 20px;"></i>
+                                    <span style="padding-left: 5%; font-size: 13px;">@i.NombreModulo</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu" style="margin-top:-7px">
+                                    @{
+                                        var listaCategoria = ma.ListaCategorias(i.idModulo, CodUsu).ToList();
                                     }
-                                    else
+                                    @foreach (var e in listaCategoria)
                                     {
-                                        foreach (var o in listaFormularioMenu)
+                                        var listaFormularioMenu = ma.ListaFormularioMenu(e.idCat, CodUsu).ToList();
+                                        if (listaFormularioMenu.Count() > 1)
                                         {
-                                            <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @e.NomCat</a></li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-circle-o"></i> @e.NomCat
+                                                    <span class="pull-right-container">
+                                                        <i class="fa fa-angle-left pull-right"></i>
+                                                    </span>
+                                                </a>
+                                                <ul class="treeview-menu menu-open" style="display: block;">
+                                                    @foreach (var o in listaFormularioMenu)
+                                                    {
+                                                        <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @o.AliasForm</a></li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            foreach (var o in listaFormularioMenu)
+                                            {
+                                                <li><a href="~/@o.nomForm"><i class="fa fa-circle-o"></i> @e.NomCat</a></li>
+                                            }
+
                                         }
 
+
                                     }
 
 
-                                }
 
-                                
+                                </ul>
+                            </li>
+                                        }
 
-                            </ul>
-                        </li>
-                     }
-
-
-                        
                     </ul>
+
                 </section>
             </aside>
 
 
-        @RenderBody()
+            @RenderBody()
 
-    </div>
-    <footer style="background-color:#3c8dbc">
-        <div align="center">
-            <p style="margin:0;color:#fff">Copyright © - Todos los derechos recervados a VG ALL SERVICE EIRL</p>
-            <p style="margin:0;color:#fff">LIMA PERÚ - 2017</p>
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Create the tabs -->
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                    <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                    <li class="active"><a href="#control-sidebar-settings-tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-gears"></i></a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- Home tab content -->
+                    <div class="tab-pane" id="control-sidebar-home-tab">
+                        <h3 class="control-sidebar-heading">Recent Activity</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                        <p>Will be 23 on April 24th</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="menu-icon fa fa-user bg-yellow"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+                                        <p>New phone +1(800)555-1234</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+                                        <p>nora@example.com</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+                                        <p>Execution time 5 seconds</p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.control-sidebar-menu -->
+                        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4 class="control-sidebar-subheading">
+                                        Custom Template Design
+                                        <span class="label label-danger pull-right">70%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4 class="control-sidebar-subheading">
+                                        Update Resume
+                                        <span class="label label-success pull-right">95%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4 class="control-sidebar-subheading">
+                                        Laravel Integration
+                                        <span class="label label-warning pull-right">50%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    <h4 class="control-sidebar-subheading">
+                                        Back End Framework
+                                        <span class="label label-primary pull-right">68%</span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.control-sidebar-menu -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <!-- Settings tab content -->
+                    <div class="tab-pane" id="control-sidebar-settings-tab">
+                        <form method="post">
+                            <h3 class="control-sidebar-heading">General Settings</h3>
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Report panel usage
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Some information about this general settings option
+                                </p>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Allow mail redirect
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Other sets of options are available
+                                </p>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Expose author name in posts
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Allow the user to show his name in blog posts
+                                </p>
+                            </div>
+                            <!-- /.form-group -->
+                            <h3 class="control-sidebar-heading">Chat Settings</h3>
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Show me as online
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Turn off notifications
+                                    <input type="checkbox" class="pull-right">
+                                </label>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Delete chat history
+                                    <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                                </label>
+                            </div>
+                            <!-- /.form-group -->
+                        </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+
+
+
+
+
+
+            </aside>
+            <!-- /.control-sidebar -->
+            <!-- Add the sidebar's background. This div must be placed
+            immediately after the control sidebar -->
+            <div class="control-sidebar-bg"></div>
+
         </div>
-    </footer>
+        <footer style="background-color:#3c8dbc">
+            <div align="center">
+                <p style="margin:0;color:#fff">Copyright © - Todos los derechos reservados a VG ALL SERVICE EIRL</p>
+                <p style="margin:0;color:#fff">LIMA PERÚ - 2017</p>
+            </div>
+        </footer>
 
 
 
-    <script>
+        <script>
             $(function () {
                 $(".select2").select2();
                 $("#datemask").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
@@ -279,7 +555,6 @@
                     }
                 );
 
-                //Date picker
                 $('.datepicker').datepicker({
                     autoclose: true,
                     format: 'dd/mm/yyyy'
@@ -296,45 +571,83 @@
 
 
             });
-    </script>
+        </script>
 
-    <script>
-        $(function () {
-            $(".textarea1").wysihtml5();
-            $(".textarea").wysihtml5();
-        });
+        <script>
+            $(function () {
+                $(".textarea1").wysihtml5();
+                $(".textarea").wysihtml5();
+            });
 
-      $(function () {
-        $("#example1").DataTable();
-        $('#example2').DataTable({
-          "paging": true,
-          "lengthChange": false,
-          "searching": false,
-          "ordering": true,
-          "info": true,
-          "autoWidth": false
-        });
-        $('#example3').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
-        $('#example4').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": false,
-            "autoWidth": false
-        });
-      });
-    </script>
+            $(function () {
+                $("#example1").DataTable();
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+                });
+                $('#example3').DataTable({
+                    "paging": false,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+                });
+                $('#example4').DataTable({
+                    "paging": false,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": false,
+                    "autoWidth": false
+                });
+                $('#example5').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": false,
+                    "info": true,
+                    "autoWidth": true
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $(".Si").fadeOut();
+                $(".No").fadeOut();
+
+                $.get('@Url.Action("Get_Entregar_Carnet_Inicio", "Carnet")', { },
+                    function (response) {
+                        $("#menu").empty();
+                        $("#menu").append(response);
+                        $(".Si").fadeOut();
+                        $(".No").fadeOut();
+                    });
+
+                $("#buscar").on("click", function () {
+                    var dni = $("#dni").val();
+                    var fecha = $("#fecha").val();
+                    $.get('@Url.Action("GetFiltroDniFecha", "Carnet")', { dni: dni, fecha: fecha },
+                        function (response) {
+                            $("#menu").empty();
+                            $(".popup").addClass("open");
+                            $("#menu").append(response);
+                            $(".Si").fadeOut();
+                            $(".No").fadeOut();
+                        });
+                });
+
+            });
 
 
+        </script>
 
-</body>
+
+    </body>
 </html>
-}
+}                          

@@ -6,6 +6,23 @@
     VgSalud.Controllers.AccesoController ma = new VgSalud.Controllers.AccesoController();
     var listaModulo = ma.ListaModulos(CodUsu).ToList();
 }
+
+@{
+    var day = 0;
+    var licencia = new VgSalud.Controllers.DatosGeneralesController();
+    var fecha_licencia = licencia.Getdatogenerales();
+    var utilitarios = new VgSalud.Controllers.UtilitarioController().ListadoHoraServidor().FirstOrDefault();
+    DateTime fecha = utilitarios.HoraServidor;
+    DateTime fecha_establecida = Convert.ToDateTime(fecha_licencia.fecha);
+    var meses = fecha_establecida.Month - fecha.Month;
+    if (fecha_establecida.Year == fecha.Year && (fecha_establecida.Month == fecha.Month || meses == 1)) {
+        TimeSpan ts = fecha_establecida - fecha;
+        day = ts.Days; 
+    }
+
+
+}
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Inicio</h1>
@@ -79,3 +96,33 @@
         </div>
     </section>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        if(@day>1 && @day <=10) 
+        {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "rtl": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": 300,
+                "hideDuration": 1000,
+                "timeOut": 5000,
+                "extendedTimeOut": 10000,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"}
+            toastr.error("La Fecha de Licencia Expira en @day Dias", "Aviso del sistema", "Aviso del sistema", { timeOut: 10000 })
+        }
+    });
+
+
+</script>

@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using VgSalud.Models;
+using System.Text;
 
 namespace VgSalud.Controllers
 {
@@ -378,6 +379,75 @@ namespace VgSalud.Controllers
             }
         }
 
+        public List<E_Tarifario> ListadoTarifaAtencionVarias(string codEspec)
+        {
+            string sede = Session["codSede"].ToString();
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListaTipoTarifaAtencionVarias", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    cmd.Parameters.AddWithValue("@CodEspec", codEspec);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Tarifario Etip = new E_Tarifario();
+
+                            Etip.CodTar = dr.GetString(0);
+                            Etip.DescTar = dr.GetString(1);
+                            Etip.EstTar = dr.GetBoolean(2);
+                            Etip.CodEspec = dr.GetString(3);
+                            Etip.procedencia = dr.GetInt32(4);
+                            Lista.Add(Etip);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        public List<E_Tarifario> ListadoTarifVentaRapida(string CodServ, string sede, int historia, string descripcion)
+        {
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListaTipoTarifaVentaRapida", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    cmd.Parameters.AddWithValue("@CodServ", CodServ);
+                    cmd.Parameters.AddWithValue("@historia", historia);
+                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Tarifario Etip = new E_Tarifario();
+
+                            Etip.CodTar = dr.GetString(0);
+                            Etip.DescTar = dr.GetString(1);
+                            Etip.EstTar = dr.GetBoolean(2);
+                            Etip.CodEspec = dr.GetString(3);
+                            Etip.procedencia = dr.GetInt32(4);
+                            Etip.ModPrecio = dr.GetBoolean(5);
+                            Etip.Precio = dr.GetDecimal(6);
+                            Lista.Add(Etip);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
         public ActionResult AsignarTipoTarifa()
         {
             string sede = Session["codSede"].ToString();
@@ -492,7 +562,7 @@ namespace VgSalud.Controllers
         }
 
 
-        public ActionResult RegistroAtenciones(int historia, string cuenta = null, string cadena = null)
+        public ActionResult RegistroAtenciones(int historia, string cuenta = null, string cadena = null, int? flag = null)
         {
 
             string sede = Session["codSede"].ToString();
@@ -573,10 +643,12 @@ namespace VgSalud.Controllers
             }
             else
             {
-
-                if (Session["atenciones"] != null)
+                if (flag != 1 || flag == null)
                 {
-                    Session.Remove("atenciones");
+                    if (Session["atenciones"] != null)
+                    {
+                        Session.Remove("atenciones");
+                    }
                 }
                 ViewBag.especialidad = "";
                 ViewBag.servicio = "";
@@ -753,7 +825,7 @@ namespace VgSalud.Controllers
                             //E_AtencionVarias_Detalle aaa = ListadoAtencionDetalle().Where(x => x.CodCue == Resu).LastOrDefault();
 
 
-                            
+
 
 
                             int item = 0;
@@ -909,319 +981,6 @@ namespace VgSalud.Controllers
 
 
 
-
-        //[HttpPost]
-        //public ActionResult RegistroAtenciones(E_AtencionVarias ate)
-        //{
-        //    int codigoCuenta = 0;
-        //    int Resu = 0;
-        //    int codAtencion = 0;
-
-        //    CuentasController cu = new CuentasController();
-        //    PacientesController pa = new PacientesController();
-        //    UtilitarioController ut = new UtilitarioController();
-
-        //    string sede = Session["codSede"].ToString();
-
-        //    var util = new DatosGeneralesController().listadatogenerales().FirstOrDefault();
-
-        //    ViewBag.esp = es.ListadoEspecialidades();
-        //    ViewBag.ser = ser.ListadoServicios();
-        //    ViewBag.tar = tar.ListadoTarifa();
-        //    ViewBag.med = med.ListadoMedico();
-        //    ViewBag.tiptar = (new TipoTarifaController()).ListadoTipoTarifa();
-
-
-        //    ViewBag.listadoEspecialidad = new SelectList(es.ListadoEspecialidades().Where(x => x.EstEspec == true && x.CodSed == sede), "CodEspec", "NomEspec", ate.CodEspec);
-        //    ViewBag.listadoServicios = new SelectList(ser.ListadoServicios().Where(x => x.EstServ == true && x.CodSede == sede), "CodServ", "NomServ", ate.CodServ);
-        //    ViewBag.listadoMedico = new SelectList(med.ListadoMedico().Where(x => x.EstMed == true && x.CodSede == sede), "CodMed", "NomMed", ate.CodMed);
-        //    ViewBag.listadoTarifa = new SelectList(tar.ListadoTarifa().Where(x => x.EstTar == true && x.CodSede == sede), "CodTar", "DescTar", ate.CodTar);
-        //    ViewBag.listadoCuenta = new SelectList(ListadoCuentas().Where(x => x.EstCue == true && x.CodSede == sede && x.EstGene == "G" && x.Historia == ate.Historia), "CodCue", "nomCompleto", ate.CodCue);
-
-        //    var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-        //    int hora = horaSis.HoraServidor.Hour;
-        //    string turno = "";
-        //    if (hora < 13)
-        //    {
-        //        turno = "MAÑANA";
-        //    }
-        //    else
-        //    {
-        //        turno = "TARDE";
-        //    }
-
-        //    string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
-        //    string usuario = Session["UserID"].ToString();
-        //    E_Pacientes reg = pa.ListadoPacientes().Find(x => x.Historia == ate.Historia);
-
-        //    string nomPac = reg.NomPac + " " + reg.ApePat + " " + reg.ApeMat;
-        //    E_CuentaDetalle cueD = cu.ListadoCuentaDetalle(ate.CodCue).LastOrDefault();
-
-        //    decimal nuevoPrecio = 0;
-        //    decimal nuevoIgv = 0;
-        //    decimal nuevoTotal = 0;
-
-        //    if (ate.CodCue != 0)
-        //    {
-        //        E_Cuentas cuentas = cu.BuscaCuenta(ate.CodCue).FirstOrDefault();
-        //        nuevoPrecio = ate.SubTotal + cuentas.STotCue;
-        //        nuevoIgv = ate.Igv + cuentas.IgvCue;
-        //        nuevoTotal = ate.Total + cuentas.TotCue;
-        //    }
-
-        //    using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
-        //    {
-        //        con.Open();
-        //        SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
-        //        using (SqlCommand da = new SqlCommand("Usp_MtoCuentas", con, tr))
-        //        {
-        //            try
-        //            {
-        //                da.CommandType = CommandType.StoredProcedure;
-
-        //                if (ate.CodCue == 0)
-        //                {
-        //                    da.Parameters.AddWithValue("@CodCue", "");
-
-        //                }
-        //                else
-        //                {
-        //                    da.Parameters.AddWithValue("@CodCue", ate.CodCue);
-        //                }
-        //                da.Parameters.AddWithValue("@CodSede", sede);
-        //                da.Parameters.AddWithValue("@Historia", ate.Historia);
-        //                da.Parameters.AddWithValue("@CodcatPac", reg.CodCatPac);
-        //                if (ate.CodCue == 0)
-        //                {
-        //                    da.Parameters.AddWithValue("@STotCue", ate.SubTotal);
-        //                    da.Parameters.AddWithValue("@IgvCue", ate.Igv);
-        //                    da.Parameters.AddWithValue("@TotCue", ate.Total);
-        //                }
-        //                else
-        //                {
-        //                    da.Parameters.AddWithValue("@STotCue", nuevoPrecio);
-        //                    da.Parameters.AddWithValue("@IgvCue", nuevoIgv);
-        //                    da.Parameters.AddWithValue("@TotCue", nuevoTotal);
-        //                }
-        //                da.Parameters.AddWithValue("@FecCrea", "");
-        //                da.Parameters.AddWithValue("@FecAnul", "");
-        //                da.Parameters.AddWithValue("@EstCue", "1");
-        //                da.Parameters.AddWithValue("@EstGene", "");
-        //                da.Parameters.AddWithValue("@SecFact", "");
-        //                da.Parameters.AddWithValue("@Usuario", usuario);
-        //                da.Parameters.AddWithValue("@UsuarioAnula", "");
-        //                da.Parameters.AddWithValue("@Crea", Crea);
-        //                da.Parameters.AddWithValue("@Modifica", Crea);
-        //                da.Parameters.AddWithValue("@Elimina", "");
-        //                if (ate.CodCue == 0)
-        //                {
-        //                    da.Parameters.AddWithValue("@Evento", "1");
-        //                }
-        //                else
-        //                {
-        //                    da.Parameters.AddWithValue("@Evento", "2");
-        //                }
-        //                Resu = (int)da.ExecuteScalar();
-
-
-
-        //                codigoCuenta = Resu;
-
-        //                using (SqlCommand cmd = new SqlCommand("Usp_MtoAtencionVarias", con, tr))
-        //                {
-        //                    cmd.CommandType = CommandType.StoredProcedure;
-
-        //                    cmd.Parameters.AddWithValue("@CodAten", "");
-        //                    cmd.Parameters.AddWithValue("@CodSede", sede);
-        //                    cmd.Parameters.AddWithValue("@CodCue", Resu);
-        //                    cmd.Parameters.AddWithValue("@Historia", ate.Historia);
-        //                    cmd.Parameters.AddWithValue("@NomPac", nomPac.ToString());
-        //                    cmd.Parameters.AddWithValue("@CodCatPac", reg.CodCatPac);
-        //                    cmd.Parameters.AddWithValue("@SubTotal", ate.SubTotal);
-        //                    cmd.Parameters.AddWithValue("@Igv", ate.Igv);
-        //                    cmd.Parameters.AddWithValue("@Total", ate.Total);
-        //                    cmd.Parameters.AddWithValue("@Fecha", "");
-        //                    cmd.Parameters.AddWithValue("@CodUsu", usuario);
-        //                    cmd.Parameters.AddWithValue("@EstConsul", "");
-        //                    cmd.Parameters.AddWithValue("@Crea", Crea);
-        //                    cmd.Parameters.AddWithValue("@Modifica", "");
-        //                    cmd.Parameters.AddWithValue("@Elimina", "");
-        //                    cmd.Parameters.AddWithValue("@Evento", "1");
-
-
-        //                    codAtencion = (int)cmd.ExecuteScalar();
-
-        //                    int CodigoCuentaResult = Resu;
-        //                }
-
-        //                tr.Commit();
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                tr.Rollback();
-        //                return RedirectPermanent("../Master");
-        //            }
-        //            finally
-        //            {
-        //                con.Close();
-        //            }
-        //        }
-
-        //        con.Open();
-        //        try
-        //        {
-
-        //            E_AtencionVarias_Detalle aaa = ListadoAtencionDetalleNew(Resu).LastOrDefault();
-
-
-        //            int item = 0;
-        //            int item2 = 0;
-
-        //            foreach (E_AtencionVarias_Detalle it in (List<E_AtencionVarias_Detalle>)Session["atenciones"])
-        //            {
-
-
-        //                if (aaa == null)
-        //                {
-        //                    if (item == 0)
-        //                    {
-        //                        item = 0 + 1;
-        //                    }
-        //                    else
-        //                    {
-        //                        item = item + 1;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    item = aaa.item + 1;
-        //                }
-
-        //                using (SqlCommand av = new SqlCommand("Usp_MtoAtencionVarias_Detalle ", con, tr))
-        //                {
-
-
-        //                    av.CommandType = CommandType.StoredProcedure;
-        //                    av.Parameters.AddWithValue("@CodAtenDet", "");
-        //                    av.Parameters.AddWithValue("@CodAten", codAtencion);
-        //                    av.Parameters.AddWithValue("@item", item);
-        //                    av.Parameters.AddWithValue("@CodSede", sede);
-        //                    av.Parameters.AddWithValue("@CodEspec", it.CodEspec);
-        //                    av.Parameters.AddWithValue("@CodServ", it.CodServ);
-        //                    av.Parameters.AddWithValue("@CodMed", it.CodMed);
-        //                    av.Parameters.AddWithValue("@CodTar", it.CodTar);
-        //                    av.Parameters.AddWithValue("@CodTipTar", it.CodTipTar);
-        //                    av.Parameters.AddWithValue("@CodSTipTar", it.CodSTipTar);
-        //                    av.Parameters.AddWithValue("@Cantida", it.Cantida);
-        //                    av.Parameters.AddWithValue("@SubTotal", it.SubTotal);
-        //                    av.Parameters.AddWithValue("@Igv", it.Igv);
-        //                    av.Parameters.AddWithValue("@Total", it.Total);
-        //                    av.Parameters.AddWithValue("@MedicoEnvia", it.MedicoEnvia);
-        //                    av.Parameters.AddWithValue("@EspeciEnvia", it.EspeciEnvia);
-        //                    av.Parameters.AddWithValue("@Turno", turno);
-        //                    av.Parameters.AddWithValue("@Estado", it.Estado);
-        //                    av.Parameters.AddWithValue("@CodUsu", it.CodUsu);
-        //                    av.Parameters.AddWithValue("@Crea", Crea);
-        //                    av.Parameters.AddWithValue("@Modifica", "");
-        //                    av.Parameters.AddWithValue("@Elimina", "");
-        //                    av.Parameters.AddWithValue("@Evento", "1");
-
-        //                    int codAtencionDetalle = (int)av.ExecuteScalar();
-
-
-
-
-        //                    if (cueD == null)
-        //                    {
-        //                        if (item2 == 0)
-        //                        {
-        //                            item2 = 0 + 1;
-        //                        }
-        //                        else
-        //                        {
-        //                            item2 = item2 + 1;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        item2 = cueD.Item + 1;
-        //                    }
-
-        //                    using (SqlCommand dd = new SqlCommand("Usp_MtoCuentasDetalle", con, tr))
-        //                    {
-
-        //                        E_Tarifario tari = tar.ListadoTarifa().Find(x => x.CodTar == it.CodTar);
-
-        //                        dd.CommandType = CommandType.StoredProcedure;
-        //                        dd.Parameters.AddWithValue("@Procedencia", 2);
-        //                        dd.Parameters.AddWithValue("@CodCue", Resu);
-        //                        dd.Parameters.AddWithValue("@Item", item2);
-        //                        dd.Parameters.AddWithValue("@Tarifa", tari.CodTar);
-        //                        dd.Parameters.AddWithValue("@CodProce", codAtencion);
-        //                        dd.Parameters.AddWithValue("@CodDetalleP", codAtencionDetalle);
-        //                        dd.Parameters.AddWithValue("@CodSede", sede);
-        //                        dd.Parameters.AddWithValue("@Cantidad", it.Cantida);
-        //                        dd.Parameters.AddWithValue("@precioUni", it.Precio / it.Cantida);
-        //                        dd.Parameters.AddWithValue("@precio", it.SubTotal);
-        //                        dd.Parameters.AddWithValue("@igv", it.Igv);
-        //                        dd.Parameters.AddWithValue("@total", it.Total);
-        //                        dd.Parameters.AddWithValue("@EstDet", "1");
-        //                        dd.Parameters.AddWithValue("@FechaAten", "");
-        //                        dd.Parameters.AddWithValue("@TurnoAten", "");
-        //                        dd.Parameters.AddWithValue("@RegMedico", it.CodMed);
-        //                        dd.Parameters.AddWithValue("@MedicoEnvia", it.MedicoEnvia);
-        //                        dd.Parameters.AddWithValue("@Crea", Crea);
-        //                        dd.Parameters.AddWithValue("@Modifica", "");
-        //                        dd.Parameters.AddWithValue("@Elimina", "");
-        //                        dd.Parameters.AddWithValue("@Evento", "1");
-        //                        if (cueD != null)
-        //                        {
-        //                            cueD.Item++;
-        //                        }
-        //                        dd.ExecuteNonQuery();
-
-
-
-        //                    }
-        //                }
-        //            }
-        //            tr.Commit();
-        //            if (util.GENERARCUENTAAUTO)
-        //            {
-        //                return RedirectPermanent("~/Caja/RegistrarCaja?id=" + Resu);
-        //            }
-        //            else
-        //            {
-        //                if (util.PREGXATENCIONNOPROGRAMADAS)
-        //                {
-        //                    ViewBag.activaAlerta = 1;
-        //                }
-        //                else
-        //                {
-        //                    return RedirectPermanent("~/Cuentas/VerificaCuenta/" + Resu);
-        //                }
-        //            }
-
-        //            ViewBag.historia = ate.Historia;
-        //            ViewBag.cuenta = Resu;
-
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            tr.Rollback();
-        //            return RedirectPermanent("../Master");
-        //        }
-        //        finally
-        //        {
-        //            con.Close();
-        //        }
-        //        Session.Remove("atenciones");
-
-
-        //        return View(ate);
-
-        //    }
-        //}
 
 
         [HttpPost]
@@ -1449,7 +1208,7 @@ namespace VgSalud.Controllers
 
             Session["atenciones"] = formularios;
 
-            return RedirectPermanent("../RegistroAtenciones/?historia=" + historia);
+            return RedirectPermanent("../RegistroAtenciones/?historia=" + historia + "&flag=1");
         }
 
 
@@ -1545,7 +1304,7 @@ namespace VgSalud.Controllers
         {
             string sede = Session["codSede"].ToString();
 
-            var evalua = (List<E_Tarifario>)ListadoTarifaAtencion().Where(x => x.CodEspec == CodEspec && x.EstTar == true).ToList();
+            var evalua = (List<E_Tarifario>)ListadoTarifaAtencionVarias(CodEspec).Where(x => x.EstTar == true).ToList();
             if (evalua.Count() != 0)
             {
                 return Json(evalua, JsonRequestBehavior.AllowGet);
@@ -1961,6 +1720,484 @@ namespace VgSalud.Controllers
             return RedirectPermanent("../ListadoAtencionesVariasDetalle/" + reg1.CodAten);
         }
 
+
+        public ActionResult ImprimirHistoriaClinica(int Historia, string CodEspec)
+        {
+
+            var Lista = ListarDatosHistoriaClinica(Historia).FirstOrDefault();
+
+            ViewBag.ListaEspec = ListarEspecialidadImprimirHistoria(CodEspec);
+
+            return View(Lista);
+        }
+
+
+        public List<E_Pacientes> ListarDatosHistoriaClinica(int Historia)
+        {
+            List<E_Pacientes> Lista = new List<E_Pacientes>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("UspListarDatosHistoriaClinica", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Historia", Historia);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            E_Pacientes p = new E_Pacientes();
+                            p.Historia = Convert.ToInt32(dr["Historia"]);
+                            p.nombCompleto = dr["NombrePaciente"].ToString();
+                            p.NonSex = dr["NomSexo"].ToString();
+                            p.NomEstCivil = dr["NomEstCivil"].ToString();
+                            p.LugarNac = dr["LugarNac"].ToString();
+                            p.FecNac = Convert.ToDateTime(dr["FecNac"].ToString());
+                            p.Edad = dr["Edad"].ToString();
+                            p.NomDist = dr["NomDist"].ToString();
+                            p.Direcc = dr["Direcc"].ToString();
+                            p.TelfFijo = dr["TelfFijo"].ToString();
+                            p.TelfCel = dr["TelfCel"].ToString();
+                            p.Email = dr["Email"].ToString();
+                            p.FecAfil = Convert.ToDateTime(dr["FecAfil"].ToString());
+                            p.Crea = dr["Crea"].ToString();
+
+                            //p.DescTar = dr["DescTar"] is DBNull ? string.Empty : dr["DescTar"].ToString();
+
+                            Lista.Add(p);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+
+        //Listamos la especialidad
+        public List<E_Pacientes> ListarEspecialidadImprimirHistoria(string CodEspec)
+        {
+            List<E_Pacientes> Lista = new List<E_Pacientes>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("UspListarEspecialidadImprimirHistoria", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodEspec", CodEspec);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            E_Pacientes p = new E_Pacientes();
+                            p.NomEspec = dr["NomEspec"].ToString();
+
+                            //p.DescTar = dr["DescTar"] is DBNull ? string.Empty : dr["DescTar"].ToString();
+
+                            Lista.Add(p);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CargaServicios(int historia)
+        {
+            string sede = Session["codSede"].ToString();
+            var listado = ser.ListadoServiciosVentaRapida(sede, historia).ToList();
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var a in listado)
+            {
+                sb.AppendLine("<tr>");
+                sb.AppendLine("<td>" + a.NomServ + "</td>");
+                sb.AppendLine("<td>" +
+                    "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + "' />" +
+                    "</td>");
+                sb.AppendLine("</tr>");
+            }
+            string result = "";
+            result = sb.ToString();
+
+            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult RegistroVentaRapida(string[] cabecera, string[] detalle)
+        {
+            var valorCabecera = cabecera[0].Split(',');
+            UtilitarioController ut = new UtilitarioController();
+            PacientesController pa = new PacientesController();
+            CajaController caja = new CajaController();
+            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            int hora = horaSis.HoraServidor.Hour;
+            string turno = "";
+            if (hora < 13)
+            {
+                turno = "MAÑANA";
+            }
+            else
+            {
+                turno = "TARDE";
+            }
+            string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+            string usuario = Session["UserID"].ToString();
+            var series = caja.ListadoUsuarioSerie(usuario).Find(x => x.Prioridad == true);
+            var serieDoc = series.Etiqueta.Split('-');
+            string sede = Session["codSede"].ToString();
+            E_Pacientes reg = pa.ListadoPacientes().Find(x => x.Historia == int.Parse(valorCabecera[0].ToString()));
+            string nomPac = reg.NomPac + " " + reg.ApePat + " " + reg.ApeMat;
+            decimal igvv;
+            decimal precio;
+            decimal subtotal = 0;
+            decimal totalG = 0;
+            DatosGeneralesController dat = new DatosGeneralesController();
+            TipoMonedaController mo = new TipoMonedaController();
+            E_Datos_Generales reg1 = dat.listadatogenerales().FirstOrDefault();
+            decimal igvDemo = reg1.igv;
+
+            precio = (decimal.Parse(valorCabecera[1].ToString()) / (1 + igvDemo));
+            igvv = precio * igvDemo;
+            subtotal = precio + igvv;
+
+            totalG = Decimal.Round(subtotal, 2);
+            E_DocumentoSerie correlativo = caja.ListadoCorrelativo(series.CodDocSerie).FirstOrDefault();
+            E_TipoMoneda evalua = mo.ListadoTipoMoneda1().Find(x => x.fechaParse == horaSis.HoraServidor.ToShortDateString() && x.CodTipMon == "TM002");
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
+            {
+                con.Open();
+                SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
+
+                using (SqlCommand da = new SqlCommand("Usp_MtoCuentas", con, tr))
+                {
+                    try
+                    {
+                        da.CommandType = CommandType.StoredProcedure;
+
+                        da.Parameters.AddWithValue("@CodCue", "");
+                        da.Parameters.AddWithValue("@CodSede", sede);
+                        da.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
+                        da.Parameters.AddWithValue("@CodcatPac", reg.CodCatPac);
+                        da.Parameters.AddWithValue("@STotCue", subtotal);
+                        da.Parameters.AddWithValue("@IgvCue", igvv);
+                        da.Parameters.AddWithValue("@TotCue", totalG);
+                        da.Parameters.AddWithValue("@FecCrea", "");
+                        da.Parameters.AddWithValue("@FecAnul", "");
+                        da.Parameters.AddWithValue("@EstCue", "1");
+                        da.Parameters.AddWithValue("@EstGene", "");
+                        da.Parameters.AddWithValue("@SecFact", "");
+                        da.Parameters.AddWithValue("@Usuario", usuario);
+                        da.Parameters.AddWithValue("@UsuarioAnula", "");
+                        da.Parameters.AddWithValue("@Crea", Crea);
+                        da.Parameters.AddWithValue("@Modifica", Crea);
+                        da.Parameters.AddWithValue("@Elimina", "");
+                        da.Parameters.AddWithValue("@Evento", "1");
+
+                        int Resu = (int)da.ExecuteScalar();
+                        
+                        using (SqlCommand cmd = new SqlCommand("Usp_MtoAtencionVarias", con, tr))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@CodAten", "");
+                            cmd.Parameters.AddWithValue("@CodSede", sede);
+                            cmd.Parameters.AddWithValue("@CodCue", Resu);
+                            cmd.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
+                            cmd.Parameters.AddWithValue("@NomPac", nomPac.ToString());
+                            cmd.Parameters.AddWithValue("@CodCatPac", reg.CodCatPac);
+                            cmd.Parameters.AddWithValue("@SubTotal", subtotal);
+                            cmd.Parameters.AddWithValue("@Igv", igvv);
+                            cmd.Parameters.AddWithValue("@Total", totalG);
+                            cmd.Parameters.AddWithValue("@Fecha", "");
+                            cmd.Parameters.AddWithValue("@CodUsu", usuario);
+                            cmd.Parameters.AddWithValue("@EstConsul", "");
+                            cmd.Parameters.AddWithValue("@Crea", Crea);
+                            cmd.Parameters.AddWithValue("@Modifica", "");
+                            cmd.Parameters.AddWithValue("@Elimina", "");
+                            cmd.Parameters.AddWithValue("@Evento", "1");
+                            int codAtencion = (int)cmd.ExecuteScalar();
+                            int CodigoCuentaResult = Resu;
+                            
+                            using (SqlCommand ca = new SqlCommand("Usp_MtoCaja", con, tr))
+                            {
+                                ca.CommandType = CommandType.StoredProcedure;
+                                ca.Parameters.AddWithValue("@CodCaja", "");
+                                ca.Parameters.AddWithValue("@CodSede", sede);
+                                ca.Parameters.AddWithValue("@CodCue", Resu);
+                                ca.Parameters.AddWithValue("@CodDocSerie", series.CodDocSerie);
+                                ca.Parameters.AddWithValue("@Serie", serieDoc[1].ToString());
+                                ca.Parameters.AddWithValue("@NumDoc", correlativo.Serie);
+                                ca.Parameters.AddWithValue("@FechaEmision", "");
+                                ca.Parameters.AddWithValue("@HoraEmision", horaSis.HoraServidor.ToShortTimeString());
+                                ca.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
+                                ca.Parameters.AddWithValue("@NomPac", nomPac);
+                                ca.Parameters.AddWithValue("@DirecPac", reg.Direcc.ToUpper());
+                                ca.Parameters.AddWithValue("@Ruc", reg.NumDoc);
+                                ca.Parameters.AddWithValue("@RazonSocial", nomPac);
+                                ca.Parameters.AddWithValue("@DirRazSoc", reg.Direcc.ToUpper());
+                                ca.Parameters.AddWithValue("@CodCatPac", reg.CodCatPac);
+                                ca.Parameters.AddWithValue("@Estado", "1");
+                                ca.Parameters.AddWithValue("@SubTotal", subtotal);
+                                ca.Parameters.AddWithValue("@Igv", igvv);
+                                ca.Parameters.AddWithValue("@Total", totalG);
+                                ca.Parameters.AddWithValue("@UsuCrea", usuario);
+                                ca.Parameters.AddWithValue("@UsuAnula", "");
+                                ca.Parameters.AddWithValue("@FechaAnula", "");
+                                ca.Parameters.AddWithValue("@TipoPago", "Contado");
+                                ca.Parameters.AddWithValue("@CodRazSoc", reg.NumDoc);
+                                ca.Parameters.AddWithValue("@CodTipMon", "TM001");
+                                ca.Parameters.AddWithValue("@TipoCambio", evalua.TipoCambio);
+                                ca.Parameters.AddWithValue("@Obser", "");
+                                ca.Parameters.AddWithValue("@TazaIgv", igvDemo);
+                                ca.Parameters.AddWithValue("@AutorizaAnu", "");
+                                ca.Parameters.AddWithValue("@PorAnular", "");
+                                ca.Parameters.AddWithValue("@SecVenta", caja.Generador_De_Codigo());
+                                ca.Parameters.AddWithValue("@Crea", Crea);
+                                ca.Parameters.AddWithValue("@Modifica", "");
+                                ca.Parameters.AddWithValue("@Elimina", "");
+                                ca.Parameters.AddWithValue("@Evento", "1");
+
+                                int CodCaja = (int)ca.ExecuteScalar();
+
+                                using (SqlCommand cue = new SqlCommand("Usp_MtoCuentas", con, tr))
+                                {
+
+                                    cue.CommandType = CommandType.StoredProcedure;
+                                    cue.Parameters.AddWithValue("@CodCue", Resu);
+                                    cue.Parameters.AddWithValue("@CodSede", "");
+                                    cue.Parameters.AddWithValue("@Historia", "");
+                                    cue.Parameters.AddWithValue("@CodcatPac", "");
+                                    cue.Parameters.AddWithValue("@STotCue", 0);
+                                    cue.Parameters.AddWithValue("@IgvCue", 0);
+                                    cue.Parameters.AddWithValue("@TotCue", 0);
+                                    cue.Parameters.AddWithValue("@FecCrea", "");
+                                    cue.Parameters.AddWithValue("@FecAnul", "");
+                                    cue.Parameters.AddWithValue("@EstCue", "1");
+                                    cue.Parameters.AddWithValue("@EstGene", "");
+                                    cue.Parameters.AddWithValue("@SecFact", CodCaja);
+                                    cue.Parameters.AddWithValue("@Usuario", "");
+                                    cue.Parameters.AddWithValue("@UsuarioAnula", "");
+                                    cue.Parameters.AddWithValue("@Crea", "");
+                                    cue.Parameters.AddWithValue("@Modifica", Crea);
+                                    cue.Parameters.AddWithValue("@Elimina", "");
+                                    cue.Parameters.AddWithValue("@Evento", "4");
+                                    cue.ExecuteNonQuery();
+
+
+                                    int contador = 1;
+                                    foreach (var a in detalle)
+                                    {
+                                        var valorDetalle = a.Split(',');
+                                        E_Tarifario regi = tar.ListadoTarifa().Find(x => x.CodTar == valorDetalle[0].ToString());
+
+                                        if (regi.AfecIgcv == true)
+                                        {
+                                            precio = (decimal.Parse(valorDetalle[1].ToString()) * int.Parse(valorDetalle[2]) / (1 + igvDemo));
+                                            igvv = precio * igvDemo;
+                                            subtotal = precio + igvv;
+                                            totalG = Decimal.Round(subtotal, 2);
+                                        }
+                                        else
+                                        {
+                                            precio = (int.Parse(valorDetalle[1].ToString()) * decimal.Parse(valorDetalle[2]));
+                                            igvv = 0;
+                                            subtotal = precio + igvv;
+                                            totalG = Decimal.Round(subtotal, 2);
+                                        }
+                                        
+                                        using (SqlCommand av = new SqlCommand("Usp_MtoAtencionVarias_Detalle ", con, tr))
+                                        {
+
+
+                                            av.CommandType = CommandType.StoredProcedure;
+                                            av.Parameters.AddWithValue("@CodAtenDet", "");
+                                            av.Parameters.AddWithValue("@CodAten", codAtencion);
+                                            av.Parameters.AddWithValue("@item", contador);
+                                            av.Parameters.AddWithValue("@CodSede", sede);
+                                            av.Parameters.AddWithValue("@CodEspec", valorDetalle[4].ToString());
+                                            av.Parameters.AddWithValue("@CodServ", valorDetalle[3].ToString());
+                                            av.Parameters.AddWithValue("@CodMed", "");
+                                            av.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
+                                            av.Parameters.AddWithValue("@CodTipTar", regi.CodTipTar);
+                                            av.Parameters.AddWithValue("@CodSTipTar", regi.CodSTipTar);
+                                            av.Parameters.AddWithValue("@Cantida", int.Parse(valorDetalle[1].ToString()));
+                                            av.Parameters.AddWithValue("@SubTotal", subtotal);
+                                            av.Parameters.AddWithValue("@Igv", igvv);
+                                            av.Parameters.AddWithValue("@Total", totalG);
+                                            av.Parameters.AddWithValue("@MedicoEnvia", "");
+                                            av.Parameters.AddWithValue("@EspeciEnvia", "");
+                                            av.Parameters.AddWithValue("@Turno", turno);
+                                            av.Parameters.AddWithValue("@Estado", 'G');
+                                            av.Parameters.AddWithValue("@CodUsu", usuario);
+                                            av.Parameters.AddWithValue("@Crea", Crea);
+                                            av.Parameters.AddWithValue("@Modifica", "");
+                                            av.Parameters.AddWithValue("@Elimina", "");
+                                            av.Parameters.AddWithValue("@Evento", "1");
+
+                                            int codAtencionDetalle = (int)av.ExecuteScalar();
+
+                                            using (SqlCommand dd = new SqlCommand("Usp_MtoCuentasDetalle", con, tr))
+                                            {
+
+                                                dd.CommandType = CommandType.StoredProcedure;
+                                                dd.Parameters.AddWithValue("@Procedencia", 2);
+                                                dd.Parameters.AddWithValue("@CodCue", Resu);
+                                                dd.Parameters.AddWithValue("@Item", contador);
+                                                dd.Parameters.AddWithValue("@Tarifa", valorDetalle[0].ToString());
+                                                dd.Parameters.AddWithValue("@CodProce", codAtencion);
+                                                dd.Parameters.AddWithValue("@CodDetalleP", codAtencionDetalle);
+                                                dd.Parameters.AddWithValue("@CodSede", sede);
+                                                dd.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
+                                                dd.Parameters.AddWithValue("@precioUni", decimal.Parse(valorDetalle[2].ToString()));
+                                                dd.Parameters.AddWithValue("@precio", subtotal);
+                                                dd.Parameters.AddWithValue("@igv", igvv);
+                                                dd.Parameters.AddWithValue("@total", totalG);
+                                                dd.Parameters.AddWithValue("@EstDet", "1");
+                                                dd.Parameters.AddWithValue("@FechaAten", "");
+                                                dd.Parameters.AddWithValue("@TurnoAten", "");
+                                                dd.Parameters.AddWithValue("@RegMedico", "");
+                                                dd.Parameters.AddWithValue("@MedicoEnvia", "");
+                                                dd.Parameters.AddWithValue("@Crea", Crea);
+                                                dd.Parameters.AddWithValue("@Modifica", "");
+                                                dd.Parameters.AddWithValue("@Elimina", "");
+                                                dd.Parameters.AddWithValue("@Evento", "1");
+                                                
+                                                dd.ExecuteNonQuery();
+
+                                                using (SqlCommand cajDet = new SqlCommand("Usp_MtoCaja_Detalle", con, tr))
+                                                {
+
+                                                    cajDet.CommandType = CommandType.StoredProcedure;
+
+
+                                                    cajDet.Parameters.AddWithValue("@CodSede", sede);
+                                                    cajDet.Parameters.AddWithValue("@CodCaja", Resu);
+                                                    cajDet.Parameters.AddWithValue("@CodCue", Resu);
+                                                    cajDet.Parameters.AddWithValue("@item", contador);
+                                                    cajDet.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
+                                                    cajDet.Parameters.AddWithValue("@NomTar", regi.DescTar.ToUpper());
+                                                    cajDet.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
+                                                    cajDet.Parameters.AddWithValue("@PUnit", decimal.Parse(valorDetalle[2].ToString()));
+                                                    cajDet.Parameters.AddWithValue("@SubTotal", subtotal);
+                                                    cajDet.Parameters.AddWithValue("@Igv", igvv);
+                                                    cajDet.Parameters.AddWithValue("@Total", totalG);
+                                                    cajDet.Parameters.AddWithValue("@TazaIgv", igvDemo);
+                                                    cajDet.Parameters.AddWithValue("@Crea", Crea);
+                                                    cajDet.Parameters.AddWithValue("@Modifica", "");
+                                                    cajDet.Parameters.AddWithValue("@Elimina", "");
+                                                    cajDet.Parameters.AddWithValue("@Evento", "1");
+                                                    cajDet.ExecuteNonQuery();
+
+                                                    using (SqlCommand cpago = new SqlCommand("Usp_MtoCaja_Pago", con, tr))
+                                                    {
+
+                                                        cpago.CommandType = CommandType.StoredProcedure;
+
+                                                        cpago.Parameters.AddWithValue("@CodCaja", CodCaja);
+                                                        cpago.Parameters.AddWithValue("@item", contador);
+                                                        cpago.Parameters.AddWithValue("@CODMEDIOS", "ME001");
+                                                        cpago.Parameters.AddWithValue("@Importe", decimal.Parse(valorDetalle[2].ToString()));
+                                                        cpago.Parameters.AddWithValue("@ImporteSoles", decimal.Parse(valorDetalle[2].ToString()));
+                                                        cpago.Parameters.AddWithValue("@CodTipMon", "TM001");
+                                                        cpago.Parameters.AddWithValue("@TipoCambio", evalua.TipoCambio);
+                                                        cpago.Parameters.AddWithValue("@Estado", "1");
+                                                        cpago.Parameters.AddWithValue("@Crea", Crea);
+                                                        cpago.Parameters.AddWithValue("@Modifica", "");
+                                                        cpago.Parameters.AddWithValue("@Elimina", "");
+                                                        cpago.Parameters.AddWithValue("@Evento", "1");
+                                                        cpago.ExecuteNonQuery();
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    
+                                }
+                            }
+                            tr.Commit();
+                            
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        tr.Rollback();
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
+
+                }
+            }
+
+
+
+
+
+            string result = "";
+            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult CargaTarifa(string CodServ, int historia, string descripcion)
+        {
+            int clave = 1;
+            string sede = Session["codSede"].ToString();
+            var listado = ListadoTarifVentaRapida(CodServ, sede, historia, descripcion).ToList();
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var a in listado)
+            {
+                sb.AppendLine("<tr data-id='" + a.procedencia + "'>");
+                sb.AppendLine("<td>" + a.DescTar + "</td>");
+                sb.AppendLine("<td>" +
+                    "<input type='text' name='cantidad' id='cantidad-" + clave + "' value='1' />" +
+                    "</td>");
+                if (a.ModPrecio == true)
+                {
+                    sb.AppendLine("<td>" +
+                    "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' />" +
+                    "</td>");
+                }
+                else
+                {
+                    sb.AppendLine("<td>" +
+                    "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' disabled />" +
+                    "</td>");
+                }
+
+                sb.AppendLine("<td>" +
+                    "<input type='hidden' name='tarifa' id='tarifa-" + clave + "' value='" + a.CodTar + "' />" +
+                    "<a onclick=registraItem('" + clave + "') href='#'><i class='fa fa-check'></i></a>" + "</td>");
+
+                sb.AppendLine("</tr>");
+
+                clave++;
+            }
+            string result = "";
+            result = sb.ToString();
+
+            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult VentaRapida(int historia)
+        {
+            ViewBag.historia = historia;
+            return View();
+        }
 
 
     }

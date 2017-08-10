@@ -1,0 +1,270 @@
+﻿@model VgSalud.Models.E_Promo
+@{
+    ViewBag.Title = "RegistrarPromocion";
+    var especialidad = (SelectList)ViewBag.especialidad;
+    var servicio = (SelectList)ViewBag.servicio;
+    var carrito = (List<VgSalud.Models.E_Promo>)ViewBag.carrito;
+    var check = "checked";
+    if (ViewBag.subtotal == null) { ViewBag.subtotal = 0; }
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Registrar Promocion</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Promo</a></li>
+            <li class="active">Registrar Paquetes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header" style="margin-left:1%; width:96%">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left:9px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+            <form method="post" action="" id="formulario">
+                <div class="box-body">
+
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend style="margin-left:3%; width:96%">Filtro</legend>
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-12">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                          
+                             
+                                <div class="col-md-5" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Descripcion</label>
+                                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Especialidad</label>
+                                            @Html.DropDownList("CodEspec", especialidad, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "especialidad" })
+                                            @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2"></div>
+
+                            </div>
+                            <div class="col-md-12">
+
+                            
+                                <div class="col-md-5" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Tarifa</label>
+                                            <select name="CodTar" class="form-control select2" id="tarifa"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>cantidad</label>
+                                            @Html.EditorFor(model => model.cantidad, new { htmlAttributes = new { @class = "form-control", @id = "cant", @Value = "1" } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Precio</label>
+                                            @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", @Value = "0" } })
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2" style="padding-right:0px;padding-left:0px">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            <br />
+                                            <button type="submit" class="btn btn-info" id="agregar" style="padding:7px 10px"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend style="margin-left:2%; width:96%">Lista</legend>
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+
+                                            <th style="text-align:center;width:5px">Codigo</th>
+                                            <th style="width:160px">Tarifa</th>
+                                            <th style="text-align:center;width:5px">Cantidad</th>
+                                            <th style="text-align:center;width:5px">Precio</th>
+                                            <th style="text-align:center;width:10px">Importe</th>
+                                            <th style="text-align:center;width:10px"><i class="fa fa-trash-o"></i></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            if (carrito != null)
+                                            {
+                                                foreach (var item in carrito)
+                                                {
+
+                                                    <tr>
+                                                        <td style="text-align:center;width:5px">@Html.DisplayFor(modelItem => item.CodTar)</td>
+                                                        <td style="width:160px">@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                                        <td style="text-align:center;width:5px">@Html.DisplayFor(modelItem => item.cantidad)</td>
+                                                        <td style="text-align:center;width:10px">
+                                                            @Html.DisplayFor(modelItem => item.Precio)
+                                                        </td>
+                                                        <td style="text-align:center;width:10px">
+                                                            @Html.DisplayFor(modelItem => item.SubtotalD)
+                                                        </td>
+                                                        <td style="text-align:center;width:10px">
+                                                            <center>
+                                                                <button type="submit" name="CodTar1" value="@item.CodTar" class="btn btn-danger eliminar">
+                                                                    <i class="fa fa-trash-o">
+                                                                    </i>
+                                                                </button>
+                                                            </center>
+                                                        </td>
+
+                                                    </tr>
+
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="col-md-6">
+                                        <h3>Total</h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3>S/ @ViewBag.subtotal</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <center>
+                                    <button type="submit" class="btn btn-danger" id="grabar" style="background-color:#13D003;border:0">Registrar</button>
+
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="Evento" class="evento" />
+                <input type="hidden" name="TotalC" value="@ViewBag.subtotal" />
+            </form>
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        var codtar = "@ViewBag.codtar";
+
+        $(".update").click(function () {
+            $(".evento").val("4");
+        });
+        $("#agregar").click(function () {
+            $(".evento").val("1");
+        });
+        $(".eliminar").click(function () {
+            $(".evento").val("2");
+        });
+        $("#grabar").click(function () {
+            $(".evento").val("3");
+        });
+
+
+        $(".cambio").keyup(function () {
+            var valor = this.value;
+            $(".set").val(valor);
+        });
+
+
+        $("#especialidad").change(function () {
+            var codesp = this.value;
+            $.get('@Url.Action("ObtenerTarifa","Promo")', { codesp: codesp },
+                function (response) {
+                    var select = $("#tarifa");
+                    select.find('option').remove();
+                    $('<option>').val("NULL").text("[NO SELECCIONADO]").appendTo(select);
+                    $('#select2-tarifa-container').empty();
+                    $.each(response, function (index, value) {
+                        $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                        if (value.CodTar == codtar) {
+                            $('#tarifa option[value="' + value.CodTar + '"]').attr("selected", true);
+                            $('#tarifa option[value="@ViewBag.codtar"]').attr("selected", true);
+                            $('#select2-tarifa-container').text(value.DescTar);
+
+                        }
+                    });
+                });
+        });
+
+        @if (ViewBag.codesp != null) {
+            <text>
+        $('#especialidad option[value="@ViewBag.codesp"]').prop("selected", "selected").change();
+        </text>
+        }
+
+
+
+
+    });
+
+</script>

@@ -1,4 +1,5 @@
-﻿@model VgSalud.Models.E_Pacientes
+﻿
+@model VgSalud.Models.E_Pacientes
 @{
     ViewBag.Title = "RegistroPaciente";
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
@@ -67,11 +68,25 @@
                                 {
                                     <div style="float:left; padding:0% 1% 0 1%" title="ALT + B">
                                         <a href="../Carnet/RegistroCarnet?historia=@Model.Historia">
-                                            <center><i class="fa fa-calendar-minus-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
+                                            <center><i class="fa fa-address-card-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
                                         </a>
                                     </div>
                                 }
                             }
+
+
+                            <div style="float:left; padding:0% 1% 0 1%;" title="Vender Consulta">
+                                <a href="" data-toggle="modal" data-target="#ModalVenderConsulta" class="VenderConsulta">
+                                    <center><i class="fa fa-money" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Vender<br>Consulta</strong></center>
+                                </a>
+                            </div>
+                            
+                            <div style="float:left; padding:0% 1% 0 1%;display:none;" title="" >
+                                <a href="../Pacientes/ImprimirHistoriaClinica?Historia=@Model.Historia">
+                                    <center><i class="fa fa-print" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Imprimir<br>Historia Clinica</strong></center>
+                                </a>
+                            </div>
+
                             <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
                                 <a href="./ListaPacientes">
                                     <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
@@ -186,10 +201,10 @@
                                                 <label>Sexo</label>
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" value="@ViewBag.ListaSexo" class="form-control" readonly />
+                                                <input type="text" value="@ViewBag.ListaSexo" class="form-control" readonly  name="Nombre"/>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Tipo Filiación</label>
                                             </div>
@@ -197,7 +212,7 @@
                                                 <input type="text" value="@ViewBag.ListaTipoFilia" class="form-control" readonly />
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Tipo Paciente</label>
                                             </div>
@@ -257,7 +272,7 @@
                                                 @Html.ValidationMessageFor(model => model.Observ, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Pais</label>
                                             </div>
@@ -303,9 +318,9 @@
 
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" >
                                             <div class="col-md-3">
-                                                <label>Sector</label>
+                                                <label>N° Tarjeta</label>
                                             </div>
                                             <div class="col-md-9">
                                                 @Html.EditorFor(model => model.Sector, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -315,7 +330,7 @@
 
 
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Estado</label>
                                             </div>
@@ -505,7 +520,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Usuario</label>
                                             </div>
@@ -679,6 +694,49 @@
 </div>
 
 
+<div class="modal fade" id="ModalVenderConsulta" role="dialog">
+    <div class="modal-dialog modal-lg " style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Vender Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <legend style="margin-left:3%;width:96%;">Servicio</legend>
+                    <div class="row" style="text-align:center;">
+                        <div class="col-xs-12 col-md-5 col-md-offset-1" style="text-align:left;">
+                            <table class="table table-bordered " style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="">Cod Serv</th>
+                                        <th style="">Nombre Servicio</th>
+                                        <th style=""><span class='fa fa-plus-square' style="text-align:center"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody2">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 " style="text-align:center;">
+                            <div >
+
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script>
     $(document).ready(function () {
 
@@ -741,10 +799,32 @@
 
 
 
+        $(".VenderConsulta").on("click", function () {
+            //var DatoCodOdo = this.attributes.CodOdontograma.value;
 
+            $.get('@Url.Action("VenderConsulta", "Pacientes")',function (response) {
+                
+                $("#tbody2").empty();
+                $("#tbody2").append(response);
 
+            });
+
+        });
 
 
     });
+
+
+    function AgregarConsulta()
+    {
+        $.get('@Url.Action("VenderConsulta", "Pacientes")',function (response) {
+                
+            $("#tbody2").empty();
+            $("#tbody2").append(response);
+
+        });
+    }
+
+
 </script>
 

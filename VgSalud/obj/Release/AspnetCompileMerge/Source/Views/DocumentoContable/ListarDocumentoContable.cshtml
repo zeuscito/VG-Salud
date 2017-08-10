@@ -24,70 +24,87 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    @{
 
-                        var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarDocumentoContable.cshtml");
-                        if (abc1 != null)
-                        {
-                            <div class="box-header">
-                                <a href="~/DocumentoContable/RegistrarDocumentoContable" class="btn btn-danger">Registrar Documento Contable &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
-                            </div><br />
-                        }
-
-                    }
-                            
-                 
                     <div class="box-header">
-                        <h3 class="box-title">Lista de Documentos Contables</h3>
+                        @{
+
+                            var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarDocumentoContable.cshtml");
+                            if (abc1 != null)
+                            {
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+
+                              
+                                    <div style="float:left; padding:0% 1% 0 1%">
+                                        <a href="~/DocumentoContable/RegistrarDocumentoContable"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                    </div>
+                               
+                            }
+                        }
                     </div>
-                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Descripcion Documento</th>
-                                    <th>Alias</th>
-                                    <th>Estado</th>
-
-                                    <th><i class="fa fa-edit"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
 
 
-                                @foreach (var item in Model)
-                                {
 
-                                    <tr>
-                                        
-                                        <td>@Html.DisplayFor(modelItem => item.CodDocCont)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.DescCodDoc)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.AliasCodDoc)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.EstCodDoc)</td>
-                                       
-                                        <td>
-                                            <div class="tools">
-                                              
-                                                @{
+                      <fieldset>
+                          <legend style="margin-left:29px">Lista</legend>
 
-                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarDocumentoContable.cshtml");
-                                                    if (abc2 != null)
-                                                    {
-                                                        <a title="Editar" href="ModificarDocumentoContable/@item.CodDocCont"><i class="fa fa-edit"></i></a>
-                                                    }
+                          <div class="box-body">
+                          <div class="col-md-12">
+                              <table id="example1" class="table table-bordered table-striped table-hover">
+                                  <thead>
+                                      <tr class="headTabla">
+                                          <th>Codigo</th>
+                                          <th>Descripcion Documento</th>
+                                          <th>Alias</th>
+                                          <th>Inc. Registro de V.</th>
+                                          <th>Estado</th>
 
-                                                }                                                        
-                                                                                             
-                                            </div>
-                                        </td>
-                                    </tr>
+                                          <th><i class="fa fa-edit"></i></th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
 
-                                }
 
-                            </tbody>
+                                      @foreach (var item in Model)
+                                      {
 
-                        </table>
-                    </div>
+                                          <tr>
+
+                                              <td>@Html.DisplayFor(modelItem => item.CodDocCont)</td>
+                                              <td>@Html.DisplayFor(modelItem => item.DescCodDoc)</td>
+                                              <td>@Html.DisplayFor(modelItem => item.AliasCodDoc)</td>
+                                              <td>@Html.DisplayFor(modelItem => item.IncluRegVen)</td>
+                                              <td>@Html.DisplayFor(modelItem => item.EstCodDoc)</td>
+
+                                              <td>
+                                                  <div class="tools">
+
+                                                      @{
+
+                                                          var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarDocumentoContable.cshtml");
+                                                          if (abc2 != null)
+                                                          {
+                                                              <a title="Editar" href="ModificarDocumentoContable/@item.CodDocCont"><i class="fa fa-edit"></i></a>
+                                                          }
+
+                                                      }
+
+                                                  </div>
+                                              </td>
+                                          </tr>
+
+                                                          }
+
+                                  </tbody>
+
+                              </table>
+                          </div>
+                           
+                          </div>  
+                      </fieldset>
+                  
                 </div>
             </div>
         </div>
@@ -96,3 +113,23 @@
 <div class="control-sidebar-bg">
 </div>
 
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 == true && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarDocumentoContable");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+    </script>

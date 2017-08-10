@@ -1,0 +1,262 @@
+﻿@model VgSalud.Models.E_Ficha_Electronica
+
+@{
+    ViewBag.Title = "RegistroDeAtencionesBasica";
+    var activaTab = "class=active";
+    var activaVista = "in active";
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Ficha Electronica
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+            <li class="active">Ficha Electronica</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <h3>
+                    @ViewBag.historia - @ViewBag.nombrePac -  @ViewBag.edad AÑOS<br />
+                    @ViewBag.servicio - @ViewBag.tarifa
+                </h3>
+
+                <ul class="nav nav-tabs">
+
+                    <li @if (ViewBag.tab == "1") { @activaTab    }><a data-toggle="tab" href="#examenFisico">Examen Fisico </a></li>
+                    <!--<li><button class="btn btn-info" id="TraerDatos">Cargar ultimo registro del paciente</button></li>-->
+
+                </ul>
+
+
+
+
+                <form action="" method="post" id="formulario">
+
+                    <input type="hidden" name="evento" id="evento" />
+                    <input type="hidden" name="CodCue" value="@ViewBag.cuenta" />
+                    <input type="hidden" name="Historia" value="@ViewBag.historia" />
+                    <input type="hidden" name="Item" value="@ViewBag.item" />
+                    <input type="hidden" name="FE" value="@ViewBag.FE" />
+                    <input type="hidden" name="tipoFichaElectronica" value="@ViewBag.Tipo" />
+                    <input type="hidden" name="idProc" value="@ViewBag.idProc" />
+                    <input type="hidden" name="CodTar" value="@ViewBag.CodTar" />
+
+                    <div class="tab-content">
+
+                        <div id="examenFisico" class="tab-pane fade  @if (ViewBag.tab == "1") { @activaVista; }">
+
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Examen Fisico</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                                    </div>
+                                </div>
+
+
+                                <div class="box-body">
+
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FC</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FC, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>PA</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.PA, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>FR</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.FR, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Ax.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>T° Rectal.</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Tanal, new { htmlAttributes = new { @class = "form-control", @value = "" } })
+                                            </div>
+                                        </div>
+
+                                        @if (ViewBag.Tipo == 1) { 
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>Peso</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Peso, new { htmlAttributes = new { @class = "form-control", @value = "", @id="peso" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>Talla</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.talla, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "talla" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-2">
+                                            <div class="col-md-12">
+                                                <label>IMC</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.IMC, new { htmlAttributes = new { @class = "form-control", @value = "", @id = "imc" } })
+                                            </div>
+                                        </div>
+
+                                        }
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div align="center">
+                            <input type="submit" id="RegistraTodo" value="Registar Ficha Electronica" class="btn btn-info" />
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+
+    
+
+    $(document).ready(function () {
+
+        $("#peso").keyup(function (e) {
+            var peso = this.value;
+            var talla = $("#talla").val();
+            var imc = peso / (talla * talla);
+            imc = imc.toFixed();
+            $("#imc").val(imc);
+
+            if (imc < 18) {
+                $("#alertaImc").text("PESO BAJO");
+                $("#alertaImc").css('color', '#E8DE07');
+                $("#imc").css('background-color', '#E8DE07');
+            }
+            else if (imc < 25) {
+                $("#alertaImc").text("NORMAL");
+                $("#alertaImc").css('color', '#29DE07');
+                $("#imc").css('background-color', '#29DE07');
+            }
+            else if (imc < 27) {
+                $("#alertaImc").text("SOBREPESO");
+                $("#alertaImc").css('color', '#FF1A82');
+                $("#imc").css('background-color', '#FF1A82');
+            }
+            else if (imc < 30) {
+                $("#alertaImc").text("OBESIDAD GRADO I");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+            else if (imc < 40) {
+                $("#alertaImc").text("OBESIDAD GRADO II");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+            else if (imc > 40) {
+                $("#alertaImc").text("OBESIDAD GRADO III");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+        });
+
+
+
+        $("#talla").keyup(function (e) {
+            var talla = this.value;
+            var peso = $("#peso").val();
+            var imc = peso / (talla * talla);
+            imc = imc.toFixed();
+            $("#imc").val(imc);
+
+            if (imc < 18) {
+                $("#alertaImc").text("PESO BAJO");
+                $("#alertaImc").css('color', '#E8DE07');
+                $("#imc").css('background-color', '#E8DE07');
+            }
+            else if (imc < 25) {
+                $("#alertaImc").text("NORMAL");
+                $("#alertaImc").css('color', '#29DE07');
+                $("#imc").css('background-color', '#29DE07');
+            }
+            else if (imc < 27) {
+                $("#alertaImc").text("SOBREPESO");
+                $("#alertaImc").css('color', '#FF1A82');
+                $("#imc").css('background-color', '#FF1A82');
+            }
+            else if (imc < 30) {
+                $("#alertaImc").text("OBESIDAD GRADO I");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+            else if (imc < 40) {
+                $("#alertaImc").text("OBESIDAD GRADO II");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+            else if (imc > 40) {
+                $("#alertaImc").text("OBESIDAD GRADO III");
+                $("#alertaImc").css('color', '#FF1A00');
+                $("#imc").css('background-color', '#FF1A00');
+            }
+
+        });
+
+
+    });
+
+</script>

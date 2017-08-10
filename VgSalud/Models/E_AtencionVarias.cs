@@ -26,5 +26,7 @@ namespace VgSalud.Models
         public string CodTar { get; set; }
 
 
+        public string CodigoEspecialidad { get; set; }
+
     }
 }

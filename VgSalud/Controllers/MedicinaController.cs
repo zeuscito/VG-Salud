@@ -472,6 +472,7 @@ namespace VgSalud.Controllers
 
         public List<E_CSMedicina> ListarDatosDeOdontograma(int CodOdo)
         {
+
             string sede = Session["CodSede"].ToString();
 
             List<E_CSMedicina> ListaArregloOdo = new List<E_CSMedicina>();

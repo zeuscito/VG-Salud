@@ -22,7 +22,6 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Modificar Especialidad</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -31,75 +30,89 @@
 
             <form method="post" action="" >
 
-                <div class="box-body">
-                    <div class="col-md-6">
+                <div class="box-header">
 
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                      
-                                    <input type="hidden" name="CodEspec" id="CodEspec" value="@Model.CodEspec" />
-                             
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Especialidad</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.NomEspec, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.NomEspec, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Descripción</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.DescEspec, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DescEspec, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaEspecialidad">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
                     </div>
-                    <div class="col-md-6">
+
+                </div>
+
+                <div class="box-body">
+
+                    <fieldset>
+                        <legend style="margin-left: 29px;">Modificar</legend>
+                        <div class="col-md-6">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-                        <div class="form-group">
-                            <div class="col-md-12">
+                            <input type="hidden" name="CodEspec" id="CodEspec" value="@Model.CodEspec" />
+
+
+                            <div class="form-group">
                                 <div class="col-md-3">
-                                    <label>Estado</label>
+                                    <label>Especialidad</label>
                                 </div>
                                 <div class="col-md-9">
-                                    @Html.EditorFor(model => model.EstEspec)
-                                    @Html.ValidationMessageFor(model => model.EstEspec, "", new { @class = "text-danger" })
-                                   
+                                    @Html.EditorFor(model => model.NomEspec, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NomEspec, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
+                            <div class="form-group">
                                 <div class="col-md-3">
-                                    <label>Especialidad General</label>
+                                    <label>Descripción</label>
                                 </div>
-                                <div class="col-md-9">                                    
-                                    @Html.EditorFor(model => model.General)
-                                    @Html.ValidationMessageFor(model => model.General, "", new { @class = "text-danger" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DescEspec, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescEspec, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label>Estado</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.EstEspec)
+                                        @Html.ValidationMessageFor(model => model.EstEspec, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label>Especialidad General</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.General)
+                                        @Html.ValidationMessageFor(model => model.General, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <label>Tarifario Default</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("CodTar", Tarifario, "[NO SELEECIONADO]", new { @class = "form-control select2" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Tarifario Default</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.DropDownList("CodTar", Tarifario, "[NO SELEECIONADO]", new { @class = "form-control select2" })
-                            </div>
-                        </div>
-
-
-
-                    </div>
+                    </fieldset>
 
 
                     <label></label>
@@ -112,8 +125,7 @@
                             <div class="form-group">
 
                                 <center>
-                                    <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button>
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    <button type="submit" value="Modificar" style="background-color:#13D003; border:0" class="btn btn-danger" id="modificar">Modificar</button>
                                 </center>
                             </div>
                         </div>
@@ -134,3 +146,29 @@
     </section>
 </div>
 
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if ((presiono1 == true) && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            window.location.href = "ListaEspecialidad";
+        }
+
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "ListaEspecialidad";
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

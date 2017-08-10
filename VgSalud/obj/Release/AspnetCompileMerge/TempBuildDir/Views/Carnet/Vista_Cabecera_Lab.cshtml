@@ -1,0 +1,23 @@
+﻿@{
+    var lista = (List<VgSalud.Models.E_Carnet_Sanitario>)ViewBag.lista;
+    var x = 0;
+    Layout = null;
+ }
+
+<div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="small-box bg-green-active">
+        <div class="inner">
+            @foreach (var item in lista)
+            {
+                x++;
+               
+                <h1>&nbsp; <i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;</i>&nbsp;<strong>@item.NombrePaciente &nbsp;</strong></h1>
+            }
+            
+        </div>
+        <div class="icon">
+            <i class="fa fa-phone-square"></i>
+        </div>
+      
+    </div>
+</div>

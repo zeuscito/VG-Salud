@@ -3,32 +3,34 @@
 @{
     ViewBag.Title = "RegistrarSedesEmpresa";
 
-    var ListaSedes  =  (SelectList)ViewBag.ListaSedes;
+    var ListaSedes = (SelectList)ViewBag.ListaSedes;
     var ListaEmpresaTercero = (SelectList)ViewBag.ListaEmpresaTercero;
 
 
     VgSalud.Controllers.SedesEmpresaController e = new VgSalud.Controllers.SedesEmpresaController();
-    var listaEmpresa = (List<VgSalud.Models.E_SedesEmpresa>)e.ListadoSedesEmpresa();
+
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
     string CodUsu = Session["UserID"].ToString();
+
+    var sedes = (List<VgSalud.Models.E_Sede>)ViewBag.sedes;
+    var sedesEmpresa = (List<VgSalud.Models.E_SedesEmpresa>)ViewBag.sedesEmpresa;
 
 }
 
 
 
-
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>Sedes Empresa</h1>
+        <h1>Sedes / Empresa</h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-users"></i>Sedes Empresa</a></li>
+            <li><a href="#"><i class="fa fa-users"></i>Sedes / Empresa</a></li>
             <li class="active">Registrar Sedes</li>
         </ol>
     </section>
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Asignar Empresa a Sedes </h3>
+
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -37,110 +39,202 @@
 
             <form method="post" action="">
 
-                <div class="box-body">
-                    <div class="col-md-6">
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Sedes</label>
-                            </div>
-                            <div class="col-md-9">
-                                @*@Html.EditorFor(model => model.CodSede, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @Html.DropDownList("CodSede", ListaSedes,"[NO SELECCIONADO]", new { @class= "form-control select2" })
-                                @Html.ValidationMessageFor(model => model.CodSede, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                      
-                      
-
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Empresa</label>
-                            </div>
-                            <div class="col-md-9">
-                                @*@Html.EditorFor(model => model.CodEmp, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @Html.DropDownList("CodEmp", ListaEmpresaTercero, "[NO SELECCIONADO]", new { @class = "form-control select2" })
-                                @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%;">
+                        <a href="~/Master/Index"><center style="margin-left: 175px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
                     </div>
 
-
-                    <label></label>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <center>
-                                <button type="submit" value="Registrar" class="btn btn-danger">Registrar</button>
-                          
-                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
-                            </center>
-                        </div>
-                    </div>
                 </div>
-        </form>
+
+                <fieldset>
+                    <legend style="margin-left: 11%;">Datos Registro</legend>
+                    <div class="box-body">
+
+                        <div class="col-md-12" style="height:100px">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-2">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="col-md-12">
+                                    <label>Sedes</label>
+                                    @*@Html.EditorFor(model => model.CodSede, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("CodSede", ListaSedes, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CodSede, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-12">
+                                    <label>Empresa</label>
+                                    @*@Html.EditorFor(model => model.CodEmp, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("CodEmp", ListaEmpresaTercero, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="col-md-12">
+                                    <br />
+                                        <button type="submit" value="Registrar" class="btn btn-info" style="margin-top: 2%;"><i class="glyphicon glyphicon-plus"></i></button>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+                            <br /><br />
+                        </div>
+                        <br /><br />
+                        <div class="col-md-12">
+                            <div class="row" style="margin-right:10%;margin-left: 10%;" >
+                               
+                                @foreach (var item in sedes)
+                                {
+
+                              
+                                    <div class="col-md-2" style="padding-left:0px;">
+                                        <!-- Widget: user widget style 1 -->
+                                        <div class="alto box box-widget widget-user-2">
+                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                            <div class="widget-user-header bg-aqua-active" style="height:65px;padding:5px;">
+                                                <h4 class="widget-user-username" style="margin-left: 0px;">@item.NomSede</h4>
+                                            </div>
 
 
-            @if (listaEmpresa != null)
-            {
+                                            <div class="box-footer no-padding" style="padding-top: 0px;">
+                                                <ul class="nav nav-stacked">
+                                                    @foreach (var item1 in sedesEmpresa)
+                                                    {
+                                                        if (item.CodSede == item1.CodSede)
+                                                        {
+                                                            <li><a title="Eliminar" href="~/SedesEmpresa/ModificarSedesEmpresa/?codSede=@item1.CodSede&codEmp=@item1.CodEmp"><strong>@item1.Empresa.ToUpper()</strong><span class="pull-right badge bg-blue"><i class="fa fa-trash-o"></i></span></a></li>
+                                                        }
+                                                    }
 
-                <table id="example1" class="table table-bordered table-striped" style="margin-top:4%">
-                    <thead>
-                        <tr>
-                            <th>Codigo sede</th>
-                            <th>Sede</th>
-                            <th>Codigo Empresa</th>
-                            <th>empresa tercero</th>
+                                                </ul>
+                                            </div>
 
-                            <th> <i class="fa fa-trash-o"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        @foreach (var fila in listaEmpresa)
+                                        </div>
+                                        <!-- /.widget-user -->
+                                    </div>
+                                  
+                                }
+                             
+                            </div>
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </fieldset>
+
+            </form>
+
+
+
+
+            @*@if (listaEmpresa != null)
                 {
 
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => fila.CodSede)</td>
-                                <td>@Html.DisplayFor(modelItem => fila.CodEmp)</td>
-                                <td>@Html.DisplayFor(modelItem => fila.Sede)</td>
-                                <td>@Html.DisplayFor(modelItem => fila.Empresa)</td>
+                        <div class="box-body">
+                            <fieldset>
+                                <legend style="margin-left: 18%;">Lista</legend>
 
-                                <td>
-                                    <div class="tools">
-                                        @{
 
-                                            var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarSedesEmpresa.cshtml");
-                                            if (abc1 != null)
-                                            {
-                                                <a title="Editar" href="~/SedesEmpresa/ModificarSedesEmpresa/?codSede=@fila.CodSede&codEmp=@fila.CodEmp"><i class="fa fa-trash-o"></i></a>
-                                            }
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr class="headTabla">
+                                                <th>Sede</th>
+                                                <th>empresa Censionaria</th>
 
-                                        }
-                                        
-                                    </div>
-                                    
-                                </td>
-                            </tr>
+                                                <th> <i class="fa fa-trash-o"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                        }
+                                            @foreach (var fila in listaEmpresa)
+                    {
 
-                    </tbody>
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => fila.CodSede)-@Html.DisplayFor(modelItem => fila.Sede)</td>
+                                                    <td>@Html.DisplayFor(modelItem => fila.CodEmp)-@Html.DisplayFor(modelItem => fila.Empresa)</td>
 
-                </table>
-            }
+                                                    <td>
+                                                        <div class="tools">
+                                                            @{
 
-            </div>
+                                                                var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarSedesEmpresa.cshtml");
+                                                                if (abc1 != null)
+                                                                {
+                                                                    <a title="Editar" href="~/SedesEmpresa/ModificarSedesEmpresa/?codSede=@fila.CodSede&codEmp=@fila.CodEmp"><i class="fa fa-trash-o"></i></a>
+                                                                }
+
+                                                            }
+
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+
+                                                                }
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </fieldset>
+                         </div>
+
+                 }*@
+
+        </div>
     </section>
 </div>
 
+<script>
+    $(document).ready(function () {
 
+        var heights = $(".alto").map(function () {
+            return $(this).height();
+        }).get(),
+
+        maxHeight = Math.max.apply(null, heights);
+
+        $(".alto").height(maxHeight);
+
+
+        var ALT = 18; var G = 71; var presiono1 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 && (e.keyCode == G)) {
+                $("#grabar").click();
+            }
+            else if (presiono1 && (e.keyCode == 112)) {
+                $(location).attr("href", "../Master/Index");
+            }
+        });
+
+
+        $(document).keyup(function (e) {
+
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
+
+    });
+</script>
 
 
 

@@ -25,17 +25,22 @@
 
             <form method="post" action="">
 
+                <div class="box-header">
+
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="ListaPerfil">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+
+                </div>
+
                 <div class="box-body">
+
+
                     <div class="col-md-6">
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-
-
-                      
-                    
-
 
                         <div class="form-group">
                             <div class="col-md-3">
@@ -72,8 +77,7 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <center>
-                                    <button type="submit" value="Modificar" class="btn btn-danger">Registrar</button>
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                                    <button type="submit" value="Modificar" class="btn btn-danger" style="background-color:#13D003; border:0" id="grabar">Registrar</button>
                                 </center>
                             </div>
                         </div>
@@ -86,4 +90,28 @@
     </section>
 </div>
 
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#grabar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "ListaPerfil");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "ListaPerfil";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>
 

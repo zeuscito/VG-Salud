@@ -1,0 +1,62 @@
+﻿
+@model IEnumerable<VgSalud.Models.E_Informes>
+
+@{
+    ViewBag.Title = "GenerarQR";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Informes</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-info-circle"></i>Informes</a></li>
+            <li class="active">Consultar Informes</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+
+                    </div>
+                    <br />
+                    <br />
+
+                    <fieldset>
+
+                        <legend style="margin-left:3%; width:96%">Generar Codigo QR</legend>
+
+                        <div class="box-body">
+
+                            <div class="col-md-8 col-md-offset-2" style="padding-left:44px;padding-right: 115px;">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Ingrese Dato</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" name="CodQR" id="CodQR" placeholder="Ingrese Codigo .." class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success"><span class="fa fa-cogs"> </span> Generar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            
+
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>

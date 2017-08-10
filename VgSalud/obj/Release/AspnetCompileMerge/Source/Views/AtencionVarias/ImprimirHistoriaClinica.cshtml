@@ -1,0 +1,176 @@
+﻿@model VgSalud.Models.E_Pacientes
+
+
+@{
+    Layout = null;
+    ViewBag.Title = "ImprimirHistoriaClinica";
+
+    var Lista= (List<VgSalud.Models.E_Pacientes>)ViewBag.ListaEspec;
+}
+
+<head>
+    <title>Ticket</title>
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/jquery.PrintArea.js"></script>
+    <style type="text/css">
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+            font-size: 11px;
+        }
+
+        table {
+            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+            font-size: 11px;
+        }
+    </style>
+
+</head>
+
+<div id="ImprimirHistoria" style="width: 95%;font-family: Consolas;font-size: 13px;margin-left:0%;margin-top:100px;">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="15%" align="right">Fecha de Filiación:</td>
+            <td width="10" align="center">:</td>
+            <td width="15%"><label id="FechaFil"></label></td>
+            <td width="15%">&nbsp;</td>
+            <td width="10" align="center">&nbsp;</td>
+            <td width="15%">&nbsp;</td>
+            <td width="15%">&nbsp;</td>
+            <td width="10" align="center">&nbsp;</td>
+            <td width="15%">N° Historia </td>
+        </tr>
+        <tr>
+            <td align="right">Hora</td>
+            <td align="center">:</td>
+            <td><label id="HoraFil"></label></td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">@Model.Historia</td>
+        </tr>
+        <tr>
+            <td align="right">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="right">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="right">Paciente</td>
+            <td align="center">:   </td>
+            <td colspan="7">@Model.nombCompleto</td>
+        </tr>
+        <tr>
+            <td align="right">Fecha Nacim.</td>
+            <td align="center">:</td>
+            <td><label id="FechaNaci"></label>   </td>
+            <td align="right">Edad</td>
+            <td align="center">:</td>
+            <td>@Model.Edad</td>
+            <td align="right">Estado Civil</td>
+            <td align="center">:</td>
+            <td>@Model.NomEstCivil</td>
+        </tr>
+        <tr>
+            <td align="right">Domicilio</td>
+            <td align="center">:</td>
+            <td colspan="7">@Model.Direcc - @Model.NomDist</td>
+        </tr>
+        <tr>
+            <td align="right">Email</td>
+            <td align="center">:</td>
+            <td>@Model.Email</td>
+            <td align="right">Telefonos</td>
+            <td align="center">:</td>
+            <td colspan="2">@Model.TelfFijo - @Model.TelfCel</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+        @foreach (var item in Lista)
+            {
+            <td align="right">Especialidad</td>
+            <td align="center">:</td>
+            <td>@item.NomEspec</td>
+            }
+            <td align="right">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td align="right">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <input type="hidden" id="Crea" value="@Model.Crea" />
+    <input type="hidden" id="FechaNac" value="@Model.FecNac" />
+
+    <br />
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var Crea = $('#Crea').val();
+        var DividirArreglo = Crea.split(' ');
+        var Columna1 = DividirArreglo[0];
+        var Columna2 = DividirArreglo[1];
+        var Columna3 = DividirArreglo[2];
+
+        $('#FechaFil').html(Columna2);
+        $('#HoraFil').html(Columna3);
+
+
+        var FechaNac = $('#FechaNac').val();
+        var Dividir = FechaNac.split(' ');
+        var Colum1 = Dividir[0];
+        var Colum2 = Dividir[1];
+
+        $('#FechaNaci').html(Colum1);
+
+
+            var ancho = $(window).width();
+            var alto = $(window).height();
+
+            var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
+            $("div#ImprimirHistoria").printArea(options);
+            //$("#imprime").fadeOut();
+
+            window.location.href = 'RegistroAtenciones?historia='+@Model.Historia;
+        });
+</script>

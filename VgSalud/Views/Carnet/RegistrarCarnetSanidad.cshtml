@@ -4,14 +4,17 @@
 @{
     ViewBag.Title = "RegistrarCarnetSanidad";
 
-    var listadoTari = (SelectList)ViewBag.listadoTari;
+    //var listadoTari = (SelectList)ViewBag.listadoTari;
+
+
+    var listadoTari = (SelectList)ViewBag.NewListaTarifa;
 
     int Historia = (int)ViewBag.Historia;
     string NombrePaciente = (string)ViewBag.NombrePaciente;
     string NroDocumento = (string)ViewBag.NroDocumento;
     string Edad = (string)ViewBag.Edad;
     int CodCue = (int)ViewBag.CodCuenta;
-    
+
 }
 
 <head>
@@ -119,6 +122,7 @@
                                         <label>Tarifa</label>
                                     </div>
                                     <div class="col-md-9">
+                                    
                                         @Html.DropDownList("CodTar", listadoTari, "[SELECCIONE TARIFA]", new { @class = "form-control select2", @style = "width:100%", @id = "codtar" })
 
                                     </div>

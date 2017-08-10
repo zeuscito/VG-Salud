@@ -19,8 +19,8 @@ namespace VgSalud.Models
         public string Crea { get; set; }
         public string Modifica { get; set; }
         public string Elimina { get; set; }
-
-
+        public string CodTar { get; set; }
+        public decimal precio { get; set; }
         public string Empresa { get; set; }
         public string Especialidad { get; set; }
         public string Sede { get; set; }
@@ -30,5 +30,8 @@ namespace VgSalud.Models
         public decimal porcentaje { get; set; }
         public string Evento { get; set; }
 
+
+        public string CodigoServicios { get; set; }
+        public string NombreServicios { get; set; }
     }
 }

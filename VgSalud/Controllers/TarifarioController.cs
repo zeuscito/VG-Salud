@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using VgSalud.Models;
+using System.Text;
 
 namespace VgSalud.Controllers
 {
@@ -81,6 +82,39 @@ namespace VgSalud.Controllers
             }
         }
 
+        public List<E_Tarifario> ListadoPerfilesFichaElectronicaRegTar(string CodEspe, string CodSede)
+        {
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListaPerfilFichaElectronica_RegTarifa", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodEsp", CodEspe);
+                    cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Tarifario Etip = new E_Tarifario();
+
+                            Etip.idPFA = dr.GetInt32(0);
+                            Etip.Nombre = dr.GetString(1);
+                            Etip.contenido = dr.GetString(2);
+                            Etip.CodEspec = dr.GetString(3);
+                            Etip.Estado = dr.GetBoolean(4);
+
+                            Lista.Add(Etip);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
         public List<E_Tarifario> ListadoTarifa()
         {
             List<E_Tarifario> Lista = new List<E_Tarifario>();
@@ -90,6 +124,49 @@ namespace VgSalud.Controllers
                 using (SqlCommand cmd = new SqlCommand("Usp_Lista_Tarifario", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Tarifario Etip = new E_Tarifario();
+
+                            Etip.CodTar = dr.GetString(0);
+                            Etip.DescTar = dr.GetString(1);
+                            Etip.Precio = dr.GetDecimal(2);
+                            Etip.AfecIgcv = dr.GetBoolean(3);
+                            Etip.ModPrecTar = dr.GetBoolean(4);
+                            Etip.CodEspec = dr.GetString(5);
+                            Etip.CodTipTar = dr.GetString(6);
+                            Etip.CodSTipTar = dr.GetString(7);
+                            Etip.CodTipMon = dr.GetString(8);
+                            Etip.CodSede = dr.GetString(9);
+                            Etip.ModPrecio = dr.GetBoolean(10);
+                            Etip.EstTar = dr.GetBoolean(11);
+                            Etip.IdCtaCont = dr.GetInt32(15);
+                            Etip.idPFA = dr["idPFA"] is DBNull ? 0 : dr.GetInt32(16);
+                            Etip.TiempoApox = dr["TiempoApox"] is DBNull ? 0 : dr.GetInt32(17);
+                            Etip.CodTarE = dr.GetString(18);
+
+                            Lista.Add(Etip);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        public List<E_Tarifario> ObtenerTarifario(string id)
+        {
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_obtenerTarifa", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -244,7 +321,7 @@ namespace VgSalud.Controllers
 
             ViewBag.catePaciente = (List<E_Tarifa_CategoriaPaciente>)Session["catePaciente"];
 
-            ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica(), "idPFA", "Nombre");
+            ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica().Where(x => x.idPFA == 1), "idPFA", "Nombre");
             ViewBag.listadoCuentaContable = new SelectList(ListadoCuentaContable(), "IdCtaCont", "ConcatenadoCuenta");
             ViewBag.listadoEspecialidad = new SelectList(e.ListadoEspecialidades().Where(x => x.EstEspec == true && x.CodSed == sede), "CodEspec", "NomEspec");
             ViewBag.listadoCategoria = new SelectList(cat.listadoCategoriaCliente().Where(d => d.EstCatPac == true), "CodCatPac", "DescCatPac", ViewBag.codcat);
@@ -261,25 +338,57 @@ namespace VgSalud.Controllers
             ViewBag.catePaciente = (List<E_Tarifa_CategoriaPaciente>)Session["catePaciente"];
             return View();
         }
-
+        
         [HttpPost]
-        public ActionResult RegistrarTarifario(E_Tarifario tar)
+        public JsonResult RegistrarTarifario(string descripcion, double costo, int duracion, string especialidad, string tipoTar,
+            string subTipTar, int perfil, int cuentaConta, string moneda, int estado, int afecIGV, int regDoc, int precMod, string[] arrayPrecios = null)
         {
+            if (arrayPrecios == null)
+            {
+                var listaCatPre = cat.listadoCategoriaCliente().Where(x => x.EstCatPac == true);
+                int contador = 0;
+                arrayPrecios = new string[listaCatPre.Count()];
+                foreach (var a in listaCatPre)
+                {
+                    arrayPrecios[contador] = a.CodCatPac + "," + a.DescCatPac + "," + 0;
+                    contador++;
+                }
+            }
+            else
+            {
+                E_Tarifario t = new E_Tarifario();
+                List<E_Tarifario> list = new List<E_Tarifario>();
+                List<E_Tarifario> listGeneral = new List<E_Tarifario>();
+                foreach (var a in arrayPrecios)
+                {
+                    E_Tarifario tt = new E_Tarifario();
+                    tt.contenido = a;
+                    listGeneral.Add(tt);
+                    string[] returnData = a.Split(',');
+                    t.CodCatPac = returnData[0].ToString();
+                    list.Add(t);
+                }
+                var listaCatPre = from c in cat.listadoCategoriaCliente().Where(x => x.EstCatPac == true) where !(from o in list select o.CodCatPac).Contains(c.CodCatPac) select c;
+                int contador = arrayPrecios.Length;
+                foreach (var a in listaCatPre)
+                {
+                    E_Tarifario tt = new E_Tarifario();
+                    tt.contenido = a.CodCatPac + "," + a.DescCatPac + "," + 0;
+                    listGeneral.Add(tt);
+                }
+                arrayPrecios = new string[listGeneral.Count];
+                int cuenta = 0;
+                foreach (var a in listGeneral)
+                {
+                    arrayPrecios[cuenta] = a.contenido;
+                    cuenta++;
+                }
+            }
 
 
             string sede = Session["codSede"].ToString();
-
-            ViewBag.listadoEspecialidad = new SelectList(e.ListadoEspecialidades().Where(x => x.EstEspec == true && x.CodSed == sede), "CodEspec", "NomEspec", tar.CodEspec);
-            ViewBag.listadoCategoria = new SelectList(cat.listadoCategoriaCliente().Where(d => d.EstCatPac == true), "CodCatPac", "DescCatPac");
-            ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica(), "idPFA", "Nombre", tar.idPFA);
-            ViewBag.listadoCuentaContable = new SelectList(ListadoCuentaContable(), "IdCtaCont", "ConcatenadoCuenta", tar.IdCtaCont);
-            ViewBag.listadoTipoTarifa = new SelectList(tt.ListadoTipoTarifa().Where(d => d.EstTipTar == true), "CodTipTar", "DescTipTar");
-            ViewBag.listadoSubTipoTarifa = new SelectList(st.ListadoSTipoTarifa().Where(d => d.EstTipTar == true), "CodSTipTar", "DescSTipTar");
-
             string Crea = Session["usuario"] + " " + DateTime.Now + " " + Environment.MachineName;
-            SedesController Sed = new SedesController();
-            ViewBag.ListaSedes = new SelectList(Sed.ListadoSedes(), "CodSede", "NomSede", tar.CodSede);
-
+            
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
             {
                 con.Open();
@@ -291,27 +400,20 @@ namespace VgSalud.Controllers
                         da.CommandType = CommandType.StoredProcedure;
 
                         da.Parameters.AddWithValue("@CodTar", "");
-                        da.Parameters.AddWithValue("@DescTar", tar.DescTar.ToUpper());
-                        da.Parameters.AddWithValue("@Costo", tar.Precio);
-                        da.Parameters.AddWithValue("@AfecIgcv", tar.AfecIgcv);
-                        da.Parameters.AddWithValue("@ModPrecTar", tar.ModPrecTar);
-                        da.Parameters.AddWithValue("@CodEspec", tar.CodEspec);
-                        da.Parameters.AddWithValue("@CodTipTar", tar.CodTipTar);
-                        if (tar.CodSTipTar == null)
-                        {
-                            da.Parameters.AddWithValue("@CodSTipTar", "");
-                        }
-                        else
-                        {
-                            da.Parameters.AddWithValue("@CodSTipTar", tar.CodSTipTar);
-                        }
-                        da.Parameters.AddWithValue("@CodTipMon", tar.CodTipMon);
+                        da.Parameters.AddWithValue("@DescTar", descripcion.ToUpper());
+                        da.Parameters.AddWithValue("@Costo", costo);
+                        da.Parameters.AddWithValue("@AfecIgcv", afecIGV);
+                        da.Parameters.AddWithValue("@ModPrecTar", regDoc);
+                        da.Parameters.AddWithValue("@CodEspec", especialidad);
+                        da.Parameters.AddWithValue("@CodTipTar", tipoTar);
+                        da.Parameters.AddWithValue("@CodSTipTar", subTipTar);
+                        da.Parameters.AddWithValue("@CodTipMon", moneda);
                         da.Parameters.AddWithValue("@CodSede", sede);
-                        da.Parameters.AddWithValue("@ModPrecio", tar.ModPrecio);
-                        da.Parameters.AddWithValue("@EstTar", tar.EstTar);
-                        da.Parameters.AddWithValue("@IdCtaCont", tar.IdCtaCont);
-                        da.Parameters.AddWithValue("@idPFA", tar.idPFA);
-                        da.Parameters.AddWithValue("@TiempoApox", tar.TiempoApox);
+                        da.Parameters.AddWithValue("@ModPrecio", precMod);
+                        da.Parameters.AddWithValue("@EstTar", estado);
+                        da.Parameters.AddWithValue("@IdCtaCont", cuentaConta);
+                        da.Parameters.AddWithValue("@idPFA", perfil);
+                        da.Parameters.AddWithValue("@TiempoApox", duracion);
                         da.Parameters.AddWithValue("@Crea", Crea);
                         da.Parameters.AddWithValue("@Modifica", "");
                         da.Parameters.AddWithValue("@Elimina", "");
@@ -320,111 +422,36 @@ namespace VgSalud.Controllers
 
                         string Resu = (string)da.ExecuteScalar();
                         string Codigo = Convert.ToString(Resu);
-
-                        var cuenta = (List<E_Tarifa_CategoriaPaciente>)Session["catePaciente"];
-                        var evalua = (List<E_Categoria_Paciente>)cat.listadoCategoriaCliente().Where(x => x.EstCatPac == true).ToList();
-                        var evaluaF = (List<E_Categoria_Paciente>)cat.listadoCategoriaCliente().ToList();
-                        //if (cuenta.Count() == evalua.Count())
-                        //{
-                        string cadena = "";
-                        if (Resu.Length == 6)
+                        
+                        foreach (var a in arrayPrecios)
                         {
-                            foreach (E_Tarifa_CategoriaPaciente it in (List<E_Tarifa_CategoriaPaciente>)Session["catePaciente"])
-                            {
+                            string[] returnData = a.Split(',');
+                            SqlCommand cmd = new SqlCommand("usp_MtoTarifa_CategoriaPaciente", con, tr);
+                            cmd.CommandType = CommandType.StoredProcedure;
 
-                                SqlCommand cmd = new SqlCommand("usp_MtoTarifa_CategoriaPaciente", con, tr);
-                                cmd.CommandType = CommandType.StoredProcedure;
-
-                                cmd.Parameters.AddWithValue("@CodTarCate", "");
-                                cmd.Parameters.AddWithValue("@CodCatPac", it.CodCatPac);
-                                cmd.Parameters.AddWithValue("@CodTar", Codigo);
-                                cmd.Parameters.AddWithValue("@Precio", it.Precio);
-                                cmd.Parameters.AddWithValue("@Crea", Crea);
-                                cmd.Parameters.AddWithValue("@Modifica", "");
-                                cmd.Parameters.AddWithValue("@Elimina", "");
-                                cmd.Parameters.AddWithValue("@Evento", "1");
-                                if (cadena.Length < 5)
-                                    cadena = cmd.ExecuteScalar().ToString();
-                                else
-                                {
-                                    cadena += "," + cmd.ExecuteScalar().ToString();
-                                }
-
-
-                            }
-
-                            string[] validador = cadena.Split(',');
-
-                            var cate = (List<E_Tarifa_CategoriaPaciente>)Session["catePaciente"];
-
-
-                            if (validador.Length == evaluaF.Count())
-                            {
-                                tr.Commit();
-                                ViewBag.mensaje = "Pedido registrado";
-                            }
-                            else
-                            {
-
-
-                                foreach (var aa in evaluaF)
-                                {
-                                    if (aa.EstCatPac)
-                                    {
-
-                                        SqlCommand cmd12 = new SqlCommand("usp_Validador_CodTar", con, tr);
-                                        cmd12.CommandType = CommandType.StoredProcedure;
-
-                                        cmd12.Parameters.AddWithValue("@CodTar", Codigo);
-                                        cmd12.Parameters.AddWithValue("@CodCatPac", aa.CodCatPac);
-                                        int Result = int.Parse(cmd12.ExecuteScalar().ToString());
-                                        if (Result == 0)
-                                        {
-                                            SqlCommand cmd13 = new SqlCommand("usp_MtoTarifa_CategoriaPaciente", con, tr);
-                                            cmd13.CommandType = CommandType.StoredProcedure;
-
-                                            cmd13.Parameters.AddWithValue("@CodTarCate", "");
-                                            cmd13.Parameters.AddWithValue("@CodCatPac", aa.CodCatPac);
-                                            cmd13.Parameters.AddWithValue("@CodTar", Codigo);
-                                            cmd13.Parameters.AddWithValue("@Precio", 0);
-                                            cmd13.Parameters.AddWithValue("@Crea", Crea);
-                                            cmd13.Parameters.AddWithValue("@Modifica", "");
-                                            cmd13.Parameters.AddWithValue("@Elimina", "");
-                                            cmd13.Parameters.AddWithValue("@Evento", "1");
-                                            cmd13.ExecuteNonQuery();
-                                        }
-                                    }
-
-
-
-                                }
-                                tr.Commit();
-                                ViewBag.mensaje = "Pedido registrado";
-                            }
-
-
+                            cmd.Parameters.AddWithValue("@CodTarCate", "");
+                            cmd.Parameters.AddWithValue("@CodCatPac", returnData[0]);
+                            cmd.Parameters.AddWithValue("@CodTar", Codigo);
+                            cmd.Parameters.AddWithValue("@Precio", returnData[2]);
+                            cmd.Parameters.AddWithValue("@Crea", Crea);
+                            cmd.Parameters.AddWithValue("@Modifica", "");
+                            cmd.Parameters.AddWithValue("@Elimina", "");
+                            cmd.Parameters.AddWithValue("@Evento", "1");
+                            cmd.ExecuteNonQuery();
 
                         }
-                        else
-                        {
-                            ViewBag.mensaje = "No se pudo registrar";
-                            return RedirectPermanent("ListarTarifario/?mensaje=mal1");
-                        }
 
+                        tr.Commit();
+                        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
 
                     }
                     catch (Exception e)
                     {
                         tr.Rollback();
-                        ViewBag.mensaje = "Error Datos [NO VALIDOS]";
-                        return View();
+                        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
                     finally { con.Close(); }
                 }
-
-                Session.Remove("catePaciente");
-
-                return RedirectPermanent("ListarTarifario/?mensaje=bien");
             }
         }
 
@@ -756,7 +783,8 @@ namespace VgSalud.Controllers
 
         public ActionResult ObtenerPerfilFichaElectronica(string CodEspec)
         {
-            var evalua = (List<E_Tarifario>)(from a in ListadoPerfilesFichaElectronica() where a.CodEspec == CodEspec || a.CodEspec == "ES004" select a).ToList();
+            string CodSede = Session["codSede"].ToString();
+            var evalua = (List<E_Tarifario>)(from a in ListadoPerfilesFichaElectronicaRegTar(CodEspec, CodSede) select a).ToList();
             if (evalua.Count() != 0)
             {
                 return Json(evalua, JsonRequestBehavior.AllowGet);
@@ -777,6 +805,7 @@ namespace VgSalud.Controllers
 
         public ActionResult ModificarTarifa(string id, string var = null)
         {
+            var traeData = ObtenerTarifario(id).FirstOrDefault();
 
             string sede = Session["codSede"].ToString();
 
@@ -793,7 +822,7 @@ namespace VgSalud.Controllers
             ViewBag.listadoCategoria = new SelectList(cat.listadoCategoriaCliente().Where(d => d.EstCatPac == true), "CodCatPac", "DescCatPac",var);
             ViewBag.listadoTipoTarifa = new SelectList(tt.ListadoTipoTarifa().Where(d => d.EstTipTar == true), "CodTipTar", "DescTipTar");
             ViewBag.listadoSubTipoTarifa = new SelectList(st.ListadoSTipoTarifa().Where(d => d.EstTipTar == true), "CodSTipTar", "DescSTipTar");
-            ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica(), "idPFA", "Nombre");
+            ViewBag.listadoPerfilFE = new SelectList(ListadoPerfilesFichaElectronica().Where(x => x.idPFA == 1), "idPFA", "Nombre", traeData.idPFA);
             ViewBag.listadoCuentaContable = new SelectList(ListadoCuentaContable(), "IdCtaCont", "ConcatenadoCuenta");
 
             var lista = (from x in ListadoTarifa() where x.CodTar == id select x).FirstOrDefault();
@@ -895,7 +924,7 @@ namespace VgSalud.Controllers
                         da.Parameters.AddWithValue("@CodTipTar", tar.CodTipTar);
                         if (tar.CodSTipTar == null)
                         {
-                            da.Parameters.AddWithValue("@CodSTipTar", "");
+                            da.Parameters.AddWithValue("@CodSTipTar", "     ");
                         }
                         else
                         {
@@ -1012,6 +1041,15 @@ namespace VgSalud.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
 
+
+        }
+
+        [HttpPost]
+        public JsonResult ListaCategoriaPacientes(double precio)
+        {
+            var listado = cat.listadoCategoriaCliente().Where(d => d.EstCatPac == true).ToList();
+            
+            return Json(new { listado, success = true }, JsonRequestBehavior.AllowGet);
 
         }
 

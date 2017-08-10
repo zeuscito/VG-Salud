@@ -46,6 +46,34 @@
 
 </script>
 
+<style>
+    .cssToolTip {
+        position: relative; /* Esta clase tiene que tener posicion relativa */
+        color: #ff8c00; /* Color del texto */
+    }
+
+        /* El tooltip */
+        .cssToolTip span {
+            background: rgba(20,20,20,0.9) url('img/info.gif') center left 5px no-repeat;
+            border: 2px solid #87cefa;
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px #333;
+            color: #87cefa;
+            display: none; /* El tooltip por defecto estara oculto */
+            font-size: 0.8em;
+            padding: 10px 10px 10px 35px;
+            max-width: 6000px;
+            position: absolute; /* El tooltip se posiciona de forma absoluta para no modificar el aspezto del resto de la pagina */
+            top: 15px; /* Posicion apartir de la parte superior del primer elemento padre con posicion relativa */
+            left: 100px; /* Posicion apartir de la parte izquierda del primer elemento padre con posicion relativa */
+            z-index: 100; /* Poner un z-index alto para que aparezca por encima del resto de elementos */
+        }
+
+        /* El tooltip cuando se muestra */
+        .cssToolTip:hover span {
+            display: inline; /* Para mostrarlo simplemente usamos display block por ejemplo */
+        }
+</style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>Tarifario</h1>
@@ -57,6 +85,9 @@
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
+
+
+
                 <div class="box">
 
                     @{
@@ -65,131 +96,217 @@
                         if (abc1 != null)
                         {
                             <div class="box-header">
-                                <a href="~/Tarifario/RegistrarTarifario" class="btn btn-danger">Registrar nueva Tarifa &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                                    <br />
+                                </div>
+                                <div style="float:left; padding:0% 1% 0 1%">
+                                    <a href="~/Tarifario/RegistrarTarifario"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                                </div>
+
                             </div>
                             <br />
                         }
 
                     }
-
-                    
-                    <div class="box-header">
-                        <h3 class="box-title">Lista de Tarifas</h3>
-                    </div>
                     <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Descripción</th>
-                                    <th>Afecta IGV</th>
-                                    <th>Requiere Pago a DR.</th>
-                                    <th>Especialidad</th>
-                                    <th>Tipo de tarifa</th>
-                                    <th>Sub tipo tarifa</th>
-                                    <th>Moneda</th>
-                                    <th>Estado</th>
-                                    <th><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <fieldset>
+                            <legend style="margin-left: 50px;">Lista</legend>
+                            <div class="col-md-12" style="margin-left: 35px;padding-right: 85px">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>Codigo</th>
+                                            <th>Descripción</th>
+                                            <th>Afecta IGV</th>
+                                            <th>Requiere Pago a DR.</th>
+                                            <th>Especialidad</th>
+                                            <th>Tipo de tarifa</th>
+                                            <th>Sub tipo tarifa</th>
+                                            <th>Moneda</th>
+                                            <th>Estado</th>
+                                            <th style="text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
 
-                                @foreach (var item in Model)
-                                {
+                                        @foreach (var item in Model)
+                                        {
 
-                                    <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.CodTar)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
-                                        @if (item.AfecIgcv == true) {
-                                        <td>Si</td>
-                                        } else {
-                                        <td>No</td>            
-                                        }
-                                        @if (item.ModPrecTar == true)
-                                        {
-                                            <td>Si</td>
-                                        }
-                                        else
-                                        {
-                                            <td>No</td>
-                                        }
-                                        @foreach (var es in especialidad)
-                                        {
-                                            if (es.CodEspec == item.CodEspec)
-                                            {
-                                                <td>@es.NomEspec</td>
-                                            }
-                                        }
-                                        @foreach (var ttl in tipoTarifa)
-                                        {
-                                            if (ttl.CodTipTar == item.CodTipTar)
-                                            {
-                                                <td>@ttl.DescTipTar</td>
-                                            }
-                                           
-                                        }
-                                        @foreach (var stl in subTipoTarifa)
-                                        {
-                                            if (stl.CodSTipTar == item.CodSTipTar)
-                                            {
-                                                <td>@stl.DescSTipTar</td>
-                                            }
-                                            if (item.CodSTipTar.Equals("     "))
-                                            {
-                                                <td>Ninguno</td>
-                                                break;
-                                            }
-                                        }
-                                        @foreach (var tml in tipoMoneda)
-                                        {
-                                            if (tml.CodTipMon == item.CodTipMon)
-                                            {
-                                                <td>@tml.DescTipMon</td>
-                                            }
-                                        }                                        
-                                        <td>@Html.DisplayFor(modelItem => item.EstTar)</td>
-                                        <td>
-                                            <div class="tools">
-                                                @{
-
-                                                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarTarifa.cshtml");
-                                                    if (abc2 != null)
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.CodTar)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                                @if (item.AfecIgcv == true)
+                                                {
+                                                    <td>Si</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>No</td>
+                                                }
+                                                @if (item.ModPrecTar == true)
+                                                {
+                                                    <td>Si</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>No</td>
+                                                }
+                                                @foreach (var es in especialidad)
+                                                {
+                                                    if (es.CodEspec == item.CodEspec)
                                                     {
-                                                        <a title="Editar" href="~/Tarifario/ModificarTarifa/@item.CodTar"><i class="fa fa-edit"></i></a>
+                                                        <td>@es.NomEspec</td>
                                                     }
-
-                                                    var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarTarifario.cshtml");
-                                                    if (abc3 != null)
+                                                }
+                                                @foreach (var ttl in tipoTarifa)
+                                                {
+                                                    if (ttl.CodTipTar == item.CodTipTar)
                                                     {
-                                                        if (item.EstTar == true)
-                                                        {
-                                                            <a title="Eliminar" href="~/Tarifario/Eliminar/@item.CodTar"><i class="fa fa-trash-o"></i></a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a title="Activar" href="~/Tarifario/Activar/@item.CodTar"><i class="fa fa-plus-square"></i></a>
-                                                        }
+                                                        <td>@ttl.DescTipTar</td>
                                                     }
 
                                                 }
+                                                @foreach (var stl in subTipoTarifa)
+                                                {
+                                                    if (stl.CodSTipTar == item.CodSTipTar)
+                                                    {
+                                                        <td>@stl.DescSTipTar</td>
+                                                    }
+                                                    if (item.CodSTipTar.Equals("     "))
+                                                    {
+                                                        <td>Ninguno</td>
+                                                        break;
+                                                    }
+                                                }
+                                                @foreach (var tml in tipoMoneda)
+                                                {
+                                                    if (tml.CodTipMon == item.CodTipMon)
+                                                    {
+                                                        <td>@tml.DescTipMon</td>
+                                                    }
+                                                }
+                                                <td>@Html.DisplayFor(modelItem => item.EstTar)</td>
+                                                <td style="text-align:center">
+                                                    <div class="tools">
+                                                        @{
 
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                            var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ModificarTarifa.cshtml");
+                                                            if (abc2 != null)
+                                                            {
+                                                                <a title="Editar" href="~/Tarifario/ModificarTarifa/@item.CodTar"><i class="fa fa-edit"></i></a>
+                                                            }
 
-                                }
+                                                            var abc3 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "EliminarTarifario.cshtml");
+                                                            if (abc3 != null)
+                                                            {
+                                                                if (item.EstTar == true)
+                                                                {
+                                                                    <a title="Eliminar" href="~/Tarifario/Eliminar/@item.CodTar"><i class="fa fa-trash-o"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a title="Activar" href="~/Tarifario/Activar/@item.CodTar"><i class="fa fa-plus-square"></i></a>
+                                                                }
+                                                            }
 
-                            </tbody>
+                                                            <button type="button" value="@item.CodTar" class="mensaje" style="background-color:transparent;border:0px">
+                                                                <i class="fa fa-money"></i>
+                                                            </button>
+                                                        }
 
-                        </table>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
+                                                            }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </fieldset>
+                   
+                     
+
+
+                        <div class="hidden relatoDes" >
+                           <table class="table table-hover table-striped table-bordered">
+                               <thead>
+                                   <tr class="headTabla" style="height:5px;width:15px">
+                                       <th width="5px" height="5px">Categoria</th>
+                                       <th width="5px"  height="5px">Precio</th>
+                                   </tr> 
+                                   
+                             </thead>
+                               <tbody id="tbody">
+
+                               </tbody>
+                           </table>
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
         </div>
+
     </section>
 </div>
 <div class="control-sidebar-bg">
 </div>
 
 
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 116)) {
+            $(location).attr("href", "RegistrarTarifario");
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+    $(document).ready(function () {
+
+        $(".mensaje").mouseover(function () {
+
+            var valor = this.value;
+            $.get('@Url.Action("GetCategoria","Tarifario")', { codtar: valor },
+                function (response) {
+                    $("#tbody").empty();
+                    $("#tbody").append(response);
+            });
+
+         $(".mensaje").popover(
+        {
+           content: function () {
+           return $('.relatoDes').html();
+         },
+          html: true,
+          placement: 'left',
+          trigger: 'hover',
+          title: 'Precios'
+
+         });
+        });
+
+
+
+    });
+
+</script>

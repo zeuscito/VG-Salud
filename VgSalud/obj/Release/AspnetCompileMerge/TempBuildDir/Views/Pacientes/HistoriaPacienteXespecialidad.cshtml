@@ -1,0 +1,275 @@
+﻿
+@{
+    ViewBag.Title = "HistoriaPacienteXespecialidad";
+
+    var especialidad = (SelectList)ViewBag.especialidad; 
+    var historial = (List<VgSalud.Models.E_Historial>)ViewBag.historial;
+    var diagnostico = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.diagnostico;
+    var receta = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.receta;
+    var examen = (List<VgSalud.Models.E_Ficha_Electronica>)ViewBag.examen;
+    var md3 = "class=probando col-md-3";
+    var md6 = "class=probando col-md-6";
+    var id = "#exampleModal";
+
+}
+<script>
+    $(document).ready(function () {
+        @if (ViewBag.modal != "2") {
+        <text>
+        $('#myModal').modal('show');
+        </text>
+       }
+    });
+</script>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Historia de Paciente</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Médico</a></li>
+            <li class="active">Historia de Paciente</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"><span style="color:coral;margin-left: 22px;">@ViewBag.Nombre</span></h3>
+                    </div>
+                    <form action="" method="post">
+                        <div class="box-header">
+                            <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                                <a href="./ListaPacientes">
+                                    <center style="margin-left: 12px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <fieldset>
+                                <legend style="margin-left: 22px;">Filtro</legend>
+                                <div class="col-md-12">
+                                    <center>
+                                        <div class="col-md-2"> </div>
+                                        <div class="col-md-8">
+                                            <div class="col-md-12">
+
+                                                <input type="hidden" name="historia" value="@ViewBag.historia" />
+                                                <div class="col-md-3">
+
+                                                    <label style="margin-right: 158px;">Fecha Inicio</label>
+                                                    <input type="text" name="fechaI" id="fechaI" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaI" />
+
+
+                                                </div>
+                                                <div class="col-md-3">
+
+                                                    <label style="margin-right: 162px;">Fecha Final</label>
+                                                    <input type="text" name="fechaF" id="fechaf" maxlength="10" class="form-control  datepicker" value="@ViewBag.fechaF" />
+
+
+                                                </div>
+                                                <div class="col-md-4">
+                                                 <label style="margin-right: 280px;">Especialidad</label>
+                                                  @Html.DropDownList("CodEspec",especialidad,"[NO SELECCIONADO]", new { @class="form-control select2" })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <br />
+                                                    <button type="submit" style="background-color:#13D003; border:#13D003;padding: 10px 16px 12px 15px" name="Evento" value="1" class="btn btn-danger buscar"><i class="glyphicon glyphicon-search"></i></button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2"> </div>
+                                    </center>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend style="margin-left: 22px;">Lista</legend>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered table-hover table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Servicio</th>
+                                                <th>Medico</th>
+                                                <th>Fecha Atencion</th>
+                                                <th>Fecha de Venta</th>
+                                                <th>Turno</th>
+                                                <th>Tarifa</th>
+                                                
+                                                <th>
+                                                    
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        @foreach (var item1 in historial)
+                                        {
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>@item1.NomServ</td>
+                                                    <td>@item1.NomMed</td>
+                                                    <td>@item1.FecRegMed</td>
+                                                    <td>@item1.FechaPago.ToShortDateString()</td>
+                                                    <td>@item1.Turno</td>
+                                                    <td>@item1.DescripcionProc</td>
+                                                    <td>
+                                                        <button type="submit" name="arreglo" class="ver" value="@item1.FE,@item1.CodEspec," 
+                                                             style="background-color: transparent; border: 0px transparent" data-toggle="modal" data-target="#myModal">
+                                                            <i class="glyphicon glyphicon-align-justify"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                    </table>
+                                </div>
+                            </fieldset>
+
+
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                                                @if (diagnostico != null)
+                                                {
+                                                    <div class="box-header">
+                                                        <h3 class="box-title">Diagnostico</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <table class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr class="headTabla">
+
+                                                                    <th>CIE10</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                @foreach (var item2 in diagnostico)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item2.CIe10 - @item2.Descripcion.ToUpper()</td>
+                                                                    </tr>
+
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                }
+
+                                            </div>
+                                            <br />
+                                            @if (receta != null)
+                                            {
+                                                <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+
+                                                    <div class="box-header">
+                                                        <h3 class="box-title">Receta</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <table class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr class="headTabla">
+
+                                                                    <th>Receta</th>
+                                                                    <th>Dosis</th>
+                                                                    <th>Cantidad</th>
+                                                                    <th>Duracion</th>
+                                                                    <th>Frecuencia</th>
+                                                                    <th>Via Admin.</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item2 in receta)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item2.Descripcion</td>
+                                                                        <td>@item2.Dosis</td>
+                                                                        <td>@item2.cant</td>
+                                                                        <td>@item2.Duracion</td>
+                                                                        <td>@item2.Frecuencia</td>
+                                                                        <td>@item2.ViaAdmin</td>
+                                                                    </tr>
+
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+                                            }
+                                            <br />
+                                            @if (examen != null)
+                                            {
+                                                <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                                                    <div class="box-header">
+                                                        <h3 class="box-title">Examen Auxiliar</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <table class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr class="headTabla">
+
+                                                                    <th>Tarifario</th>
+                                                                    <th>Cant</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item4 in examen)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item4.DescTar</td>
+                                                                        <td>@item4.cant</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                
+
+                        </div>
+                        <input type="hidden" name="Evento" id="Evento" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".ver").click(function () {
+            $("#Evento").val("2");
+        });
+
+        $(".buscar").click(function () {
+            $("#Evento").val("1");
+        });
+
+    });
+
+</script>

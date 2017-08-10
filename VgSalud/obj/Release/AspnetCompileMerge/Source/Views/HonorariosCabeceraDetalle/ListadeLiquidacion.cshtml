@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "ListadeLiquidacion";
+    var medico = (List<VgSalud.Models.E_Honorario_Cabecera_Detalle>)ViewBag.medico;
+    var servicio = (List<VgSalud.Models.E_Honorario_Cabecera_Detalle>)ViewBag.servicio;
+    var ListaServicio = (SelectList)ViewBag.ListaServicio;
+    var ListaMedico = (SelectList)ViewBag.ListaMedico;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Liquidacion</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Acceso</a></li>
+            <li class="active">Lista de Liquidacion</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="col-md-3">
+                            <a href="~/HonorariosCabeceraDetalle/RegistrarHonorarios" style="background-color:#13D003; border:0" class="btn btn-danger">Liquidacion por servicio<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a><br /><br />
+                            <a href="~/HonorariosCabeceraDetalle/RegistrarHonorariosMedicoMixto" style="background-color:#13D003; border:0" class="btn btn-danger">Liquidacion por medico<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <form action="" method="post">
+                                            @*<div class="col-md-"></div>*@
+                                            <div class="col-md-12">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-3">
+                                                    <label class="radio-inline"><input type="radio" name="optradio" id="medico"><strong>Medico</strong></label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="radio-inline"><input type="radio" name="optradio" id="servicio"><strong>Servicio</strong></label>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <br />
+                                                <div class="col-md-4">
+
+                                                    <div class="servicio">
+                                                        <label class="servicio">Servicio</label>
+                                                        @Html.DropDownList("CodServ", ListaServicio, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "ser" })
+                                                    </div>
+
+                                                    <div class="medico">
+                                                        <label class="medico">Medico</label>
+                                                        @Html.DropDownList("CodMed", ListaMedico, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "med" })
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-3">
+
+                                                    <label>Fecha Inicio</label>
+                                                    <input type="text" name="fechai" class="form-control datepicker" value="@ViewBag.fechai" />
+                                                </div>
+                                                <div class="col-md-3">
+
+                                                    <label>Fecha Final</label>
+                                                    <input type="text" name="fechaf" class="form-control datepicker" value="@ViewBag.fechaf" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <br />
+                                                    <button type="submit" class="btn btn-danger boton" style="padding: 7px 15px;"><i class="glyphicon glyphicon-search"></i></button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3"></div>
+
+                        @*@{
+                                var abc = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarAcceso.cshtml");
+                            }
+                            @if (abc != null)
+                            {
+                                <div class="box-header">
+                                    <a href="~/Acceso/RegistrarAcceso" class="btn btn-danger">Registrar nuevo Acceso &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
+                                </div>
+                            }*@
+
+                        @*<h4 style="padding:2%">
+                            Exportar:
+                            <a href="~/Reportes/GeneraLiquidacion/?id=PDF&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                            <a href="~/Reportes/GeneraLiquidacion/?id=Word&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                            <a href="~/Reportes/GeneraLiquidacion/?id=Excel&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                        </h4>*@
+
+                        <div class="col-md-12">
+                            <div class="box-header">
+                                <h3 class="box-title">Lista de Liquidacion</h3>
+                            </div>
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+
+                                            <th>Codigo</th>
+                                            <th>Servicio/Medico</th>
+                                            <th>Fecha Liquidacion</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Final</th>
+                                            <th>Tipo Documento</th>
+                                            <th>Total Liq.</th>
+                                            <th><i class="glyphicon glyphicon-align-justify"></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @if (servicio != null)
+                                        {
+                                            foreach (var item in servicio)
+                                            {
+
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item.IdC)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.CodServ)</td>
+                                                    <td>@item.FechaLiquidacion.ToShortDateString()</td>
+                                                    <td>@item.FechaInicio.ToShortDateString()</td>
+                                                    <td>@item.FechaFinal.ToShortDateString()</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.TipoDoc)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                                    <td>
+                                                        <div class="tools">
+                                                            <a href="VerDetalleHonorarios/@item.IdC"><i class="glyphicon glyphicon-align-justify"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        }
+                                        else if (medico != null)
+                                        {
+                                            foreach (var item1 in medico)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item1.IdC)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.CodMed)</td>
+                                                    <td>@item1.FechaLiquidacion.ToShortDateString()</td>
+                                                    <td>@item1.FechaInicio.ToShortDateString()</td>
+                                                    <td>@item1.FechaFinal.ToShortDateString()</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.TipoDoc)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.Total)</td>
+                                                    <td>
+                                                        <div class="tools">
+                                                            <a href="VerDetalleHonorarios/@item1.IdC"><i class="glyphicon glyphicon-align-justify"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+
+
+
+
+
+
+    $(document).ready(function () {
+        $(".servicio").fadeOut();
+        $(".medico").fadeOut();
+        $(".boton").fadeOut();
+
+        $("#medico").change(function () {
+            if (this.checked) {
+                $(".medico").fadeIn();
+                $(".boton").fadeIn();
+                $(".servicio").fadeOut();
+                $('#ser option[value=""]').prop("selected", "selected").change();
+                //$('#medico option[value="' + value.CodMed + '"]').attr('selected', true);
+                @*$('#servicio option[value=@ViewBag.servicio]').prop('selected', 'selected').change();*@
+            }
+        });
+        $("#servicio").change(function () {
+            if (this.checked) {
+                $(".medico").fadeOut();
+                $(".boton").fadeIn();
+                $(".servicio").fadeIn();
+                $('#med option[value=""]').prop("selected", "selected").change();
+
+            }
+        });
+
+        @if (ViewBag.CodServ != "")
+             {
+                 <text>
+        $(".servicio").fadeIn();
+        $(".boton").fadeIn();
+        $('#ser option[value="@ViewBag.CodServ"]').prop("selected", "selected").change();
+        $("#servicio").attr("checked", true);
+        </text>
+             }
+             else if (ViewBag.CodMed != "") {
+                          <text>
+        $(".medico").fadeIn();
+        $(".boton").fadeIn();
+        $('#med option[value="@ViewBag.CodMed"]').prop("selected", "selected").change();
+        $("#medico").attr("checked", true);
+        </text>
+             }
+
+    });
+</script>
+
+<script>
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        else if (presiono1 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+</script>

@@ -1,0 +1,92 @@
+﻿
+@model IEnumerable<VgSalud.Models.E_Carnet_Sanitario>
+@{
+    int nro=0; 
+ }
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Carnet Sanidad</h1>
+        <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-address-card-o"></i>Carnet Sanidad</a></li>
+                <li class="active">Lista De Carnet Registrados En El Dia</li>
+            </ol>
+    </section>
+    <section class="content">
+        <div class="row" >
+            <div class="col-xs-12" >
+                <div class="box">
+                    <div class="row">
+                        <div style="float:left;margin-top:1%;margin-left:1%">
+                            <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+                        <div style="float:left;margin-top:1%;margin-left:1%">
+                            <a href="~/Carnet/RegistrarCarnetSanidad"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                        </div>
+                    </div>
+
+                    <fieldset>
+                        <legend style="margin-left:3%;width:94%">Lista Carnet Registrados En El Dia</legend>
+
+                        <div class="box-body" >
+                            <div class="table table-responsive" style="margin-left:3%;width:94%">
+                                <div class="col-md-12 " style="width:100%;">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr class="headTabla">
+                                                <th width="10%" style="text-align:center">Nro.</th>
+                                                <th width="20%" style="text-align:center">Paciente</th>
+                                                <th width="10%" style="text-align:center">Manipulador</th>
+                                                <th width="10%" style="text-align:center">TipoCarnet</th>
+                                                <th width="10%" style="text-align:center">Campaña</th>
+                                                <th width="10%" style="text-align:center">Nro. Carnet</th>
+                                                <th width="10%" style="text-align:center">Cod. Cue.</th>
+                                                <th width="10%" style="text-align:center">Estado</th>
+                                                <th width="10%" style="text-align:center"><i class="fa fa-pencil-square-o"></i></th>
+
+                                                @*<th style="width: 10%;text-align:center"><i class="fa fa-edit"></i> / <i class="fa fa-area-chart"></i> / <i class="fa fa-book"></i></th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            @foreach (var item in Model)
+                                            {
+                                                nro++;
+                                                <tr>
+                                                    <td>@nro</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.NombrePaciente)</td>
+                                                    <td style="text-align:center">@Html.DisplayFor(modelItem => item.Manipulador)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.DesCarnet)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Campana)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.NroCarnet)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.CodCue)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                                    <td style="text-align:center"><a title="Modificar" class="btn btn-info" href="ModificarCarnetSanitario?IdCarnet=@item.NroCarnet&Historia=@item.CodPaciente" action='@Url.Action("ModificarCarnetSanitario", "Carnet")'><span class="fa fa-pencil-square-o"></span> Modificar</a></td>
+
+
+                                                </tr>
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>     
+
+</div>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+
+    });
+</script>                                  
+
+

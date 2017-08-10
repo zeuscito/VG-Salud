@@ -27,6 +27,17 @@
     var sede = "";
     var tipoDoc = "";
     var Cajero = "";
+
+    var CodCue = 0;
+    var Secuencia = 0;
+
+    // AGREGADOS POR GIAN
+    var nombrepaciente = "";
+    var fechaemi = "";
+    int historiacli = 0;
+    var tipdoc = "";
+    var numdoc = "";
+    var horloca = "";
 }
 
 
@@ -63,22 +74,32 @@
             Ruc = item.Ruc;
             RazonSocial = item.RazonSocial;
             DirecRazon = item.DirRazSoc;
+            nombrepaciente = item.NomPac;
+            fechaemi = (item.FechaEmision.ToShortDateString()).ToString();
+            historiacli = item.Historia;
+            Secuencia = item.CodCaja;
+            CodCue = item.CodCue;
+            horloca = (item.HoraEmision).ToString();
         }
         foreach (var item in Doc) {
             tipoDoc += item.Etiqueta;
-            Cajero += item.CodUsu; 
+            Cajero += item.CodUsu;
         }
 
    }
     
     <div id="imprime" style="width: 300px;font-family: Consolas;
             font-size: 13px;margin-left:0px;">
-        <p align="center">
-            VG ALL SERVICES EIRL
+        <p >
+            POLICLINICO SURCO SALUD
             <br>
-            @sede.ToUpper() (SEDE)<br>
-            RUC 20600932021<br>
-            TELEFONO: +51 5348338
+            @*Jr. Ancash cd. 23 S/N El Agustino - Lima*@
+            RUC 205376715066 &nbsp; @fechaemi @horloca<br>
+            @sede<br>
+            Historia: @historiacli <br>
+            Usuario: @Cajero<br>
+            Cliente :@nombrepaciente<br />
+            Sec.: @Secuencia - Cuenta: @CodCue<br>
         </p>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             @foreach (var item in cabecera)
@@ -86,7 +107,7 @@
                 <tr>
                     <td colspan="3">@tipoDoc - N°@item.NumDoc</td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td width="80">Fecha</td>
                     <td width="10">:</td>
                     <td>@item.FechaEmision.ToShortDateString() - @item.HoraEmision</td>
@@ -110,7 +131,7 @@
                     <td>Cuenta</td>
                     <td>: </td>
                     <td>@item.CodCue</td>
-                </tr>
+                </tr>*@
 
             }
 
@@ -150,7 +171,7 @@
                 totalPago += item1.Total;
                 totalSubT += item1.SubTotal;
                 totalIgv += item1.Igv;
-                PreciUni = item1.PUnit;
+                PreciUni += item1.PUnit;
 
                 //total += item1.PUnit;
             }
@@ -177,24 +198,12 @@
                 <td align="right">&nbsp;</td>
                 <td align="right">&nbsp;</td>
             </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td align="right">Sub Total S/. :</td>
-                <td align="right">@TTotalSubT</td>
-                @*<td align="right">@subtotal.ToString("N2")</td>*@
-            </tr>
-            <tr>
-                <td></td>
-                <td align="right">IGV 18.00% S/. :</td>
-                <td align="right">@TTotalIgv</td>
-                @*<td align="right">@igv.ToString("N2")</td>*@
-            </tr>
+            
             <tr>
                 <td></td>
                 <td align="right">Total S/. :</td>
                 <td align="right">@TTotal</td>
                 
-                @*<td align="right">@totalg.ToString("N2")</td>*@
             </tr>
             <tr>
                 <td colspan="3"></td>
@@ -209,12 +218,7 @@
                 {
                     foreach (var item in paciente)
                     {
-                    <p align="center">
-                        <span>Nombre&nbsp;:</span> @item.NomPac<br />
-                        <span>Edad&nbsp;:</span> @item.Edad<br />
-                        <span>Dni&nbsp;:</span> @item.NumDoc<br />
-                        <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
-                    </p>
+                   
                     <p align="center">
                         <span>Razon Social&nbsp;:</span>@RazonSocial<br>
                         <span>Ruc&nbsp;:</span>@Ruc<br>
@@ -222,18 +226,7 @@
                     </p>
                     }
                 }
-                else
-                {
-                    foreach (var item in paciente)
-                    {
-                        <p align="center">
-                            <span>Nombre&nbsp;:</span> @item.NomPac<br />
-                            <span>Edad&nbsp;:</span> @item.Edad<br />
-                            <span>Dni&nbsp;:</span> @item.NumDoc<br />
-                            <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
-                        </p>
-                    }
-                }
+               
             }
         }
         else
@@ -249,23 +242,12 @@
                     </p>
 
                 }
-                else
-                {
-                    foreach (var item in paciente)
-                    {
-                        <p align="center">
-                            <span>Nombre&nbsp;:</span> @item.NomPac<br />
-                            <span>Edad&nbsp;:</span> @item.Edad<br />
-                            <span>Dni&nbsp;:</span> @item.NumDoc<br />
-                            <span>Fnac&nbsp;:</span> @item.FecNac.ToShortDateString()
-                        </p>
-                    }
-                }
+               
             }
         }
-        <p align="center">
+        @*<p align="center">
            GRACIAS POR SU VISITA<br />
-        </p>
+        </p>*@
     </div>
 
     <script>

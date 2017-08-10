@@ -12,11 +12,11 @@
     <center>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
-                <tr>
+                <tr class="headTabla">
                     <td>Codigo</td>
                     <td>Descripcion</td>
                     <td>Precio</td>
-                    <th><i class="fa fa-trash-o"></i></th>
+                    <td align="center"><i class="fa fa-trash-o"></i></td>
                 </tr>
             </thead>
             <tbody>
@@ -27,9 +27,9 @@
                         <td>@item.DescCatPac</td>
                         <td>@item.Precio</td>
                         
-                        <td>
+                        <td align="center">
                             <div class="tools">
-                                <a href="~/Tarifario/Delete/@item.CodCatPac"><i class="fa fa-trash-o"></i></a>
+                                <a href="~/Tarifario/Delete/@item.CodCatPac" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i></a>
                             </div>
                         </td>
                     </tr>

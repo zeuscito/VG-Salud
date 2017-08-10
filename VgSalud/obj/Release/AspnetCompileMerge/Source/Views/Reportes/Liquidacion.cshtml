@@ -12,7 +12,7 @@
         <h1>Reportes</h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
-            <li class="active">Reportes de facturacion por usuario</li>
+            <li class="active">Reportes de Liquidacion</li>
         </ol>
     </section>
     <section class="content">
@@ -20,7 +20,7 @@
         <div class="box box-default">
 
             <div class="box-header with-border">
-                <h3 class="box-title">Generar Reporte de facturacion por usuario</h3>
+                <h3 class="box-title">Generar Reporte de Liquidacion</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -79,7 +79,7 @@
                                         <label>Fecha Inicio</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control  datepicker" />
+                                        <input type="text" name="FechaI" value="@ViewBag.FechaInicio" maxlength="10" class="form-control datepicker" />
                                     </div>
                                 </div>
                             </div>
@@ -93,6 +93,7 @@
                                         <input type="text" name="FechaF" value="@ViewBag.FechaFinal" maxlength="10" class="form-control  datepicker" />
                                     </div>
                                 </div>
+
                             </div>
 
                             
@@ -116,10 +117,17 @@
             @if (listado != null)
             {
 
+                <h4 style="padding:2%">
+                    Exportar:
+                    <a href="~/Reportes/GeneraLiquidacion/?id=PDF&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                    <a href="~/Reportes/GeneraLiquidacion/?id=Word&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                    <a href="~/Reportes/GeneraLiquidacion/?id=Excel&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                </h4>
+
                 <div class="box-body">
                     <table id="example3" class="table table-bordered table-striped">
                         <thead>
-                            <tr>
+                            <tr class="headTabla">
                                 <th>Consulta</th>
                                 <th>Fecha Liquidacion</th>
                                 <th>Nro. Aten</th>
@@ -135,7 +143,7 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item1.nombre)</td>
-                                    <td>@Html.DisplayFor(modelItem => item1.FechaLiquidacion)</td>
+                                    <td>@item1.FechaLiquidacion.ToShortDateString()</td>
                                     <td>@Html.DisplayFor(modelItem => item1.NroAtenciones)</td>
                                     <td>@Html.DisplayFor(modelItem => item1.NroDocumentos)</td>
                                     <td>@Html.DisplayFor(modelItem => item1.Tot_Tarifa)</td>
@@ -148,12 +156,7 @@
 
                     </table>
                 </div>
-                            <h4 style="padding:2%">
-                                Exportar:
-                                <a href="~/Reportes/GeneraLiquidacion/?id=PDF&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
-                                <a href="~/Reportes/GeneraLiquidacion/?id=Word&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-word-o"></i></a> |
-                                <a href="~/Reportes/GeneraLiquidacion/?id=Excel&Tipo=@ViewBag.Tipo&CodMed=@ViewBag.CodMed&CodServ=@ViewBag.CodServ&FechaI=@ViewBag.FechaInicio&FechaF=@ViewBag.FechaFinal" target="_blank"><i class="fa fa-file-excel-o"></i></a>
-                            </h4>
+                            
             }
 
         </div>
@@ -189,6 +192,10 @@
             $("#lblServicio").fadeIn();
             $("#serv").fadeIn();
         });
+
+
+        @if (ViewBag.Tipo == 1) { <text> $("#medico").click(); </text>  }
+        else if (ViewBag.Tipo == 2) { <text>$('#servicio').click();</text>  }
 
     });
 

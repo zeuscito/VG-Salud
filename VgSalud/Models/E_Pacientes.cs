@@ -31,11 +31,11 @@ namespace VgSalud.Models
         public DateTime  FecAfil    { get; set; }
 
         public string LugarNac { get; set; }
-        [Required(ErrorMessage = "Dirección requerido")]
+        //[Required(ErrorMessage = "Dirección requerido")]
         public string    Direcc     { get; set; }
        
         public string    Email      { get; set; }
-        [Required(ErrorMessage = "Teléfono requerido")]
+        //[Required(ErrorMessage = "Teléfono requerido")]
         public string    TelfFijo   { get; set; }
         
         public string    TelfCel    { get; set; }
@@ -104,8 +104,12 @@ namespace VgSalud.Models
         public string ObservacionF { get; set; }
         public bool Usuario { get; set; }
 
+        public string Edad { get; set; }
+        public string NonSex { get; set; }
+        public string NomEstCivil { get; set; }
+        public string NomDist { get; set; }
+        
 
-
-
+        public string NomEspec { get; set; }
     }
 }

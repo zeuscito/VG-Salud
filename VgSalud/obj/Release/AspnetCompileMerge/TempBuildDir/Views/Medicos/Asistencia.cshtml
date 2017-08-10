@@ -6,7 +6,7 @@
     int contador = 1;
     var listaServicio = (SelectList)ViewBag.listaServicio;
     var verde = "bg-green-gradient";
-    var azul = "bg-aqua-gradient";
+    var azul = "bg-gray-active";
     var rojo = "bg-red-gradient";
     var naranja = "bg-yellow-gradient";
     int cuenta = 0;
@@ -48,7 +48,8 @@
                                     @Html.DropDownList("servicio", listaServicio, "[NO SELECCIONADO]", new { @class = "form-control select2" , @id="servicio" })
                                 </div>
 
-                                <div class="col-md-2"><input type="submit" value="Buscar" class="btn btn-danger" /></div>
+                                <div class="col-md-1"><input type="submit" value="Buscar" class="btn btn-danger" /></div>
+                                <div class="col-md-1"><a href="~/Medicos/ListarMedico"><input type="button" value="Atras" class="btn btn-info" /></a></div>
 
                             }
                         </div>
@@ -56,7 +57,7 @@
                             @if (Model != null)
                             {
                                 <div class="box-body">
-                                    <h3 style="color:coral">Lista de asistencia @ViewBag.fecha</h3>
+                                    <h3 style="color:coral">Asistencia @ViewBag.fecha</h3>
                                     @if (Model.Count()!=0) { 
                                     <form action="~/Medicos/RegistraAsistencia" method="post">
                                         
@@ -216,28 +217,30 @@
 <script>
     $(document).on("ready",function () {
 
-        $('#turno option[value=@ViewBag.turno]').prop('selected', 'selected').change();
 
-        @*$("#registrar").click(function() {
 
-        @ViewBag.t = $("#turno").val() ;
-        @ViewBag.s = $("#servicio").val() ;
-        @ViewBag.f = $("#fecha").val() ;
-        
-        }) ;*@
-        
+        var cambio = ("@ViewBag.turno").replace("&#209;", "Ñ");
 
-        @*$("#registrar").on("click", function () {
-            var fecha = $("#fecha").val();
-            var turno = $("#turno").val();
-            var servicio = $("#servicio").val();
-            $.get('@Url.Action("Asistencia", "Medicos")', {
-                fecha: fecha,
-                turno: turno,
-                servicio: servicio
-            }, function () {
+        $('#turno option[value="' + cambio + '"]').prop('selected', 'selected').change();
+        var ALT = 18; var G = 71; var presiono1 = false;
+        $(document).keydown(function (e) {
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 == true && e.keyCode == G) {
+                $("#registrar").click();
+            }
 
-            });*@
+            else if (presiono1 && (e.keyCode == 65)) {
+                window.location.href = "ListarMedico";
+            }
+        });
+
+        $(document).keyup(function (e) {
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
 
 
 

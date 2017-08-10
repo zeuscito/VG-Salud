@@ -52,91 +52,93 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Modificar Usuario</h3>
-                <div class="box-tools pull-right">
+                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
                 </div>
             </div>
 
             <form method="post" action="">
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="../listaUsuario">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="box-body">
-                    <div class="col-md-6">
+                    <fieldset>
+                        <legend style="margin-left:30px;">Filtro</legend>
+                        <div class="col-md-6">
 
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="codUsu" id="codUsu" value="@Model.codUsu" />
 
-
-                        <input type="hidden" name="codUsu" id="codUsu" value="@Model.codUsu" />
-
-
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Alias</label>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Alias</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.aliasUsu, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.aliasUsu, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
 
-                                @Html.EditorFor(model => model.aliasUsu, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.aliasUsu, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Dni</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.DniUsu, new { htmlAttributes = new { @class = "form-control", @id = "DniUsu" } })
+                                    @Html.ValidationMessageFor(model => model.DniUsu, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Apellido Paterno</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ApePaterUsu, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ApePaterUsu, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Apellido Materno</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.ApeMaterUsu, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ApeMaterUsu, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Nombre Usuario</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.NomUsu, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NomUsu, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Fecha Nacimiento</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="FecNacUsu" id="FecNacUsu" maxlength="10" class="form-control  datepicker" value="@Model.FecNacUsu.ToShortDateString()" />
+                                    @Html.ValidationMessageFor(model => model.FecNacUsu, "", new { @class = "text-danger" })
+                                </div>
                             </div>
 
                         </div>
-                    
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Dni</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.DniUsu, new { htmlAttributes = new { @class = "form-control", @id = "DniUsu" } })
-                                @Html.ValidationMessageFor(model => model.DniUsu, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+                    </fieldset>
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Apellido Paterno</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.ApePaterUsu, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ApePaterUsu, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Apellido Materno</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.ApeMaterUsu, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ApeMaterUsu, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Nombre Usuario</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.NomUsu, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.NomUsu, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Fecha Nacimiento</label>
-                            </div>
-                            <div class="col-md-9">
-
-                                <input type="text" name="FecNacUsu" id="FecNacUsu" maxlength="10" class="form-control  datepicker" value="@Model.FecNacUsu" />
-
-                                @Html.ValidationMessageFor(model => model.FecNacUsu, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-
-
-                    </div>
+                 
 
                     <label></label>
                     <br /><br />
@@ -144,9 +146,8 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <center>
-                                    <button type="submit" value="Modificar" class="btn btn-danger">Modificar</button>
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
-                                </center>
+                                    <button type="submit" value="Modificar"  style="background-color:#13D003;border:0" class="btn btn-danger" id="modificar">Modificar</button>
+                              </center>
                             </div>
                         </div>
                     </div>
@@ -156,3 +157,30 @@
         </div>
     </section>
 </div>
+
+<script>
+
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../ListaUsuario");
+        }
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../ListaUsuario";
+        }
+
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
+
+</script>

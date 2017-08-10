@@ -4,8 +4,81 @@
     ViewBag.Title = "RegistraCita";
 
     var listaMedicos = (List<VgSalud.Models.E_Medico>)ViewBag.listaMedicos;
-
+    var listadoTari = (SelectList)ViewBag.listadoTari;
+    var UrlEnlance = "";
+    if (ViewBag.condicion == "") { ViewBag.condicion = "not null"; } else { UrlEnlance = ViewBag.condicion; }
 }
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        @{
+          string condicion = ViewBag.condicion;
+            condicion = condicion.ToString().Substring(0, 1);
+            if (condicion == "1")
+            {
+                UrlEnlance = UrlEnlance.Replace("1","..");
+                <text>
+        $(".hide1").fadeOut();
+        $(".show1").fadeIn();
+               </text>
+            }
+            else if (condicion == "2") {
+                UrlEnlance = UrlEnlance.Replace("2", "..");
+                <text>
+        $(".hide1").fadeOut();
+        $(".show1").fadeIn();
+               </text>
+            }
+            else {
+                UrlEnlance = "";
+              <text>  $(".show1").fadeOut(); </text>
+            }
+
+        }
+
+        var alerta = "@ViewBag.mensaje";
+        var historia = '@ViewBag.historia';
+        var cuenta = '@ViewBag.cuenta';
+      
+        $('#boton').attr("disabled", false);
+
+        var mensaje = '@ViewBag.activaAlerta';
+        if (mensaje == 1) {
+            $("#yaRegistro").css("display", "none");
+            //toastr.success("¿Desea seguir agregando mas atenciones?<br /><br /><a href='../AtencionVarias/RegistroAtenciones/?historia=" + historia + "&cuenta=" + cuenta + "' class='btn clear'>Si</a> <a href='../Cuentas/VerificaCuenta/" + cuenta + "' class='btn clear'>No</a>", "Registro exitoso", 'Registro exitoso', { timeOut: 5000000000, hideDuration: 1000000, extendedTimeOut: 10000000000 })
+            Command: toastr["success"]("¿Desea seguir agregando mas atenciones?<br /><br /><a href='../AtencionVarias/RegistroAtenciones/?historia=" + historia
+                + "&cuenta=" + cuenta + "' class='btn clear'>Si</a> <a href='../Cuentas/VerificaCuenta/" + cuenta
+                + "' class='btn clear'>No</a>", "Registro exitoso", 'Registro exitoso')
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": false,
+                "showDuration": 100,
+                "hideDuration": 500000000000,
+                "timeOut": 500000000000,
+                "extendedTimeOut": 500000000000,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+        }
+
+        if (alerta != "") {
+            toastr.error("@ViewBag.mensaje", "Aviso del Sistema", 'Aviso del Sistema', { timeOut: 500000 })
+        }
+
+    });
+
+</script>
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -16,7 +89,7 @@
         </ol>
     </section>
     <section class="content">
-        <div class="box box-default">
+        <div class="box box-default" id="yaRegistro">
             <div class="box-header with-border">
                 <h3 class="box-title">Registro de cita</h3>
                 <div class="box-tools pull-right">
@@ -25,13 +98,14 @@
                 </div>
             </div>
 
-            <form method="post" id="formulario" action="~/Citas/RegistraCitaCuenta">
+            <form method="post" id="formulario" action="">
 
                 <div class="box-body">
                     <div class="col-md-6">
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+                        <input type="hidden" id="evento" name="evento" value="0" />
 
                         <div class="form-group">
                             <div class="col-md-3">
@@ -88,28 +162,17 @@
                             </div>
                             <div class="col-md-9">
                                 <input type="text" class="form-control" value="@ViewBag.nombreCategoria" readonly />
-                                <input type="hidden" name="CodCatPac" value="@ViewBag.CodCatPac" />
-                                @Html.ValidationMessageFor(model => model.CodCatPac, "", new { @class = "text-danger" })
+                                <input type="hidden" name="CodCatPac" value="@ViewBag.CodCatPac" id="CatePac" />
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-md-3">
                                 <label>Tarifa</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" value="@ViewBag.nombreTarifario" readonly />
-                                <input type="hidden" name="CodTar" value="@ViewBag.CodTar" />
-                                @Html.ValidationMessageFor(model => model.CodTar, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Tipo de tarifa</label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" name="NomTar" value="@ViewBag.nombreTipoTarifa" readonly />
-                                <input type="hidden" name="CodTipTar" value="@ViewBag.CodTipTar" />
-                                @Html.ValidationMessageFor(model => model.CodTipTar, "", new { @class = "text-danger" })
+                                @Html.DropDownList("CodTar", listadoTari, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodTar" })
+                                <input type="hidden" id="CodTipTar" name="CodTipTar" />
                             </div>
                         </div>
 
@@ -118,7 +181,24 @@
                                 <label>N° de cuenta</label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.CodCue, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                <input type="text" class="form-control" name="CodCue" readonly id="CodCue" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="margin:0; padding:0">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Tiempo de atencion</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label><input type="radio" id="normal" name="check" checked /> Normal </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label><input type="radio" id="Tiemtarifa" name="check" /> Tiempo de tarifa</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label><input type="text" id="valorTiempo" name="valorr" value="" /></label>
+                                </div>
                             </div>
                         </div>
 
@@ -151,7 +231,7 @@
                                 <label>Hora Final</label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.HoraFin, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                @Html.EditorFor(model => model.HoraFin, new { htmlAttributes = new { @class = "form-control", @readonly = true, @id = "horaFin" } })
                                 @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -187,8 +267,8 @@
                                 <label>Sub Total</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" name="precio" class="form-control" value="@ViewBag.Precio" readonly />
-                                @Html.ValidationMessageFor(model => model.precio, "", new { @class = "text-danger" })
+                                <input type="text" name="precio" class="form-control" id="precio" value="" readonly />
+                                @Html.ValidationMessageFor(model => model.precio, "", new { @class = "text-danger"})
                             </div>
                         </div>
                         <div class="form-group">
@@ -196,8 +276,8 @@
                                 <label>IGV</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" name="igv" class="form-control" value="@ViewBag.igv" readonly />
-                                @Html.ValidationMessageFor(model => model.igv, "", new { @class = "text-danger" })
+                                <input type="text" name="igv" class="form-control" id="igv" value="" readonly />
+                                @Html.ValidationMessageFor(model => model.igv, "", new { @class = "text-danger"})
                             </div>
                         </div>
                         <div class="form-group">
@@ -205,7 +285,7 @@
                                 <label>Total</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" name="total" class="form-control" value="@ViewBag.Total" readonly />
+                                <input type="text" name="total" class="form-control" id="total" value="" readonly />
                                 @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -220,7 +300,7 @@
                                         <td>Interconsulta</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="radio" name="TipoConsu" value="Normal" id="normal" /> &nbsp</td>
+                                        <td><input type="radio" name="TipoConsu" value="Normal" id="normal2" /> &nbsp</td>
                                         <td>Normal</td>
                                     </tr>
                                 </table>
@@ -246,24 +326,139 @@
 
 
                     <label></label>
-                    <div class="col-md-12" style="margin-top:5%">
+                    <div class="col-md-12 hide1" style="margin-top:5%">
                         <div class="form-group">
                             <center>
-                                <input type="button" class="btn btn-danger" id="boton" value="Registrar"> 
-                                <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
+                               <input type="button" class="btn btn-danger" id="boton" value="Registrar" style="background-color:#13D003; border:0px;">
+                                @*<a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>*@
                             </center>
                         </div>
                     </div>
+                    <div class="col-md-12 show1" style="margin-top:5%">
+                        <div class="form-group">
+                            <center>
+                                <a href="@UrlEnlance" class="btn btn-info" id="boton" value="Registrar" >Regresar</a>
+                                @*<a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>*@
+                            </center>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
+                <input type="hidden" name="condicion" value="@ViewBag.condicion" />
             </form>
         </div>
     </section>
 </div>
 
 
+
 <script>
 
     $(document).ready(function () {
+
+
+
+        $("#CodCue").val("@ViewBag.CodCue");
+
+        $('#CodTar option[value="@ViewBag.TarifaDefault"]').attr('selected', true);
+
+        var CodTari = $("select#CodTar").val();
+        var CodCate = $("#CatePac").val();
+
+        $.get('@Url.Action("ObtenerDetalleTarifa", "Citas")', {
+            CodTar: CodTari, CodCat: CodCate
+        }, function (response) {
+            $.each(response, function (index, value) {
+                $("#precio").val(value.Precio);
+                $("#igv").val(value.igv);
+                $("#total").val(value.total);
+                $("#CodTipTar").val(value.CodTipTar);
+                $("#valorTiempo").val(value.TiempoApox);
+            });
+        });
+
+        $('#CodTar').change(function (event) {
+            var CodTar = $("select#CodTar").val();
+            var CodCat = $("#CatePac").val();
+            $.get('@Url.Action("ObtenerDetalleTarifa", "Citas")', {
+                CodTar: CodTar, CodCat: CodCat
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $("#precio").val(value.Precio);
+                    $("#igv").val(value.igv);
+                    $("#total").val(value.total);
+                    $("#CodTipTar").val(value.CodTipTar);
+                    $("#valorTiempo").val(value.TiempoApox);
+                });
+            });
+        });
+
+
+        $('#valorTiempo').attr('disabled', true);
+        var horaActual = "@Model.HoraInicio";
+        var CodMed = "@ViewBag.CodMed";
+        var turnoSS = "@Model.Turno";
+        var turnoDSS = turnoSS.replace("&#209;", "Ñ");
+        var FechaCita = "@Model.fechaCita";
+
+        $("#normal").click(function () {
+            $('#valorTiempo').attr('disabled', true);
+
+            var time = "@Model.intervalo";
+            var tiempo = $("#valorTiempo").val();
+            $.get('@Url.Action("ObtenerTiempo", "Citas")', {
+                tiempo: time, horaActual: horaActual, CodMed: CodMed, turno: turnoDSS, FechaCita: FechaCita
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $("#horaFin").val(value.HoraFin);
+                    $('#boton').attr("disabled", false);
+                });
+            });
+
+        });
+
+
+        $("#Tiemtarifa").click(function () {
+
+            $('#valorTiempo').attr('disabled', false);
+
+            var tiempo = $("#valorTiempo").val();
+            $.get('@Url.Action("ObtenerTiempo", "Citas")', {
+                tiempo: tiempo, horaActual: horaActual, CodMed: CodMed, turno: turnoDSS, FechaCita: FechaCita
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    if (value.HoraFin == "-1") {
+                        $('#boton').attr("disabled", true);
+                        alert("Ya hay una cita programada en el rango de horas seleccionado");
+                    } else {
+                        $('#boton').attr("disabled", false);
+                    }
+                    $("#horaFin").val(value.HoraFin);
+                });
+            });
+
+        });
+
+        $("#valorTiempo").keyup(function () {
+            var value = $(this).val();
+            $.get('@Url.Action("ObtenerTiempo", "Citas")', {
+                tiempo: value, horaActual: horaActual, CodMed: CodMed, turno: turnoDSS, FechaCita: FechaCita
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    if (value.HoraFin == "-1") {
+                        $('#boton').attr("disabled", true);
+                        alert("Ya hay una cita programada en el rango de horas seleccionado");
+                    } else {
+                        $('#boton').attr("disabled", false);
+                    }
+                    $("#horaFin").val(value.HoraFin);
+                });
+            });
+        });
+
 
         $("#medInter").fadeOut();
 
@@ -271,20 +466,69 @@
             $("#medInter").fadeIn();
         });
 
-        $('#normal').click(function (event) {
+        $('#normal2').click(function (event) {
             $("#medInter").fadeOut();
         });
 
-        
+
         $("#boton").click(function () {
-            if ($("#formulario input[name='TipoConsu']:radio").is(':checked')) {
-				$("#formulario").submit();
-			}
-			else {
-				alert("Selecciona el tipo de consulta");
-			}
-		 });
-	    
+            var tarifario = $("#CodTar").val();
+
+            if ($("#formulario input[name='TipoConsu']:radio").is(':checked') && tarifario != "") {
+                $("#evento").val(1);
+                $("#formulario").submit();
+            }
+
+            else if (tarifario == "") {
+                Command: toastr["error"]("Selecciona Una tarifa", "Aviso del sistema")
+
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "rtl": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": 3000000,
+                    "hideDuration": 1000,
+                    "timeOut": 500000000,
+                    "extendedTimeOut": 1000,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+
+            else {
+                Command: toastr["error"]("Selecciona el tipo de consulta", "Aviso del sistema")
+
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "rtl": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": 30000000,
+                    "hideDuration": 1000,
+                    "timeOut": 500000000,
+                    "extendedTimeOut": 1000,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+
+        });
+       
+       
+
     });
 
 </script>

@@ -10,7 +10,7 @@
 <script>
 
     $(document).ready(function () {
-      
+
         $("#Serie").keydown(function (event) {
             if (event.shiftKey) {
                 event.preventDefault();
@@ -56,13 +56,13 @@
 
 
         $("#Serie").keypress(function (e) {
-            if ($("#Serie").val().length == 3) {
+            if ($("#Serie").val().length == 5) {
                 return false;
             }
         });
 
         $("#NumDoc").keypress(function (e) {
-            if ($("#NumDoc").val().length == 7) {
+            if ($("#NumDoc").val().length == 15) {
                 return false;
             }
         });
@@ -87,7 +87,7 @@
     <section class="content">
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">Datos del Documento Serie</h3>
+
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -95,96 +95,126 @@
             </div>
 
             <form method="post" action="">
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="./ListaDocumentoSerie">
+                            <center style="margin-left: 15px;"><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="box-body">
-                    <div class="col-md-6">
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <fieldset>
+                        <legend style="margin-left: 30px;">Modificar</legend>
+                        <div class="col-md-6">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-                        <input type="hidden" value="@Model.CodDocSerie" name="CodDocSerie" />
+                            <input type="hidden" value="@Model.CodDocSerie" name="CodDocSerie" />
 
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Documento Contable</label>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Documento Contable</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownList("CodDocCont", listadoDC, "Seleccione", new { @class = "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CodDocCont, "", new { @class = "Text-Danger" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                                @Html.DropDownList("CodDocCont", listadoDC, "Seleccione", new { @class = "form-control select2" })
-                                @Html.ValidationMessageFor(model => model.CodDocCont, "", new { @class = "Text-Danger" })
+
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Serie</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @*  @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <input type="text" name="Serie" id="Serie" value="@Model.Serie" class="form-control" />
+                                    @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
+                                </div>
                             </div>
+
+
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Serie</label>
-                            </div>
-                            <div class="col-md-9">
-                              @*  @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control" } })*@
-                                <input type="text" name="Serie" id="Serie" value="@Model.Serie" class="form-control" />
-                                @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                       
-                    </div>
-
-                   
-                    <div class="col-md-6">
+                        <div class="col-md-6">
 
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Numero Documento</label>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Numero Documento</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @* @Html.EditorFor(model => model.NumDoc, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <input type="text" name="NumDoc" id="NumDoc" value="@Model.NumDoc" class="form-control" />
+                                    @Html.ValidationMessageFor(model => model.NumDoc, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                               @* @Html.EditorFor(model => model.NumDoc, new { htmlAttributes = new { @class = "form-control" } })*@
-                                <input type="text" name="NumDoc" id="NumDoc" value="@Model.NumDoc" class="form-control" />
-                                @Html.ValidationMessageFor(model => model.NumDoc, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Sede</label>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Sede</label>
+                                </div>
+                                <div class="col-md-9">
+                                    @* @Html.EditorFor(model => model.NumDoc, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @Html.DropDownList("CodSede", listaSedes,"[NO SELECCIONADO]", new { @class= "form-control select2" })
+                                    @Html.ValidationMessageFor(model => model.CodSede, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                                @* @Html.EditorFor(model => model.NumDoc, new { htmlAttributes = new { @class = "form-control" } })*@
-                                @Html.DropDownList("CodSede", listaSedes,"[NO SELECCIONADO]", new { @class="form-control"})
-                                @Html.ValidationMessageFor(model => model.CodSede, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
 
 
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <label>Estado</label>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Estado</label>
+                                </div>
+                                <div class="col-md-9">
+
+                                    @Html.EditorFor(model => model.EstDocSerie)
+                                    @Html.ValidationMessageFor(model => model.EstDocSerie, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-md-9">
-                               
-                                @Html.EditorFor(model => model.EstDocSerie)
-                                @Html.ValidationMessageFor(model => model.EstDocSerie, "", new { @class = "text-danger" })
+
+
+                            <label></label>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <br />
+                                    <button type="submit" class="btn btn-danger" style="background-color:#13D003; border:0" id="modificar">Modificar</button>
+
+                                </div>
                             </div>
                         </div>
-
-
-                        <label></label>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <center>
-                                    <button type="submit" class="btn btn-danger">Modificar</button> 
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-               </div>
+                    </fieldset>
+                </div>
             </form>
         </div>
     </section>
 </div>
 
+<script>
 
+    var ALT = 18; var G = 71; var presiono1 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = true;
+        }
+        if (presiono1 && (e.keyCode == 123)) {
+            $("#modificar").click();
+        }
+        else if (presiono1 == true && (e.keyCode == 67)) {
+            $(location).attr("href", "../DocumentoSerie/ListaDocumentoSerie");
+        }
 
+        else if (presiono1 == true && (e.keyCode == 65)) {
+            window.location.href = "../DocumentoSerie/ListaDocumentoSerie";
+        }
 
+    });
 
+    $(document).keyup(function (e) {
+        if (e.keyCode == ALT) {
+            presiono1 = false;
+        }
+    });
 
-
+</script>

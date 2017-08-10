@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VgSalud.Models.E_Caja>
+﻿*@model IEnumerable<VgSalud.Models.E_Caja>
 @{
     ViewBag.Title = "ListadoCajaAdmin";
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
@@ -227,7 +227,8 @@
                                                                     if (item.Estado == true)
                                                                     {
 
-                                                                        <a title="Imprimir" target="_blank" style="color:#000" href="~/Caja/ImprimirCaja/?id=PDF&CodCaja=@item.CodCaja"><i class="fa fa-print"></i></a>
+                                                                        <a title="Imprimir" target="_blank" style="color:#000" href="~/Caja/ImprimirTicket?CodCaja=@item.CodCaja"><i class="fa fa-print"></i></a>
+                                                                        @*<a title = "Imprimir" target="_blank" style="color:#000" href="~/Caja/ImprimirCaja/?id=PDF&CodCaja=@item.CodCaja"><i class="fa fa-print"></i></a>*@
 
                                                                         <button class="TPag" name="item" type="submit" value="@item.CodCaja" style="background-color:transparent; border:0"><i class="fa fa-money"></i></button>
                                                                     }
@@ -501,6 +502,9 @@
         }
 
 
+        
+
     });
+
 
 </script>

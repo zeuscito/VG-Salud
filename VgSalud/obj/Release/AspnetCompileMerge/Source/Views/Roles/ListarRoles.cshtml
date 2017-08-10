@@ -40,7 +40,7 @@
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
-                                <tr>
+                                <tr class="headTabla">
 
                                     <th>Descripcion</th>
                                     <th>Observacion</th> 
@@ -105,3 +105,21 @@
 </div>
 <div class="control-sidebar-bg">
 </div>
+
+<script>
+    var ALT = 18; var N = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        if (presiono2 && (e.keyCode == N)) {
+            $(location).attr("href", "RegistrarRoles");
+        }
+    });
+    $(document).keyup(function (e) {
+
+        if (e.keyCode == G) {
+            presiono2 = false;
+        }
+    });
+</script>

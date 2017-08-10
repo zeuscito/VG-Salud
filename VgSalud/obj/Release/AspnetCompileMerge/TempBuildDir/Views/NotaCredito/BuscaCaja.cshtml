@@ -1,0 +1,400 @@
+﻿@model IEnumerable<VgSalud.Models.E_Caja>
+
+@{
+    ViewBag.Title = "BuscaCaja";
+    var listaCabecera = (List<VgSalud.Models.E_Caja>)ViewBag.listaCabecera;
+    var listaDetalle = (List<VgSalud.Models.E_CajaDetalle>)ViewBag.listaDetalle;
+    var listaSerie = (List<VgSalud.Models.E_UsuarioSerie>)ViewBag.listaSerie;
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Caja</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Nota de credito</a></li>
+            <li class="active">ARegistra Nota de credito</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left: 40px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+            <div class="box-body">
+
+
+                <div class="col-md-12" style="margin-bottom:4%">
+                    <fieldset>
+                        <legend style="margin-left: 45px;">Nota de Credito</legend>
+                        <div class="col-md-5">
+                            <form action="" method="post">
+                                <div class="col-md-9" style="margin-top:2%; margin-bottom:2%">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Codigo Caja</label>
+                                            <input type="text" name="CodCaja" id="CodCaja" maxlength="10" class="form-control" value="@ViewBag.CodCaja" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="1" name="evento" />
+                                
+                                <div class="col-md-3" style="margin-top:0%; margin-bottom:0%">
+                                    <input type="submit" value="Buscar" style="background-color:#13D003; border:#13D003;margin-top: 27%;" class="btn btn-danger" />
+                                </div>
+
+                            </form>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+
+                @if (listaCabecera != null)
+            {
+                    <form action="" method="post">
+                        <input type="hidden" value="2" name="evento" />
+                        @foreach (var item in listaCabecera)
+                        {
+
+                            <div class="box-body">
+
+
+
+                                <div class="col-md-6">
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Codigo</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.CodCaja" name="CodCaja" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Sede</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.NomSede" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Cuenta</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.CodCue" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Tipo Doc.</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.DescCodDoc" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Serie</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.Serie" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Nro</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.NumDoc" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Fecha</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.FechaEmision.ToShortDateString()" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Historia</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.Historia" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Paciente</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.NomPac" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Categoria</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" name="DescCatPac" value="@item.DescCatPac" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Sub Total</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.SubTotal" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>IGV</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.Igv" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Total</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" value="@item.Total" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <br /><br /><br />
+                            if (listaDetalle != null)
+                            {
+                                <div class="box-body">
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Tarifa</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio Uni.</th>
+                                                <th>Sub Total</th>
+                                                <th>IGV</th>
+                                                <th>Total</th>
+                                                <th>Taza</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            @foreach (var item1 in listaDetalle)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item1.item)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.NomTar)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.PUnit)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.SubTotal)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.Igv)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.Total)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item1.TazaIgv)</td>
+                                                </tr>
+
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+
+                                    <div class="col-md-12" style="margin-top:3%">
+                                        <center>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Serie</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <select class="form-control select2" name="Serie" id="serie" style="width:100%">
+                                                            @foreach (var carga in listaSerie)
+                                                            {
+                                                                <option value="@carga.CodDocSerie">
+                                                                    @carga.Etiqueta
+                                                                </option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label style="text-align:left">N°</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" name="" id="correlativo" class="form-control" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Importe</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control" value="@item.Total" name="Total" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Fecha Emision</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input class="form-control datepicker" value="@ViewBag.hoy" name="FechaEmision" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </center>
+                                    </div>
+
+                                    <input type="hidden" name="evento" id="evento" />
+
+                                    <center style="margin-top:6%; margin-bottom:3%">
+
+                                        <input type="submit" value="Registrar" class="btn btn-danger" style="background-color:#13D003; border:#13D003;" />
+
+                                    </center>
+
+                                </div>
+                            }
+                        }
+                    </form>
+
+                }
+
+            </div>
+
+            <br /><br /><br />
+
+
+
+
+        </div>
+    </section>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+
+        var serie = $("select#serie").val();
+
+        $.get('@Url.Action("ObtenerSerieMuestra", "Caja")', {
+            CodSerie: serie
+        }, function (response) {
+            $.each(response, function (index, value) {
+                $('#correlativo').val(value.Serie);
+            });
+        });
+
+        $("#serie").change(function (event) {
+            var ruc = $("select#serie").val();
+            $.get('@Url.Action("ObtenerSerieMuestra", "Caja")', {
+                CodSerie: serie
+            }, function (response) {
+                $.each(response, function (index, value) {
+                    $('#correlativo').val(value.Serie);
+                });
+            });
+        });
+
+
+
+    });
+</script>
+
+<script>
+    var ALT = 18; var N = 78; var presiono2 = false;
+    $(document).keydown(function (e) {
+        if (e.keyCode == ALT) {
+            presiono2 = true;
+        }
+        else if (presiono2 && (e.keyCode == 112)) {
+            $(location).attr("href", "../Master/Index");
+        }
+
+    });
+    $(document).keyup(function (e) {
+
+        if (e.keyCode == ALT) {
+            presiono2 = false;
+        }
+    });
+</script>

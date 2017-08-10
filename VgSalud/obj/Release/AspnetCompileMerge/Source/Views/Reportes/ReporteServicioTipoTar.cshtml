@@ -1,0 +1,162 @@
+﻿@model IEnumerable<VgSalud.Models.E_Reporte>
+
+@{
+    ViewBag.Title = "ReporteServicioTipoTar";
+    var ListaServicio = (SelectList)ViewBag.ListaServicio;
+}
+
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Facturacion por Tipo Tarifa</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Reportes</a></li>
+            <li class="active">Reportes de Servicio / Tipo Tarifa</li>
+        </ol>
+    </section>
+    <section class="content">
+
+        <div class="box box-default">
+
+            <div class="box-header with-border">
+              
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+
+                <div class="box-header">
+                    <div style="float:left; padding:0% 1% 0 1%">
+                        <a href="~/Master/Index"><center style="margin-left: 22px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                        <br />
+                    </div>
+                </div>
+
+                <fieldset>
+                    <legend style="margin-left: 50px;">Filtro</legend>
+                    <div class="box-body">
+                        <div class="col-md-12">
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha inicio</label>
+                                            <input type="text" class="form-control datepicker" name="FechaI" value="@ViewBag.FechaI" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Fecha final</label>
+                                            <input type="text" class="form-control datepicker" name="FechaF" value="@ViewBag.FechaF" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label>Servicio</label>
+                                            @Html.DropDownList("servicio", ListaServicio, "[TODOS]", new { @class = "form-control select2", @id = "servicio", @multiple = "multiple" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2"></div>
+
+                         
+
+                                <div class="col-md-12" style="margin-top:2%">
+                                    <div class="form-group">
+                                        <center>
+                                            <input type="submit" value="Consultar" style="background-color:#13D003;border:0" class="btn btn-danger" />
+                                        </center>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    @if (ViewBag.servicioV != null)
+                                    {
+                                        <h4><b>Reporte de:</b><p style="color:coral">@ViewBag.servicioV</p></h4>
+                                        <h4><b>Rango de Fecha:</b><p style="color:coral">@ViewBag.FechaI &nbsp / &nbsp @ViewBag.FechaF</p></h4>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </fieldset>
+
+            }
+            @if (Model != null)
+            {
+                <h4 style="padding:0%;text-align:right;margin-right:150px">
+                    Exportar:
+                    <a href="~/Reportes/GeneraServicioTipoTar/?id=PDF&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio" target="_blank"><i class="fa fa-file-pdf-o"></i></a> |
+                    <a href="~/Reportes/GeneraServicioTipoTar/?id=Word&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio" target="_blank"><i class="fa fa-file-word-o"></i></a> |
+                    <a href="~/Reportes/GeneraServicioTipoTar/?id=Excel&FechaI=@ViewBag.FechaI&FechaF=@ViewBag.FechaF&servicio=@ViewBag.servicio" target="_blank"><i class="fa fa-file-excel-o"></i></a>
+                </h4>
+
+                <div class="box-body">
+                    <fieldset>
+                        <legend style="margin-left: 50px;">Lista</legend>
+                    </fieldset>
+                    <div class="col-md-12" style="margin-left: 30px; padding-right: 165px;">
+
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="headTabla">
+                                    <th>Servicio</th>
+                                    <th>Fecha Emision</th>
+                                    <th>Tipo Tarifa</th>
+                                    <th>Turno</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NomServ)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.fecha)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.tipoTar)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.turno)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.cantidad)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+   
+                </div>
+
+            }
+
+        </div>
+        <br /><br /><br />
+
+
+
+    </section>
+    }
+</div>
+

@@ -8,6 +8,7 @@
     var listadoTipoTarifa = (SelectList)ViewBag.listadoTipoTarifa;
     var listadoSubTipoTarifa = (SelectList)ViewBag.listadoSubTipoTarifa;
     var listadoCuentaContable = (SelectList)ViewBag.listadoCuentaContable;
+    var listadoPerfilito = (SelectList)ViewBag.listadoPerfilFE;
     var listadoTipoMoneda = (List<VgSalud.Models.E_TipoMoneda>)a.ListadoTipoMoneda();
     var listadocatePaciente = (List<VgSalud.Models.E_Tarifa_CategoriaPaciente>)ViewBag.listadocatePaciente;
     var name = " selected";
@@ -119,7 +120,8 @@
                                     <label>Perfil Ficha Electronica</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <select name="idPFA" id="PerfFicha" class="form-control select2" style="width:100%"></select>
+                                    @Html.DropDownList("idPFA", listadoPerfilito, "[NO SELECCIONADO]", new { @class = "form-control select2" })
+                                    @*<select name="idPFA" id="PerfFicha" class="form-control select2" style="width:100%"></select>*@
                                 </div>
                             </div>
 

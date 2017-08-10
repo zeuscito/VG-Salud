@@ -1,0 +1,115 @@
+﻿<style>
+    tr {
+        width: 100%;
+        display: inline-table;
+        height: 40px;
+        table-layout: fixed;
+    }
+
+    table {
+        height: 300px;
+        display: -moz-groupbox;
+    }
+
+    tbody {
+        overflow-y: scroll;
+        height: 250px;
+        width: 100%;
+        position: absolute;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Venta Rapida </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Atención</a></li>
+            <li class="active">Venta Rapida</li>
+        </ol>
+    </section>
+    <section class="content" id="yaRegistro">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Registrar Venta Rapida</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+            <div class="box-body">
+                <input type="hidden" id="historia" name="historia" value="@ViewBag.historia" />
+                <input type="hidden" id="servicioTemp" name="servicioTemp" />
+                <form method="post" action="~/AtencionVarias/AsignarAtencion">
+                    <fieldset>
+
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-danger" id="changeServ">Cambiar Servicio</button>
+                            <table id="dataServicio" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Servicio</td>
+                                        <th><i class="fa fa-check-circle-o"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                            <input type='text' placeholder='Buscar Tarifa' id='buscaTarifa' class='form-control' />
+                            <div id="buscarTar" style="display:none"></div>
+                            <table id="dataTarifa" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>Tarifa</td>
+                                        <td>Cantidad</td>
+                                        <td>Precio</td>
+                                        <th><i class="fa fa-check"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12" style="margin-top:2%;">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <center><h2>Resumen Venta</h2></center>
+                                <table id="dataVenta" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td>Servicio</td>
+                                            <td>Tarifa</td>
+                                            <td>Cantidad</td>
+                                            <td>Precio</td>
+                                            <th align='center'><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <br />
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <h2>Total a pagar: S/.<span id="totalPagar"></span></h2>
+
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                </form>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script src="~/Content/controller/VentaRapida.js"></script>

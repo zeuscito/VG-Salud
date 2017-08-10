@@ -120,11 +120,27 @@ namespace VgSalud.Controllers
 
                         if (EPac.LugarNac == null) { cmd.Parameters.AddWithValue("@LugarNac", ""); } else { cmd.Parameters.AddWithValue("@LugarNac", EPac.LugarNac.ToUpper()); }
 
-                        cmd.Parameters.AddWithValue("@Direcc", EPac.Direcc);
+                        
+                        if(EPac.Direcc == null)
+                        {
+                            cmd.Parameters.AddWithValue("@Direcc", "");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Direcc", EPac.Direcc);
+                        }
+
                         if (EPac.Email == null) { cmd.Parameters.AddWithValue("@Email", ""); } else { cmd.Parameters.AddWithValue("@Email", EPac.Email); }
 
-
-                        cmd.Parameters.AddWithValue("@TelfFijo", EPac.TelfFijo);
+                        if (EPac.TelfFijo==null)
+                        {
+                            cmd.Parameters.AddWithValue("@TelfFijo", "");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@TelfFijo", EPac.TelfFijo);
+                        }
+                        
 
                         if (EPac.TelfCel == null) { cmd.Parameters.AddWithValue("@TelfCel", ""); } else { cmd.Parameters.AddWithValue("@TelfCel", EPac.TelfCel); }
                         if (EPac.CodTipPac == 0) { cmd.Parameters.AddWithValue("@CodTipPac", 1); } else { cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac); }
@@ -270,7 +286,10 @@ namespace VgSalud.Controllers
             ViewBag.listaCatePaciente = new SelectList(CatPac.listadoCategoriaCliente(), "CodCatPac", "DescCatPac");
 
             UtilitarioController Uti = new UtilitarioController();
-            ViewBag.ListaSexo = new SelectList(Uti.ListadoSexo(), "CodSexo", "NomSexo");
+
+            var ListarSexo = ListarSexoPaciente(Id).FirstOrDefault(); 
+            ViewBag.Sexo = ListarSexo.CodSexo;
+            //ViewBag.ListaSexo = new SelectList(Uti.ListadoSexo(), "CodSexo", "NomSexo");
             ViewBag.ListaCivil = new SelectList(Uti.ListadoEstadoCivil(), "CodEstCivil", "NomEstCivil");
             ViewBag.ListaPais = new SelectList(Uti.ListadoPais(), "CodPais", "NomPais", "1");
 
@@ -347,7 +366,15 @@ namespace VgSalud.Controllers
 
                         if (EPac.LugarNac == null) { cmd.Parameters.AddWithValue("@LugarNac", ""); } else { cmd.Parameters.AddWithValue("@LugarNac", EPac.LugarNac.ToUpper()); }
 
-                        cmd.Parameters.AddWithValue("@Direcc", EPac.Direcc);
+                        if (EPac.Direcc==null)
+                        {
+                            cmd.Parameters.AddWithValue("@Direcc", "");
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Direcc", EPac.Direcc);
+                        }
+                        
 
                         if (EPac.DiscaObs == null) { cmd.Parameters.AddWithValue("@DiscaObs", ""); } else { cmd.Parameters.AddWithValue("@DiscaObs", EPac.DiscaObs.ToUpper()); }
 
@@ -360,12 +387,15 @@ namespace VgSalud.Controllers
 
                         cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac);
 
-                        //if (EPac.CodTipPac == 0)
+                        //cmd.Parameters.AddWithValue("@CodSexo", EPac.CodSexo);
+
+                        //if (EPac.CodSexo == 0)
                         //{
-                        //    cmd.Parameters.AddWithValue("@CodTipPac", 1);
-                        //} else
+                        //    cmd.parameters.addwithvalue("@codtippac", 1);
+                        //}
+                        //else
                         //{
-                        //    cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac);
+                        //    cmd.parameters.addwithvalue("@codtippac", epac.codtippac);
                         //}
 
                         if (EPac.Observ == null) { cmd.Parameters.AddWithValue("@Observ", ""); } else { cmd.Parameters.AddWithValue("@Observ", EPac.Observ.ToUpper()); }
@@ -485,6 +515,7 @@ namespace VgSalud.Controllers
 
         public ActionResult RegistroPaciente(int id)
         {
+            
             var registro = ListadoPacientes().Where(x => x.Historia == id).FirstOrDefault();
             DocumentoIdentidadController DocIden = new DocumentoIdentidadController();
             ViewBag.ListaDocumentoIdentidad = DocIden.ListadoDocumentoIdentidad().Where(x => x.CodDocIdent == registro.CodDocIdent).FirstOrDefault().NomDocIdent;
@@ -1402,6 +1433,160 @@ namespace VgSalud.Controllers
 
             return View(ListadoPacientesFiltro(fecha, dni, nombre));
         }
+
+
+
+
+
+        public ActionResult ImprimirHistoriaClinica(int Historia)
+        {
+            var Lista = ListarDatosHistoriaClinica(Historia).FirstOrDefault();
+            //return RedirectPermanent("~/Pacientes/ImprimirHistoriaClinica?Historia=" + Historia);
+            return View(Lista);
+        }
+
+
+
+        public List<E_Pacientes> ListarDatosHistoriaClinica(int Historia)
+        {
+            List<E_Pacientes> Lista = new List<E_Pacientes>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("UspListarDatosHistoriaClinica", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Historia", Historia);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            E_Pacientes p = new E_Pacientes();
+                            p.Historia = Convert.ToInt32(dr["Historia"]);
+                            p.nombCompleto = dr["NombrePaciente"].ToString();
+                            p.NonSex = dr["NomSexo"].ToString();
+                            p.NomEstCivil = dr["NomEstCivil"].ToString();
+                            p.LugarNac = dr["LugarNac"].ToString();
+                            p.FecNac = Convert.ToDateTime(dr["FecNac"].ToString());
+                            p.Edad = dr["Edad"].ToString();
+                            p.NomDist = dr["NomDist"].ToString();
+                            p.Direcc = dr["Direcc"].ToString();
+                            p.TelfFijo = dr["TelfFijo"].ToString();
+                            p.TelfCel = dr["TelfCel"].ToString();
+                            p.Email = dr["Email"].ToString();
+                            p.FecAfil = Convert.ToDateTime(dr["FecAfil"].ToString());
+                            p.Crea= dr["Crea"].ToString();
+
+                            //p.DescTar = dr["DescTar"] is DBNull ? string.Empty : dr["DescTar"].ToString();
+
+                            Lista.Add(p);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+
+
+
+        public List<E_Pacientes> ListarSexoPaciente(int Id)
+        {
+            List<E_Pacientes> Lista = new List<E_Pacientes>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListarSexoPaciente", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Historia", Id);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            E_Pacientes p = new E_Pacientes();
+                            p.CodSexo = dr["CodSexo"].ToString();
+
+                            Lista.Add(p);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+
+        public JsonResult VenderConsulta()
+        {
+            E_Servicios Ser = new E_Servicios();
+
+            string Tbody = "";
+
+            var resultado = ListarServicios();
+            foreach (var item in resultado)
+            {
+                Tbody += $"<tr><td>{item.CodServ}</td>";
+                Tbody += $"<td>{item.NomServ}</td>";
+                Tbody += $"<td><a style='cursor:pointer' onclick='AgregarConsulta();' ><span style='Color:green' class='fa fa-plus-square'></span></a></td></tr>";
+            }
+            return Json(Tbody, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        public List<E_Servicios> ListarServicios()
+        {
+            SqlCommand cmd;
+            SqlConnection db;
+            string cadena = ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString;
+
+            string sede = Session["CodSede"].ToString();
+
+            List<E_Servicios> ListaServ = new List<E_Servicios>();
+
+            try
+            {
+                using (db = new SqlConnection(cadena))
+                {
+                    using (cmd = new SqlCommand("Usp_ListarServicios_VentaRapida", db))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //cmd.Parameters.AddWithValue("@CodOdontograma", CodOdo);
+                        cmd.Parameters.AddWithValue("@CodSede", sede);
+                        db.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        
+                        while (dr.Read())
+                        {
+                            E_Servicios Serv = new E_Servicios();
+
+                            Serv.CodServ = dr["CodServ"].ToString();
+                            Serv.NomServ = dr["NomServ"].ToString();
+                            Serv.CodEspec = dr["CodEspec"].ToString();
+
+                            ListaServ.Add(Serv);
+
+                        }
+
+                    }
+                }
+
+                return ListaServ;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+
+
 
 
     }

@@ -1,4 +1,5 @@
-﻿ @model VgSalud.Models.E_AtencionVarias_Detalle
+﻿ @model VgSalud.Models.E_AtencionVarias
+
 
 @{
     ViewBag.Title = "Registro Atenciones";
@@ -12,9 +13,52 @@
     VgSalud.Controllers.AccesoController ac = new VgSalud.Controllers.AccesoController();
     string CodUsu = Session["UserID"].ToString();
 
+    var esp = (List<VgSalud.Models.E_Especialidades>)ViewBag.esp ;
+    var ser = (List<VgSalud.Models.E_Servicios>)ViewBag.ser ;
+    var tar = (List<VgSalud.Models.E_Tarifario>)ViewBag.tar ;
+    var med = (List<VgSalud.Models.E_Medico>)ViewBag.med ;
+    var tiptar = (List<VgSalud.Models.E_Tipo_Tarifa>)ViewBag.tiptar;
+  
 }
 
-<div class="content-wrapper">
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var mensajito = '@ViewBag.activaAlerta';
+        var historia = '@ViewBag.historia';
+        var cuenta = '@ViewBag.cuenta';
+        $('#boton').attr("disabled", false);
+        if (mensajito == 1) {
+            $("#yaRegistro").css("display", "none");
+            Command: toastr["success"]("¿Desea seguir agregando mas atenciones?<br /><br /><a href='../../AtencionVarias/RegistroAtenciones/?historia=" + historia + "&cuenta=" + cuenta + "' class='btn clear'>Si</a> <a href='../../Cuentas/VerificaCuenta/" + cuenta + "' class='btn clear'>No</a>", "Registro exitoso")
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "3000000",
+                "hideDuration": "1000000",
+                "timeOut": 0,
+                "extendedTimeOut": 0,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false
+            }
+        }
+
+    });
+
+</script>
+
+<div class="content-wrapper" >
     <section class="content-header">
         <h1>Atenciones Varias </h1>
         <ol class="breadcrumb">
@@ -22,7 +66,7 @@
             <li class="active">Registrar Atención</li>
         </ol>
     </section>
-    <section class="content">
+    <section class="content" id="yaRegistro">
         <div class="box box-default">
             <div class="box-header with-border">
                 <h3 class="box-title">Registrar Atención</h3>
@@ -31,232 +75,296 @@
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
                 </div>
             </div>
+            <div class="box-header">
 
-            @{
-
-                var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "AsignarTipoTarifa.cshtml");
-                if (abc1 != null)
-                {
-                    <div class="box-header">
-                        <a href="~/AtencionVarias/AsignarTipoTarifa" class="btn btn-danger">Agregar tipos de tarifa &nbsp<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
-                    </div>
-                }
-
-                var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
-                if (abc2 != null)
-                {
-                    <div class="box-header">
-                        <a href="~/Citas/ConsultaCita" class="btn btn-danger">Agregar Nueva Cita<i class="fa fa-plus-square pull-right" aria-hidden="true"></i></a>
-                    </div>
-                }
-
-            }
-
-
-            <div class="box-body">
-
-                    <form method="post" action="~/AtencionVarias/AsignarAtencion">
-                        <fieldset>
-                            <h3 style="color:coral">@ViewBag.historia - @ViewBag.nombrePaciente - @ViewBag.categoriapaciente</h3>
-                            @if (cuenta != null)
-                            {
-                            <h4 style="color:coral">N° de Cuenta: @cuenta</h4>
-                            <input type="hidden" name="CodCueY" value="@cuenta" />
-                            <input type="hidden" name="CodCue"  value="@cuenta" />
-                            }
-                            else
-                            {
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="col-md-3">
-                                            <label>Cuenta</label>
-                                        </div>
-                                        <div class="col-md-9">
-                                            @Html.DropDownList("CodCue", listadoCuenta, "[NO SELECCIONADO]", new { @class = "form-control select2", @id="CodCuenta" })
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <br /><br /><br />
-                            <div class="col-md-6">
-
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                                <input type="hidden" value="@ViewBag.historia" name="historia" />
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Especialidad</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <select name="CodEspec" id="CodEspec" class="form-control select2" data-placeholder="SELECCIONE ESPECIALIDAD" required></select>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Servicio</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <select name="CodServ" id="CodServ" class="form-control select2" data-placeholder="SELECCIONE SERVICIO" required></select>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Medico</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <select name="CodMed" id="CodMed" class="form-control select2" data-placeholder="SELECCIONE MEDICO" required></select>
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Tarifa</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <select name="CodTar" id="CodTar" class="form-control select2" data-placeholder="SELECCIONE TARIFA" required></select>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-6">
-                                                                
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Cantidad</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <input type="number" name="Cantida" id="Cantida" class="form-control" value="1" required />
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Precio</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <input type="text" name="Precio" id="Precio" class="form-control" value="0" required />
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Total</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        <input type="text" name="Total" class="form-control" id="Total" required readonly />
-
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <label>Medico de referencia</label>
-                                    </div>
-                                    <div class="col-md-9">
-
-                                        @Html.DropDownList("MedicoEnvia", listadoMedico, "[NO SELECCIONADO]",  new { @class = "form-control select2", @id="medioEnvia" })
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-12" style="margin-top:2%;">
-                                <center>
-                                    <input type="submit" class="btn btn-danger" value="Registrar" /> 
-                                    <a href="#" onclick="history.back();return false" class="btn btn-info">Cancelar</a>
-                                </center>
-                            </div>
-
-                        </fieldset>
-                        
-
-                </form>
-
-
-
-
-                @if (listadoDetalleAtencion != null)
-                {
-                    decimal precio = 0;
-                    decimal igv = 0;
-                    decimal total = 0;
-
-                    <div class="content" style="margin-top:4%">
-                        <center>
-                            <table id="example3" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <td>Especialidad</td>
-                                        <td>Servicio</td>
-                                        <td>Medico</td>
-                                        <td>Tarifa</td>
-                                        <td>Tipo Tarifa</td>
-                                        <td>Cantida</td>
-                                        <td>SubTotal</td>
-                                        <td>Igv</td>
-                                        <td>Total</td>
-                                        <th><i class="fa fa-trash-o"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in listadoDetalleAtencion)
-                                    {
-                                        precio = precio + item.SubTotal;
-                                        igv = igv + item.Igv;
-                                        total = total + item.Total;
-                                        <tr>
-                                            <td>@item.CodEspec</td>
-                                            <td>@item.CodServ</td>
-                                            <td>@item.CodMed</td>
-                                            <td>@item.CodTar</td>
-                                            <td>@item.CodTipTar</td>
-                                            <td>@item.Cantida</td>
-                                            <td>@item.SubTotal</td>
-                                            <td>@item.Igv</td>
-                                            <td>@item.Total</td>
-                                            <td>
-                                                <div class="tools">
-                                                    <a href="~/AtencionVarias/Delete/?id=@item.id&historia=@ViewBag.historia"><i class="fa fa-trash-o"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-
-                                </tbody>
-                            </table>
-
-                        </center>
-                    </div>
-                    <form action="" method="post">
-                        <div class="col-md-12">
-                            <center>
-                                <input type="hidden" name="SubTotal" value="@precio" />
-                                <input type="hidden" name="Igv" value="@igv" />
-                                <input type="hidden" name="Total" value="@total" />
-                                <input type="hidden" name="Historia" value="@ViewBag.historia" />
-                                <input type="hidden" name="CodCue" id="cuentaFinal" />
-                                <input type="submit" value="Registrar todo" class="btn btn-danger" />
-                            </center>
+                @{
+                    
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
                         </div>
-                    </form>
+                   
+
+                    var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
+                    if (abc2 != null)
+                    {
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Citas/ConsultaCita?id=@ViewBag.historia&CodCue=@cuenta" title="ALT + C">
+                                <center><i class="fa fa-calendar-plus-o" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atenciones<br /> Programadas</strong></center>
+                            </a>
+                        </div>
+
+                    }
+
+                    <input type="hidden" name="His" id="His" value="@ViewBag.historia" />
+
+                    <div style="float:left; padding:0% 1% 0 1%;display:none" title="" id="ImprimeHistoriaClinica">
+                        <div id="ImprimeHisto"  style="cursor:pointer">
+                            <center><i class="fa fa-print" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Imprimir<br>Historia Clinica</strong></center>
+                        </div>
+                    </div>
+
+                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + A">
+                        <a href="~/Pacientes/ListaPacientes">
+                            <center><i class="fa fa-arrow-circle-left" style="font-size:25px; color:#13D003"></i><br><strong style="color:black">Atras</strong></center>
+                        </a>
+                    </div>
+
                 }
 
             </div>
+            
+            <div class="box-body" >
+                <input type="hidden" id="Cod" name="Cod" />
+                        <form method="post" action="~/AtencionVarias/AsignarAtencion">
+                            <fieldset>
+                                <h3 style="color:coral;margin-left: 29px;">@ViewBag.historia - @ViewBag.nombrePaciente - @ViewBag.categoriapaciente</h3>
+                                @if (cuenta != null)
+                                {
+                                    <h4 style="color:coral">N° de Cuenta: @cuenta</h4>
+                                    <input type="hidden" name="CodCueY" value="@cuenta" />
+                                    <input type="hidden" name="CodCue" value="@cuenta" />
+                                }
+                                else
+                                {
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label>Cuenta</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownList("CodCue", listadoCuenta, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodCuenta" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <br /><br /><br />
+                                <div class="col-md-6">
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <input type="hidden" value="@ViewBag.historia" name="historia" />
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Especialidad</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <select name="CodEspec" id="CodEspec" class="form-control select2" data-placeholder="SELECCIONE ESPECIALIDAD" required></select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Servicio</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <select name="CodServ" id="CodServ" class="form-control select2" data-placeholder="SELECCIONE SERVICIO" required></select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Medico</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <select name="CodMed" id="CodMed" class="form-control select2" data-placeholder="SELECCIONE MEDICO" required></select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Tarifa</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <select name="CodTar" id="CodTar" class="form-control select2" data-placeholder="SELECCIONE TARIFA" required></select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Cantidad</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <input type="number" name="Cantida" id="Cantida" class="form-control" value="1" required />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Precio</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <input type="text" name="Precio" id="Precio" class="form-control" value="0" required />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Total</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            <input type="text" name="Total" class="form-control" id="Total" required readonly />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <label>Medico de referencia</label>
+                                        </div>
+                                        <div class="col-md-9">
+
+                                            @Html.DropDownList("MedicoEnvia", listadoMedico, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "medioEnvia" })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12" style="margin-top:2%;">
+                                    <center>
+                                        <input type="submit" class="btn btn-danger" value="Registrar" style="background-color:#13D003;border:0px" />
+
+                                    </center>
+                                </div>
+                            </fieldset>
+
+                        </form>
+
+
+                        @if (listadoDetalleAtencion != null)
+                        {
+                            decimal precio = 0;
+                            decimal igv = 0;
+                            decimal total = 0;
+
+                            <div class="content" style="margin-top:4%">
+                                <center>
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <td>Especialidad</td>
+                                                <td>Servicio</td>
+                                                <td>Medico</td>
+                                                <td>Tarifa</td>
+                                                <td>Tipo Tarifa</td>
+                                                <td>Cantida</td>
+                                                <td>SubTotal</td>
+                                                <td>Igv</td>
+                                                <td>Total</td>
+                                                <th><i class="fa fa-trash-o"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in listadoDetalleAtencion)
+                                            {
+                                                precio = precio + item.SubTotal;
+                                                igv = igv + item.Igv;
+                                                total = total + item.Total;
+                                                <tr>
+                                                    @foreach (var item1 in esp)
+                                                    {
+                                                        if (item1.CodEspec == item.CodEspec)
+                                                        {
+                                                            <td>@item1.NomEspec</td>
+                                                        }
+                                                    }
+                                                    @foreach (var item2 in ser)
+                                                    {
+                                                        if (item2.CodServ == item.CodServ)
+                                                        {
+                                                            <td>@item2.NomServ</td>
+                                                        }
+                                                    }
+
+                                                    @if (item.CodMed != "[NO SELECCIONADO]")
+                                                    {
+                                                        foreach (var item3 in med)
+                                                        {
+                                                            if (item.CodMed == item3.CodMed)
+                                                            {
+                                                                <td>@item3.NomMed</td>
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>[NO SELECCIONADO]</td>
+                                                    }
+
+                                                    @if (item.CodTar != "[NO SELECCIONADO]")
+                                                    {
+                                                        foreach (var item4 in tar)
+                                                        {
+                                                            if (item.CodTar == item4.CodTar)
+                                                            {
+                                                                <td>@item4.DescTar</td>
+                                                            }
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>[NO SELECCIONADO]</td>
+                                                    }
+
+                                                    @foreach (var item5 in tiptar)
+                                                    {
+                                                        if (item.CodTipTar == item5.CodTipTar)
+                                                        {
+                                                            <td>@item5.DescTipTar</td>
+                                                        }
+
+                                                    }
+
+                                                    <td>@item.Cantida</td>
+                                                    <td>@item.SubTotal</td>
+                                                    <td>@item.Igv</td>
+                                                    <td>@item.Total</td>
+                                                    <td>
+                                                        <div class="tools">
+                                                            <a href="~/AtencionVarias/Delete/?id=@item.id&historia=@ViewBag.historia"><i class="fa fa-trash-o"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+                                </center>
+                            </div>
+                            <form action="" method="post">
+                                <div class="col-md-12">
+                                    <center>
+                                        <input type="hidden" name="SubTotal" value="@precio" />
+                                        <input type="hidden" name="Igv" value="@igv" />
+                                        <input type="hidden" name="Total" value="@total" />
+                                        <input type="hidden" name="Historia" value="@ViewBag.historia" />
+                                        <input type="hidden" name="CodCue" id="cuentaFinal" />
+                                        <input type="submit" value="Registrar todo" id="grabar" class="btn btn-danger" style="background-color:#13D003;border:0px" />
+                                    </center>
+                                </div>
+                            </form>
+                        }
+
+</div>
 
         </div>
     </section>
@@ -295,12 +403,23 @@
 
         $('#CodEspec').change(function (event) {
             var codEspe = $("select#CodEspec").val();
+            debugger;
+            if (codEspe!="nulo")
+            {
+                $('#ImprimeHistoriaClinica').show();
+                $('#Cod').val(codEspe);
+            }
+            else {
+                $('#ImprimeHistoriaClinica').hide();
+            }
+            
             $.get('@Url.Action("ObtenerServicios", "AtencionVarias")', {
                 CodEspec: codEspe
             }, function (response) {
                 $("#Cantida").val(1);
                 $("#Precio").val(0);
                 $("#Total").val(0);
+                
                 $('#select2-CodMed-container').empty();
                 var CodMed = $('#CodMed');
                 CodMed.find('option').remove();
@@ -323,7 +442,7 @@
                     $('<option>').val("nulo").text("[NO SELECCIONADO]").appendTo(select);
                     $("#select2-CodTar-container").text("[NO SELECCIONADO]");
                     $.each(response, function (index, value) {
-                        $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                        $('<option>').val(value.CodTar + "," + value.procedencia).text(value.DescTar).appendTo(select);
                     });
                 });
             });
@@ -352,6 +471,7 @@
 
 
         $('#CodTar').change(function (event) {
+            debugger;
             var codTari = $("select#CodTar").val();
             $.get('@Url.Action("ObtenerPrecio", "AtencionVarias")', {
                 codTar: codTari, Historia: historia
@@ -445,7 +565,7 @@
                                                 select.find('option').remove();
                                                 $('<option>').val("nulo").text("[NO SELECCIONADO]").appendTo(select);
                                                 $.each(response, function (index, value) {
-                                                    $('<option>').val(value.CodTar).text(value.DescTar).appendTo(select);
+                                                    $('<option>').val(value.CodTar + "," + value.procedencia).text(value.DescTar).appendTo(select);
                                                     if (value.CodTar == tarifa) {
                                                         $('#CodTar option[value="' + value.CodTar + '"]').attr('selected', true);
                                                         $("#select2-CodTar-container").text(value.DescTar);
@@ -502,8 +622,41 @@
         var codCuentaa = $('#CodCuenta').val();
         $("#cuentaFinal").val(codCuenta);
 
+        $('#ImprimeHisto').click(function () {
+            var Historia = $("#His").val();
+            var Espec = $("#Cod").val();
 
+            window.location.href = 'ImprimirHistoriaClinica?Historia= ' + Historia + '&CodEspec=' + Espec + '';
+        });
+        
 
     });
 
-</script>
+
+    $(document).ready(function () {
+        var ALT = 18; var G = 71; var presiono1 = false;
+        $(document).keydown(function (e) {
+
+            if (e.keyCode == ALT) {
+                presiono1 = true;
+            }
+            if (presiono1 && (e.keyCode == G)) {
+                $("#grabar").click();
+            }
+        });
+
+
+        $(document).keyup(function (e) {
+
+            if (e.keyCode == G) {
+                presiono2 = false;
+            }
+        });
+
+    });
+
+
+</script> 
+
+
+    
