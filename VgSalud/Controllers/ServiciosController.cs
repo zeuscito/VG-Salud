@@ -463,7 +463,7 @@ namespace VgSalud.Controllers
             }
         }
 
-        public List<E_Servicios> ListadoServiciosVentaRapida(string sede, int historia)
+        public List<E_Servicios> ListadoServiciosVentaRapida(string sede, int historia, string descripcion)
         {
             List<E_Servicios> Lista = new List<E_Servicios>();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
@@ -474,6 +474,7 @@ namespace VgSalud.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     cmd.Parameters.AddWithValue("@historia", historia);
+                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -491,6 +492,38 @@ namespace VgSalud.Controllers
                             Ser.Sede = dr.GetString(8).ToUpper();
                             Ser.CodTar = dr.GetString(9);
                             Ser.precio = dr["Precio"] is DBNull ? 0 : dr.GetDecimal(10);
+                            Ser.DescTipoTar = dr["DescTar"] is DBNull ? "" : dr.GetString(11);
+                            Lista.Add(Ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        public List<E_Servicios> ListadoTarifaEspecial(int historia, string tarifa)
+        {
+            List<E_Servicios> Lista = new List<E_Servicios>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_obtenerTarifaEspecial", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@historia", historia);
+                    cmd.Parameters.AddWithValue("@CodTar", tarifa);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Servicios Ser = new E_Servicios();
+                            Ser.CodTar = dr.GetString(0);
+                            Ser.DescTipoTar = dr.GetString(1);
+                            Ser.CodEspec = dr.GetString(2);
+                            Ser.CodServ = dr.GetString(3);
+                            Ser.precio = dr["Precio"] is DBNull ? 0 : dr.GetDecimal(4);
                             Lista.Add(Ser);
                         }
                         con.Close();

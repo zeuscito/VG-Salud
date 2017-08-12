@@ -3,15 +3,37 @@ var oDetalle = new Array();
 var historia = $("#historia").val();
 
 $(document).ready(function () {
+
+    // Validar usuaario diferente a factura
+    $.ajax({
+        url: '../AtencionVarias/EvaluaTipoDocUsuario',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            if (response.success) {
+                $("#submitSend").attr("disabled", false);
+            } else {
+                alertaMessage(response.result);
+                $("#submitSend").attr("disabled", true);
+            }
+        },
+        error: function () {
+            alertaMessage("No se pudo validar datos", 0);
+        }
+    });
+
     $.ajax({
         url: '../AtencionVarias/CargaServicios',
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({
-            'historia': historia
+            'historia': historia,
+            'descripcion' : ''
         }),
         success: function (response) {
+            
             $('#dataServicio tbody').html(response.result);
         },
         error: function () {
@@ -24,6 +46,110 @@ $(document).ready(function () {
         oDetalle.length = 0;
         oCabecera.length = 0;
         $('input:radio[name=ckServicio]').attr("disabled", false);
+        printTabla();
+    });
+
+    $("#inclSus").click(function () {
+        var inclSus = $('#inclSus:checked').val() ? 1 : 0;
+        if (inclSus === 1) {
+            var tarEspecial = $('#tarEspecial').val();
+            var valorTarifaEsoecial = tarEspecial.split(",");
+            $("#tarifaDos").empty();
+            $("#tarifaDos").html(valorTarifaEsoecial[4] + ": S/.<span>" + valorTarifaEsoecial[3] + "</span>");
+        }
+        else {
+            $("#tarifaDos").empty();
+            $("#tarifaDos").html("<br>");
+        }
+    });
+
+    $("#submitSendXpress").click(function () {
+        var flag = 0;
+        var inclSus = $('#inclSus:checked').val() ? 1 : 0;
+        var tarEspecial = $('#tarEspecial').val();
+        var espeServ = $('input:radio[name=ckServicio]:checked').val();
+        var valorServicio = espeServ.split(",");
+        var valorTarifaEsoecial = tarEspecial.split(",");
+
+        if (valorServicio[2].trim() === "") {
+            alertaMessage("No existen tarifas asignadas a este servicio");
+            flag = 1;
+        }
+        if (espeServ === undefined)
+        {
+            alertaMessage("Seleccione un servicio");
+            flag = 1;
+        }
+        if (flag !== 1)
+        {
+            oCabecera.length = 0;
+            oDetalle.length = 0;
+            if (inclSus === 1)
+            {
+                var precioTotal = parseFloat(valorServicio[4]) + parseFloat(valorTarifaEsoecial[3]);
+                oCabecera[oCabecera.length] = historia + "," + precioTotal;
+                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3];
+                oDetalle[oDetalle.length] = valorTarifaEsoecial[0] + "," + 1 + "," + parseFloat(valorTarifaEsoecial[3]) + "," + valorTarifaEsoecial[2] + "," + valorTarifaEsoecial[1] + "," + valorTarifaEsoecial[4];
+            }else
+            {
+                oCabecera[oCabecera.length] = historia + "," + parseFloat(valorServicio[4]);
+                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3];
+            }
+            $.ajax({
+                url: '../AtencionVarias/RegistroVentaRapida',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'cabecera': oCabecera,
+                    'detalle': oDetalle
+                }), success: function (response) {
+                    if (response.success) {
+                        oCabecera.length = 0;
+                        oDetalle.length = 0;
+                        printTabla();
+                        setTimeout("redireccionarPagina(" + response.codigoCaja + ")", 1000);
+                        
+                    } else {
+                        alertaMessage("No se pudo procesar la venta");
+                    }
+                },
+                error: function () {
+                    alertaMessage("No se pudo procesar la venta", 0);
+                }
+            });
+        }
+    });
+
+    $("#submitSend").click(function () {
+        if (oDetalle.length === 0) {
+            alertaMessage("No cargo ninguna tarifa");
+        } else
+        {
+            $.ajax({
+                url: '../AtencionVarias/RegistroVentaRapida',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'cabecera': oCabecera,
+                    'detalle' : oDetalle
+                }), success: function (response) {
+                    if (response.success) {
+                        oCabecera.length = 0;
+                        oDetalle.length = 0;
+                        printTabla();
+                        setTimeout("redireccionarPagina(" + response.codigoCaja + ")", 1000);
+                    } else
+                    {
+                        alertaMessage("No se pudo procesar la venta");
+                    }
+                },
+                error: function () {
+                    alertaMessage("No se pudo procesar la venta", 0);
+                }
+            });
+        }
         printTabla();
     });
 
@@ -42,9 +168,16 @@ function generaTarifa(e) {
             'descripcion' : ''
         }),
         success: function (response) {
-            $('input:radio[name=ckServicio]').attr("disabled", true);
+            var espeServ = $('input:radio[name=ckServicio]:checked').val();
+            var valorRetorno = espeServ.split(",");
+            $("#tarifaUno").empty();
+            $("#tarifaUno").html(valorRetorno[5] + ": S/.<span>" + valorRetorno[4] + "</span>");
+            oDetalle.length = 0;
+            oCabecera.length = 0;
+            $('input:radio[name=ckServicio]').attr("disabled", false);
             $('#dataTarifa tbody').empty();
             $('#dataTarifa tbody').html(response.result);
+            printTabla();
         },
         error: function () {
             alertaMessage("No se pudo generar los servicios", 0);
@@ -53,10 +186,10 @@ function generaTarifa(e) {
 }
 
 function registraItem(obj) {
-
     var precio = $("#precio-" + obj).val();
     var cantidad = $("#cantidad-" + obj).val();
     var tarifa = $("#tarifa-" + obj).val();
+    var descTrar = $("#descTrar-" + obj).val();
     var espeServ = $('input:radio[name=ckServicio]:checked').val();
     var valorRetorno = espeServ.split(",");
     var flag = 1;
@@ -82,7 +215,7 @@ function registraItem(obj) {
             oCabecera[0] = valorCabecera[0] + "," + tot;
             $("#totalPagar").html(tot);
         }    
-        oDetalle[oDetalle.length] = tarifa + "," + cantidad + "," + precio + "," + valorRetorno[0] + "," + valorRetorno[1] + "," + valorRetorno[3];
+        oDetalle[oDetalle.length] = tarifa + "," + cantidad + "," + precio + "," + valorRetorno[0] + "," + valorRetorno[1] + "," + valorRetorno[3] + "," + descTrar;
         printTabla();
     }
 }
@@ -110,6 +243,27 @@ $("#buscaTarifa").keyup(function () {
     });
 });
 
+$("#buscaServicio").keyup(function () {
+    var value = $(this).val();
+    $.ajax({
+        url: '../AtencionVarias/CargaServicios',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+            'historia': historia,
+            'descripcion': value
+        }),
+        success: function (response) {
+
+            $('#dataServicio tbody').html(response.result);
+        },
+        error: function () {
+            alertaMessage("No se pudo generar los servicios", 0);
+        }
+    });
+});
+
 function eliminaPrecio(e) {
     var valorDetalle = oDetalle[e].split(",");
     var valorCabecera = oCabecera[0].split(",");
@@ -130,11 +284,10 @@ function printTabla() {
     $("#dataVenta tbody").empty();
     $.each(oDetalle, function (key, value) {
         var valorRetorno = value.split(",");
-        var data = "<tr><td>" + valorRetorno[5] + "</td>" +
-            "<td>" + valorRetorno[0] + "</td>" +
-            "<td>" + valorRetorno[1] + "</td>" +
-            "<td>" + valorRetorno[2] + "</td>" +
-            "<td><div class='tools'><a href='#' onclick=eliminaPrecio(" + key + ") class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>" +
+        var data = "<tr><td width='70%'>" + valorRetorno[6] + "</td>" +
+            "<td width='10%'>" + valorRetorno[1] + "</td>" +
+            "<td width='10%'>" + valorRetorno[2] + "</td>" +
+            "<td width='10%'><div class='tools'><a href='#' onclick=eliminaPrecio(" + key + ") class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>" +
             "</tr>";
         $("#dataVenta tbody").append(data);
     });
@@ -193,6 +346,6 @@ function alertaMessageBien(msj, evt) {
     }
 }
 
-function redireccionarPagina() {
-    window.location = "../Tarifario/RegistrarTarifario";
+function redireccionarPagina(codCaja) {
+    window.location = "../Caja/ImprimirTicket?CodCaja=" + codCaja + "";
 }

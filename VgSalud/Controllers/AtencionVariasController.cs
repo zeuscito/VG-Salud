@@ -1808,18 +1808,18 @@ namespace VgSalud.Controllers
         }
 
         [HttpPost]
-        public JsonResult CargaServicios(int historia)
+        public JsonResult CargaServicios(int historia, string descripcion)
         {
             string sede = Session["codSede"].ToString();
-            var listado = ser.ListadoServiciosVentaRapida(sede, historia).ToList();
+            var listado = ser.ListadoServiciosVentaRapida(sede, historia, descripcion).ToList();
             StringBuilder sb = new StringBuilder();
 
             foreach (var a in listado)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine("<td>" + a.NomServ + "</td>");
-                sb.AppendLine("<td>" +
-                    "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + "' />" +
+                sb.AppendLine("<td width='85%'>" + a.NomServ + "</td>");
+                sb.AppendLine("<td width='15%'>" +
+                    "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + ","+ a.DescTipoTar +"' />" +
                     "</td>");
                 sb.AppendLine("</tr>");
             }
@@ -1831,8 +1831,36 @@ namespace VgSalud.Controllers
         }
 
         [HttpPost]
+        public JsonResult EvaluaTipoDocUsuario()
+        {
+            CajaController caja = new CajaController();
+            string sede = Session["codSede"].ToString();
+            string usuario = Session["UserID"].ToString();
+            string result = "";
+            var series = caja.ListadoUsuarioSerie(usuario).Find(x => x.Prioridad == true);
+            if (series == null)
+            {
+                result = "Cajero sin documento contable";
+                return Json(new { result, success = false }, JsonRequestBehavior.AllowGet);
+            }
+            else {
+                if (series.CodDocSerie == "DS001")
+                {
+                    result = "No se pueden emitir facturas por este medio";
+                    return Json(new { result, success = false }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+        }
+
+        [HttpPost]
         public JsonResult RegistroVentaRapida(string[] cabecera, string[] detalle)
         {
+            int codigoCaja;
             var valorCabecera = cabecera[0].Split(',');
             UtilitarioController ut = new UtilitarioController();
             PacientesController pa = new PacientesController();
@@ -1866,8 +1894,10 @@ namespace VgSalud.Controllers
 
             precio = (decimal.Parse(valorCabecera[1].ToString()) / (1 + igvDemo));
             igvv = precio * igvDemo;
+            precio = Decimal.Round(precio, 2);
+            igvv = Decimal.Round(igvv, 2);
             subtotal = precio + igvv;
-
+            subtotal = Decimal.Round(subtotal, 2);
             totalG = Decimal.Round(subtotal, 2);
             E_DocumentoSerie correlativo = caja.ListadoCorrelativo(series.CodDocSerie).FirstOrDefault();
             E_TipoMoneda evalua = mo.ListadoTipoMoneda1().Find(x => x.fechaParse == horaSis.HoraServidor.ToShortDateString() && x.CodTipMon == "TM002");
@@ -1887,7 +1917,7 @@ namespace VgSalud.Controllers
                         da.Parameters.AddWithValue("@CodSede", sede);
                         da.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
                         da.Parameters.AddWithValue("@CodcatPac", reg.CodCatPac);
-                        da.Parameters.AddWithValue("@STotCue", subtotal);
+                        da.Parameters.AddWithValue("@STotCue", precio);
                         da.Parameters.AddWithValue("@IgvCue", igvv);
                         da.Parameters.AddWithValue("@TotCue", totalG);
                         da.Parameters.AddWithValue("@FecCrea", "");
@@ -1914,7 +1944,7 @@ namespace VgSalud.Controllers
                             cmd.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
                             cmd.Parameters.AddWithValue("@NomPac", nomPac.ToString());
                             cmd.Parameters.AddWithValue("@CodCatPac", reg.CodCatPac);
-                            cmd.Parameters.AddWithValue("@SubTotal", subtotal);
+                            cmd.Parameters.AddWithValue("@SubTotal", precio);
                             cmd.Parameters.AddWithValue("@Igv", igvv);
                             cmd.Parameters.AddWithValue("@Total", totalG);
                             cmd.Parameters.AddWithValue("@Fecha", "");
@@ -1936,8 +1966,8 @@ namespace VgSalud.Controllers
                                 ca.Parameters.AddWithValue("@CodDocSerie", series.CodDocSerie);
                                 ca.Parameters.AddWithValue("@Serie", serieDoc[1].ToString());
                                 ca.Parameters.AddWithValue("@NumDoc", correlativo.Serie);
-                                ca.Parameters.AddWithValue("@FechaEmision", "");
-                                ca.Parameters.AddWithValue("@HoraEmision", horaSis.HoraServidor.ToShortTimeString());
+                                ca.Parameters.AddWithValue("@FechaEmision", horaSis.HoraServidor);
+                                ca.Parameters.AddWithValue("@HoraEmision", horaSis.HoraServidor);
                                 ca.Parameters.AddWithValue("@Historia", int.Parse(valorCabecera[0]));
                                 ca.Parameters.AddWithValue("@NomPac", nomPac);
                                 ca.Parameters.AddWithValue("@DirecPac", reg.Direcc.ToUpper());
@@ -1946,7 +1976,7 @@ namespace VgSalud.Controllers
                                 ca.Parameters.AddWithValue("@DirRazSoc", reg.Direcc.ToUpper());
                                 ca.Parameters.AddWithValue("@CodCatPac", reg.CodCatPac);
                                 ca.Parameters.AddWithValue("@Estado", "1");
-                                ca.Parameters.AddWithValue("@SubTotal", subtotal);
+                                ca.Parameters.AddWithValue("@SubTotal", precio);
                                 ca.Parameters.AddWithValue("@Igv", igvv);
                                 ca.Parameters.AddWithValue("@Total", totalG);
                                 ca.Parameters.AddWithValue("@UsuCrea", usuario);
@@ -1967,6 +1997,7 @@ namespace VgSalud.Controllers
                                 ca.Parameters.AddWithValue("@Evento", "1");
 
                                 int CodCaja = (int)ca.ExecuteScalar();
+                                codigoCaja = CodCaja;
 
                                 using (SqlCommand cue = new SqlCommand("Usp_MtoCuentas", con, tr))
                                 {
@@ -1994,144 +2025,153 @@ namespace VgSalud.Controllers
 
 
                                     int contador = 1;
-                                    foreach (var a in detalle)
+
+                                    using (SqlCommand cpago = new SqlCommand("Usp_MtoCaja_Pago", con, tr))
                                     {
-                                        var valorDetalle = a.Split(',');
-                                        E_Tarifario regi = tar.ListadoTarifa().Find(x => x.CodTar == valorDetalle[0].ToString());
 
-                                        if (regi.AfecIgcv == true)
+                                        cpago.CommandType = CommandType.StoredProcedure;
+
+                                        cpago.Parameters.AddWithValue("@CodCaja", CodCaja);
+                                        cpago.Parameters.AddWithValue("@item", contador);
+                                        cpago.Parameters.AddWithValue("@CODMEDIOS", "ME001");
+                                        cpago.Parameters.AddWithValue("@Importe", decimal.Parse(valorCabecera[1].ToString()));
+                                        cpago.Parameters.AddWithValue("@ImporteSoles", decimal.Parse(valorCabecera[1].ToString()));
+                                        cpago.Parameters.AddWithValue("@CodTipMon", "TM001");
+                                        cpago.Parameters.AddWithValue("@TipoCambio", evalua.TipoCambio);
+                                        cpago.Parameters.AddWithValue("@Estado", "1");
+                                        cpago.Parameters.AddWithValue("@Crea", Crea);
+                                        cpago.Parameters.AddWithValue("@Modifica", "");
+                                        cpago.Parameters.AddWithValue("@Elimina", "");
+                                        cpago.Parameters.AddWithValue("@Evento", "1");
+                                        cpago.ExecuteNonQuery();
+
+                                        foreach (var a in detalle)
                                         {
-                                            precio = (decimal.Parse(valorDetalle[1].ToString()) * int.Parse(valorDetalle[2]) / (1 + igvDemo));
-                                            igvv = precio * igvDemo;
-                                            subtotal = precio + igvv;
-                                            totalG = Decimal.Round(subtotal, 2);
-                                        }
-                                        else
-                                        {
-                                            precio = (int.Parse(valorDetalle[1].ToString()) * decimal.Parse(valorDetalle[2]));
-                                            igvv = 0;
-                                            subtotal = precio + igvv;
-                                            totalG = Decimal.Round(subtotal, 2);
-                                        }
-                                        
-                                        using (SqlCommand av = new SqlCommand("Usp_MtoAtencionVarias_Detalle ", con, tr))
-                                        {
+                                            var valorDetalle = a.Split(',');
+                                            E_Tarifario regi = tar.ListadoTarifa().Find(x => x.CodTar == valorDetalle[0].ToString());
 
+                                            if (regi.AfecIgcv == true)
+                                            {
+                                                precio = (decimal.Parse(valorDetalle[2].ToString()) * int.Parse(valorDetalle[1]) / (1 + igvDemo));
+                                                igvv = precio * igvDemo;
+                                                precio = Decimal.Round(precio, 2);
+                                                igvv = Decimal.Round(igvv, 2);
+                                                subtotal = precio + igvv;
+                                                subtotal = Decimal.Round(subtotal, 2);
+                                                totalG = Decimal.Round(subtotal, 2);
+                                            }
+                                            else
+                                            {
+                                                precio = (int.Parse(valorDetalle[2].ToString()) * decimal.Parse(valorDetalle[1]));
+                                                precio = Decimal.Round(precio, 2);
+                                                igvv = 0;
+                                                subtotal = precio + igvv;
+                                                subtotal = Decimal.Round(subtotal, 2);
+                                                totalG = Decimal.Round(subtotal, 2);
+                                            }
 
-                                            av.CommandType = CommandType.StoredProcedure;
-                                            av.Parameters.AddWithValue("@CodAtenDet", "");
-                                            av.Parameters.AddWithValue("@CodAten", codAtencion);
-                                            av.Parameters.AddWithValue("@item", contador);
-                                            av.Parameters.AddWithValue("@CodSede", sede);
-                                            av.Parameters.AddWithValue("@CodEspec", valorDetalle[4].ToString());
-                                            av.Parameters.AddWithValue("@CodServ", valorDetalle[3].ToString());
-                                            av.Parameters.AddWithValue("@CodMed", "");
-                                            av.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
-                                            av.Parameters.AddWithValue("@CodTipTar", regi.CodTipTar);
-                                            av.Parameters.AddWithValue("@CodSTipTar", regi.CodSTipTar);
-                                            av.Parameters.AddWithValue("@Cantida", int.Parse(valorDetalle[1].ToString()));
-                                            av.Parameters.AddWithValue("@SubTotal", subtotal);
-                                            av.Parameters.AddWithValue("@Igv", igvv);
-                                            av.Parameters.AddWithValue("@Total", totalG);
-                                            av.Parameters.AddWithValue("@MedicoEnvia", "");
-                                            av.Parameters.AddWithValue("@EspeciEnvia", "");
-                                            av.Parameters.AddWithValue("@Turno", turno);
-                                            av.Parameters.AddWithValue("@Estado", 'G');
-                                            av.Parameters.AddWithValue("@CodUsu", usuario);
-                                            av.Parameters.AddWithValue("@Crea", Crea);
-                                            av.Parameters.AddWithValue("@Modifica", "");
-                                            av.Parameters.AddWithValue("@Elimina", "");
-                                            av.Parameters.AddWithValue("@Evento", "1");
-
-                                            int codAtencionDetalle = (int)av.ExecuteScalar();
-
-                                            using (SqlCommand dd = new SqlCommand("Usp_MtoCuentasDetalle", con, tr))
+                                            using (SqlCommand av = new SqlCommand("Usp_MtoAtencionVarias_Detalle ", con, tr))
                                             {
 
-                                                dd.CommandType = CommandType.StoredProcedure;
-                                                dd.Parameters.AddWithValue("@Procedencia", 2);
-                                                dd.Parameters.AddWithValue("@CodCue", Resu);
-                                                dd.Parameters.AddWithValue("@Item", contador);
-                                                dd.Parameters.AddWithValue("@Tarifa", valorDetalle[0].ToString());
-                                                dd.Parameters.AddWithValue("@CodProce", codAtencion);
-                                                dd.Parameters.AddWithValue("@CodDetalleP", codAtencionDetalle);
-                                                dd.Parameters.AddWithValue("@CodSede", sede);
-                                                dd.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
-                                                dd.Parameters.AddWithValue("@precioUni", decimal.Parse(valorDetalle[2].ToString()));
-                                                dd.Parameters.AddWithValue("@precio", subtotal);
-                                                dd.Parameters.AddWithValue("@igv", igvv);
-                                                dd.Parameters.AddWithValue("@total", totalG);
-                                                dd.Parameters.AddWithValue("@EstDet", "1");
-                                                dd.Parameters.AddWithValue("@FechaAten", "");
-                                                dd.Parameters.AddWithValue("@TurnoAten", "");
-                                                dd.Parameters.AddWithValue("@RegMedico", "");
-                                                dd.Parameters.AddWithValue("@MedicoEnvia", "");
-                                                dd.Parameters.AddWithValue("@Crea", Crea);
-                                                dd.Parameters.AddWithValue("@Modifica", "");
-                                                dd.Parameters.AddWithValue("@Elimina", "");
-                                                dd.Parameters.AddWithValue("@Evento", "1");
-                                                
-                                                dd.ExecuteNonQuery();
 
-                                                using (SqlCommand cajDet = new SqlCommand("Usp_MtoCaja_Detalle", con, tr))
+                                                av.CommandType = CommandType.StoredProcedure;
+                                                av.Parameters.AddWithValue("@CodAtenDet", "");
+                                                av.Parameters.AddWithValue("@CodAten", codAtencion);
+                                                av.Parameters.AddWithValue("@item", contador);
+                                                av.Parameters.AddWithValue("@CodSede", sede);
+                                                av.Parameters.AddWithValue("@CodEspec", valorDetalle[4].ToString());
+                                                av.Parameters.AddWithValue("@CodServ", valorDetalle[3].ToString());
+                                                av.Parameters.AddWithValue("@CodMed", "");
+                                                av.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
+                                                av.Parameters.AddWithValue("@CodTipTar", regi.CodTipTar);
+                                                av.Parameters.AddWithValue("@CodSTipTar", regi.CodSTipTar);
+                                                av.Parameters.AddWithValue("@Cantida", int.Parse(valorDetalle[1].ToString()));
+                                                av.Parameters.AddWithValue("@SubTotal", precio);
+                                                av.Parameters.AddWithValue("@Igv", igvv);
+                                                av.Parameters.AddWithValue("@Total", totalG);
+                                                av.Parameters.AddWithValue("@MedicoEnvia", "");
+                                                av.Parameters.AddWithValue("@EspeciEnvia", "");
+                                                av.Parameters.AddWithValue("@Turno", turno);
+                                                av.Parameters.AddWithValue("@Estado", 'G');
+                                                av.Parameters.AddWithValue("@CodUsu", usuario);
+                                                av.Parameters.AddWithValue("@Crea", Crea);
+                                                av.Parameters.AddWithValue("@Modifica", "");
+                                                av.Parameters.AddWithValue("@Elimina", "");
+                                                av.Parameters.AddWithValue("@Evento", "1");
+
+                                                int codAtencionDetalle = (int)av.ExecuteScalar();
+
+                                                using (SqlCommand dd = new SqlCommand("Usp_MtoCuentasDetalle", con, tr))
                                                 {
 
-                                                    cajDet.CommandType = CommandType.StoredProcedure;
+                                                    dd.CommandType = CommandType.StoredProcedure;
+                                                    dd.Parameters.AddWithValue("@Procedencia", 2);
+                                                    dd.Parameters.AddWithValue("@CodCue", Resu);
+                                                    dd.Parameters.AddWithValue("@Item", contador);
+                                                    dd.Parameters.AddWithValue("@Tarifa", valorDetalle[0].ToString());
+                                                    dd.Parameters.AddWithValue("@CodProce", codAtencion);
+                                                    dd.Parameters.AddWithValue("@CodDetalleP", codAtencionDetalle);
+                                                    dd.Parameters.AddWithValue("@CodSede", sede);
+                                                    dd.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
+                                                    dd.Parameters.AddWithValue("@precioUni", decimal.Parse(valorDetalle[2].ToString()));
+                                                    dd.Parameters.AddWithValue("@precio", precio);
+                                                    dd.Parameters.AddWithValue("@igv", igvv);
+                                                    dd.Parameters.AddWithValue("@total", totalG);
+                                                    dd.Parameters.AddWithValue("@EstDet", "1");
+                                                    dd.Parameters.AddWithValue("@FechaAten", "");
+                                                    dd.Parameters.AddWithValue("@TurnoAten", "");
+                                                    dd.Parameters.AddWithValue("@RegMedico", "");
+                                                    dd.Parameters.AddWithValue("@MedicoEnvia", "");
+                                                    dd.Parameters.AddWithValue("@Crea", Crea);
+                                                    dd.Parameters.AddWithValue("@Modifica", "");
+                                                    dd.Parameters.AddWithValue("@Elimina", "");
+                                                    dd.Parameters.AddWithValue("@Evento", "1");
 
+                                                    dd.ExecuteNonQuery();
 
-                                                    cajDet.Parameters.AddWithValue("@CodSede", sede);
-                                                    cajDet.Parameters.AddWithValue("@CodCaja", Resu);
-                                                    cajDet.Parameters.AddWithValue("@CodCue", Resu);
-                                                    cajDet.Parameters.AddWithValue("@item", contador);
-                                                    cajDet.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
-                                                    cajDet.Parameters.AddWithValue("@NomTar", regi.DescTar.ToUpper());
-                                                    cajDet.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
-                                                    cajDet.Parameters.AddWithValue("@PUnit", decimal.Parse(valorDetalle[2].ToString()));
-                                                    cajDet.Parameters.AddWithValue("@SubTotal", subtotal);
-                                                    cajDet.Parameters.AddWithValue("@Igv", igvv);
-                                                    cajDet.Parameters.AddWithValue("@Total", totalG);
-                                                    cajDet.Parameters.AddWithValue("@TazaIgv", igvDemo);
-                                                    cajDet.Parameters.AddWithValue("@Crea", Crea);
-                                                    cajDet.Parameters.AddWithValue("@Modifica", "");
-                                                    cajDet.Parameters.AddWithValue("@Elimina", "");
-                                                    cajDet.Parameters.AddWithValue("@Evento", "1");
-                                                    cajDet.ExecuteNonQuery();
-
-                                                    using (SqlCommand cpago = new SqlCommand("Usp_MtoCaja_Pago", con, tr))
+                                                    using (SqlCommand cajDet = new SqlCommand("Usp_MtoCaja_Detalle", con, tr))
                                                     {
 
-                                                        cpago.CommandType = CommandType.StoredProcedure;
+                                                        cajDet.CommandType = CommandType.StoredProcedure;
 
-                                                        cpago.Parameters.AddWithValue("@CodCaja", CodCaja);
-                                                        cpago.Parameters.AddWithValue("@item", contador);
-                                                        cpago.Parameters.AddWithValue("@CODMEDIOS", "ME001");
-                                                        cpago.Parameters.AddWithValue("@Importe", decimal.Parse(valorDetalle[2].ToString()));
-                                                        cpago.Parameters.AddWithValue("@ImporteSoles", decimal.Parse(valorDetalle[2].ToString()));
-                                                        cpago.Parameters.AddWithValue("@CodTipMon", "TM001");
-                                                        cpago.Parameters.AddWithValue("@TipoCambio", evalua.TipoCambio);
-                                                        cpago.Parameters.AddWithValue("@Estado", "1");
-                                                        cpago.Parameters.AddWithValue("@Crea", Crea);
-                                                        cpago.Parameters.AddWithValue("@Modifica", "");
-                                                        cpago.Parameters.AddWithValue("@Elimina", "");
-                                                        cpago.Parameters.AddWithValue("@Evento", "1");
-                                                        cpago.ExecuteNonQuery();
+
+                                                        cajDet.Parameters.AddWithValue("@CodSede", sede);
+                                                        cajDet.Parameters.AddWithValue("@CodCaja", CodCaja);
+                                                        cajDet.Parameters.AddWithValue("@CodCue", Resu);
+                                                        cajDet.Parameters.AddWithValue("@item", contador);
+                                                        cajDet.Parameters.AddWithValue("@CodTar", valorDetalle[0].ToString());
+                                                        cajDet.Parameters.AddWithValue("@NomTar", regi.DescTar.ToUpper());
+                                                        cajDet.Parameters.AddWithValue("@Cantidad", int.Parse(valorDetalle[1].ToString()));
+                                                        cajDet.Parameters.AddWithValue("@PUnit", decimal.Parse(valorDetalle[2].ToString()));
+                                                        cajDet.Parameters.AddWithValue("@SubTotal", precio);
+                                                        cajDet.Parameters.AddWithValue("@Igv", igvv);
+                                                        cajDet.Parameters.AddWithValue("@Total", totalG);
+                                                        cajDet.Parameters.AddWithValue("@TazaIgv", igvDemo);
+                                                        cajDet.Parameters.AddWithValue("@Crea", Crea);
+                                                        cajDet.Parameters.AddWithValue("@Modifica", "");
+                                                        cajDet.Parameters.AddWithValue("@Elimina", "");
+                                                        cajDet.Parameters.AddWithValue("@Evento", "1");
+                                                        cajDet.ExecuteNonQuery();
+
                                                     }
-
                                                 }
                                             }
-                                        }
+                                            contador++;
 
-                                    }
-                                    
+                                        }
+                                    }                                    
                                 }
                             }
+
                             tr.Commit();
-                            
+
+                            return Json(new { codigoCaja, success = true }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     catch (Exception e)
                     {
                         tr.Rollback();
+                        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
                     finally
                     {
@@ -2140,13 +2180,8 @@ namespace VgSalud.Controllers
 
                 }
             }
-
-
-
-
-
-            string result = "";
-            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+            
+            
 
         }
 
@@ -2161,24 +2196,25 @@ namespace VgSalud.Controllers
             foreach (var a in listado)
             {
                 sb.AppendLine("<tr data-id='" + a.procedencia + "'>");
-                sb.AppendLine("<td>" + a.DescTar + "</td>");
-                sb.AppendLine("<td>" +
+                sb.AppendLine("<td width='65%'>" + a.DescTar + "</td>");
+                sb.AppendLine("<td width='10%'>" +
                     "<input type='text' name='cantidad' id='cantidad-" + clave + "' value='1' />" +
                     "</td>");
                 if (a.ModPrecio == true)
                 {
-                    sb.AppendLine("<td>" +
+                    sb.AppendLine("<td  width='15%'>" +
                     "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' />" +
                     "</td>");
                 }
                 else
                 {
-                    sb.AppendLine("<td>" +
+                    sb.AppendLine("<td  width='15%'>" +
                     "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' disabled />" +
                     "</td>");
                 }
 
-                sb.AppendLine("<td>" +
+                sb.AppendLine("<td width='10%'>" +
+                    "<input type='hidden' name='descTrar' id='descTrar-" + clave + "' value='" + a.DescTar + "' />" +
                     "<input type='hidden' name='tarifa' id='tarifa-" + clave + "' value='" + a.CodTar + "' />" +
                     "<a onclick=registraItem('" + clave + "') href='#'><i class='fa fa-check'></i></a>" + "</td>");
 
@@ -2195,6 +2231,10 @@ namespace VgSalud.Controllers
 
         public ActionResult VentaRapida(int historia)
         {
+            string sede = Session["codSede"].ToString();
+            string tarifa = "VG0001";
+            var data = ser.ListadoTarifaEspecial(historia, tarifa).FirstOrDefault();
+            ViewBag.tarEspecial = data.CodTar + "," + data.CodEspec + "," + data.CodServ + "," + data.precio + "," + data.DescTipoTar;
             ViewBag.historia = historia;
             return View();
         }

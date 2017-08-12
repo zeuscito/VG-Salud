@@ -243,7 +243,7 @@ namespace VgSalud.Controllers
                         con.Close();
                     }
                 }
-                return RedirectPermanent("./RegistroPaciente?id=" + codResu);
+                return RedirectPermanent("../AtencionVarias/VentaRapida?historia=" + codResu);
             }
 
         }
@@ -1522,19 +1522,21 @@ namespace VgSalud.Controllers
         }
 
 
-        public JsonResult VenderConsulta()
+        public JsonResult VenderConsulta(int Id)
         {
             E_Servicios Ser = new E_Servicios();
 
             string Tbody = "";
-
             var resultado = ListarServicios();
             foreach (var item in resultado)
             {
                 Tbody += $"<tr><td>{item.CodServ}</td>";
                 Tbody += $"<td>{item.NomServ}</td>";
-                Tbody += $"<td><a style='cursor:pointer' onclick='AgregarConsulta();' ><span style='Color:green' class='fa fa-plus-square'></span></a></td></tr>";
+                Tbody += $"<td><input type='hidden' value="+ Id +"  id='CodHistoria' /><a class='venta' style='cursor:pointer' CodEspec=" +item.CodEspec+"><span style='Color:green' class='fa fa-plus-square'></span></a></td></tr>";
+              
             }
+            //Tbody += "<script src=\"/Scripts/ventaconsulta.js\"></script>";
+            Tbody += "<script src=\"/Scripts/demo.js\"></script>";
             return Json(Tbody, JsonRequestBehavior.AllowGet);
             
         }
@@ -1585,9 +1587,59 @@ namespace VgSalud.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult CargarVenta(string CodEspec, int historia)
+        {
+            int clave = 1;
+            string sede = Session["codSede"].ToString();
+            //var listado = ListadoTarifVentaRapida(CodServ, sede, historia, descripcion).ToList();
+            //StringBuilder sb = new StringBuilder();
+
+            //foreach (var a in listado)
+            //{
+            //    sb.AppendLine("<tr data-id='" + a.procedencia + "'>");
+            //    sb.AppendLine("<td>" + a.DescTar + "</td>");
+            //    sb.AppendLine("<td>" +
+            //        "<input type='text' name='cantidad' id='cantidad-" + clave + "' value='1' />" +
+            //        "</td>");
+            //    if (a.ModPrecio == true)
+            //    {
+            //        sb.AppendLine("<td>" +
+            //        "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' />" +
+            //        "</td>");
+            //    }
+            //    else
+            //    {
+            //        sb.AppendLine("<td>" +
+            //        "<input type='text' name='precio' id='precio-" + clave + "' value='" + a.Precio + "' disabled />" +
+            //        "</td>");
+            //    }
+
+            //    sb.AppendLine("<td>" +
+            //        "<input type='hidden' name='tarifa' id='tarifa-" + clave + "' value='" + a.CodTar + "' />" +
+            //        "<a onclick=registraItem('" + clave + "') href='#'><i class='fa fa-check'></i></a>" + "</td>");
+
+            //    sb.AppendLine("</tr>");
+
+            //    clave++;
+            //}
+            //string result = "";
+            //result = sb.ToString();
+
+            string result = "";
+
+            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+
+        }
 
 
+        //public JsonResult CargarVenta()
+        //{
+        //    var Tbody = "";
 
+        //    Tbody += "<script src=\"/Scripts/demo.js\"></script>";
+        //    return Json(Tbody, JsonRequestBehavior.AllowGet);
+        //}
 
     }
 }

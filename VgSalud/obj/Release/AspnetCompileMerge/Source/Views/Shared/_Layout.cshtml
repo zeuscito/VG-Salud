@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     var EntregaCarnetPac = new VgSalud.Controllers.CarnetController().usp_get_Entrega_Carnet();
 }
 
@@ -22,7 +20,6 @@ else
     string CodUsu = Session["UserID"].ToString();
     VgSalud.Controllers.AccesoController ma = new VgSalud.Controllers.AccesoController();
     var listaModulo = ma.ListaModulos(CodUsu).ToList();
-
     <!DOCTYPE html>
     <html>
     <head>

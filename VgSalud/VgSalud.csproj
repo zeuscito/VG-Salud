@@ -374,6 +374,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Scripts\ventaconsulta.js" />
     <Content Include="Content\controller\VentaRapida.js" />
     <Content Include="Content\controller\RegistrarTarifario.js" />
     <Content Include="Content\datepicker.css" />
@@ -1419,6 +1420,7 @@
     <None Include="Properties\PublishProfiles\VG.pubxml" />
     <None Include="Properties\PublishProfiles\VgSalud.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\demo.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

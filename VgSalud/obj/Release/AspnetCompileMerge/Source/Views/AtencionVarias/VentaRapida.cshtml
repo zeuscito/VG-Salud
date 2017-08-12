@@ -14,7 +14,6 @@
     tbody {
         overflow-y: scroll;
         height: 250px;
-        width: 100%;
         position: absolute;
     }
 </style>
@@ -44,36 +43,68 @@
             </div>
 
             <div class="box-body">
-                <input type="hidden" id="Cod" name="Cod" />
+                <input type="hidden" id="historia" name="historia" value="@ViewBag.historia" />
+                <input type="hidden" id="servicioTemp" name="servicioTemp" />
+                <input type="hidden" id="tarEspecial" name="tarEspecial" value="@ViewBag.tarEspecial" />
                 <form method="post" action="~/AtencionVarias/AsignarAtencion">
                     <fieldset>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <input type='text' placeholder='Buscar Servicio' id='buscaServicio' class='form-control' />
                             <table id="dataServicio" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <td>Servicio</td>
-                                        <th><i class="fa fa-check-circle-o"></i></th>
+                                        <td width="85%">Servicio</td>
+                                        <th width="15%"><i class="fa fa-check-circle-o"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                            </table>
+                            </table>                            
                         </div>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <input type='text' placeholder='Buscar Tarifa' id='buscaTarifa' class='form-control' />
+                            <div id="buscarTar" style="display:none"></div>
                             <table id="dataTarifa" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <td>Tarifa</td>
-                                        <td>Cantidad</td>
-                                        <td>Precio</td>
-                                        <th><i class="fa fa-check"></i></th>
+                                        <td width="10%">Cantidad</td>
+                                        <td width="15%">Precio</td>
+                                        <th width="10%"><i class="fa fa-check"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="col-md-12" style="margin-top:2%;">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <h4 id="tarifaUno"><br /></h4>
+                                <h4 id="tarifaDos"><br /></h4>
+                                <label>Incluir suscripcion: <input type="checkbox" name="inclSus" id="inclSus" /></label>
+                                <button type="button" class="btn btn-danger" id="submitSendXpress">Vender Consulta</button>
+                            </div>
+                            <div class="col-md-6">
+                                <center><h2>Resumen Venta</h2></center>
+                                <table id="dataVenta" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td width="70%">Tarifa</td>
+                                            <td width="10%">Cantidad</td>
+                                            <td width="10%">Precio</td>
+                                            <th align='center' width="10%"><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <h2>Total a pagar: S/.<span id="totalPagar"></span></h2>
+                                <center>
+                                    <button type="button" class="btn btn-danger" id="submitSend">Vender</button>
+                                </center>
+                            </div>
 
                         </div>
                     </fieldset>

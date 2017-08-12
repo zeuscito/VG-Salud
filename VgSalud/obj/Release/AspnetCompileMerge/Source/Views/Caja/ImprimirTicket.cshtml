@@ -81,16 +81,17 @@
             CodCue = item.CodCue;
             horloca = (item.HoraEmision).ToString();
         }
-        foreach (var item in Doc) {
+        foreach (var item in Doc)
+        {
             tipoDoc += item.Etiqueta;
             Cajero += item.CodUsu;
         }
 
-   }
-    
+    }
+
     <div id="imprime" style="width: 300px;font-family: Consolas;
             font-size: 13px;margin-left:0px;">
-        <p >
+        <p>
             POLICLINICO SURCO SALUD
             <br>
             @*Jr. Ancash cd. 23 S/N El Agustino - Lima*@
@@ -108,30 +109,30 @@
                     <td colspan="3">@tipoDoc - N°@item.NumDoc</td>
                 </tr>
                 @*<tr>
-                    <td width="80">Fecha</td>
-                    <td width="10">:</td>
-                    <td>@item.FechaEmision.ToShortDateString() - @item.HoraEmision</td>
-                </tr>
-                <tr>
-                    <td>Cajero(a)</td>
-                    <td>:</td>
-                    <td>@Cajero</td>
-                </tr>
-                <tr>
-                    <td>Secuencia</td>
-                    <td>:</td>
-                    <td>@item.CodCaja</td>
-                </tr>
-                <tr>
-                    <td>Servicio</td>
-                    <td>:</td>
-                    <td>@ViewBag.servicio</td>
-                </tr>
-                <tr>
-                    <td>Cuenta</td>
-                    <td>: </td>
-                    <td>@item.CodCue</td>
-                </tr>*@
+                        <td width="80">Fecha</td>
+                        <td width="10">:</td>
+                        <td>@item.FechaEmision.ToShortDateString() - @item.HoraEmision</td>
+                    </tr>
+                    <tr>
+                        <td>Cajero(a)</td>
+                        <td>:</td>
+                        <td>@Cajero</td>
+                    </tr>
+                    <tr>
+                        <td>Secuencia</td>
+                        <td>:</td>
+                        <td>@item.CodCaja</td>
+                    </tr>
+                    <tr>
+                        <td>Servicio</td>
+                        <td>:</td>
+                        <td>@ViewBag.servicio</td>
+                    </tr>
+                    <tr>
+                        <td>Cuenta</td>
+                        <td>: </td>
+                        <td>@item.CodCue</td>
+                    </tr>*@
 
             }
 
@@ -148,33 +149,34 @@
             <tr>
                 <td colspan="3" align="center">----------------------------------</td>
             </tr>
-            @foreach (var item1 in detalle)
-            {
-                <tr>
-                    <td>
-                        <div style="display:none">
-                            @item1.PUnit
-                            @item1.Total
-                            @item1.SubTotal
-                            @item1.Igv
-                        </div>
-                    </td>
-                </tr>
-                CantxPre = item1.Total;
-                <tr>
-                    <td>@item1.Cantidad</td>
-                    <td>@item1.NomTar</td>
+                @foreach (var item1 in detalle)
+                {
+                    <tr>
+                        <td>
+                            <div style="display:none">
+                                @item1.PUnit
+                                @item1.Total
+                                @item1.SubTotal
+                                @item1.Igv
+                            </div>
+                        </td>
+                    </tr>
+                    CantxPre = item1.Total;
+                    <tr>
+                        <td>@item1.Cantidad</td>
+                        <td>@item1.NomTar</td>
 
-                    <td align="right">@CantxPre</td>
-                </tr>
+                        <td align="right">@CantxPre</td>
+                    </tr>
 
-                totalPago += item1.Total;
-                totalSubT += item1.SubTotal;
-                totalIgv += item1.Igv;
-                PreciUni += item1.PUnit;
+                    totalPago += item1.Total;
+                    totalSubT += item1.SubTotal;
+                    totalIgv += item1.Igv;
+                    PreciUni += item1.PUnit;
 
-                //total += item1.PUnit;
-            }
+                    //total += item1.PUnit;
+                }
+            
             @{
                 //subtotal = total / decimal.Parse("1.18");
                 //igv = subtotal * decimal.Parse("0.18");
@@ -189,21 +191,21 @@
                 <td colspan="3" align="center">----------------------------------</td>
             </tr>
             @*<tr>
-                <td>&nbsp;</td>
-                <td align="right">Total S/. :</td>
-                <td align="right">@total</td>
-            </tr>*@
+                    <td>&nbsp;</td>
+                    <td align="right">Total S/. :</td>
+                    <td align="right">@total</td>
+                </tr>*@
             <tr>
                 <td>&nbsp;</td>
                 <td align="right">&nbsp;</td>
                 <td align="right">&nbsp;</td>
             </tr>
-            
+
             <tr>
                 <td></td>
                 <td align="right">Total S/. :</td>
                 <td align="right">@TTotal</td>
-                
+
             </tr>
             <tr>
                 <td colspan="3"></td>
@@ -218,15 +220,15 @@
                 {
                     foreach (var item in paciente)
                     {
-                   
-                    <p align="center">
-                        <span>Razon Social&nbsp;:</span>@RazonSocial<br>
-                        <span>Ruc&nbsp;:</span>@Ruc<br>
-                        <span>Direccion&nbsp;:</span>@DirecRazon<br>
-                    </p>
+
+                        <p align="center">
+                            <span>Razon Social&nbsp;:</span>@RazonSocial<br>
+                            <span>Ruc&nbsp;:</span>@Ruc<br>
+                            <span>Direccion&nbsp;:</span>@DirecRazon<br>
+                        </p>
                     }
                 }
-               
+
             }
         }
         else
@@ -242,12 +244,12 @@
                     </p>
 
                 }
-               
+
             }
         }
         @*<p align="center">
-           GRACIAS POR SU VISITA<br />
-        </p>*@
+               GRACIAS POR SU VISITA<br />
+            </p>*@
     </div>
 
     <script>
@@ -258,7 +260,7 @@
             var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
             $("div#imprime").printArea(options);
             //$("#imprime").fadeOut();
-            
+
             window.location.href = '../Pacientes/ListaPacientes';
         });
     </script>
