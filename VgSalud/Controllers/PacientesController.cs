@@ -1433,10 +1433,7 @@ namespace VgSalud.Controllers
 
             return View(ListadoPacientesFiltro(fecha, dni, nombre));
         }
-
-
-
-
+        
 
         public ActionResult ImprimirHistoriaClinica(int Historia)
         {
@@ -1444,9 +1441,7 @@ namespace VgSalud.Controllers
             //return RedirectPermanent("~/Pacientes/ImprimirHistoriaClinica?Historia=" + Historia);
             return View(Lista);
         }
-
-
-
+        
         public List<E_Pacientes> ListarDatosHistoriaClinica(int Historia)
         {
             List<E_Pacientes> Lista = new List<E_Pacientes>();

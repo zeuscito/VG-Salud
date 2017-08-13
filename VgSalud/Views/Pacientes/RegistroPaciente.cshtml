@@ -75,9 +75,9 @@
                             }
 
 
-                            <div style="float:left; padding:0% 1% 0 1%;" title="Vender Consulta">
+                            <div style="float:left; padding:0% 1% 0 1%;" title="Vender Rapida">
                                 <a href="~/AtencionVarias/VentaRapida?historia=@Model.Historia" class="VenderConsulta">
-                                    <center><i class="fa fa-money" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Vender<br>Consulta</strong></center>
+                                    <center><i class="fa fa-money" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Vender<br>Rapida</strong></center>
                                 </a>
                             </div>
                             
@@ -808,7 +808,7 @@
 
 
 
-        $(".VenderConsulta").on("click", function () {
+        @*$(".VenderConsulta").on("click", function () {
 
             var DatoHist=$('#Historia').val();
             $.get('@Url.Action("VenderConsulta", "Pacientes")',{Id:DatoHist},
@@ -819,7 +819,7 @@
 
             });
 
-        });
+        });*@
 
 
         

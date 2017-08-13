@@ -688,7 +688,34 @@ namespace VgSalud.Controllers
             }
         }
 
-        public List<E_DocumentoSerie> ListadoCorrelativo(string CodSerie)
+        public List<E_DocumentoSerie> ListadoCorrelativo(string CodSerie,SqlConnection cnn, SqlTransaction tr)
+        {
+            List<E_DocumentoSerie> Lista = new List<E_DocumentoSerie>();
+           
+                using (SqlCommand cmd = new SqlCommand("usp_CorrelativoCaja", cnn, tr))
+                {
+                    cmd.Parameters.AddWithValue("@CodSerie", CodSerie);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_DocumentoSerie usu = new E_DocumentoSerie();
+
+                            usu.Serie = dr.GetString(0);
+                            usu.CodDocSerie = dr.GetString(1);
+
+                            Lista.Add(usu);
+                        }
+                     
+                    }
+
+                }
+                return Lista;
+            
+        }
+
+        public List<E_DocumentoSerie> ListadoBuscarCorrelativo(string CodSerie)
         {
             List<E_DocumentoSerie> Lista = new List<E_DocumentoSerie>();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
@@ -1024,7 +1051,7 @@ namespace VgSalud.Controllers
             string horaF = horaActual.ToString("H:mm:ss");
 
             E_DocumentoSerie docS = ds.ListarDocumentoSerie().Where(x => x.CodDocSerie == c.Serie).FirstOrDefault();
-            E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie).FirstOrDefault();
+         
             E_Pacientes paciente = pa.ListadoPacientes().Where(x => x.Historia == c.Historia).FirstOrDefault();
 
             ViewBag.tipoMoneda = new SelectList(mo.ListadoTipoMoneda().ToList(), "CodTipMon", "DescTipMon", c.CodTipMon);
@@ -1082,8 +1109,9 @@ namespace VgSalud.Controllers
 
                                 using (SqlCommand ca = new SqlCommand("Usp_MtoCaja", con, tr))
                                 {
-
+                                  
                                     ca.CommandType = CommandType.StoredProcedure;
+                                    E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie, con, tr).FirstOrDefault();
                                     ca.Parameters.AddWithValue("@CodCaja", "");
                                     ca.Parameters.AddWithValue("@CodSede", sede);
                                     ca.Parameters.AddWithValue("@CodCue", c.CodCue);
@@ -1253,6 +1281,7 @@ namespace VgSalud.Controllers
                             {
 
                                 ca.CommandType = CommandType.StoredProcedure;
+                                E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie, con,  tr).FirstOrDefault();
                                 ca.Parameters.AddWithValue("@CodCaja", "");
                                 ca.Parameters.AddWithValue("@CodSede", sede);
                                 ca.Parameters.AddWithValue("@CodCue", c.CodCue);
@@ -1777,7 +1806,7 @@ namespace VgSalud.Controllers
 
         public ActionResult ObtenerSerie(string CodSerie)
         {
-            var evalua = (List<E_DocumentoSerie>)ListadoCorrelativo(CodSerie).ToList();
+            var evalua = (List<E_DocumentoSerie>)ListadoBuscarCorrelativo(CodSerie).ToList();
             if (evalua.Count() != 0)
             {
                 return Json(evalua, JsonRequestBehavior.AllowGet);

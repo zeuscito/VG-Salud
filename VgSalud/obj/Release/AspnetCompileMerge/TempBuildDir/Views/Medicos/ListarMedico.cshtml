@@ -22,7 +22,7 @@
                     <div class="box-header">
                         @{
 
-                            <div style="float:left; padding:0% 1% 0 1%">
+                            <div style="float:left;margin-left:1%;margin-top:1%;">
                                 <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
                                 <br />
                             </div>
@@ -30,15 +30,15 @@
                             var abc1 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistrarMedico.cshtml");
                             if (abc1 != null)
                             {
-                                <div style="float:left; padding:0% 1% 0 1%">
-                                    <a href="~/Medicos/RegistrarMedico"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#13D003"></i><br /> <strong style="color:black">Nuevo</strong></center></a>
+                                <div style="float:left;margin-left:1%;margin-top:1%;">
+                                    <a href="~/Medicos/RegistrarMedico"><center><i class="fa fa-plus-circle" style="font-size:25px; color:#808080"></i><br /> <strong style="color:black">Nuevo</strong></center></a>
                                 </div>
                             }
 
                             var abc2 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Medicos/Asistencia");
                             if (abc2 != null)
                             {
-                                <div style="float:left; padding:0% 1% 0 1%">
+                                <div style="float:left;margin-left:1%;margin-top:1%;">
 
                                     <a href="~/Medicos/Asistencia"><center><i class="fa fa-calendar-check-o" style="font-size:25px; color:orange"></i><br /><strong style="color:black">Control de Asistencia</strong></center></a>
 
@@ -49,9 +49,9 @@
                     </div>
                     <br />
 
-                    <div class="box-body">
+                    <div class="box-body" style="margin-top:-1%;">
                         <fieldset>
-                            <legend style="margin-left: 15px;">Lista</legend>
+                            <legend style="margin-left:1%;width:98%">Lista</legend>
                             <div class="col-md-12">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>

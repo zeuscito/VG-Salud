@@ -102,7 +102,7 @@ namespace VgSalud.Controllers
             if (c.evento == 2)
             {
                 E_Caja caja = ca.ListadoCajaCabecera().Find(x => x.CodCaja == c.CodCaja);
-                E_DocumentoSerie correlativo = ca.ListadoCorrelativo(c.Serie).FirstOrDefault();
+               
                 E_DocumentoSerie docS = ds.ListarDocumentoSerie().Where(x => x.CodDocSerie == c.Serie).FirstOrDefault();
                 E_DocumentoSerie docSCaja = ds.ListarDocumentoSerie().Where(x => x.CodDocSerie == caja.CodDocSerie).FirstOrDefault();
                 DocumentoContableController dc = new DocumentoContableController();
@@ -116,11 +116,11 @@ namespace VgSalud.Controllers
                     con.Open();
                     try
                     {
-                        using (SqlCommand da = new SqlCommand("Usp_Mantenimiento_NotaCredito", con))
+                        SqlTransaction tr = con.BeginTransaction(IsolationLevel.Serializable);
+                        using (SqlCommand da = new SqlCommand("Usp_Mantenimiento_NotaCredito", con, tr))
                         {
-
+                            E_DocumentoSerie correlativo = ca.ListadoCorrelativo(c.Serie, con, tr).FirstOrDefault();
                             da.CommandType = CommandType.StoredProcedure;
-
                             da.Parameters.AddWithValue("@CodNotaCre", "");
                             da.Parameters.AddWithValue("@CodCaja", c.CodCaja);
                             da.Parameters.AddWithValue("@CodDocSerie", c.Serie);

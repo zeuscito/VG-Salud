@@ -74,8 +74,8 @@
                 <div class="box-header">
                     <div style="float:left; padding:0% 1% 0 1%">
                         <a href="ListarMedico">
-                            <center style="margin-left:18px;">
-                                <i class="fa fa-arrow-circle-left" style="font-size:25px;color:#13D003;"></i><br><strong style="color:black">Regresar Atras</strong>
+                            <center style="margin-left:1%;">
+                                <i class="fa fa-arrow-circle-left" style="font-size:25px;color:red;"></i><br><strong style="color:black">Regresar Atras</strong>
                             </center>
                         </a>
                     </div>
@@ -83,17 +83,16 @@
 
                 <div class="box-body">
                     <fieldset>
-                        <legend style="margin-left: 30px;">Nuevo Medico</legend>
+                        <legend style="margin-left: 1%;width:98%;">Nuevo Medico</legend>
 
                         <div class="col-md-6">
-
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>Nombres</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.NomMed, new { htmlAttributes = new { @class = "form-control", @id = "NomMed" } })
                                         @Html.ValidationMessageFor(model => model.NomMed, "", new { @class = "text-danger" })
                                     </div>
@@ -102,10 +101,10 @@
                             
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>DNI</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.DniMed, new { htmlAttributes = new { @class = "form-control", @id = "DniMed" } })
                                         <label id="errorMessage" style="display:none;color:red">Error: Ingrese Correctamente un Dni Valido!!</label>
                                         @Html.ValidationMessageFor(model => model.DniMed, "", new { @class = "text-danger" })
@@ -113,14 +112,13 @@
                                 </div>
                             </div>
                             
-
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>Tipo Colegiatura</label>
                                     </div>
-                                    <div class="col-md-8">
-                                        @Html.DropDownList("TipPrfMed", ListaProfesion, new { @class = "form-control select2", @id = "TipPrfMed" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("TipPrfMed", ListaProfesion, new { @class = "form-control select2", @id = "TipPrfMed",style="Width:100%;" })
                                         @Html.ValidationMessageFor(model => model.TipPrfMed, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -128,10 +126,10 @@
                             
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>Colegiatura</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.ColgMed, new { htmlAttributes = new { @class = "form-control", @id = "ColgMed" } })
                                         @Html.ValidationMessageFor(model => model.ColgMed, "", new { @class = "text-danger" })
                                     </div>
@@ -140,10 +138,10 @@
                             
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>RNE</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.RneMed, new { htmlAttributes = new { @class = "form-control", @id = "RneMed" } })
                                     </div>
                                 </div>
@@ -151,10 +149,10 @@
                             
                             <div  class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>Dirección</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.DireccMed, new { htmlAttributes = new { @class = "form-control", @id = "DireccMed" } })
                                         @Html.ValidationMessageFor(model => model.DireccMed, "", new { @class = "text-danger" })
                                     </div>
@@ -163,180 +161,185 @@
                             
                             <div class="row">
                                 <div class="form-group">
-                                    <div class="col-md-3 col-md-offset-1">
+                                    <div class="col-md-3">
                                         <label>Teléfono</label>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         @Html.EditorFor(model => model.TelfMed, new { htmlAttributes = new { @class = "form-control", @id = "TelfMed" } })
                                         @Html.ValidationMessageFor(model => model.TelfMed, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
                             </div>
-                            
-
                         </div>
-                        <div class="col-md-6">
 
+                        <div class="col-md-6">
                             <div class="row">
                                 <div class="form-group">
                                     <div class="col-md-3">
                                         <label>Servicio</label>
                                     </div>
                                     <div class="col-md-9">
-                                        @Html.DropDownList("CodServ", ListaServicios, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodServ" })
+                                        @Html.DropDownList("CodServ", ListaServicios, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodServ", style="Width:100%;" })
                                         @Html.ValidationMessageFor(model => model.CodServ, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
                             </div>
                             
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Especialidad</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="hidden" name="CodEspec" id="CodEspec" />
-                                    <input type="text" name="Espe" id="Espe" readonly="readonly" class="form-control" />
-                                    @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
-
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Empresa Tercero</label>
-                                </div>
-                                <div class="col-md-9">
-
-                                    <input type="hidden" name="CodEmp" id="CodEmp" />
-                                    <input type="text" name="Empresa" id="Empresa" readonly="readonly" class="form-control" />
-                                    @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Usuario</label>
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodUsu" })
-                                    <label id="errorMessage1" style="display:none;color:red">Error: El usuario ya se encuentra Asignado seleccione uno diferente!!</label>
-                                    @Html.ValidationMessageFor(model => model.CodUsu, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mostrar">
-                                <div class="col-md-6" style="padding-left: 0px;">
-                                    <div class="form-group">
-                                        <div class="col-md-6" style="padding-left: 0px;">
-                                            <label>Desea crear un Usuario ?</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            @Html.CheckBoxFor(model => model.CrearUsu, new { @id = "crearusu" })
-                                            @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
-                                        </div>
-                                        <div class="col-md-5 detalle">
-                                            <label style="margin-left: 25px;">Alias de Usuario</label>
-                                        </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Especialidad</label>
                                     </div>
-                                </div>
-                                <div class="col-md-6 detalle" style="padding-left: 0px;padding-right: 0px;">
-                                    <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;">
-                                        @Html.EditorFor(model => model.Alias, new { htmlAttributes = new { @class = "form-control", @id = "alias" } })
+                                    <div class="col-md-9">
+                                        <input type="hidden" name="CodEspec" id="CodEspec" />
+                                        <input type="text" name="Espe" id="Espe" readonly="readonly" class="form-control" />
+                                        @Html.ValidationMessageFor(model => model.CodEspec, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Observacion</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <textarea name="ObservMed" id="ObservMed" class="form-control">@ViewBag.observacion</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Pago por turno</label>
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.PagoTurno, new { htmlAttributes = new { @class = "form-control", @Value = "0" } })
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Empresa Tercero</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="hidden" name="CodEmp" id="CodEmp" />
+                                        <input type="text" name="Empresa" id="Empresa" readonly="readonly" class="form-control" />
+                                        @Html.ValidationMessageFor(model => model.CodEmp, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>En lista</label>
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.CheckBoxFor(model => model.EnLista, new { @checked = "true" })
-                                    @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Registra F.E.</label>
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.CheckBoxFor(model => model.EjecFichaElec, new { @checked = "true" })
-                                    @Html.ValidationMessageFor(model => model.EjecFichaElec, "", new { @class = "text-danger" })
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Usuario</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.DropDownList("CodUsu", ListaUsuario, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "CodUsu",style="Width:100%;" })
+                                        <label id="errorMessage1" style="display:none;color:red">Error: El usuario ya se encuentra Asignado seleccione uno diferente!!</label>
+                                        @Html.ValidationMessageFor(model => model.CodUsu, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Abreviatura</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <select class="form-control" name="abreviatura" style="width:100%">
-                                        <option value="MED.">MED</option>
-                                        <option value="TEC.">TEC</option>
-                                        <option value="LIC.">LIC</option>
-                                        <option value="ODO.">ODO</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-12 mostrar">
+                                    <div class="col-md-6" style="padding-left: 0px;">
+                                        <div class="form-group">
+                                            <div class="col-md-6" style="padding-left: 0px;">
+                                                <label>Desea crear un Usuario ?</label>
+                                            </div>
+                                            <div class="col-md-1">
+                                                @Html.CheckBoxFor(model => model.CrearUsu, new { @id = "crearusu" })
+                                                @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="col-md-5 detalle">
+                                                <label style="margin-left: 25px;">Alias de Usuario</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 detalle" style="padding-left: 0px;padding-right: 0px;">
+                                        <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;">
+                                            @Html.EditorFor(model => model.Alias, new { htmlAttributes = new { @class = "form-control", @id = "alias" } })
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label>Estado</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="checkbox" name="EstMed" id="EstMed" value="" checked />
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Observacion</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <textarea name="ObservMed" id="ObservMed" class="form-control">@ViewBag.observacion</textarea>
+                                    </div>
                                 </div>
                             </div>
 
-
-                            <div class="form-group">
-                                <center>
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2" style="background-color:#13D003; border:#13D003;">Asignar Pagos</button>
-                                </center>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Pago por turno</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.PagoTurno, new { htmlAttributes = new { @class = "form-control", @Value = "0" } })
+                                    </div>
+                                </div>
                             </div>
 
-                            <input type="hidden" value="3" id="evento" name="evento" />
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>En lista</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.EnLista, new { @checked = "true" })
+                                        @Html.ValidationMessageFor(model => model.EnLista, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Registra F.E.</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.CheckBoxFor(model => model.EjecFichaElec, new { @checked = "true" })
+                                        @Html.ValidationMessageFor(model => model.EjecFichaElec, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Abreviatura</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select class="form-control" name="abreviatura" style="width:100%">
+                                            <option value="MED.">MED</option>
+                                            <option value="TEC.">TEC</option>
+                                            <option value="LIC.">LIC</option>
+                                            <option value="ODO.">ODO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Estado</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="checkbox" name="EstMed" id="EstMed" value="" checked />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <center>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal2" style="border:#13D003;"><span class="fa fa-cogs"></span> Asignar Pagos</button>
+                                    </center>
+                                </div>
+
+                                <input type="hidden" value="3" id="evento" name="evento" />
+                            </div>
                         </div>
 
-
-                        <label></label>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <center>
-                                    <button type="submit" value="Registrar" id="registrar" style="background-color:#13D003; border:#13D003;" class="btn btn-danger">Registrar</button>
-                       
-                                </center>
-                            </div>
+                        <div class="col-md-12">
+                            <center>
+                                <button type="submit" value="Registrar" id="registrar" style="border:#13D003;" class="btn btn-success"><span class="fa fa-floppy-o"></span> Registrar</button>
+                            </center>
                         </div>
-
-
+                        
                     </fieldset>
                 </div>
 
