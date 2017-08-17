@@ -55,31 +55,38 @@
                             @{ var abc8 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "RegistroAtenciones.cshtml");
                                 if (abc8 != null)
                                 {
-                                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + V">
+                                    @*<div style="float:left; padding:0% 1% 0 1%" title="ALT + V">
                                         <a href="../AtencionVarias/RegistroAtenciones?historia=@Model.Historia">
                                             <center><i class="fa fa-calendar-minus-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Atenciones<br> No Programadas</strong></center>
                                         </a>
-                                    </div>
-                                }
-                            }
+                                    </div>*@
 
-                            @{var abc9 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Carnet/RegistroCarnet");
-                                if (abc9 != null)
-                                {
-                                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + B">
-                                        <a href="../Carnet/RegistroCarnet?historia=@Model.Historia">
-                                            <center><i class="fa fa-address-card-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
+                                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + V">
+                                        <a href="../AtencionVarias/VentaRapida?historia=@Model.Historia" title="Venda Rapida">
+                                            <center><i class="fa fa-money" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Venta<br> Rapida</strong></center>
                                         </a>
                                     </div>
                                 }
                             }
 
+                            @{var abc9 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Carnet/RegistrarCarnetSanidad");
+                                if (abc9 != null)
+                                {
+                                    <div style="float:left; padding:0% 1% 0 1%" title="ALT + B">
+                                        <a href="../Carnet/RegistrarCarnetSanidad">
+                                            <center><i class="fa fa-address-card-o" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Carnet<br>Sanitario</strong></center>
+                                        </a>
+                                    </div>
+                                    //?historia = @Model.Historia
+                                }
+                            }
 
-                            <div style="float:left; padding:0% 1% 0 1%;" title="Vender Rapida">
+
+                            @*<div style="float:left; padding:0% 1% 0 1%;" title="Venda Rapida">
                                 <a href="~/AtencionVarias/VentaRapida?historia=@Model.Historia" class="VenderConsulta">
                                     <center><i class="fa fa-money" style="font-size:25px; color:#13D003"></i><br> <strong style="color:black;">Vender<br>Rapida</strong></center>
                                 </a>
-                            </div>
+                            </div>*@
                             
                             <div style="float:left; padding:0% 1% 0 1%;display:none;" title="" >
                                 <a href="../Pacientes/ImprimirHistoriaClinica?Historia=@Model.Historia">
@@ -259,19 +266,9 @@
                                             <div class="col-md-9">
                                                 @Html.EditorFor(model => model.TelfFijo, new { htmlAttributes = new { @class = "form-control", @required = "true", @readonly = "readonly" } })
                                                 @Html.ValidationMessageFor(model => model.TelfFijo, "", new { @class = "text-danger" })
-
-
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-md-3">
-                                                <label>Observaciones</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <textarea id="Observ" name="Observ" class="form-control" readonly>@Model.Observ</textarea>
-                                                @Html.ValidationMessageFor(model => model.Observ, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                                        
                                         <div class="form-group" style="display:none">
                                             <div class="col-md-3">
                                                 <label>Pais</label>
@@ -314,8 +311,6 @@
                                             <div class="col-md-9">
                                                 @Html.EditorFor(model => model.Direcc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                                 @Html.ValidationMessageFor(model => model.Direcc, "", new { @class = "text-danger" })
-
-
                                             </div>
                                         </div>
                                         <div class="form-group" >
@@ -323,12 +318,19 @@
                                                 <label>N° Tarjeta</label>
                                             </div>
                                             <div class="col-md-9">
+                                                <input type="text" id="Observ" name="Observ" class="form-control" readonly value="@Model.Observ" />
+                                                @Html.ValidationMessageFor(model => model.Observ, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="display:none;" >
+                                            <div class="col-md-3">
+                                                <label>Sector</label>
+                                            </div>
+                                            <div class="col-md-9">
                                                 @Html.EditorFor(model => model.Sector, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                                 @Html.ValidationMessageFor(model => model.Sector, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-
 
                                         <div class="form-group" style="display:none">
                                             <div class="col-md-3">
@@ -808,7 +810,7 @@
 
 
 
-        @*$(".VenderConsulta").on("click", function () {
+        $(".VenderConsulta").on("click", function () {
 
             var DatoHist=$('#Historia').val();
             $.get('@Url.Action("VenderConsulta", "Pacientes")',{Id:DatoHist},
@@ -819,7 +821,7 @@
 
             });
 
-        });*@
+        });
 
 
         

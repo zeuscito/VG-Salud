@@ -13,13 +13,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:51</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>08/12/2017 19:11:56</publishTime>
+      <publishTime>08/14/2017 23:34:38</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>08/12/2017 19:11:53</publishTime>
+      <publishTime>08/14/2017 23:34:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.pdb">
-      <publishTime>08/12/2017 19:11:53</publishTime>
+      <publishTime>08/14/2017 23:34:20</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>06/17/2017 19:51:51</publishTime>
@@ -205,7 +205,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:53</publishTime>
     </File>
     <File Include="bin/VgSalud.dll">
-      <publishTime>08/12/2017 19:11:45</publishTime>
+      <publishTime>08/14/2017 23:34:09</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>06/17/2017 19:51:54</publishTime>
@@ -216,11 +216,14 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="Content/bootstrap.min.css">
       <publishTime>06/17/2017 19:51:56</publishTime>
     </File>
+    <File Include="Content/controller/CorteCaja.js">
+      <publishTime>08/14/2017 17:50:34</publishTime>
+    </File>
     <File Include="Content/controller/RegistrarTarifario.js">
       <publishTime>08/10/2017 07:06:55</publishTime>
     </File>
     <File Include="Content/controller/VentaRapida.js">
-      <publishTime>08/11/2017 07:44:31</publishTime>
+      <publishTime>08/14/2017 23:05:41</publishTime>
     </File>
     <File Include="Content/datepicker.css">
       <publishTime>06/17/2017 19:51:56</publishTime>
@@ -263,6 +266,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     </File>
     <File Include="Content/Images/avatar.png">
       <publishTime>06/17/2017 19:51:56</publishTime>
+    </File>
+    <File Include="Content/Images/loading_proces.gif">
+      <publishTime>08/13/2017 17:46:11</publishTime>
     </File>
     <File Include="Content/Images/logueo.jpg">
       <publishTime>06/17/2017 19:51:56</publishTime>
@@ -451,7 +457,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:57</publishTime>
     </File>
     <File Include="Content/Styles/AdminLTE.min.css">
-      <publishTime>07/25/2017 22:04:36</publishTime>
+      <publishTime>08/14/2017 15:53:39</publishTime>
     </File>
     <File Include="Content/Styles/all.css">
       <publishTime>06/17/2017 19:51:57</publishTime>
@@ -511,7 +517,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:51:58</publishTime>
     </File>
     <File Include="css/style.css">
-      <publishTime>06/17/2017 19:51:58</publishTime>
+      <publishTime>08/13/2017 17:49:53</publishTime>
     </File>
     <File Include="css/toastr.css">
       <publishTime>06/17/2017 19:51:58</publishTime>
@@ -3358,7 +3364,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>08/12/2017 19:11:48</publishTime>
+      <publishTime>08/14/2017 23:34:13</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3403,7 +3409,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/31/2017 14:41:21</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>08/10/2017 17:02:43</publishTime>
+      <publishTime>08/13/2017 17:21:35</publishTime>
     </File>
     <File Include="Styles/bootstrap-filestyle-1.2.1/bootstrap-filestyle.jquery.json">
       <publishTime>07/22/2017 13:04:27</publishTime>
@@ -3561,6 +3567,9 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
     <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
+    <File Include="Views/Alertas/Index.cshtml">
+      <publishTime>08/13/2017 22:52:19</publishTime>
+    </File>
     <File Include="Views/AtencionVarias/AsignarTipoTarifa.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
@@ -3577,22 +3586,28 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>08/12/2017 18:49:33</publishTime>
     </File>
     <File Include="Views/AtencionVarias/VentaRapida.cshtml">
-      <publishTime>08/12/2017 09:17:28</publishTime>
+      <publishTime>08/14/2017 16:48:11</publishTime>
     </File>
     <File Include="Views/Caja/AutorizarAnulacion.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
+    </File>
+    <File Include="Views/Caja/CorteCaja.cshtml">
+      <publishTime>08/14/2017 17:24:30</publishTime>
     </File>
     <File Include="Views/Caja/DetalleCaja.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Caja/ImprimirTicket.cshtml">
-      <publishTime>08/11/2017 06:21:44</publishTime>
+      <publishTime>08/14/2017 12:28:59</publishTime>
     </File>
     <File Include="Views/Caja/ListadoCaja.cshtml">
-      <publishTime>08/08/2017 20:18:18</publishTime>
+      <publishTime>08/14/2017 12:33:56</publishTime>
     </File>
     <File Include="Views/Caja/ListadoCajaAdmin.cshtml">
       <publishTime>08/08/2017 20:20:13</publishTime>
+    </File>
+    <File Include="Views/Caja/ListadoCorteCaja.cshtml">
+      <publishTime>08/14/2017 00:16:31</publishTime>
     </File>
     <File Include="Views/Caja/RegistrarCaja.cshtml">
       <publishTime>07/10/2017 15:14:02</publishTime>
@@ -3712,7 +3727,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/DatosGenerales/ModificarDatos.cshtml">
-      <publishTime>06/17/2017 19:52:47</publishTime>
+      <publishTime>08/13/2017 20:17:41</publishTime>
     </File>
     <File Include="Views/DatosGenerales/PermisosAdmin.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3847,7 +3862,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/30/2017 12:17:00</publishTime>
     </File>
     <File Include="Views/Login/Index.cshtml">
-      <publishTime>08/06/2017 13:17:09</publishTime>
+      <publishTime>08/14/2017 15:47:38</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3883,7 +3898,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>08/10/2017 12:58:09</publishTime>
     </File>
     <File Include="Views/Medicos/Asistencia.cshtml">
-      <publishTime>06/17/2017 19:52:47</publishTime>
+      <publishTime>08/13/2017 13:21:50</publishTime>
     </File>
     <File Include="Views/Medicos/HorarioMedico.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3898,7 +3913,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/28/2017 12:34:51</publishTime>
     </File>
     <File Include="Views/Medicos/RegistrarMedico.cshtml">
-      <publishTime>08/12/2017 17:14:29</publishTime>
+      <publishTime>08/13/2017 13:15:21</publishTime>
     </File>
     <File Include="Views/Medicos/VerHorario.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3949,7 +3964,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Pacientes/ImprimirHistoriaClinica.cshtml">
-      <publishTime>08/06/2017 21:42:46</publishTime>
+      <publishTime>08/14/2017 00:40:45</publishTime>
     </File>
     <File Include="Views/Pacientes/InformeGenerada.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -3958,16 +3973,16 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Pacientes/ListaPacientes.cshtml">
-      <publishTime>08/12/2017 09:45:51</publishTime>
+      <publishTime>08/14/2017 23:29:57</publishTime>
     </File>
     <File Include="Views/Pacientes/ModificarPacientes.cshtml">
-      <publishTime>08/09/2017 12:53:56</publishTime>
+      <publishTime>08/14/2017 10:38:12</publishTime>
     </File>
     <File Include="Views/Pacientes/RegistrarPaciente.cshtml">
-      <publishTime>08/09/2017 12:22:36</publishTime>
+      <publishTime>08/14/2017 10:42:51</publishTime>
     </File>
     <File Include="Views/Pacientes/RegistroPaciente.cshtml">
-      <publishTime>08/11/2017 07:50:09</publishTime>
+      <publishTime>08/14/2017 14:30:05</publishTime>
     </File>
     <File Include="Views/Perfil/ListaPerfil.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>
@@ -4084,7 +4099,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/17/2017 19:52:47</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/09/2017 23:33:04</publishTime>
+      <publishTime>08/14/2017 15:39:36</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>06/17/2017 19:52:47</publishTime>

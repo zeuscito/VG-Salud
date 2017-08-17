@@ -380,7 +380,7 @@
                         </div>
                         <div class="col-md-12">
                             <center>
-                                <button type="submit" class="btn btn-info" id="asignar" style="background-color:#13D003; border:#13D003;">Registrar</button>
+                                <button type="submit" class="btn btn-success" id="asignar" style="border:#13D003;"><span class="fa fa-floppy-o"></span> Registrar</button>
                             </center>
                         </div>
                 </div>
@@ -390,7 +390,7 @@
                             <tr>
                                 <th>Tarifa</th>
                                 <th>Porcentaje</th>
-                                <th><i class="fa fa-trash-o"></i></th>
+                                <th><center><i class="fa fa-trash-o"></i></center></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -400,11 +400,12 @@
 
                                     <td>@Html.DisplayFor(modelItem => item1.TipoTarifa)</td>
                                     <td>@Html.DisplayFor(modelItem => item1.porcentaje)</td>
-                                    <td>
-                                        <div class="tools">
-                                            <input type="hidden" value="3" id="evento" name="evento" />
-                                            <button type="submit" class="btn btn-danger eliminar" value="@item1.codTipTar"  name="codTipTarElimina"><i class="fa fa-trash-o"></i></button>
-                                        </div>
+                                    <td><center>
+                                            <div class="tools">
+                                                <input type="hidden" value="3" id="evento" name="evento" />
+                                                <button type="submit" class="btn btn-danger eliminar" value="@item1.codTipTar" name="codTipTarElimina"><i class="fa fa-trash-o"></i></button>
+                                            </div>
+                                        </center>
                                     </td>
 
                                 </tr>

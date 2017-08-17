@@ -1823,7 +1823,7 @@ namespace VgSalud.Controllers
             foreach (var a in listado)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine("<td width='85%'>" + a.NomServ + "</td>");
+                sb.AppendLine("<td width='85%'>" + a.Especialidad + "</td>");
                 sb.AppendLine("<td width='15%'>" +
                     "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + ","+ a.DescTipoTar +"' />" +
                     "</td>");
@@ -1850,7 +1850,7 @@ namespace VgSalud.Controllers
                 return Json(new { result, success = false }, JsonRequestBehavior.AllowGet);
             }
             else {
-                if (series.CodDocSerie == "DS001")
+                if (series.codigo == 1)
                 {
                     result = "No se pueden emitir facturas por este medio";
                     return Json(new { result, success = false }, JsonRequestBehavior.AllowGet);
@@ -1866,15 +1866,37 @@ namespace VgSalud.Controllers
         [HttpPost]
         public JsonResult RegistroVentaRapida(string[] cabecera, string[] detalle)
         {
+            string sede = Session["codSede"].ToString();
+            string usuario = Session["UserID"].ToString();
+            CajaController caja = new CajaController();
+            AlertasController ale = new AlertasController();
+            DatosGeneralesController dat = new DatosGeneralesController();
+            E_Datos_Generales reg1 = dat.listadatogenerales().FirstOrDefault();
+            UtilitarioController ut = new UtilitarioController();
+            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
+            TimeSpan HoraInicialCorte;
+
+            var dataCorte = caja.Usp_CorteCajaDiario(usuario, hora.HoraServidor, sede).FirstOrDefault();
+            if (dataCorte != null)
+            {
+                HoraInicialCorte = dataCorte.horaFin;
+            }
+            else
+            {
+                HoraInicialCorte = TimeSpan.Parse("00:00:00");
+            }
+
+            
+
+
             int codigoCaja;
             var valorCabecera = cabecera[0].Split(',');
-            UtilitarioController ut = new UtilitarioController();
             PacientesController pa = new PacientesController();
-            CajaController caja = new CajaController();
+            
             var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-            int hora = horaSis.HoraServidor.Hour;
+            int horaInt = horaSis.HoraServidor.Hour;
             string turno = "";
-            if (hora < 13)
+            if (horaInt < 13)
             {
                 turno = "MAÑANA";
             }
@@ -1883,19 +1905,16 @@ namespace VgSalud.Controllers
                 turno = "TARDE";
             }
             string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
-            string usuario = Session["UserID"].ToString();
             var series = caja.ListadoUsuarioSerie(usuario).Find(x => x.Prioridad == true);
             var serieDoc = series.Etiqueta.Split('-');
-            string sede = Session["codSede"].ToString();
+            
             E_Pacientes reg = pa.ListadoPacientes().Find(x => x.Historia == int.Parse(valorCabecera[0].ToString()));
             string nomPac = reg.NomPac + " " + reg.ApePat + " " + reg.ApeMat;
             decimal igvv;
             decimal precio;
             decimal subtotal = 0;
             decimal totalG = 0;
-            DatosGeneralesController dat = new DatosGeneralesController();
             TipoMonedaController mo = new TipoMonedaController();
-            E_Datos_Generales reg1 = dat.listadatogenerales().FirstOrDefault();
             decimal igvDemo = reg1.igv;
 
             precio = (decimal.Parse(valorCabecera[1].ToString()) / (1 + igvDemo));
@@ -2169,8 +2188,16 @@ namespace VgSalud.Controllers
                                     }                                    
                                 }
                             }
-
+                            
                             tr.Commit();
+
+                            E_Master horaFin = ut.ListadoHoraServidor().FirstOrDefault();
+                            var valorVendido = caja.Usp_DataCorteCaja(hora.HoraServidor, usuario, HoraInicialCorte, horaFin.HoraServidor.TimeOfDay, sede).FirstOrDefault();
+                            if (reg1.montoCierre <= valorVendido.Total)
+                            {
+                                string asunto = "El usuario " + usuario + " ya supero el monto maximo en caja";
+                                ale.registroAlertas(asunto, "", usuario, usuario);
+                            }
 
                             return Json(new { codigoCaja, success = true }, JsonRequestBehavior.AllowGet);
                         }
@@ -2195,6 +2222,7 @@ namespace VgSalud.Controllers
         [HttpPost]
         public JsonResult CargaTarifa(string CodServ, int historia, string descripcion)
         {
+            //ViewBag.CodServ=
             int clave = 1;
             string sede = Session["codSede"].ToString();
             var listado = ListadoTarifVentaRapida(CodServ, sede, historia, descripcion).ToList();

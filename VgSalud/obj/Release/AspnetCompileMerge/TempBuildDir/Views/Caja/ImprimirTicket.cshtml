@@ -38,6 +38,11 @@
     var tipdoc = "";
     var numdoc = "";
     var horloca = "";
+
+    var DirecSede = "";
+    var NumeroDoc = "";
+
+    var Edad = "";
 }
 
 
@@ -54,13 +59,13 @@
             margin-top: 0px;
             margin-right: 0px;
             margin-bottom: 0px;
-            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
-            font-size: 11px;
+            font-family: Arial;
+            font-size: 12px;
         }
 
         table {
-            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
-            font-size: 11px;
+            font-family: Arial;
+            font-size: 12px;
         }
     </style>
 
@@ -79,7 +84,10 @@
             historiacli = item.Historia;
             Secuencia = item.CodCaja;
             CodCue = item.CodCue;
-            horloca = (item.HoraEmision).ToString();
+            horloca = (item.Hora).ToString();
+            DirecSede = (item.DirecSede).ToString();
+            NumeroDoc = (item.NumDoc).ToString();
+            Edad= (item.Edad).ToString();
         }
         foreach (var item in Doc)
         {
@@ -89,94 +97,59 @@
 
     }
 
-    <div id="imprime" style="width: 300px;font-family: Consolas;
-            font-size: 13px;margin-left:0px;">
+    <div id="imprime" style="width: 300px;font-family: Arial;
+            font-size: 12px;margin-left:0px;">
         <p>
-            POLICLINICO SURCO SALUD
-            <br>
+            POLICLINICO SURCO SALUD<br/>
             @*Jr. Ancash cd. 23 S/N El Agustino - Lima*@
-            RUC 205376715066 &nbsp; @fechaemi @horloca<br>
+            RUC 20537671506 &nbsp; @fechaemi @horloca<br>
             @sede<br>
-            Historia: @historiacli <br>
-            Usuario: @Cajero<br>
-            Cliente :@nombrepaciente<br />
-            Sec.: @Secuencia - Cuenta: @CodCue<br>
+            @*DirecSede<br />*@
+            @tipoDoc - N°@NumeroDoc<br />
+            H.C.: @historiacli &nbsp;- Usuario: @Cajero<br>
+            Cliente :@nombrepaciente &nbsp;- @Edad<br />
+            Sec.: @Secuencia &nbsp;- Cuenta: @CodCue<br>
         </p>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            @foreach (var item in cabecera)
-            {
-                <tr>
-                    <td colspan="3">@tipoDoc - N°@item.NumDoc</td>
-                </tr>
-                @*<tr>
-                        <td width="80">Fecha</td>
-                        <td width="10">:</td>
-                        <td>@item.FechaEmision.ToShortDateString() - @item.HoraEmision</td>
-                    </tr>
-                    <tr>
-                        <td>Cajero(a)</td>
-                        <td>:</td>
-                        <td>@Cajero</td>
-                    </tr>
-                    <tr>
-                        <td>Secuencia</td>
-                        <td>:</td>
-                        <td>@item.CodCaja</td>
-                    </tr>
-                    <tr>
-                        <td>Servicio</td>
-                        <td>:</td>
-                        <td>@ViewBag.servicio</td>
-                    </tr>
-                    <tr>
-                        <td>Cuenta</td>
-                        <td>: </td>
-                        <td>@item.CodCue</td>
-                    </tr>*@
-
-            }
-
-        </table>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td colspan="3" align="center">----------------------------------</td>
             </tr>
             <tr>
                 <td width="40">CANT</td>
-                <td>PRODUCTO</td>
+                <td>DESCRIPCION</td>
                 <td width="60">SUB TOTAL</td>
             </tr>
             <tr>
                 <td colspan="3" align="center">----------------------------------</td>
             </tr>
-                @foreach (var item1 in detalle)
-                {
-                    <tr>
-                        <td>
-                            <div style="display:none">
-                                @item1.PUnit
-                                @item1.Total
-                                @item1.SubTotal
-                                @item1.Igv
-                            </div>
-                        </td>
-                    </tr>
-                    CantxPre = item1.Total;
-                    <tr>
-                        <td>@item1.Cantidad</td>
-                        <td>@item1.NomTar</td>
+            @foreach (var item1 in detalle)
+            {
+                <tr>
+                    <td>
+                        <div style="display:none">
+                            @item1.PUnit
+                            @item1.Total
+                            @item1.SubTotal
+                            @item1.Igv
+                        </div>
+                    </td>
+                </tr>
+                CantxPre = item1.Total;
+                <tr>
+                    <td>@item1.Cantidad</td>
+                    <td>@item1.NomTar</td>
 
-                        <td align="right">@CantxPre</td>
-                    </tr>
+                    <td align="right">@CantxPre</td>
+                </tr>
 
-                    totalPago += item1.Total;
-                    totalSubT += item1.SubTotal;
-                    totalIgv += item1.Igv;
-                    PreciUni += item1.PUnit;
+                totalPago += item1.Total;
+                totalSubT += item1.SubTotal;
+                totalIgv += item1.Igv;
+                PreciUni += item1.PUnit;
 
-                    //total += item1.PUnit;
-                }
-            
+                //total += item1.PUnit;
+            }
+
             @{
                 //subtotal = total / decimal.Parse("1.18");
                 //igv = subtotal * decimal.Parse("0.18");

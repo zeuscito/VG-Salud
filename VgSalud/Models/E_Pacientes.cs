@@ -108,7 +108,7 @@ namespace VgSalud.Models
         public string NonSex { get; set; }
         public string NomEstCivil { get; set; }
         public string NomDist { get; set; }
-        
+        public string NumerosTelefonicos { get; set; }
 
         public string NomEspec { get; set; }
     }

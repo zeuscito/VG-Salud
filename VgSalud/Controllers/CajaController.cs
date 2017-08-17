@@ -613,7 +613,8 @@ namespace VgSalud.Controllers
                             ca.Serie = dr.GetString(5);
                             ca.NumDoc = dr.GetString(6);
                             ca.FechaEmision = dr.GetDateTime(7);
-                            ca.HoraEmision = dr.GetTimeSpan(8);
+                            //ca.HoraEmision = dr.GetTimeSpan(8);
+                            ca.Hora = dr.GetString(8);
                             ca.Historia = dr.GetInt32(9);
                             ca.NomPac = dr.GetString(10);
                             ca.RazonSocial = dr.GetString(11);
@@ -638,6 +639,7 @@ namespace VgSalud.Controllers
                             ca.Edad = dr.GetInt32(30);
                             ca.FecNac = dr.GetDateTime(31);
                             ca.Ruc =  dr["Ruc"] is DBNull ? string.Empty : dr["Ruc"].ToString();
+                            ca.DirecSede = dr.GetString(33);
 
                             Lista.Add(ca);
                         }
@@ -832,6 +834,7 @@ namespace VgSalud.Controllers
                             usu.EstUDs = dr.GetBoolean(3);
                             usu.Etiqueta = dr.GetString(4);
                             usu.CodDocCont = dr.GetInt32(5);
+                            usu.codigo = dr.GetInt32(6);
                             Lista.Add(usu);
                         }
                         con.Close();
@@ -858,7 +861,8 @@ namespace VgSalud.Controllers
                             E_UsuarioSerie usu = new E_UsuarioSerie();
                             usu.Etiqueta = dr.GetString(0);
                             usu.CodDocCont = dr.GetInt32(1);
-                            usu.CodUsu = $"{dr["Nombre"].ToString()}";
+                            usu.CodUsu = $"{dr["AliasUsu"].ToString()}";
+                            //usu.CodUsu = $"{dr["Nombre"].ToString()}";
                             Lista.Add(usu);
                         }
                         con.Close();
@@ -1030,9 +1034,29 @@ namespace VgSalud.Controllers
         [HttpPost]
         public ActionResult RegistrarCaja(E_Caja c)
         {
-            int Resu = 0; 
             string sede = Session["codSede"].ToString();
             string usuario = Session["UserID"].ToString();
+            AlertasController a = new AlertasController();
+            DatosGeneralesController dat = new DatosGeneralesController();
+            E_Datos_Generales reg1 = dat.listadatogenerales().FirstOrDefault();
+            UtilitarioController ut = new UtilitarioController();
+            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
+            TimeSpan HoraInicialCorte;
+            
+            var dataCorte = Usp_CorteCajaDiario(usuario, hora.HoraServidor, sede).FirstOrDefault();
+            if (dataCorte != null)
+            {
+                HoraInicialCorte = dataCorte.horaInicio;
+            }
+            else {
+                HoraInicialCorte = TimeSpan.Parse("00:00:00");
+            }
+
+            
+
+
+            int Resu = 0; 
+            
             UtilitarioController u = new UtilitarioController();
             TipoMonedaController mo = new TipoMonedaController();
             E_Master hor = u.ListadoHoraServidor().FirstOrDefault();
@@ -1040,11 +1064,9 @@ namespace VgSalud.Controllers
 
 
             DocumentoSerieController ds = new DocumentoSerieController();
-            UtilitarioController ut = new UtilitarioController();
             PacientesController pa = new PacientesController();
             CuentasController cu = new CuentasController();
             TarifarioController ta = new TarifarioController();
-            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
             int CodCaja = 0;
 
             DateTime horaActual = hora.HoraServidor;
@@ -1243,6 +1265,7 @@ namespace VgSalud.Controllers
 
                                         if (sumaPrecio == c.Total)
                                         {
+
                                             tr.Commit();
                                         }
                                         else
@@ -1411,7 +1434,15 @@ namespace VgSalud.Controllers
 
                                     if (sumaPrecio == c.Total)
                                     {
+                                        
                                         tr.Commit();
+                                        E_Master horaFin = ut.ListadoHoraServidor().FirstOrDefault();
+                                        var valorVendido = Usp_DataCorteCaja(hora.HoraServidor, usuario, HoraInicialCorte, horaFin.HoraServidor.TimeOfDay, sede).FirstOrDefault();
+                                        if (reg1.montoCierre <= valorVendido.Total)
+                                        {
+                                            string asunto = "El usuario " + usuario + " ya supero el monto maximo en caja";
+                                            a.registroAlertas(asunto, "", usuario, usuario);
+                                        }
                                     }
                                     else
                                     {
@@ -3132,6 +3163,8 @@ namespace VgSalud.Controllers
             string encoding;
             string FileNameExtension;
 
+
+            //AQUI SE CAMBIA EL TAMAÑO DE LA HORA--> PARA MAS INFO (AVERIGUA EN GOOGLE)
             string deviceInfo =
                 "<DeviceInfo>" +
                 "   <OutputFormat>" + id + "</OutputFormat>" +
@@ -3158,6 +3191,172 @@ namespace VgSalud.Controllers
 
             return File(rendereBytes, mimeType);
         }
+
+        public List<E_Caja> Usp_CorteCajaDiario(string usuario, DateTime fecha, string sede)
+        {
+            List<E_Caja> Lista = new List<E_Caja>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_CorteCajaDiario", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@fecha", fecha);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    cmd.Parameters.AddWithValue("@CodUsuario", usuario);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Caja ser = new E_Caja();
+                            ser.id = dr.GetInt32(0);
+                            ser.FechaCaja = dr.GetDateTime(1);
+                            ser.horaInicio = dr.GetTimeSpan(2);
+                            ser.horaFin = dr.GetTimeSpan(3);
+                            ser.corte = dr.GetInt32(4);
+                            ser.nroTickets = dr.GetInt32(5);
+                            ser.anuladas = dr.GetInt32(6);
+                            ser.TotalSistema = dr.GetDecimal(7);
+                            ser.TotalUsuario = dr.GetDecimal(8);
+                            ser.Diferencia = dr.GetDecimal(9);
+                            ser.UsuCrea = dr.GetString(10);
+                            ser.CodSede = dr.GetString(11);
+                            ser.Estado = dr.GetBoolean(12);
+                            Lista.Add(ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        public List<E_Caja> Usp_DataCorteCaja(DateTime fecha, string CodUsuario, TimeSpan HoraInicio, TimeSpan HoraFin, string sede)
+        {
+            
+            List<E_Caja> Lista = new List<E_Caja>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_DataCorteCaja", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@fecha", fecha);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    cmd.Parameters.AddWithValue("@CodUsu", CodUsuario);
+                    cmd.Parameters.AddWithValue("@HoraInicio", HoraInicio);
+                    cmd.Parameters.AddWithValue("@HoraFin", HoraFin);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {                            
+                            E_Caja ser = new E_Caja();
+                            ser.Total = dr["total"] is DBNull ? 0 : dr.GetDecimal(0); 
+                            ser.nroTickets = dr["nroTickets"] is DBNull ? 0 : dr.GetInt32(1);
+                            ser.anuladas = dr["canceladas"] is DBNull ? 0 : dr.GetInt32(2); 
+                            Lista.Add(ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+        public ActionResult CorteCaja()
+        {
+            string sede = Session["codSede"].ToString();
+            UtilitarioController ut = new UtilitarioController();
+            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
+            string usuario = Session["UserID"].ToString();
+            var evalua = Usp_CorteCajaDiario(usuario, hora.HoraServidor, sede).FirstOrDefault();
+            if (evalua == null)
+            {
+                ViewBag.horaInicio = TimeSpan.Parse("00:00:00");
+                ViewBag.corte = 1;
+            }
+            else {
+                ViewBag.horaInicio = evalua.horaFin;
+                ViewBag.corte = evalua.corte + 1;
+            }
+            return View();
+        }
+
+        public ActionResult ListadoCorteCaja(DateTime? fecha = null, string CodUsu = null)
+        {
+            UtilitarioController ut = new UtilitarioController();
+            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
+            UsuarioController usu = new UsuarioController();
+            ViewBag.ListaUsuario = new SelectList(usu.listaUsuarios().Where(x => x.EstUsu == true).ToList(), "codUsu", "aliasUsu");
+
+            string sede = Session["codSede"].ToString();
+
+            if (fecha != null && CodUsu != null)
+            {
+                ViewBag.fecha = DateTime.Parse(fecha.ToString()).ToShortDateString();
+                ViewBag.data = Usp_CorteCajaDiario(CodUsu, DateTime.Parse(fecha.ToString()),sede);
+            }
+            else
+            {                
+                ViewBag.fecha = hora.HoraServidor.ToShortDateString();
+                ViewBag.data = null;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CorteCaja(decimal totalUsuario, TimeSpan horaInicio, int corte)
+        {
+            string usuario = Session["UserID"].ToString();
+            string sede = Session["codSede"].ToString();
+            UtilitarioController ut = new UtilitarioController();
+            E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
+            DateTime fecha = hora.HoraServidor.Date;
+            TimeSpan horaFinal = hora.HoraServidor.TimeOfDay;
+            var data = Usp_DataCorteCaja(fecha, usuario, horaInicio, horaFinal, sede).FirstOrDefault();
+            decimal diferencia = totalUsuario - data.Total;
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cp = new SqlCommand("usp_registraCorte", con))
+                {
+                    try
+                    {
+                        cp.CommandType = CommandType.StoredProcedure;
+
+                        cp.Parameters.AddWithValue("@fecha", fecha);
+                        cp.Parameters.AddWithValue("@horaInicio", horaInicio);
+                        cp.Parameters.AddWithValue("@horaFin", horaFinal);
+                        cp.Parameters.AddWithValue("@corte", corte);
+                        cp.Parameters.AddWithValue("@nroTickets", data.nroTickets);
+                        cp.Parameters.AddWithValue("@anulados", data.anuladas);
+                        cp.Parameters.AddWithValue("@totalSistema", data.Total);
+                        cp.Parameters.AddWithValue("@totalUsuario", totalUsuario);
+                        cp.Parameters.AddWithValue("diferencia", diferencia);
+                        cp.Parameters.AddWithValue("@usuario", usuario);
+                        cp.Parameters.AddWithValue("@sede", sede);
+                        cp.ExecuteNonQuery();
+                        
+                        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                    }
+                    finally
+                    {
+                        con.Close();
+
+                    }
+                }
+            }                
+        }
+
+
 
     }
 }

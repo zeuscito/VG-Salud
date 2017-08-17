@@ -262,7 +262,7 @@ namespace VgSalud.Controllers
                         }
 
 
-                        med.IdOdontologia = Convert.ToInt32(dr["IdOdontologia"].ToString());
+                        //med.IdOdontologia = Convert.ToInt32(dr["IdOdontologia"].ToString());
                         
 
                         ListaCarnetMed.Add(med);
@@ -354,7 +354,7 @@ namespace VgSalud.Controllers
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Id", med.Id);
-                        cmd.Parameters.AddWithValue("@Manipulador", med.Manipulador);
+                        //cmd.Parameters.AddWithValue("@Manipulador", med.Manipulador);
                         if (med.Conclusion != null)
                         {
                             cmd.Parameters.AddWithValue("@Conclusion", med.Conclusion);

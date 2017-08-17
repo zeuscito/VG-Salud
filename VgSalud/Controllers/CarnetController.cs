@@ -1710,12 +1710,6 @@ namespace VgSalud.Controllers
 
                 }
             }
-            //else
-            //{
-            //    return RedirectToAction("RegistrarCarnetSanidad");
-            //}
-
-
 
             return View(car);
 

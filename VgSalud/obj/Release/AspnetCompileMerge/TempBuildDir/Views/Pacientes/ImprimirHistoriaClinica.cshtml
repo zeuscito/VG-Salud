@@ -165,8 +165,8 @@
             var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
             $("div#ImprimirHistoria").printArea(options);
             //$("#imprime").fadeOut();
-
-            window.location.href = '../Pacientes/RegistroPaciente?id='+@Model.Historia;
+            window.close();
+            //window.location.href = '../Pacientes/RegistroPaciente?id='+@Model.Historia;
         });
 </script>
 

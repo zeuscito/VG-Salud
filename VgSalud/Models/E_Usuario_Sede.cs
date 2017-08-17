@@ -19,5 +19,6 @@ namespace VgSalud.Models
         public string NombreSede { get; set; }
 
 
+
     }
 }

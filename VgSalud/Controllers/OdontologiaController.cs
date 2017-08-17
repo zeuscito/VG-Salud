@@ -25,46 +25,68 @@ namespace VgSalud.Controllers
         SqlConnection db;
         SqlCommand cmd;
 
-        public ActionResult ListadoCarnetOdontologiaEnEspera()
+        public ActionResult ListadoCarnetOdontologiaEnEspera(int? CodCue,string NumDoc = null)
         {
             ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
-            ViewBag.postergado = Usp_Odontologia_Postergados();
+            ViewBag.NumDoc = NumDoc;
+            ViewBag.CodCue = CodCue;
+            int Cuenta = 0;
+            if(CodCue==null)
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.postergado = ListadoPostergadosOdontologia(Cuenta, NumDoc);
+            
             return View();
         }
 
         [HttpPost]
-        public ActionResult ListadoCarnetOdontologiaEnEspera(E_CSOdontologia odo)
+        public ActionResult ListadoCarnetOdontologiaEnEspera(E_CSOdontologia odo, int? CodCue,string NumDoc = null)
         {
-            ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
-            try
+            int Cuenta = 0;
+            if (NumDoc == null || CodCue==null)
             {
-                if (odo.evento == "1")
+                ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
+                try
                 {
-                    Usp_MantenimientoOdontologia(odo.Id, 1);
+                    if (odo.evento == "1")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 1);
+                    }
+                    else if (odo.evento == "2")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 2);
+                    }
+                    else if (odo.evento == "3")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 3);
+                    }
+                    else if (odo.evento == "4")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 4);
+                    }
+                    else if (odo.evento == "5")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 5);
+                    }
+                    return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
                 }
-                else if (odo.evento == "2")
+                catch (Exception)
                 {
-                    Usp_MantenimientoOdontologia(odo.Id, 2);
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
                 }
-                else if (odo.evento == "3")
-                {
-                    Usp_MantenimientoOdontologia(odo.Id, 3);
-                }
-                else if (odo.evento == "4")
-                {
-                    Usp_MantenimientoOdontologia(odo.Id, 4);
-                }
-                else if (odo.evento == "5")
-                {
-                    Usp_MantenimientoOdontologia(odo.Id, 5);
-                }
-                return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
             }
-            catch (Exception)
+            else
             {
-                ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
-                return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
+                ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
+                Cuenta = Convert.ToInt32(CodCue);
+                ViewBag.postergado = ListadoPostergadosOdontologia(Cuenta, NumDoc);
+                ViewBag.NumDoc = NumDoc;
+                ViewBag.CodCue = CodCue;
+                return View("ListadoCarnetOdontologiaEnEspera");
             }
+            
         }
 
 
@@ -72,6 +94,48 @@ namespace VgSalud.Controllers
         {
             string sede = Session["CodSede"].ToString();
             
+            List<E_CSOdontologia> ListaCarnetOdo = new List<E_CSOdontologia>();
+
+            using (db = new SqlConnection(cadena))
+            {
+                using (cmd = new SqlCommand("usp_ListadoCarnetOdontologia_EnEspera", db))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    db.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        E_CSOdontologia odo = new E_CSOdontologia();
+
+                        odo.Id = int.Parse(dr["Id"].ToString());
+                        odo.CodCue = int.Parse(dr["CodCue"].ToString());
+                        odo.Paciente = dr["NombrePaciente"].ToString();
+                        odo.DesTipoCarnet = dr["DescCarnet"].ToString();
+                        odo.Manipulador = dr["Manipulador"].ToString();
+                        odo.Prioridad = Convert.ToInt32(dr["Prioridad"].ToString());
+                        odo.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
+                        odo.Edad = int.Parse(dr["Edad"].ToString());
+                        ListaCarnetOdo.Add(odo);
+
+                    }
+
+
+                }
+            }
+
+            return ListaCarnetOdo;
+        }
+
+
+
+        //POR CONTINUAR
+        public List<E_CSOdontologia> ListadoCarnetPospuestosPorDocumento_Fecha()
+        {
+            string sede = Session["CodSede"].ToString();
+
             List<E_CSOdontologia> ListaCarnetOdo = new List<E_CSOdontologia>();
 
             using (db = new SqlConnection(cadena))
@@ -133,7 +197,7 @@ namespace VgSalud.Controllers
         }
 
 
-        public List<E_CSOdontologia> Usp_Odontologia_Postergados()
+        public List<E_CSOdontologia> ListadoPostergadosOdontologia(int Cuenta, string NumDoc=null)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -144,9 +208,25 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_Odontologia_Postergados", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (NumDoc==null || NumDoc=="")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
+                   SqlDataReader dr = cmd.ExecuteReader();
 
                     while (dr.Read())
                     {
@@ -291,15 +371,26 @@ namespace VgSalud.Controllers
         
 
 
-        public ActionResult ListaPacientesAtendidosDelDia()
+        public ActionResult ListaPacientesAtendidosDelDia(int? CodCue,string NumDoc = null)
         {
-            ViewBag.Lista = ListarPacientesAtendidosEnElDia();
+            ViewBag.CodCue = CodCue;
+            ViewBag.NumDoc = NumDoc;
+            int Cuenta = 0;
+            if(CodCue==null)
+            {
+                Cuenta = 0;
+            }
+            else
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.Lista = ListarPacientesAtendidosEnElDia(Cuenta, NumDoc);
 
             return View();
         }
 
 
-        public List<E_CSOdontologia> ListarPacientesAtendidosEnElDia()
+        public List<E_CSOdontologia> ListarPacientesAtendidosEnElDia(int Cuenta, string NumDoc)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -310,6 +401,22 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_ListadoPacientesAtendidosEnElDia_CSOdontologia", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (NumDoc == null || NumDoc == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -325,6 +432,7 @@ namespace VgSalud.Controllers
                         Odo.Manipulador = dr["Manipulador"].ToString();
                         Odo.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
                         Odo.Edad = Convert.ToInt32(dr["Edad"]);
+                        Odo.Apto = dr["Apto"].ToString();
                         ListaPacientesOdo.Add(Odo);
 
                     }

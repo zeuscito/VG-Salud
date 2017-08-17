@@ -23,5 +23,6 @@ namespace VgSalud.Models
         public string servicio { get; set; }
         public string sedes { get; set; }
         public string fecha { get; set; }
+        public decimal montoCierre { get; set; }
     }
 }

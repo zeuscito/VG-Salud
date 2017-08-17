@@ -60,7 +60,7 @@ namespace VgSalud.Models
         public string fechaF { get; set; }
 
         public decimal[] array { get; set; }
-        
+
 
 
 
@@ -80,11 +80,22 @@ namespace VgSalud.Models
 
         public int CodCajRes { get; set; }
         public DateTime FechaDeposito { get; set; }
-        public DateTime FechaCaja  { get; set; }
+        public DateTime FechaCaja { get; set; }
         public decimal TotalDolares { get; set; }
         public decimal TotalUsuario { get; set; }
         public decimal TotalSistema { get; set; }
         public decimal Diferencia { get; set; }
-        
+        public int corte { get; set; }
+        public int anuladas { get; set; }
+        public int nroTickets { get; set; }
+        public TimeSpan horaFin { get; set; }
+        public TimeSpan horaInicio { get; set; }
+        public int id { get; set; }
+
+        public string DirecSede { get; set; }
+
+
+        public string Hora { get; set; }
+
     }
 }

@@ -163,12 +163,11 @@
 
                                 @if(listaMediosPago != null) { 
 
-                                <div class="col-md-3">
+                                <div class="col-md-3" style="display:none">
 
                                     <fieldset>
 
                                         <legend>Medios de pago</legend>
-
 
                                         <div class="col-md-12" style="margin-top:2%; margin-bottom:2%">
                                             <div class="form-group">
@@ -274,16 +273,15 @@
                                     </tbody>
 
                                 </table>
-                                <h2 align="right">Total: S/. @total</h2>
+
+                                <h2 align="right" style="display:none">Total: S/. @total</h2>
                             </div>
                    
-
-
 
                             <br /><br />
                             <div class="col-md-3"></div>
                             @if(CajaPreResumen != null) { 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display:none;">
                                 <center>
                                     <div class="col-md-12">
                                         <div class="form-group">

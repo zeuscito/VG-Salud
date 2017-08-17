@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<input type="hidden" id="noLeido" value="@ViewBag.noLeido" />
+@foreach (var a in ViewBag.data)
+{
+    <li>
+        <a href="#">
+            <div class="col-md-12">
+                <div style="width:70%; float:left">
+                    <h5 style="color:black">
+                        @a.nombreEnvia
+                    </h5>
+                </div><div style="width:30%; float:left">
+                    <h4><small style="float: right;"><i class="fa fa-clock-o"></i> @a.duracion</small></h4>
+                </div>
+            </div>
+            <div class="col-md-12" style="border-bottom: 0.5px ridge black;">
+                <p style="color:black">@a.asunto</p>
+            </div>
+        </a>
+    </li>
+}
+
+<script>
+
+    var noLeido = $("#noLeido").val();
+    if (noLeido > 0) {
+        $("#noLed").addClass("label label-success");
+        $("#noLed").empty();
+        $("#noLed").text(noLeido);
+    }
+    else {
+        $("#noLed").removeClass("label label-success");
+        $("#noLed").empty();
+    }
+
+    
+
+
+</script>

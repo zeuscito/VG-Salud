@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "AutorizarAnulacion";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Corte Caja</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Caja</a></li>
+            <li class="active">Corte Caja</li>
+        </ol>
+    </section>
+    <section class="content" id="yaRegistro">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">Corte Caja</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-header">
+                <div style="float:left; padding:0% 1% 0 1%">
+                    <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                    <br />
+                </div>
+            </div>
+
+            <div class="box-body">
+                <fieldset>
+                    <div class="col-md-5"></div>
+                    <div class="col-md-2">
+                       <center>
+                           <input type="hidden" name="horaInicio" id="horaInicio" value="@ViewBag.horaInicio" />
+                           <input type="hidden" name="corte" id="corte" value="@ViewBag.corte" />
+                           <label><b>Total S/. </b></label>
+                           <input class="form-control" name="totalUsuario" id="totalUsuario" value="0" /><br /><br />
+                           <button type="button" class="btn btn-info" id="submitSend"><span class="fa fa-scissors"></span> Corte Caja</button>
+                       </center>
+                    </div>
+                    <div class="col-md-5"></div>
+                </fieldset>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/Content/controller/CorteCaja.js"></script>

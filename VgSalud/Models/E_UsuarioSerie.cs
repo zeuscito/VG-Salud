@@ -13,6 +13,7 @@ namespace VgSalud.Models
         public bool EstUDs { get; set; }
         public string Etiqueta { get; set; }
         public int CodDocCont { get; set; }
+        public int codigo { get; set; }
 
     }
 }

@@ -27,11 +27,11 @@ namespace VgSalud.Controllers
         public ActionResult RegistrarPaciente()
         {
             string sede = Session["codSede"].ToString();
-            var util = new DatosGeneralesController().LISTA_DISTRITO_DEFAULT(sede).FirstOrDefault(); 
+            var util = new DatosGeneralesController().LISTA_DISTRITO_DEFAULT(sede).FirstOrDefault();
             DatosGeneralesController da = new DatosGeneralesController();
             E_Datos_Generales d = da.listadatogenerales().FirstOrDefault();
             ViewBag.muestraAnecedente = d.MUESTRA_ANTECEDENTE;
-            ViewBag.coddistrito = util.CodDist; 
+            ViewBag.coddistrito = util.CodDist;
             DocumentoIdentidadController DocIden = new DocumentoIdentidadController();
             ViewBag.ListaDocumentoIdentidad = new SelectList(DocIden.ListadoDocumentoIdentidad().Where(x => x.Estado == true).ToList(), "CodDocIdent", "NomDocIdent");
 
@@ -120,8 +120,8 @@ namespace VgSalud.Controllers
 
                         if (EPac.LugarNac == null) { cmd.Parameters.AddWithValue("@LugarNac", ""); } else { cmd.Parameters.AddWithValue("@LugarNac", EPac.LugarNac.ToUpper()); }
 
-                        
-                        if(EPac.Direcc == null)
+
+                        if (EPac.Direcc == null)
                         {
                             cmd.Parameters.AddWithValue("@Direcc", "");
                         }
@@ -132,7 +132,7 @@ namespace VgSalud.Controllers
 
                         if (EPac.Email == null) { cmd.Parameters.AddWithValue("@Email", ""); } else { cmd.Parameters.AddWithValue("@Email", EPac.Email); }
 
-                        if (EPac.TelfFijo==null)
+                        if (EPac.TelfFijo == null)
                         {
                             cmd.Parameters.AddWithValue("@TelfFijo", "");
                         }
@@ -140,7 +140,7 @@ namespace VgSalud.Controllers
                         {
                             cmd.Parameters.AddWithValue("@TelfFijo", EPac.TelfFijo);
                         }
-                        
+
 
                         if (EPac.TelfCel == null) { cmd.Parameters.AddWithValue("@TelfCel", ""); } else { cmd.Parameters.AddWithValue("@TelfCel", EPac.TelfCel); }
                         if (EPac.CodTipPac == 0) { cmd.Parameters.AddWithValue("@CodTipPac", 1); } else { cmd.Parameters.AddWithValue("@CodTipPac", EPac.CodTipPac); }
@@ -287,7 +287,7 @@ namespace VgSalud.Controllers
 
             UtilitarioController Uti = new UtilitarioController();
 
-            var ListarSexo = ListarSexoPaciente(Id).FirstOrDefault(); 
+            var ListarSexo = ListarSexoPaciente(Id).FirstOrDefault();
             ViewBag.Sexo = ListarSexo.CodSexo;
             //ViewBag.ListaSexo = new SelectList(Uti.ListadoSexo(), "CodSexo", "NomSexo");
             ViewBag.ListaCivil = new SelectList(Uti.ListadoEstadoCivil(), "CodEstCivil", "NomEstCivil");
@@ -297,7 +297,7 @@ namespace VgSalud.Controllers
 
             ViewBag.ListaDepartamento = new SelectList(Uti.ListadoDepartamentoSimple(), "CodDep", "NomDep");
             ViewBag.ListaProvincia = new SelectList(Uti.ListadoProvinciaSimple(), "CodProv", "NomProv");
-     
+
 
             ViewBag.depa = (List<E_Departamento>)Uti.ListadoDepartamentoSimple();
             ViewBag.prov = (List<E_Provincia>)Uti.ListadoProvinciaSimple();
@@ -306,7 +306,7 @@ namespace VgSalud.Controllers
             ViewBag.ListaUsuario = new SelectList(ListadoUsuarioPaciente(), "CodigoUsuario", "AliasUsu");
 
             var lista = (from x in ListadoPacientes() where x.Historia == Id select x).FirstOrDefault();
-            ViewBag.ListaDistrito = new SelectList(Uti.ListadoDistritoSimple(), "CodDist", "NomDist",lista.CodDist);
+            ViewBag.ListaDistrito = new SelectList(Uti.ListadoDistritoSimple(), "CodDist", "NomDist", lista.CodDist);
             ViewBag.fechaNac = lista.FecNac.ToShortDateString();
             return View(lista);
 
@@ -366,7 +366,7 @@ namespace VgSalud.Controllers
 
                         if (EPac.LugarNac == null) { cmd.Parameters.AddWithValue("@LugarNac", ""); } else { cmd.Parameters.AddWithValue("@LugarNac", EPac.LugarNac.ToUpper()); }
 
-                        if (EPac.Direcc==null)
+                        if (EPac.Direcc == null)
                         {
                             cmd.Parameters.AddWithValue("@Direcc", "");
                         }
@@ -374,7 +374,7 @@ namespace VgSalud.Controllers
                         {
                             cmd.Parameters.AddWithValue("@Direcc", EPac.Direcc);
                         }
-                        
+
 
                         if (EPac.DiscaObs == null) { cmd.Parameters.AddWithValue("@DiscaObs", ""); } else { cmd.Parameters.AddWithValue("@DiscaObs", EPac.DiscaObs.ToUpper()); }
 
@@ -494,7 +494,7 @@ namespace VgSalud.Controllers
         }
 
 
-        public ActionResult ListaPacientes(string fecha = null, string dni = null, string nombre = null)
+        public ActionResult ListaPacientes(string fecha = null, string dni = null, string nombre = null,string NumTar=null)
         {
             UtilitarioController u = new UtilitarioController();
             E_Master hor = u.ListadoHoraServidor().FirstOrDefault();
@@ -502,6 +502,7 @@ namespace VgSalud.Controllers
             ViewBag.fecha = fecha;
             ViewBag.dni = dni;
             ViewBag.nombre = nombre;
+            ViewBag.NumTar = NumTar;
 
             if (fecha == null || fecha == "")
             {
@@ -509,13 +510,13 @@ namespace VgSalud.Controllers
             }
 
 
-            return View(ListadoPacientesFiltro(fecha, dni, nombre));
+            return View(ListadoPacientesFiltroNew(dni, nombre, NumTar));
 
         }
 
         public ActionResult RegistroPaciente(int id)
         {
-            
+
             var registro = ListadoPacientes().Where(x => x.Historia == id).FirstOrDefault();
             DocumentoIdentidadController DocIden = new DocumentoIdentidadController();
             ViewBag.ListaDocumentoIdentidad = DocIden.ListadoDocumentoIdentidad().Where(x => x.CodDocIdent == registro.CodDocIdent).FirstOrDefault().NomDocIdent;
@@ -556,7 +557,7 @@ namespace VgSalud.Controllers
                 using (SqlCommand cmd = new SqlCommand("Usp_Lista_Pacientes", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    
+
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -634,25 +635,21 @@ namespace VgSalud.Controllers
             }
         }
 
-
-        public List<E_Pacientes> ListadoPacientesFiltro(string fecha = null, string dni = null, string nombre = null)
+        public List<E_Pacientes> ListadoPacientesFiltroNew(string dni = null, string nombre = null, string NumTar = null)
         {
+            string Usuario = Session["UserID"].ToString();
+            string sede = Session["codSede"].ToString();
+
             List<E_Pacientes> Lista = new List<E_Pacientes>();
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("Usp_Busca_Pacientes_Lista", con))
+                using (SqlCommand cmd = new SqlCommand("Usp_ListarPacientesPorDatos_Sede", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-
-                    if (fecha == null || fecha == "")
-                    {
-                        cmd.Parameters.AddWithValue("@FecAfil", System.Data.SqlTypes.SqlDateTime.Null);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@FecAfil", fecha);
-                    }
+                    cmd.Parameters.AddWithValue("@Usu", Usuario);
+                    
+                    
                     if (dni == null || dni == "")
                     {
                         cmd.Parameters.AddWithValue("@dni", System.Data.SqlTypes.SqlString.Null);
@@ -669,9 +666,68 @@ namespace VgSalud.Controllers
                     {
                         cmd.Parameters.AddWithValue("@nombre", nombre);
                     }
+                    if (NumTar == null || NumTar == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumTar", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumTar", NumTar);
+                    }
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Pacientes Pac = new E_Pacientes();
+
+                            Pac.Historia = int.Parse(dr["Historia"].ToString());
+                            Pac.nombCompleto = dr["NomPaciente"].ToString();
+                            Pac.NumDoc = dr["NumDoc"].ToString();
+                            Pac.Observ = dr["Observ"].ToString();
+                            Pac.NumerosTelefonicos = dr["NumerosTelefonicos"].ToString();
+
+                            Lista.Add(Pac);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
 
 
 
+
+        public List<E_Pacientes> ListadoPacientesFiltro(string fecha = null, string dni = null, string nombre = null)
+        {
+            var Usuario = Session["UserID"].ToString();
+
+            List<E_Pacientes> Lista = new List<E_Pacientes>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListarPacientesPorDatos_Sede", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Usu", Usuario);
+                    if (dni == null || dni == "")
+                    {
+                        cmd.Parameters.AddWithValue("@dni", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@dni", dni);
+                    }
+                    if (nombre == null || nombre == "")
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                    }
 
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
@@ -1018,8 +1074,8 @@ namespace VgSalud.Controllers
 
 
         public string getedadActual(string fecha)
-            {
-            string edad = ""; 
+        {
+            string edad = "";
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
@@ -1031,26 +1087,28 @@ namespace VgSalud.Controllers
                     {
                         while (dr.Read())
                         {
-                           edad = dr.GetString(0);
+                            edad = dr.GetString(0);
 
                         }
                         con.Close();
                     }
 
                 }
-               
+
             }
             return edad;
         }
 
-        public JsonResult getedad(string fecha) {
+        public JsonResult getedad(string fecha)
+        {
             if (!string.IsNullOrWhiteSpace(fecha))
             {
                 var x = getedadActual(fecha);
                 return Json(x, JsonRequestBehavior.AllowGet);
             }
-            else {
-                return null; 
+            else
+            {
+                return null;
             }
         }
 
@@ -1433,7 +1491,7 @@ namespace VgSalud.Controllers
 
             return View(ListadoPacientesFiltro(fecha, dni, nombre));
         }
-        
+
 
         public ActionResult ImprimirHistoriaClinica(int Historia)
         {
@@ -1441,7 +1499,7 @@ namespace VgSalud.Controllers
             //return RedirectPermanent("~/Pacientes/ImprimirHistoriaClinica?Historia=" + Historia);
             return View(Lista);
         }
-        
+
         public List<E_Pacientes> ListarDatosHistoriaClinica(int Historia)
         {
             List<E_Pacientes> Lista = new List<E_Pacientes>();
@@ -1471,7 +1529,7 @@ namespace VgSalud.Controllers
                             p.TelfCel = dr["TelfCel"].ToString();
                             p.Email = dr["Email"].ToString();
                             p.FecAfil = Convert.ToDateTime(dr["FecAfil"].ToString());
-                            p.Crea= dr["Crea"].ToString();
+                            p.Crea = dr["Crea"].ToString();
 
                             //p.DescTar = dr["DescTar"] is DBNull ? string.Empty : dr["DescTar"].ToString();
 
@@ -1527,13 +1585,13 @@ namespace VgSalud.Controllers
             {
                 Tbody += $"<tr><td>{item.CodServ}</td>";
                 Tbody += $"<td>{item.NomServ}</td>";
-                Tbody += $"<td><input type='hidden' value="+ Id +"  id='CodHistoria' /><a class='venta' style='cursor:pointer' CodEspec=" +item.CodEspec+"><span style='Color:green' class='fa fa-plus-square'></span></a></td></tr>";
-              
+                Tbody += $"<td><input type='hidden' value=" + Id + "  id='CodHistoria' /><a class='venta' style='cursor:pointer' CodEspec=" + item.CodEspec + "><span style='Color:green' class='fa fa-plus-square'></span></a></td></tr>";
+
             }
             //Tbody += "<script src=\"/Scripts/ventaconsulta.js\"></script>";
             Tbody += "<script src=\"/Scripts/demo.js\"></script>";
             return Json(Tbody, JsonRequestBehavior.AllowGet);
-            
+
         }
 
         public List<E_Servicios> ListarServicios()
@@ -1557,7 +1615,7 @@ namespace VgSalud.Controllers
                         cmd.Parameters.AddWithValue("@CodSede", sede);
                         db.Open();
                         SqlDataReader dr = cmd.ExecuteReader();
-                        
+
                         while (dr.Read())
                         {
                             E_Servicios Serv = new E_Servicios();

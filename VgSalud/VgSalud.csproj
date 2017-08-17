@@ -172,6 +172,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AlertasController.cs" />
     <Compile Include="Controllers\AtencionVariasController.cs" />
     <Compile Include="Controllers\CajaController.cs" />
     <Compile Include="Controllers\CarnetController.cs" />
@@ -231,6 +232,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Alertas.cs" />
     <Compile Include="Models\E_Acceso.cs" />
     <Compile Include="Models\E_Antecedentes.cs" />
     <Compile Include="Models\E_AtencionVarias.cs" />
@@ -374,6 +376,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\controller\CorteCaja.js" />
+    <Content Include="Content\Images\loading_proces.gif" />
     <Content Include="Content\Scripts\ventaconsulta.js" />
     <Content Include="Content\controller\VentaRapida.js" />
     <Content Include="Content\controller\RegistrarTarifario.js" />
@@ -1801,6 +1805,9 @@
     <Content Include="Views\Pacientes\ImprimirHistoriaClinica.cshtml" />
     <Content Include="Views\AtencionVarias\ImprimirHistoriaClinica.cshtml" />
     <Content Include="Views\AtencionVarias\VentaRapida.cshtml" />
+    <Content Include="Views\Caja\CorteCaja.cshtml" />
+    <Content Include="Views\Alertas\Index.cshtml" />
+    <Content Include="Views\Caja\ListadoCorteCaja.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

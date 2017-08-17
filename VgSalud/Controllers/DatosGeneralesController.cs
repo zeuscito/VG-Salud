@@ -43,6 +43,7 @@ namespace VgSalud.Controllers
                             datos.PREGXATENCIONNOPROGRAMADAS = dr["PREGXATENCIONNOPROGRAMADAS"] is DBNull ? false : Convert.ToBoolean(dr["PREGXATENCIONNOPROGRAMADAS"]);
                             datos.GENERARCUENTAAUTO = dr["GENERARCUENTAAUTO"] is DBNull ? false : Convert.ToBoolean(dr["GENERARCUENTAAUTO"]);
                             datos.MOSTRARPACIENTETICKET = dr["MOSTRARPACIENTETICKET"] is DBNull ? false : Convert.ToBoolean(dr["MOSTRARPACIENTETICKET"].ToString());
+                            datos.montoCierre = dr["maxVenta"] is DBNull ? 0 : decimal.Parse(dr["maxVenta"].ToString());
                             Lista.Add(datos);
                         }
                         con.Close();
@@ -290,6 +291,7 @@ namespace VgSalud.Controllers
                         da.Parameters.AddWithValue("@ATENCIONNOPROGRAMADAS", dat.PREGXATENCIONNOPROGRAMADAS);
                         da.Parameters.AddWithValue("@GENERARCUENTAAUTO", dat.GENERARCUENTAAUTO);
                         da.Parameters.AddWithValue("@MOSTRARPACIENTETICKET", dat.MOSTRARPACIENTETICKET);
+                        da.Parameters.AddWithValue("@maxVenta", dat.montoCierre);
                         if (da.ExecuteNonQuery() > 0)
                         {
                             using (SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))

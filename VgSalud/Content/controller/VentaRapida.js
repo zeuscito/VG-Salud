@@ -42,7 +42,6 @@ $(document).ready(function () {
     });
 
     $("#changeServ").click(function () {
-        
         oDetalle.length = 0;
         oCabecera.length = 0;
         $('input:radio[name=ckServicio]').attr("disabled", false);
@@ -64,6 +63,7 @@ $(document).ready(function () {
     });
 
     $("#submitSendXpress").click(function () {
+        $('#ModalCargando').show('fast');
         var flag = 0;
         var inclSus = $('#inclSus:checked').val() ? 1 : 0;
         var tarEspecial = $('#tarEspecial').val();
@@ -77,6 +77,7 @@ $(document).ready(function () {
         }
         if (espeServ === undefined)
         {
+            $('#ModalCargando').hide('fast');
             alertaMessage("Seleccione un servicio");
             flag = 1;
         }
@@ -111,10 +112,12 @@ $(document).ready(function () {
                         setTimeout("redireccionarPagina(" + response.codigoCaja + ")", 1000);
                         
                     } else {
+                        $('#ModalCargando').hide('fast');
                         alertaMessage("No se pudo procesar la venta");
                     }
                 },
                 error: function () {
+                    $('#ModalCargando').hide('fast');
                     alertaMessage("No se pudo procesar la venta", 0);
                 }
             });
@@ -126,6 +129,7 @@ $(document).ready(function () {
             alertaMessage("No cargo ninguna tarifa");
         } else
         {
+            $('#ModalCargando').show('fast');
             $.ajax({
                 url: '../AtencionVarias/RegistroVentaRapida',
                 type: 'POST',
@@ -142,10 +146,12 @@ $(document).ready(function () {
                         setTimeout("redireccionarPagina(" + response.codigoCaja + ")", 1000);
                     } else
                     {
+                        $('#ModalCargando').hide('fast');
                         alertaMessage("No se pudo procesar la venta");
                     }
                 },
                 error: function () {
+                    $('#ModalCargando').hide('fast');
                     alertaMessage("No se pudo procesar la venta", 0);
                 }
             });
@@ -265,9 +271,11 @@ $("#buscaServicio").keyup(function () {
 });
 
 function eliminaPrecio(e) {
+   
     var valorDetalle = oDetalle[e].split(",");
     var valorCabecera = oCabecera[0].split(",");
-    var tot = (parseFloat(valorCabecera[1]) - parseFloat(valorDetalle[2]));
+    //var tot = (parseFloat(valorCabecera[1]) - parseFloat(valorDetalle[2]));
+    var tot = (parseFloat(valorCabecera[1]) - parseFloat(valorDetalle[2] * valorDetalle[1]));
     oCabecera[0] = valorCabecera[0] + "," + tot;
     $("#totalPagar").html(tot);
 
@@ -287,7 +295,7 @@ function printTabla() {
         var data = "<tr><td width='70%'>" + valorRetorno[6] + "</td>" +
             "<td width='10%'>" + valorRetorno[1] + "</td>" +
             "<td width='10%'>" + valorRetorno[2] + "</td>" +
-            "<td width='10%'><div class='tools'><a href='#' onclick=eliminaPrecio(" + key + ") class='btn btn-danger'><i class='fa fa-trash-o'></i></a></div></td>" +
+            "<td width='10%'><div class='tools'><a href='#' onclick=eliminaPrecio(" + key + ") ><i style='color:red' class='fa fa-trash-o'></i></a></div></td>" +
             "</tr>";
         $("#dataVenta tbody").append(data);
     });
