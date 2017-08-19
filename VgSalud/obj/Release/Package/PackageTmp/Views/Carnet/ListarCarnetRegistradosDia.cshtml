@@ -26,7 +26,23 @@
                     </div>
 
                     <fieldset>
-                        <legend style="margin-left:3%;width:94%">Lista Carnet Registrados En El Dia</legend>
+
+
+                        <legend style="margin-left:3%;width:94%">Busqueda Por Fecha</legend>
+                        <form method="post">
+                            <div class="col-md-12">
+                                <div class="col-md-2 col-md-offset-4">
+                                    <label>Fecha Registro:</label>
+                                    <input type="text" class="form-control datepicker" name="fecha" value="" />
+                                </div>
+                                <div class="col-md-2">
+                                    <br />
+                                    <button type="submit" class="btn btn-warning"><span class="fa fa-search"></span> Consultar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <legend style="margin-left:3%;width:94%">Registro del Dia</legend>
 
                         <div class="box-body" >
                             <div class="table table-responsive" style="margin-left:3%;width:94%">

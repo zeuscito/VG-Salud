@@ -137,14 +137,14 @@ namespace VgSalud.Controllers
                         cmd.ExecuteNonQuery();
                     }
                 }
+                ViewBag.mensaje = 1;
                 return RedirectToAction("ListaPacienteResultadoApto");
             }
            catch(Exception e)
             {
                 throw;
             }
-                
-
+            
         }
       
 

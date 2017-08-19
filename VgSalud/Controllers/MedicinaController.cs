@@ -16,48 +16,68 @@ namespace VgSalud.Controllers
         SqlConnection db;
         string cadena = ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString;
 
-        public ActionResult ListarCarnet_MedicinaDelDia_EnEspera() {
+        public ActionResult ListarCarnet_MedicinaDelDia_EnEspera(int? CodCue, string NumDoc = null)
+        {
             ViewBag.ListaEspera = ListadoCarnetMedicina_DelDia_EnEspera();
-            ViewBag.ListaPostergados = Usp_Medicina_Postergados();
+            ViewBag.NumDoc = NumDoc;
+            ViewBag.CodCue = CodCue;
+            int Cuenta = 0;
+            if (CodCue == null)
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.ListaPostergados = Usp_Medicina_Postergados(Cuenta, NumDoc);
             return View();
         }
 
         [HttpPost]
-        public ActionResult ListarCarnet_MedicinaDelDia_EnEspera(E_CSLaboratorio lab)
+        public ActionResult ListarCarnet_MedicinaDelDia_EnEspera(E_CSLaboratorio lab, int? CodCue, string NumDoc = null)
         {
-            ViewBag.ListaEspera = ListadoCarnetMedicina_DelDia_EnEspera();
-            ViewBag.ListaPostergados = Usp_Medicina_Postergados();
-            try
+            int Cuenta = 0;
+            if (NumDoc != "" || CodCue != null)
             {
-                if (lab.evento == "1")
-                {
-                    Usp_Mantenimiento(lab.Id, 1);
-                }
-                else if (lab.evento == "2")
-                {
-                    Usp_Mantenimiento(lab.Id, 2);
-                }
-                else if (lab.evento == "3")
-                {
-                    Usp_Mantenimiento(lab.Id, 3);
-                }
-                else if (lab.evento == "4")
-                {
-                    Usp_Mantenimiento(lab.Id, 4);
-                }
-                else if (lab.evento == "5")
-                {
-                    Usp_Mantenimiento(lab.Id, 5);
-                }
-                return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
-
+                ViewBag.ListaEspera = ListadoCarnetMedicina_DelDia_EnEspera();
+                Cuenta = Convert.ToInt32(CodCue);
+                ViewBag.ListaPostergados = Usp_Medicina_Postergados(Cuenta, NumDoc);
+                ViewBag.NumDoc = NumDoc;
+                ViewBag.CodCue = CodCue;
+                return View("ListarCarnet_MedicinaDelDia_EnEspera");
             }
-            catch (Exception)
+            else
             {
-                ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
-                return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
-            }
+                ViewBag.ListaEspera = ListadoCarnetMedicina_DelDia_EnEspera();
+                try
+                {
+                    if (lab.evento == "1")
+                    {
+                        Usp_Mantenimiento(lab.Id, 1);
+                    }
+                    else if (lab.evento == "2")
+                    {
+                        Usp_Mantenimiento(lab.Id, 2);
+                    }
+                    else if (lab.evento == "3")
+                    {
+                        Usp_Mantenimiento(lab.Id, 3);
+                    }
+                    else if (lab.evento == "4")
+                    {
+                        Usp_Mantenimiento(lab.Id, 4);
+                    }
+                    else if (lab.evento == "5")
+                    {
+                        Usp_Mantenimiento(lab.Id, 5);
+                    }
+                    return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
 
+                }
+                catch (Exception)
+                {
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
+                }
+            }
+            
 
         }
         public bool Usp_Mantenimiento(int id, int evento)
@@ -84,7 +104,7 @@ namespace VgSalud.Controllers
 
         }
 
-        public List<E_CSMedicina> Usp_Medicina_Postergados()
+        public List<E_CSMedicina> Usp_Medicina_Postergados(int Cuenta, string NumDoc = null)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -95,6 +115,22 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_Medicina_Postergados", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (NumDoc == null || NumDoc == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -278,14 +314,10 @@ namespace VgSalud.Controllers
 
         public ActionResult ActualizarDatosAtencionMedicina(int id,E_CSMedicina Med )
         {
-            
             var MostrarDatosMedicina = MostrarDatosDeListaDeCarnetSanidadCSMedicina(id).FirstOrDefault();
             
-
             ViewBag.ListaFechaOdontograma = ListadoDeFechaDeOdontogramasRegistrados(id);
             // por terminar
-            
-
             return View(MostrarDatosMedicina);
         }
 
@@ -514,14 +546,27 @@ namespace VgSalud.Controllers
 
 
 
-        public ActionResult ListaPacientesAtendidosDelDia()
+        public ActionResult ListaPacientesAtendidosDelDia(int? CodCue, string NumDoc = null, DateTime? FechaAten = null)
         {
-            ViewBag.Lista = ListarPacientesAtendidosEnElDia_CSMedicina();
+            ViewBag.CodCue = CodCue;
+            ViewBag.NumDoc = NumDoc;
+
+            ViewBag.FechaAten = FechaAten;
+            int Cuenta = 0;
+            if (CodCue == null)
+            {
+                Cuenta = 0;
+            }
+            else
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.Lista = ListarPacientesAtendidosEnElDia_CSMedicina(Cuenta, NumDoc, FechaAten);
             return View();
         }
 
 
-        public List<E_CSMedicina> ListarPacientesAtendidosEnElDia_CSMedicina()
+        public List<E_CSMedicina> ListarPacientesAtendidosEnElDia_CSMedicina(int Cuenta, string NumDoc, DateTime? FechaAten)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -532,6 +577,32 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_ListadoPacientesAtendidosEnElDia_CSMedicina", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (FechaAten == null)
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", FechaAten);
+                    }
+
+                    if (NumDoc == null || NumDoc == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -547,6 +618,7 @@ namespace VgSalud.Controllers
                         Med.Manipulador = dr["Manipulador"].ToString();
                         Med.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
                         Med.Edad = Convert.ToInt32(dr["Edad"]);
+                        Med.Apto = dr["Apto"].ToString();
                         ListaPacientes.Add(Med);
 
                     }

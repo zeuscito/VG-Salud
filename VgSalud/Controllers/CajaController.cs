@@ -3358,5 +3358,54 @@ namespace VgSalud.Controllers
 
 
 
+
+
+        public ActionResult ImprimirCierreCajaPorCajera()
+        {
+            ViewBag.ListaCierreCaja = ListaImprimeCierreCajaPorUsuario();
+            
+            return View();
+        }
+
+
+
+        public List<E_Caja> ListaImprimeCierreCajaPorUsuario()
+        {
+
+            string Usuario = Session["UserID"].ToString();
+            List<E_Caja> Lista = new List<E_Caja>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ConsolidadoCajeroxDoc", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Usu", Usuario);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Caja ser = new E_Caja();
+                            
+                            ser.NomSede = dr["Sede"].ToString();
+                            ser.Usuario = dr["Usuario"].ToString();
+                            ser.FechaDia = dr["Fecha"].ToString();
+                            ser.Documento = dr["Doc"].ToString();
+                            ser.Serie = dr["Serie"].ToString();
+                            ser.DocIni = dr["DocIni"].ToString();
+                            ser.DocFin = dr["DocFin"].ToString();
+                            ser.SubTotal = Convert.ToDecimal(dr["SubTot"].ToString());
+                            ser.Igv = Convert.ToDecimal(dr["Igv"].ToString());
+                            ser.Total = Convert.ToDecimal(dr["TOTAL"].ToString());
+                            Lista.Add(ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
     }
 }

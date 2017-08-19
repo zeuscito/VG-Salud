@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "ImprimirCierreCaja";
+    Layout = null;
+    var ListaCierre = (List<VgSalud.Models.E_Caja>)ViewBag.ListaCierreCaja;
+    var Sede = "";
+    var FechaDia = "";
+    var Documento = "";
+    var Serie = "";
+    var DocIni = "";
+    var DocFin = "";
+    decimal SubTotal = 0;
+    decimal Igv = 0;
+    decimal Total = 0;
+}
+
+
+
+<head>
+    <title>Ticket</title>
+    <link rel="stylesheet" href="~/Content/Styles/bootstrap.min.css">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/jquery.PrintArea.js"></script>
+    <style type="text/css">
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            font-family: Arial;
+            font-size: 12px;
+        }
+
+        table {
+            font-family: Arial;
+            font-size: 12px;
+        }
+    </style>
+
+</head>
+
+<body>
+  @foreach (var item in ListaCierre)
+  {
+      Sede = item.NomSede;
+      FechaDia = item.FechaDia;
+      Documento = item.Documento;
+      Serie = item.Serie;
+      DocIni = item.DocIni;
+      DocFin = item.DocFin;
+      SubTotal = Math.Round(item.SubTotal,2);
+      Igv = item.Igv;
+      Total = item.Total;
+  }
+
+
+
+    <div id="imprime" style="width: 300px;font-family: Arial;
+            font-size: 12px;margin-left:0px;">
+        <p>
+            POLICLINICO SURCO SALUD<br />
+            Jr. Ancash cd. 23 S/N El Agustino - Lima<br />
+            @Sede</p>
+            <p>
+             Resumen del día @FechaDia<br />
+            Serie: @Documento - @Serie <br />
+            DEL @DocIni - AL @DocFin<br />
+            SubTot: @SubTotal <br />
+            Igv: @Igv<br />
+            Total: @Total<br /><br />
+        </p>
+        
+        <br />
+    
+    </div>
+
+    <script>
+        $(document).ready(function () {
+                    
+
+            var ancho = $(window).width();
+            var alto = $(window).height();
+
+            var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
+            $("div#imprime").printArea(options);
+            //$("#imprime").fadeOut();
+            window.close();
+            //window.location.href = '../Pacientes/ListaPacientes';
+        });
+    </script>
+
+
+</body>

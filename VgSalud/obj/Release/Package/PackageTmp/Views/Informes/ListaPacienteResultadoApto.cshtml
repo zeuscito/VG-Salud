@@ -126,15 +126,18 @@
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.FechaAtenMed)</td>
                                                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.AptoMed)</td>
                                                 <td style="text-align:center" ><button title="Detalle" data-toggle="modal" data-target="#myModal" class="resultado btn btn-warning" DatoIdCarnet="@item.nroCarnet" ><i class="fa fa-sign-in"></i> Detalle</button></td>
-                                                @if (item.AptoOdon == "SI" && item.AptoOdon != "NE" || item.AptoLab=="SI" && item.AptoLab == "NO")
+                                                @if(item.AptoMed == "SI" || item.AptoMed=="EP")
                                                 {
-                                                    <td style="text-align:center"><a title="Enviar" class="btn btn-success" href="PasarMedicina?id=@item.IdMedicina" action='@Url.Action("PasarMedicina", "Informes")'><i class="fa fa-sign-in"></i> Pasar</a></td>
+                                                <td style="text-align:center"><a title="Enviar a Medicina" class="btn btn-success" disabled><i class="fa fa-sign-in"></i> Pasar</a></td>
                                                 }
-                                                else 
+                                                else if (item.AptoOdon == "SI" && (item.AptoLab == "SI" || item.AptoLab == "NO"))
                                                 {
-                                                    <td style="text-align:center"><a title="Enviar" class="btn btn-success" href="PasarMedicina?id=@item.IdMedicina" action='@Url.Action("PasarMedicina", "Informes")' disabled><i class="fa fa-sign-in"></i> Pasar</a></td>
+                                                    <td style="text-align:center"><a title="Enviar a Medicina" class="btn btn-success" href="PasarMedicina?id=@item.IdMedicina" action='@Url.Action("PasarMedicina", "Informes")'><i class="fa fa-sign-in"></i> Pasar</a></td>
                                                 }
-                                            @*<td style="text-align:center"><button type="button" class="resultado btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" historia="@item.Historia"><i class="fa fa-file-text-o"></i> Resultado</button></td>*@
+                                                else
+                                                {
+                                                    <td style="text-align:center"><a title="Enviar a Medicina" class="btn btn-success" disabled><i class="fa fa-sign-in"></i> Pasar</a></td>
+                                                }
                                         </tr>
 
                                         }

@@ -29,13 +29,17 @@
                         <legend style="margin-left:3%;width:94%">Busqueda de Pacientes</legend>
                         <form method="post">
                             <div class="col-md-12">
-                                <div class="col-md-2 col-md-offset-3">
+                                <div class="col-md-2 col-md-offset-2">
                                     <label>Dni</label>
                                     <input type="text" name="NumDoc" class="form-control" value="@ViewBag.NumDoc" />
                                 </div>
                                 <div class="col-md-2">
                                     <label>Cod. Cue.</label>
                                     <input type="text" name="CodCue" value="@ViewBag.CodCue" class="form-control" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Fecha Atencion:</label>
+                                    <input type="text" class="form-control datepicker" name="FechaAten" value="@ViewBag.FechaAten" />
                                 </div>
                                 <div class="col-md-2">
                                     <br />

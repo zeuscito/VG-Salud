@@ -98,9 +98,27 @@
 
                             </div>
 
+                            
                             <div class="col-xs-12 table table-responsive " style="margin-left:1%;padding-right:4%">
                                 <fieldset>
-                                    <legend style="margin-left:3%;width:96%">Pacientes Postergados</legend>
+                                    <legend style="margin-left:0%;width:96%">Pacientes Postergados</legend>
+                                    <div class="col-md-12">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <label>Dni</label>
+                                            <input type="text" name="NumDoc"  class="form-control" value="@ViewBag.NumDoc" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Cod. Cue.</label>
+                                            <input type="text" name="CodCue" value="@ViewBag.CodCue" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <br />
+                                            <button type="submit" class="btn btn-warning"><span class="fa fa-search"></span> Buscar</button>
+                                        </div>
+                                        <div class="col-md-3"></div>
+
+                                    </div>
                                     <table id="example1" class="table table-bordered table-striped ">
                                         <thead>
                                             <tr class="headTabla">

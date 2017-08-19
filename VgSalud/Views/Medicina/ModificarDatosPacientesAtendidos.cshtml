@@ -116,34 +116,41 @@
                                                 <div class="col-md-6">
                                                     <div class="row">
                                                         <div class="col-md-12" style="text-align:center">
-                                                            <label style="font-size:large"><input type="checkbox" value="true" @if (@Model.AptoLab == "SI") { @check   } style="width:15px;height:15px;" name="AptoLab" id="AptoLab" disabled>Apto Laboratorio</label>
+                                                            @if (@Model.AptoLab == "SI")
+                                                            {
+                                                                <label style="font-size:150%;">APTO LABORATORIO: SI </label>
+                                                            }
+                                                            else if (@Model.AptoLab == "NO")
+                                                            {
+                                                                <label style="font-size:150%;">APTO LABORATORIO: NO </label>
+                                                            }
                                                         </div>
 
-                                                        <div class="col-md-12" style="border:1px solid coral;width:97%;height:auto;border-radius:10px;">
+                                                        <div class="col-md-12" style="border:2px solid #b3b0b0;width:97%;height:auto;border-radius:10px;">
                                                             <div class="row" style="margin-top:2%">
                                                                 <div class="col-md-6" style="text-align:center;">
                                                                     <label style="color:black;font-size:larger">@Model.TituloMuestraSangre</label>
-                                                                    <label style="color:dodgerblue;font-size:larger">@Model.Lab_MuestraSangre</label>
+                                                                    <label style="color:#808080;font-size:larger">@Model.Lab_MuestraSangre</label>
                                                                 </div>
 
                                                                 <div class="col-md-6" style="text-align:center;">
                                                                     <label style="color:black;font-size:larger">@Model.TituloMuestraHeces</label>
-                                                                    <label style="color:dodgerblue;font-size:larger">@Model.Lab_MuestraHeces</label>
+                                                                    <label style="color:#808080;font-size:larger">@Model.Lab_MuestraHeces</label>
                                                                 </div>
                                                             </div>
                                                             <br />
                                                             <div class="row">
                                                                 <div class="col-md-12" style="text-align:left;">
                                                                     <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloRPR</label><br />
-                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_RPR</label>
+                                                                    <label style="color:#808080;font-size:larger;margin-left:7%;">@Model.Lab_RPR</label>
                                                                 </div>
                                                                 <div class="col-md-12" style="text-align:left;">
                                                                     <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloParasitologico</label><br />
-                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_Parasitologico</label>
+                                                                    <label style="color:#808080;font-size:larger;margin-left:7%;">@Model.Lab_Parasitologico</label>
                                                                 </div>
                                                                 <div class="col-md-12" style="text-align:left;">
                                                                     <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloObservacion</label><br />
-                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.Lab_Observacion</label>
+                                                                    <label style="color:#808080;font-size:larger;margin-left:7%;">@Model.Lab_Observacion</label>
                                                                 </div>
                                                             </div>
                                                             <br />
@@ -155,13 +162,20 @@
                                                 <div class="col-md-6">
                                                     <div class="row">
                                                         <div class="col-md-12" style="text-align:center">
-                                                            <label style="font-size:large"><input type="checkbox" value="true" @if (@Model.AptoOdon == "SI") { @check    ; } style="width:15px;height:15px;" name="AptoOdon" id="AptoOdon" disabled>Apto Odontologia</label>
+                                                            @if (@Model.AptoOdon == "SI")
+                                                            {
+                                                                <label style="font-size:150%;">APTO LABORATORIO: SI </label>
+                                                            }
+                                                            else if (@Model.AptoOdon == "NO")
+                                                            {
+                                                                <label style="font-size:150%;">APTO LABORATORIO: NO </label>
+                                                            }
                                                         </div>
-                                                        <div class="col-md-12" style="text-align:center;border:1px solid coral;width:97%;height:auto;border-radius:10px;">
+                                                        <div class="col-md-12" style="text-align:center;border:2px solid #b3b0b0;width:97%;height:auto;border-radius:10px;">
                                                             <div class="row" style="margin-top:2%;">
                                                                 <div class="col-md-12" style="text-align:left;">
                                                                     <label style="color:black;font-size:larger;margin-left:2%;">@Model.TituloObservacion</label><br />
-                                                                    <label style="color:dodgerblue;font-size:larger;margin-left:7%;">@Model.OdoObservacion</label>
+                                                                    <label style="color:#808080;font-size:larger;margin-left:7%;">@Model.OdoObservacion</label>
                                                                 </div>
                                                                 <div class="col-md-12" style="text-align:left;">
                                                                     <label style="color:black;font-size:larger;margin-left:2%;">ODONTOGRAMAS: </label><br />
@@ -170,7 +184,7 @@
                                                                         <table style="width:100%;">
                                                                             <tr>
                                                                                 <td>
-                                                                                    <a href="" style="font-size:larger;margin-left:7%;" data-toggle="modal" data-target="#myModal" class="MostrarHistorialOdontograma" CodOdontograma="@item.CodOdontograma">ESTADO ODONTOLÓGICO: @item.FechaRegistroOdontograma</a>
+                                                                                    <a href="" style="font-size:larger;margin-left:7%;color:#808080" data-toggle="modal" data-target="#myModal" class="MostrarHistorialOdontograma" CodOdontograma="@item.CodOdontograma">ESTADO ODONTOLÓGICO: @item.FechaRegistroOdontograma</a>
                                                                                 </td>
                                                                             </tr>
                                                                         </table>
@@ -220,6 +234,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-5 col-sm-offset-1">
                                             <div class="form-group" style="margin-top:2%;text-align:center;">
+                                                <input type="hidden" value="@AptoMed" id="hiddenAptoMed" />
                                                 <div class="col-sm-3 col-sm-offset-3">
                                                     <div class="radio">
                                                         <label style="font-size:large"><input type="radio" @if (AptoMed == "SI") { @check; } value="SI" style="width:15px;height:15px;" name="AptoMed"> APTO</label>
@@ -247,7 +262,7 @@
 
                                     <div class="row">
                                         <div style="text-align:center">
-                                            <button type="submit" class="btn btn-info" value="Modificar" ><span class="fa fa-pencil-square-o"></span> Modificar</button>
+                                            <button type="submit" class="btn btn-info" id="btnModificarMed" value="Modificar" ><span class="fa fa-pencil-square-o"></span> Modificar</button>
                                         </div>
 
                                     </div>
@@ -280,7 +295,7 @@
                                     <fieldset>
                                         <legend style="text-align:left">Cuadrante Superior Derecho</legend>
 
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%;">
@@ -502,7 +517,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -732,7 +747,7 @@
                                     <fieldset>
                                         <legend style="text-align:right">Cuadrante Superior Izquierdo</legend>
 
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -954,7 +969,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -1186,7 +1201,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
                                     <fieldset>
                                         <legend style="text-align:left">Cuadrante Inferior Derecho</legend>
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -1416,7 +1431,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -1654,7 +1669,7 @@
                                     <fieldset>
                                         <legend style="text-align:right">Cuadrante Inferior Izquierdo</legend>
 
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -1885,7 +1900,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                             <table style="width:100%">
                                                 <tr>
                                                     <td style="width:25%">
@@ -2140,8 +2155,15 @@
         $('#Conclusion').limit('250', '#charsLeft');
 
         $('#Observaciones').limit('250', '#charsLeft');
-
-
+        
+        var ValorApto = $('#hiddenAptoMed').val();
+        if (ValorApto == "SI") {
+            $('#btnModificarMed').hide();
+        }
+        else
+        {
+            $('#btnModificarMed').show();
+        }
 
         $(".MostrarHistorialOdontograma").on("click", function () {
 

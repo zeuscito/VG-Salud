@@ -606,17 +606,23 @@ namespace VgSalud.Controllers
             return View();
 
         }
+        
 
-
-
-
-        public ActionResult ListarCarnetRegistradosDia()
+        public ActionResult ListarCarnetRegistradosDia(DateTime? fecha = null)
         {
 
-            return View(ListadoCarnet_RegistradosDia());
+            return View(ListadoCarnet_RegistradosDia(fecha));
         }
+
+        [HttpPost]
+        public ActionResult ListarCarnetRegistradosDia(E_Carnet_Sanitario cs, DateTime? fecha = null)
+        {
+
+            return View(ListadoCarnet_RegistradosDia(fecha));
+        }
+
         //Listamos los carnet por entregar del dia
-        public List<E_Carnet_Sanitario> ListadoCarnet_RegistradosDia()
+        public List<E_Carnet_Sanitario> ListadoCarnet_RegistradosDia(DateTime? fecha)
         {
             List<E_Carnet_Sanitario> listacarnet = new List<E_Carnet_Sanitario>();
 
@@ -625,6 +631,14 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("usp_ListadoCarnet_RegistradosDia", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if(fecha==null)
+                    {
+                        cmd.Parameters.AddWithValue("@Fecha", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Fecha", fecha);
+                    }
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
 
@@ -1344,7 +1358,7 @@ namespace VgSalud.Controllers
         {
 
             //string sede = Session["CodSede"].ToString();
-
+            ViewBag.showSuccessAlert = false;
             ViewBag.NewListaTarifa = new SelectList(ListadoTarifaPorCodEspec(), "CodTar", "DescTar");
 
             //ViewBag.listadoTari = new SelectList(cit.ListadoTarifaAtencion().Where(x => x.CodEspec == "ES043" && x.CodSede == sede), "CodTar", "DescTar");
@@ -1457,6 +1471,7 @@ namespace VgSalud.Controllers
             //ViewBag.listadoTari = new SelectList(cit.ListadoTarifaAtencion().Where(x => x.CodEspec == "ES043" && x.CodSede == sede), "CodTar", "DescTar");
 
 
+            
             if (car.CodCue != 0)
             {
                 int CodCue = car.CodCue;
@@ -1499,7 +1514,6 @@ namespace VgSalud.Controllers
                 }
 
                 ViewBag.CodCuenta = CodCue;
-
             }
             else
             {
@@ -1508,6 +1522,7 @@ namespace VgSalud.Controllers
                 ViewBag.NroDocumento = "";
                 ViewBag.Edad = "";
                 ViewBag.CodCuenta = 0;
+                ViewBag.mensaje = "Error: Debe de Ingresar un Codigo de Cuenta";
             }
 
 
@@ -1520,9 +1535,7 @@ namespace VgSalud.Controllers
                 var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
                 string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
                 string usuario = Session["UserID"].ToString();
-
-
-
+                
                 try
                 {
                     int codCarnet = 0;
@@ -1700,13 +1713,17 @@ namespace VgSalud.Controllers
                         else
                         {
                             //Response.Write("<script language=javascript>alert('Formato de Imagen no permitido ..');</script>");
+                            ViewBag.mensaje = "Error: Debe de Seleccionar una Foto.";
+                            return View(car);
+                            //return RedirectPermanent("RegistrarCarnetSanidad");
                         }
                     }
                 }
                 catch (Exception e)
                 {
-
-                    return RedirectPermanent("../Master");
+                    ViewBag.mensaje = "Error: Verifique que los campos esten llenos..";
+                    return View(car);
+                    //return RedirectPermanent("RegistrarCarnetSanidad");
 
                 }
             }

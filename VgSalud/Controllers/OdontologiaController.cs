@@ -44,7 +44,52 @@ namespace VgSalud.Controllers
         public ActionResult ListadoCarnetOdontologiaEnEspera(E_CSOdontologia odo, int? CodCue,string NumDoc = null)
         {
             int Cuenta = 0;
-            if (NumDoc == null || CodCue==null)
+            if (NumDoc != "" || CodCue!=null)
+            {
+                ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
+                Cuenta = Convert.ToInt32(CodCue);
+                ViewBag.postergado = ListadoPostergadosOdontologia(Cuenta, NumDoc);
+                ViewBag.NumDoc = NumDoc;
+                ViewBag.CodCue = CodCue;
+
+                try
+                {
+                    if (odo.evento == "1")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 1);
+                    }
+                    else if (odo.evento == "2")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 2);
+                    }
+                    else if (odo.evento == "3")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 3);
+                    }
+                    else if (odo.evento == "4")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 4);
+                    }
+                    else if (odo.evento == "5")
+                    {
+                        Usp_MantenimientoOdontologia(odo.Id, 5);
+                        ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
+                        ViewBag.NumDoc = null;
+                        ViewBag.CodCue = null;
+                        //return View("ListadoCarnetOdontologiaEnEspera");
+                        return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
+                    }
+
+                }
+                catch (Exception)
+                {
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
+                }
+
+                return View("ListadoCarnetOdontologiaEnEspera");
+            }
+            else
             {
                 ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
                 try
@@ -76,15 +121,6 @@ namespace VgSalud.Controllers
                     ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
                     return RedirectToAction("ListadoCarnetOdontologiaEnEspera");
                 }
-            }
-            else
-            {
-                ViewBag.lista = ListadoCarnet_Odontologia_DelDia_EnEspera();
-                Cuenta = Convert.ToInt32(CodCue);
-                ViewBag.postergado = ListadoPostergadosOdontologia(Cuenta, NumDoc);
-                ViewBag.NumDoc = NumDoc;
-                ViewBag.CodCue = CodCue;
-                return View("ListadoCarnetOdontologiaEnEspera");
             }
             
         }
@@ -371,10 +407,12 @@ namespace VgSalud.Controllers
         
 
 
-        public ActionResult ListaPacientesAtendidosDelDia(int? CodCue,string NumDoc = null)
+        public ActionResult ListaPacientesAtendidosDelDia(int? CodCue,string NumDoc = null, DateTime? FechaAten = null)
         {
             ViewBag.CodCue = CodCue;
             ViewBag.NumDoc = NumDoc;
+
+            ViewBag.FechaAten = FechaAten;
             int Cuenta = 0;
             if(CodCue==null)
             {
@@ -384,13 +422,13 @@ namespace VgSalud.Controllers
             {
                 Cuenta = Convert.ToInt32(CodCue);
             }
-            ViewBag.Lista = ListarPacientesAtendidosEnElDia(Cuenta, NumDoc);
+            ViewBag.Lista = ListarPacientesAtendidosEnElDia(Cuenta, NumDoc, FechaAten);
 
             return View();
         }
 
 
-        public List<E_CSOdontologia> ListarPacientesAtendidosEnElDia(int Cuenta, string NumDoc)
+        public List<E_CSOdontologia> ListarPacientesAtendidosEnElDia(int Cuenta, string NumDoc, DateTime? FechaAten)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -401,6 +439,16 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_ListadoPacientesAtendidosEnElDia_CSOdontologia", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    if (FechaAten == null)
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", FechaAten);
+                    }
+
                     if (NumDoc == null || NumDoc == "")
                     {
                         cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
@@ -409,6 +457,7 @@ namespace VgSalud.Controllers
                     {
                         cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
                     }
+
                     if (Cuenta == 0)
                     {
                         cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
@@ -488,6 +537,7 @@ namespace VgSalud.Controllers
                         odo.Procedencia = dr["Procedencia"].ToString();
                         odo.Observacion = dr["OdoObservacion"].ToString();
                         odo.Apto = dr["OdoApto"].ToString();
+                        odo.FechaAtencion=  dr["FechaAtencion"].ToString();
                         ListaCarnetOdo.Add(odo);
 
                     }
@@ -505,23 +555,25 @@ namespace VgSalud.Controllers
             var arreglo = Odo.ArregloOdontograma;
 
             var NewArreglo = Odo.NuevoArregloOdontograma;
-            
-            if(arreglo!= NewArreglo)
+
+            int IdOdontologia = Convert.ToInt32(IdO);
+
+            string sede = Session["CodSede"].ToString();
+
+            UtilitarioController ut = new UtilitarioController();
+            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+
+            string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+
+            if (arreglo!= NewArreglo)
             {
-                int IdOdontologia = Convert.ToInt32(IdO);
 
-                string sede = Session["CodSede"].ToString();
-
-                UtilitarioController ut = new UtilitarioController();
-                var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-
-                string Crea = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
 
                 try
                 {
                     using (db = new SqlConnection(cadena))
                     {
-                        using (cmd = new SqlCommand("Usp_ActualizarOdontograma_Y_CSOdontologia", db))
+                        using (cmd = new SqlCommand("Usp_ActualizarOdontograma_Y_CSOdontologiaReevaluado", db))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@IdOdontologia", IdOdontologia);
@@ -553,6 +605,15 @@ namespace VgSalud.Controllers
                                 cmd.Parameters.AddWithValue("@Apto", "");
                             }
 
+                            if (Odo.Reevaluado == "NO")
+                            {
+                                cmd.Parameters.AddWithValue("@Reeva", "NO");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Reeva", "SI");
+                            }
+
                             cmd.Parameters.AddWithValue("@Crea", Crea);
                             cmd.Parameters.AddWithValue("@CodSede", sede);
                             db.Open();
@@ -568,6 +629,55 @@ namespace VgSalud.Controllers
             }
             else
             {
+                try
+                {
+                    using (db = new SqlConnection(cadena))
+                    {
+                        using (cmd = new SqlCommand("Usp_ModificarSoloDatosDeCSOdontologia_CSOdontoNO", db))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@IdOdontologia", IdOdontologia);
+                            
+
+                            if (Odo.Observacion != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Observacion", Odo.Observacion);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Observacion", "");
+                            }
+
+                            if (Odo.Apto != null)
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", Odo.Apto);
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Apto", "");
+                            }
+
+                            if (Odo.Reevaluado == "NO")
+                            {
+                                cmd.Parameters.AddWithValue("@Reeva", "NO");
+                            }
+                            else
+                            {
+                                cmd.Parameters.AddWithValue("@Reeva", "SI");
+                            }
+
+                            cmd.Parameters.AddWithValue("@Crea", Crea);
+                            cmd.Parameters.AddWithValue("@CodSede", sede);
+                            db.Open();
+                            int ide = cmd.ExecuteNonQuery();
+                            RedirectToAction("ListaPacientesAtendidosDelDia");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
                 return RedirectToAction("ListaPacientesAtendidosDelDia");
             }
 

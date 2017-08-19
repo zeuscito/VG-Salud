@@ -6,7 +6,7 @@
         var horaInicio = $("#horaInicio").val();
         var totalUsuario = $("#totalUsuario").val();
 
-        $body.addClass("loading");
+        //$body.addClass("loading");
         $.ajax({
             url: '../Caja/CorteCaja',
             type: 'POST',

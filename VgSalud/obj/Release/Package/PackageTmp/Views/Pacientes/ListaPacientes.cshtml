@@ -180,7 +180,7 @@
                                                                     <button type="submit" title="Historia de Paciente" style="background-color:transparent; border:0" class="enlace"><a><i style="color:#F7B620" class="fa fa-file-text"></i></a> </button>
                                                                 }
                                                                 <!--verificar cuenta-->
-                                                                @*<a title="Cuentas" style="color:#F7B620" href="../Cuentas/ListaCuentaEstado?id=@item.Historia"><i class="fa fa-book"></i></a>*@
+                                                                @*<a title="Cuentas" style="color:#F7B620" href="../Cuentas/ListaCuentaEstado?id=@item.Historia"><i class="fa fa-book"></i></a>?historia=@item.Historia*@
 
                                                             var abc7 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "ConsultaCita.cshtml");
                                                             if (abc7 != null)
@@ -193,10 +193,10 @@
                                                                 {
                                                                     <a title="Atenciones No Programadas" style="color:#F7B620" href="~/AtencionVarias/VentaRapida?historia=@item.Historia"><i class="fa fa-money"></i></a>
                                                                 }
-                                                                var abc9 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Carnet/RegistroCarnet");
+                                                                var abc9 = ac.ListaFormulariGeneral(CodUsu).Find(x => x.nomForm == "Carnet/RegistrarCarnetSanidad");
                                                                 if (abc9 != null)
                                                                 {
-                                                                    <a title="Carnet Sanitario" style="color:#F7B620" href="~/Carnet/RegistroCarnet?historia=@item.Historia"><i class="fa fa-address-card-o"></i></a>
+                                                                    <a title="Carnet Sanitario" style="color:#F7B620" href="~/Carnet/RegistrarCarnetSanidad"><i class="fa fa-address-card-o"></i></a>
                                                                 }
 
                                                             }

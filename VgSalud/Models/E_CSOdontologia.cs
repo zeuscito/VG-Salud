@@ -39,7 +39,9 @@ namespace VgSalud.Models
 
         public int CodOdontograma { get; set; }
 
-        
+        public string FechaAtencion { get; set; }
+
+        public string Reevaluado { get; set; }
 
 
     }

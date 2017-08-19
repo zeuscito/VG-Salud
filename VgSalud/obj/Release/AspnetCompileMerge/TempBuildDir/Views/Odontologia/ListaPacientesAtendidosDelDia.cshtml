@@ -25,48 +25,82 @@
                         </div>
                     </div>
                     <fieldset>
-                        <legend style="margin-left:3%;width:94%">Lista Pacientes Atendidos en el Dia</legend>
+                        
+                        <legend style="margin-left:3%;width:94%">Busqueda de Pacientes</legend>
+                        <form method="post">
+                            <div class="col-md-12">
+                                <div class="col-md-2 col-md-offset-2">
+                                    <label>Dni</label>
+                                    <input type="text" name="NumDoc" class="form-control" value="@ViewBag.NumDoc" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Cod. Cue.</label>
+                                    <input type="text" name="CodCue" value="@ViewBag.CodCue" class="form-control" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Fecha Atencion:</label>
+                                    <input type="text" class="form-control datepicker" name="FechaAten" value="@ViewBag.FechaAten" />
+                                </div>
+                                <div class="col-md-2">
+                                    <br />
+                                    <button type="submit" class="btn btn-warning"><span class="fa fa-search"></span> Buscar</button>
+                                </div>
+                                <div class="col-md-3"></div>
 
-                        <div class="box-body">
-                            <div class="col-md-12 " style="padding-left:44px;padding-right: 115px;">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr class="headTabla">
-                                            <th width="5%" style="text-align:center">Nro. Atendido</th>
-                                            <th width="10%" style="text-align:center">Cod. Cue.</th>
-                                            <th width="40%" style="text-align:center">Paciente</th>
-                                            <th width="10%" style="text-align:center">TipoCarnet</th>
-                                            <th width="10%" style="text-align:center">Manipulador</th>
-                                            <th width="10%" style="text-align:center">Edad</th>
-                                            <th width="10%" style="text-align:center"><i class="fa fa-pencil-square-o"></i></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-
-                                        @foreach (var item in ListaAtendidos)
-                                        {
-                                            NumeroAtendido++;
-                                            <tr>
-                                                <td style="text-align:center">@NumeroAtendido</td>
-                                                <td style="text-align:center">@item.CodCue</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.DesTipoCarnet)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Manipulador)</td>
-                                                <td style="text-align:center">@item.Edad</td>
-                                                <td style="text-align:center"><a title="Modificar" class="btn btn-info" href="ModificarDatosOdontograma_Y_CSOdontologia?Id=@item.Id" action='@Url.Action("ModificarDatosOdontograma_Y_CSOdontologia", "Odontologia")'><i class="fa fa-pencil-square-o"></i> Modificar</a></td>
-
-
-                                            </tr>
-
-                                        }
-
-                                    </tbody>
-                                </table>
                             </div>
-                        </div>
-                    </fieldset>
+                        </form>
+                            
+
+
+                            <legend style="margin-left:3%;width:94%">Lista Pacientes Atendidos en el Dia</legend>
+                            <div class="box-body">
+                                <form method="post">
+
+
+                                    <div class="col-md-12 " style="padding-left:44px;padding-right: 115px;">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr class="headTabla">
+                                                    <th width="5%" style="text-align:center">Nro. Atendido</th>
+                                                    <th width="10%" style="text-align:center">Cod. Cue.</th>
+                                                    <th width="25%" style="text-align:center">Paciente</th>
+                                                    <th width="10%" style="text-align:center">TipoCarnet</th>
+                                                    <th width="10%" style="text-align:center">Manipulador</th>
+                                                    <th width="10%" style="text-align:center">Edad</th>
+                                                    <th width="10%" style="text-align:center">Apto</th>
+                                                    <th width="10%" style="text-align:center"><i class="fa fa-pencil-square-o"></i></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @foreach (var item in ListaAtendidos)
+                                                {
+                                                    NumeroAtendido++;
+                                                    <tr>
+                                                        <td style="text-align:center">@NumeroAtendido</td>
+                                                        <td style="text-align:center">@item.CodCue</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Paciente)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.DesTipoCarnet)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Manipulador)</td>
+                                                        <td style="text-align:center">@item.Edad</td>
+                                                        <td style="text-align:center">@item.Apto</td>
+                                                        <td style="text-align:center"><a title="Modificar" class="btn btn-info" href="ModificarDatosOdontograma_Y_CSOdontologia?Id=@item.Id" action='@Url.Action("ModificarDatosOdontograma_Y_CSOdontologia", "Odontologia")'><i class="fa fa-pencil-square-o"></i> Modificar</a></td>
+
+
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </form>
+
+                            </div>
+</fieldset>
                 </div>
             </div>
         </div>

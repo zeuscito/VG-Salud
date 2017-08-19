@@ -70,5 +70,7 @@ namespace VgSalud.Models
         public string ArregloOdontograma { get; set; }
 
 
+        public string Apto { get; set; }
+        
     }
 }

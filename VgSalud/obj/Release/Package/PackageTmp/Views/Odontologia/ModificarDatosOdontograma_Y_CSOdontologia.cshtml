@@ -35,6 +35,7 @@
                                         <input type="hidden" name="Procedencia" id="Procedencia" value="@Model.Procedencia" />
                                         <input type="hidden" name="Manipulador" id="Manipulador" value="@Model.Manipulador" />
                                         <input type="hidden" name="IdO" id="IdO" value="@Model.Id" />
+                                        <input type="hidden" name="hiddenFechaAtencion" id="hiddenFechaAtencion" value="@Model.FechaAtencion" />
                                         <div class="row">
                                             <div class="col-xs-12 ">
                                                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
@@ -93,7 +94,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     @*}*@
@@ -114,7 +114,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:left">Cuadrante Superior Derecho</legend>
 
@@ -566,7 +566,7 @@
                                                     </fieldset>
                                                 </div>
 
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:right">Cuadrante Superior Izquierdo</legend>
 
@@ -1021,7 +1021,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:left">Cuadrante Inferior Derecho</legend>
                                                         <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
@@ -1488,7 +1488,7 @@
                                                     </fieldset>
                                                 </div>
 
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:right">Cuadrante Inferior Izquierdo</legend>
 
@@ -1978,7 +1978,8 @@
                                             <div class="form-group">
                                                 <div class="col-sm-6 col-sm-offset-6">
                                                     <div class="checkbox" id="IdCheckBoxReevaluado" style="display:none;">
-                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox" value="0" style="width:15px;height:15px;" name="Reevaluado"> Reevaluado</label>
+                                                        <input type="hidden" id="hiddenReev" name="Reevaluado"/>
+                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox"  style="width:15px;height:15px;" id="IdReevaluado" class="Reevaluado"> Reevaluado</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1987,6 +1988,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
                                             <div class="form-group" style="margin-top:2%;text-align:center;">
+                                                <input type="hidden" id="hiddenApto" value="@Model.Apto"/>
                                                 <div class="col-sm-3 col-sm-offset-5">
                                                     <div class="radio">
                                                         <label style="font-size:large"><input type="radio" @if (@Model.Apto == "SI") { @check; } value="SI" style="width:15px;height:15px;" name="Apto"> APTO</label>
@@ -2003,7 +2005,7 @@
 
                                     <div class="row">
                                         <div class="col-xs-12" style="text-align:center;margin-top:2%;margin-bottom:2%;">
-                                            <button type="submit" title="Modificar Odontograma" class="btn btn-success" style="background-color:#13D003;border:0px;font-size:large;"><i class="fa fa-floppy-o"></i> Modificar</button>
+                                            <button type="submit" id="btnModificar" title="Modificar Odontograma" class="btn btn-success" style="background-color:#13D003;border:0px;font-size:large;"><i class="fa fa-floppy-o"></i> Modificar</button>
                                         </div>
                                     </div>
                                     <input type="hidden" id="ArregloOdontograma" name="ArregloOdontograma" />
@@ -2021,6 +2023,58 @@
 
 <script>
     $(document).ready(function () {
+        debugger;
+        var FechaAtecion = $('#hiddenFechaAtencion').val();
+        var DatoApto = $('#hiddenApto').val();
+
+        var Fecha= new Date();
+        var dd = Fecha.getDate();
+        var mm = Fecha.getMonth() + 1; //hoy es 0!
+        var yyyy = Fecha.getFullYear();
+        var FechaSystem = "";
+        if (mm < 10)
+        {
+           FechaSystem = dd + "/0" + mm + "/" + yyyy;
+        }
+        else
+        {
+           FechaSystem = dd + "/" + mm + "/" + yyyy;
+        }
+        
+        if (FechaAtecion == FechaSystem)
+        {
+            $('#IdCheckBoxReevaluado').show();
+            $('.Reevaluado').prop('checked', false);
+            $('#hiddenReev').val('NO');
+        }
+        else
+        {
+            $('#IdCheckBoxReevaluado').show();
+            $('.Reevaluado').prop('checked', true);
+            $('#hiddenReev').val('SI');
+            $('#IdReevaluado').addClass('disabled');
+            //$('.Reevaluado').addClass('disabled');
+        }
+
+
+        if (DatoApto!='NO')
+        {
+            $('#IdCheckBoxReevaluado').hide();
+            $('#btnModificar').hide('fast');
+        }
+        else
+        {
+            $('#IdCheckBoxReevaluado').show();
+            //$('#btnModificar').addClass('disabled');
+        }
+
+        $(".Reevaluado").click(function () {
+            if ($(".Reevaluado").is(':checked')) {
+                $('#hiddenReev').val('SI');
+            } else {
+                $('#hiddenReev').val('NO');
+            }
+        });
 
         var NuevoOdontograma = new Array();
         

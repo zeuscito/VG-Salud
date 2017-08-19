@@ -45,52 +45,108 @@ namespace VgSalud.Controllers
             }
 
         }
-        public ActionResult ListadoCarnetLaboratorioEnEspera()
+
+
+        public ActionResult ListadoCarnetLaboratorioEnEspera(int? CodCue, string NumDoc = null)
         {
             ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
-            ViewBag.postergado = Usp_Laboratorio_Postergados();
+
+            ViewBag.NumDoc = NumDoc;
+            ViewBag.CodCue = CodCue;
+            int Cuenta = 0;
+            if (CodCue == null)
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.postergado = Usp_Laboratorio_Postergados(Cuenta, NumDoc);
             return View();
         }
 
         [HttpPost]
-        public ActionResult ListadoCarnetLaboratorioEnEspera(E_CSLaboratorio lab)
+        public ActionResult ListadoCarnetLaboratorioEnEspera(E_CSLaboratorio lab, int? CodCue, string NumDoc = null)
         {
-            ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
-            try
+            int Cuenta = 0;
+            if (NumDoc != "" || CodCue != null)
             {
-                if (lab.evento == "1")
+                ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
+                Cuenta = Convert.ToInt32(CodCue);
+                ViewBag.postergado = Usp_Laboratorio_Postergados(Cuenta, NumDoc);
+                ViewBag.NumDoc = NumDoc;
+                ViewBag.CodCue = CodCue;
+
+                try
                 {
-                    Usp_Mantenimiento(lab.Id, 1);
-                }
-                else if (lab.evento == "2")
-                {
-                    Usp_Mantenimiento(lab.Id, 2);
-                }
-                else if (lab.evento == "3")
-                {
-                    Usp_Mantenimiento(lab.Id, 3);
-                }
-                else if (lab.evento == "4")
-                {
-                    Usp_Mantenimiento(lab.Id, 4);
-                }
-                else if (lab.evento == "5")
-                {
+                    if (lab.evento == "1")
+                    {
+                        Usp_Mantenimiento(lab.Id, 1);
+                    }
+                    else if (lab.evento == "2")
+                    {
+                        Usp_Mantenimiento(lab.Id, 2);
+                    }
+                    else if (lab.evento == "3")
+                    {
+                        Usp_Mantenimiento(lab.Id, 3);
+                    }
+                    else if (lab.evento == "4")
+                    {
+                        Usp_Mantenimiento(lab.Id, 4);
+                    }
+                    else if (lab.evento == "5")
+                    {
+                        Usp_Mantenimiento(lab.Id, 5);
+                    }
                     Usp_Mantenimiento(lab.Id, 5);
+                    ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
+                    ViewBag.NumDoc = null;
+                    ViewBag.CodCue = null;
+                    return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+
                 }
-                return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
-
+                catch (Exception)
+                {
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+                }
             }
-            catch (Exception)
+            else
             {
-                ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
-                return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+                try
+                {
+                    if (lab.evento == "1")
+                    {
+                        Usp_Mantenimiento(lab.Id, 1);
+                    }
+                    else if (lab.evento == "2")
+                    {
+                        Usp_Mantenimiento(lab.Id, 2);
+                    }
+                    else if (lab.evento == "3")
+                    {
+                        Usp_Mantenimiento(lab.Id, 3);
+                    }
+                    else if (lab.evento == "4")
+                    {
+                        Usp_Mantenimiento(lab.Id, 4);
+                    }
+                    else if (lab.evento == "5")
+                    {
+                        Usp_Mantenimiento(lab.Id, 5);
+                    }
+                    return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+
+                }
+                catch (Exception)
+                {
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+                }
             }
-
-
+                //ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
+            
         }
 
-        public List<E_CSLaboratorio> Usp_Laboratorio_Postergados()
+        public List<E_CSLaboratorio> Usp_Laboratorio_Postergados(int Cuenta, string NumDoc = null)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -101,6 +157,22 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_Laboratorio_Postergados", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (NumDoc == null || NumDoc == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -443,14 +515,27 @@ namespace VgSalud.Controllers
 
 
 
-        public ActionResult ListaPacientesAtendidosDelDia()
+        public ActionResult ListaPacientesAtendidosDelDia(int? CodCue, string NumDoc = null, DateTime? FechaAten = null)
         {
-            ViewBag.Lista = ListarPacientesAtendidosEnElDia();
+            ViewBag.CodCue = CodCue;
+            ViewBag.NumDoc = NumDoc;
+            
+            ViewBag.FechaAten = FechaAten;
+            int Cuenta = 0;
+            if (CodCue == null)
+            {
+                Cuenta = 0;
+            }
+            else
+            {
+                Cuenta = Convert.ToInt32(CodCue);
+            }
+            ViewBag.Lista = ListarPacientesAtendidosEnElDia(Cuenta, NumDoc, FechaAten);
 
             return View();
         }
 
-        public List<E_CSLaboratorio> ListarPacientesAtendidosEnElDia()
+        public List<E_CSLaboratorio> ListarPacientesAtendidosEnElDia(int Cuenta, string NumDoc, DateTime? FechaAten)
         {
             string sede = Session["CodSede"].ToString();
 
@@ -461,6 +546,32 @@ namespace VgSalud.Controllers
                 using (cmd = new SqlCommand("Usp_ListadoPacientesAtendidosEnElDia_CSLaboratorio", db))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    if (NumDoc == null || NumDoc == "")
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@NumDoc", NumDoc);
+                    }
+                    if (Cuenta == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@CodCue", Cuenta);
+                    }
+
+                    if (FechaAten == null)
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", System.Data.SqlTypes.SqlString.Null);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@FechaAte", FechaAten);
+                    }
+
                     cmd.Parameters.AddWithValue("@CodSede", sede);
                     db.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -476,6 +587,7 @@ namespace VgSalud.Controllers
                         lab.Manipulador = dr["Manipulador"].ToString();
                         lab.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
                         lab.Edad = Convert.ToInt32(dr["Edad"]);
+                        lab.Apto = dr["Apto"].ToString();
                         ListaPacientes.Add(lab);
 
                     }
@@ -487,7 +599,7 @@ namespace VgSalud.Controllers
             return ListaPacientes;
         }
 
-
+       
 
         public ActionResult ModificarDatosPacientesAtendidosDelDia(int IdLaboratorio)
         {
@@ -508,6 +620,79 @@ namespace VgSalud.Controllers
             ViewBag.Apto = MostrarDatosLaboratorio.Apto;
 
             return View(MostrarDatosLaboratorio);
+        }
+
+
+        [HttpPost]
+        public ActionResult ModificarDatosPacientesAtendidosDelDia(int Id, E_CSLaboratorio lab)
+        {
+            string sede = Session["CodSede"].ToString();
+
+            UtilitarioController ut = new UtilitarioController();
+            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
+            string modifica = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
+            lab.Id = Id;
+
+            try
+            {
+                using (db = new SqlConnection(cadena))
+                {
+
+                    using (cmd = new SqlCommand("Usp_ModificarDatosPacientesAtendidosDelDia", db))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", lab.Id);
+                        
+                        if (lab.RPR != null)
+                        {
+                            cmd.Parameters.AddWithValue("@RPR", lab.RPR);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@RPR", "");
+                        }
+
+                        if (lab.Parasitologico != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Parasitologico", lab.Parasitologico);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Parasitologico", "");
+                        }
+
+                        if (lab.Observacion != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Observacion", lab.Observacion);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Observacion", "");
+                        }
+
+                        if (lab.Apto != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", lab.Apto);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Apto", "");
+                        }
+
+                        cmd.Parameters.AddWithValue("@Modifica", modifica);
+                        cmd.Parameters.AddWithValue("@Sede", sede);
+                        db.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        return RedirectToAction("ListaPacientesAtendidosDelDia");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("ModificarDatosPacientesAtendidosDelDia");
+            }
+
         }
 
 
@@ -549,81 +734,7 @@ namespace VgSalud.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult ModificarDatosPacientesAtendidosDelDia(int Id,E_CSLaboratorio lab)
-        {
-            string sede = Session["CodSede"].ToString();
-
-            UtilitarioController ut = new UtilitarioController();
-            var horaSis = (from x in ut.ListadoHoraServidor() select x).FirstOrDefault();
-            string modifica = Session["usuario"] + " " + horaSis.HoraServidor.ToString() + " " + Environment.MachineName;
-            lab.Id = Id;
-
-            try
-            {
-                using (db = new SqlConnection(cadena))
-                {
-
-                    using (cmd = new SqlCommand("Usp_ModificarDatosPacientesAtendidosDelDia", db))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@Id", lab.Id);
-
-                        cmd.Parameters.AddWithValue("@MuestraSangre", lab.MuestraS);
-                        cmd.Parameters.AddWithValue("@MuestraHeces", lab.MuestraH);
-
-                        if (lab.RPR != null)
-                        {
-                            cmd.Parameters.AddWithValue("@RPR", lab.RPR);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@RPR", "");
-                        }
-
-                        if (lab.Parasitologico != null)
-                        {
-                            cmd.Parameters.AddWithValue("@Parasitologico", lab.Parasitologico);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@Parasitologico", "");
-                        }
-
-                        if (lab.Observacion != null)
-                        {
-                            cmd.Parameters.AddWithValue("@Observacion", lab.Observacion);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@Observacion", "");
-                        }
-
-                        if (lab.Apto != null)
-                        {
-                            cmd.Parameters.AddWithValue("@Apto", lab.Apto);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@Apto", "");
-                        }
-                        
-                        cmd.Parameters.AddWithValue("@Modifica", modifica);
-                        cmd.Parameters.AddWithValue("@Sede", sede);
-                        db.Open();
-                        SqlDataReader dr = cmd.ExecuteReader();
-
-                        return RedirectToAction("ListaPacientesAtendidosDelDia");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("ModificarDatosPacientesAtendidosDelDia");
-            }
-            
-        }
-
+        
 
 
     }

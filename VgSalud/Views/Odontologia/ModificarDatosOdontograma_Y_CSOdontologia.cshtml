@@ -35,6 +35,7 @@
                                         <input type="hidden" name="Procedencia" id="Procedencia" value="@Model.Procedencia" />
                                         <input type="hidden" name="Manipulador" id="Manipulador" value="@Model.Manipulador" />
                                         <input type="hidden" name="IdO" id="IdO" value="@Model.Id" />
+                                        <input type="hidden" name="hiddenFechaAtencion" id="hiddenFechaAtencion" value="@Model.FechaAtencion" />
                                         <div class="row">
                                             <div class="col-xs-12 ">
                                                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
@@ -93,7 +94,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     @*}*@
@@ -114,7 +114,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:left">Cuadrante Superior Derecho</legend>
 
@@ -566,7 +566,7 @@
                                                     </fieldset>
                                                 </div>
 
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:right">Cuadrante Superior Izquierdo</legend>
 
@@ -1021,7 +1021,7 @@
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:left">Cuadrante Inferior Derecho</legend>
                                                         <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
@@ -1488,7 +1488,7 @@
                                                     </fieldset>
                                                 </div>
 
-                                                <div class="col-xs-12 col-sm-12 col-md-6" style="margin-top:2%;">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-top:2%;">
                                                     <fieldset>
                                                         <legend style="text-align:right">Cuadrante Inferior Izquierdo</legend>
 
@@ -1978,7 +1978,8 @@
                                             <div class="form-group">
                                                 <div class="col-sm-6 col-sm-offset-6">
                                                     <div class="checkbox" id="IdCheckBoxReevaluado" style="display:none;">
-                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox" value="0" style="width:15px;height:15px;" name="Reevaluado"> Reevaluado</label>
+                                                        <input type="hidden" id="hiddenReev" name="Reevaluado"/>
+                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox"  style="width:15px;height:15px;" id="IdReevaluado" class="Reevaluado"> Reevaluado</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1987,6 +1988,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
                                             <div class="form-group" style="margin-top:2%;text-align:center;">
+                                                <input type="hidden" id="hiddenApto" value="@Model.Apto"/>
                                                 <div class="col-sm-3 col-sm-offset-5">
                                                     <div class="radio">
                                                         <label style="font-size:large"><input type="radio" @if (@Model.Apto == "SI") { @check; } value="SI" style="width:15px;height:15px;" name="Apto"> APTO</label>
@@ -2003,7 +2005,7 @@
 
                                     <div class="row">
                                         <div class="col-xs-12" style="text-align:center;margin-top:2%;margin-bottom:2%;">
-                                            <button type="submit" title="Modificar Odontograma" class="btn btn-success" style="background-color:#13D003;border:0px;font-size:large;"><i class="fa fa-floppy-o"></i> Modificar</button>
+                                            <button type="submit" id="btnModificar" title="Modificar Odontograma" class="btn btn-success" style="background-color:#13D003;border:0px;font-size:large;"><i class="fa fa-floppy-o"></i> Modificar</button>
                                         </div>
                                     </div>
                                     <input type="hidden" id="ArregloOdontograma" name="ArregloOdontograma" />
@@ -2021,6 +2023,58 @@
 
 <script>
     $(document).ready(function () {
+        debugger;
+        var FechaAtecion = $('#hiddenFechaAtencion').val();
+        var DatoApto = $('#hiddenApto').val();
+
+        var Fecha= new Date();
+        var dd = Fecha.getDate();
+        var mm = Fecha.getMonth() + 1; //hoy es 0!
+        var yyyy = Fecha.getFullYear();
+        var FechaSystem = "";
+        if (mm < 10)
+        {
+           FechaSystem = dd + "/0" + mm + "/" + yyyy;
+        }
+        else
+        {
+           FechaSystem = dd + "/" + mm + "/" + yyyy;
+        }
+        
+        if (FechaAtecion == FechaSystem)
+        {
+            $('#IdCheckBoxReevaluado').show();
+            $('.Reevaluado').prop('checked', false);
+            $('#hiddenReev').val('NO');
+        }
+        else
+        {
+            $('#IdCheckBoxReevaluado').show();
+            $('.Reevaluado').prop('checked', true);
+            $('#hiddenReev').val('SI');
+            $('#IdReevaluado').addClass('disabled');
+            //$('.Reevaluado').addClass('disabled');
+        }
+
+
+        if (DatoApto!='NO')
+        {
+            $('#IdCheckBoxReevaluado').hide();
+            $('#btnModificar').hide('fast');
+        }
+        else
+        {
+            $('#IdCheckBoxReevaluado').show();
+            //$('#btnModificar').addClass('disabled');
+        }
+
+        $(".Reevaluado").click(function () {
+            if ($(".Reevaluado").is(':checked')) {
+                $('#hiddenReev').val('SI');
+            } else {
+                $('#hiddenReev').val('NO');
+            }
+        });
 
         var NuevoOdontograma = new Array();
         
@@ -2190,9 +2244,7 @@
                 }
                 if (Columna1 == "D14LC") {
                     $('#D14LC').css('background-color', '#dd4b39');
-                    alert("PINTO");
                     var AddDato = Columna1 + "-" + Columna2;
-                    alert(AddDato);
                     NuevoOdontograma[22] = AddDato;
                     $('#NuevoArregloOdontograma').val(NuevoOdontograma);
                 }
@@ -5303,7 +5355,7 @@
         $("#D18LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5316,7 +5368,7 @@
         $("#D18LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5328,7 +5380,7 @@
         $("#D18LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5340,7 +5392,7 @@
         $("#D18LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5352,7 +5404,7 @@
         $("#D18LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5366,7 +5418,7 @@
         $("#D17LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5378,7 +5430,7 @@
         $("#D17LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5390,7 +5442,7 @@
         $("#D17LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5402,7 +5454,7 @@
         $("#D17LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5414,7 +5466,7 @@
         $("#D17LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5428,7 +5480,7 @@
         $("#D16LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5440,7 +5492,7 @@
         $("#D16LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5452,7 +5504,7 @@
         $("#D16LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5464,7 +5516,7 @@
         $("#D16LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5476,7 +5528,7 @@
         $("#D16LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5490,7 +5542,7 @@
         $("#D15LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5502,7 +5554,7 @@
         $("#D15LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5514,7 +5566,7 @@
         $("#D15LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5526,7 +5578,7 @@
         $("#D15LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5538,7 +5590,7 @@
         $("#D15LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5552,7 +5604,7 @@
         $("#D14LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5564,7 +5616,7 @@
         $("#D14LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5576,7 +5628,7 @@
         $("#D14LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5588,7 +5640,7 @@
         $("#D14LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5600,7 +5652,7 @@
         $("#D14LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5614,7 +5666,7 @@
         $("#D13LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5626,7 +5678,7 @@
         $("#D13LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5638,7 +5690,7 @@
         $("#D13LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5650,7 +5702,7 @@
         $("#D13LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5662,7 +5714,7 @@
         $("#D13LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5676,7 +5728,7 @@
         $("#D12LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5688,7 +5740,7 @@
         $("#D12LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5700,7 +5752,7 @@
         $("#D12LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5712,7 +5764,7 @@
         $("#D12LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5724,7 +5776,7 @@
         $("#D12LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5738,7 +5790,7 @@
         $("#D11LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5750,7 +5802,7 @@
         $("#D11LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5762,7 +5814,7 @@
         $("#D11LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5774,7 +5826,7 @@
         $("#D11LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5786,7 +5838,7 @@
         $("#D11LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5801,7 +5853,7 @@
         $("#D21LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5813,7 +5865,7 @@
         $("#D21LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5825,7 +5877,7 @@
         $("#D21LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5837,7 +5889,7 @@
         $("#D21LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5849,7 +5901,7 @@
         $("#D21LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5863,7 +5915,7 @@
         $("#D22LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5875,7 +5927,7 @@
         $("#D22LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5887,7 +5939,7 @@
         $("#D22LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5899,7 +5951,7 @@
         $("#D22LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5911,7 +5963,7 @@
         $("#D22LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5925,7 +5977,7 @@
         $("#D23LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5937,7 +5989,7 @@
         $("#D23LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5949,7 +6001,7 @@
         $("#D23LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5961,7 +6013,7 @@
         $("#D23LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5973,7 +6025,7 @@
         $("#D23LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5987,7 +6039,7 @@
         $("#D24LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -5999,7 +6051,7 @@
         $("#D24LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6011,7 +6063,7 @@
         $("#D24LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6023,7 +6075,7 @@
         $("#D24LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6035,7 +6087,7 @@
         $("#D24LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6049,7 +6101,7 @@
         $("#D25LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6061,7 +6113,7 @@
         $("#D25LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6073,7 +6125,7 @@
         $("#D25LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6085,7 +6137,7 @@
         $("#D25LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6097,7 +6149,7 @@
         $("#D25LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6111,7 +6163,7 @@
         $("#D26LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6123,7 +6175,7 @@
         $("#D26LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6135,7 +6187,7 @@
         $("#D26LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6147,7 +6199,7 @@
         $("#D26LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6159,7 +6211,7 @@
         $("#D26LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6173,7 +6225,7 @@
         $("#D27LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6185,7 +6237,7 @@
         $("#D27LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6197,7 +6249,7 @@
         $("#D27LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6209,7 +6261,7 @@
         $("#D27LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6221,7 +6273,7 @@
         $("#D27LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6235,7 +6287,7 @@
         $("#D28LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6247,7 +6299,7 @@
         $("#D28LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6259,7 +6311,7 @@
         $("#D28LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6271,7 +6323,7 @@
         $("#D28LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6283,7 +6335,7 @@
         $("#D28LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6299,7 +6351,7 @@
         $("#D48LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6311,7 +6363,7 @@
         $("#D48LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6323,7 +6375,7 @@
         $("#D48LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6335,7 +6387,7 @@
         $("#D48LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6347,7 +6399,7 @@
         $("#D48LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6361,7 +6413,7 @@
         $("#D47LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6373,7 +6425,7 @@
         $("#D47LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6385,7 +6437,7 @@
         $("#D47LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6397,7 +6449,7 @@
         $("#D47LR").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6409,7 +6461,7 @@
         $("#D47LB").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6423,7 +6475,7 @@
         $("#D46LT").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6435,7 +6487,7 @@
         $("#D46LL").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -6447,7 +6499,7 @@
         $("#D46LC").click(function () {
             var Accion = $("#Accion").val();
             if (Accion == "" || Accion == null) {
-                alert("Seleccione Tratamaiento");
+                AlertaSeleccioneAccion();
             }
             else
                 if (Accion != "") {
@@ -13249,6 +13301,11 @@
 
 
 
+    }
+
+
+    function AlertaSeleccioneAccion() {
+        toastr.info("Debe de Seleccionar una accion", "Aviso del sistema", "Aviso del sistema", { timeOut: 100000 })
     }
 
 </script>

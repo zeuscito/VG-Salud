@@ -1808,6 +1808,7 @@
     <Content Include="Views\Caja\CorteCaja.cshtml" />
     <Content Include="Views\Alertas\Index.cshtml" />
     <Content Include="Views\Caja\ListadoCorteCaja.cshtml" />
+    <Content Include="Views\Caja\ImprimirCierreCajaPorCajera.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
