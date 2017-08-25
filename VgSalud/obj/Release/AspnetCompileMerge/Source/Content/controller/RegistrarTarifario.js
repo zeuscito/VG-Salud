@@ -2,6 +2,27 @@
 
 $(document).ready(function () {
 
+    $.ajax({
+        url: '../Tarifario/ListaCategoriaPacientes',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+            'precio': 1.1
+        }), success: function (response) {
+            $.each(response.listado, function (index, valores) {
+                oPrecioTarifa[oPrecioTarifa.length] = valores.CodCatPac + "," + valores.DescCatPac + "," + 0;
+            });
+            printTabla();
+            $('#example1 tbody').html(response.result);
+        },
+        error: function () {
+            alertaMessage("No se pudo asignar los precios", 0);
+        }
+    });
+
+    printTabla();
+
     $("#agregar").click(function () {
         var flag = 0;
         var CodCatPac = $("#CodCatPac").val();
@@ -19,29 +40,19 @@ $(document).ready(function () {
 
         if (flag === 0) {
             if (!(CodCatPac)) {
-                oPrecioTarifa.length = 0;
-                $.ajax({
-                    url: '../Tarifario/ListaCategoriaPacientes',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify({
-                        'precio': precio
-                    }), success: function (response) {
-                        $.each(response.listado, function (index, valores) {
-                            oPrecioTarifa[oPrecioTarifa.length] = valores.CodCatPac + "," + valores.DescCatPac + "," + precio;
-                        });
-                        printTabla();
-                        $('#example1 tbody').html(response.result);
-                    },
-                    error: function () {
-                        alertaMessage("No se pudo asignar los precios", 0);
-                    }
+                $.each(oPrecioTarifa, function (indice, value) {
+                    var valorRetorno = value.split(",");
+                    oPrecioTarifa[indice] = valorRetorno[0] + "," + valorRetorno[1] + "," + precio;
                 });
             } else {
-                oPrecioTarifa[oPrecioTarifa.length] = CodCatPac + "," + CatPacText + "," + precio;
-                printTabla();
+                $.each(oPrecioTarifa, function (indice, value) {
+                    var valorRetorno = value.split(",");
+                    if (valorRetorno[0] === CodCatPac) {
+                        oPrecioTarifa[indice] = CodCatPac + "," + CatPacText + "," + precio;
+                    }
+                });
             }
+            printTabla();
         }
 
     });

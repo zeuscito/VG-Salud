@@ -95,12 +95,12 @@ namespace VgSalud.Controllers
                     else if (lab.evento == "5")
                     {
                         Usp_Mantenimiento(lab.Id, 5);
+                        ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
+                        ViewBag.NumDoc = null;
+                        ViewBag.CodCue = null;
+                        return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
+
                     }
-                    Usp_Mantenimiento(lab.Id, 5);
-                    ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
-                    ViewBag.NumDoc = null;
-                    ViewBag.CodCue = null;
-                    return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
 
                 }
                 catch (Exception)
@@ -108,9 +108,13 @@ namespace VgSalud.Controllers
                     ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
                     return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
                 }
+
+                return View("ListadoCarnetLaboratorioEnEspera");
+
             }
             else
             {
+                ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
                 try
                 {
                     if (lab.evento == "1")
@@ -142,8 +146,6 @@ namespace VgSalud.Controllers
                     return RedirectToAction("ListadoCarnetLaboratorioEnEspera");
                 }
             }
-                //ViewBag.lista = ListadoCarnet_Laboratorio_DelDia_EnEspera();
-            
         }
 
         public List<E_CSLaboratorio> Usp_Laboratorio_Postergados(int Cuenta, string NumDoc = null)
@@ -241,10 +243,7 @@ namespace VgSalud.Controllers
 
         public ActionResult ActualizarDatosAtencionLaboratorio(int Id)
         {
-            
-            //Usp_ListarDatosCSLaboratorio(Id);
             ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSLaboratorio(Id);
-            //return RedirectToAction("ActualizarDatosAtencionLaboratorio");
             return View();
         }
 
@@ -502,6 +501,8 @@ namespace VgSalud.Controllers
                         lab.Edad = Convert.ToInt32(dr["edad"]);
                         lab.NumeroCarnet = dr["NumeroCarnet"].ToString();
                         lab.Procedencia = dr["Procedencia"].ToString();
+                        lab.Apto = dr["LabApto"].ToString();
+                        lab.FechaAtencion = dr["FechaAtencion"].ToString();
                         ListaCarnetLab.Add(lab);
 
                     }
@@ -513,6 +514,48 @@ namespace VgSalud.Controllers
             return ListaCarnetLab;
         }
 
+        //public List<E_CSLaboratorio> MostrarDatosDeListaDeCarnetSanidadCSLaboratorio(int Id)
+        //{
+        //    string sede = Session["CodSede"].ToString();
+
+        //    List<E_CSLaboratorio> ListaCarnetLab = new List<E_CSLaboratorio>();
+
+        //    using (db = new SqlConnection(cadena))
+        //    {
+        //        using (cmd = new SqlCommand("Usp_MostrarDatosDeListaDeCarnetSanidadCSLaboratorio", db))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@Id", Id);
+        //            cmd.Parameters.AddWithValue("@Sede", sede);
+        //            db.Open();
+        //            SqlDataReader dr = cmd.ExecuteReader();
+
+        //            while (dr.Read())
+        //            {
+        //                E_CSLaboratorio lab = new E_CSLaboratorio();
+
+        //                lab.Id = int.Parse(dr["Id"].ToString());
+        //                lab.CodCue = int.Parse(dr["CodCue"].ToString());
+        //                lab.Paciente = dr["NombrePaciente"].ToString();
+        //                lab.DesTipoCarnet = dr["DescCarnet"].ToString();
+        //                lab.Manipulador = dr["Manipulador"].ToString();
+        //                lab.Prioridad = Convert.ToInt32(dr["Prioridad"].ToString());
+        //                lab.idEstado = Convert.ToInt32(dr["IdEstado"].ToString());
+        //                lab.Edad = Convert.ToInt32(dr["edad"]);
+        //                lab.NumeroCarnet = dr["NumeroCarnet"].ToString();
+        //                lab.Procedencia = dr["Procedencia"].ToString();
+        //                lab.Apto = dr["LabApto"].ToString();
+        //                lab.FechaAtencion = dr["FechaAtencion"].ToString();
+        //                ListaCarnetLab.Add(lab);
+
+        //            }
+
+
+        //        }
+        //    }
+
+        //    return ListaCarnetLab;
+        //}
 
 
         public ActionResult ListaPacientesAtendidosDelDia(int? CodCue, string NumDoc = null, DateTime? FechaAten = null)
@@ -603,7 +646,7 @@ namespace VgSalud.Controllers
 
         public ActionResult ModificarDatosPacientesAtendidosDelDia(int IdLaboratorio)
         {
-            ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSLaboratorio(IdLaboratorio);
+            //ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSLaboratorio(IdLaboratorio);
 
             var MostrarDatosLaboratorio = Buscar_Y_MostrarDatosCSLaboratorioPorId(IdLaboratorio).FirstOrDefault();
 
@@ -642,7 +685,16 @@ namespace VgSalud.Controllers
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Id", lab.Id);
-                        
+
+                        if (lab.HIV != null)
+                        {
+                            cmd.Parameters.AddWithValue("@VIH", lab.HIV);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@VIH", "");
+                        }
+
                         if (lab.RPR != null)
                         {
                             cmd.Parameters.AddWithValue("@RPR", lab.RPR);
@@ -681,6 +733,15 @@ namespace VgSalud.Controllers
 
                         cmd.Parameters.AddWithValue("@Modifica", modifica);
                         cmd.Parameters.AddWithValue("@Sede", sede);
+
+                        if (lab.Reevaluado != null)
+                        {
+                            cmd.Parameters.AddWithValue("@Reeva", lab.Reevaluado);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Reeva", "");
+                        }
                         db.Open();
                         SqlDataReader dr = cmd.ExecuteReader();
 
@@ -695,7 +756,7 @@ namespace VgSalud.Controllers
 
         }
 
-
+        
         public List<E_CSLaboratorio> Buscar_Y_MostrarDatosCSLaboratorioPorId(int IdLaboratorio)
         {
             string CodSede = Session["CodSede"].ToString();
@@ -704,10 +765,10 @@ namespace VgSalud.Controllers
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("Usp_Buscar_Y_MostrarDatosCSLaboratorioPorId", con))
+                using (SqlCommand cmd = new SqlCommand("Usp_MostrarDatosDeListaDeCarnetSanidadCSLaboratorio_ParaModificar", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@IdLaboratorio", IdLaboratorio);
+                    cmd.Parameters.AddWithValue("@Id", IdLaboratorio);
                     cmd.Parameters.AddWithValue("@CodSede", CodSede);
                     using (
                         SqlDataReader dr = cmd.ExecuteReader())
@@ -716,13 +777,26 @@ namespace VgSalud.Controllers
                         {
                             E_CSLaboratorio CSLab = new E_CSLaboratorio();
 
-                            CSLab.Id = dr.GetInt32(0);
-                            CSLab.MuestraS = dr.GetBoolean(1);
-                            CSLab.MuestraH = dr.GetBoolean(2);
-                            CSLab.Parasitologico = dr.GetString(3);
-                            CSLab.RPR = dr.GetString(4);
-                            CSLab.Observacion = dr.GetString(5);
-                            CSLab.Apto = dr.GetString(6);
+                            CSLab.Id = int.Parse(dr["Id"].ToString());
+                            CSLab.CodCue = int.Parse(dr["CodCue"].ToString());
+                            CSLab.Paciente = dr["NombrePaciente"].ToString();
+                            CSLab.DesTipoCarnet = dr["DescCarnet"].ToString();
+                            CSLab.Manipulador = dr["Manipulador"].ToString();
+                            CSLab.Prioridad = Convert.ToInt32(dr["Prioridad"]);
+                            CSLab.idEstado = Convert.ToInt32(dr["IdEstado"]);
+                            CSLab.Edad = Convert.ToInt32(dr["edad"]);
+                            CSLab.NumeroCarnet = dr["NumeroCarnet"].ToString();
+                            CSLab.Procedencia = dr["Procedencia"].ToString();
+                            CSLab.HIV = dr["HIV"].ToString();
+                            CSLab.GrupoFactor = dr["GrupoFactor"].ToString();
+                            CSLab.Parasitologico = dr["Parasitologico"].ToString();
+                            CSLab.RPR = dr["RPR"].ToString();
+                            CSLab.Observacion = dr["LabObservacion"].ToString();
+                            CSLab.Reevaluado = dr["Reevaluado"].ToString();
+                            CSLab.MuestraS = Convert.ToBoolean(dr["MuestraSangre"].ToString());
+                            CSLab.MuestraH = Convert.ToBoolean(dr["MuestraHeces"].ToString());
+                            CSLab.Apto = dr["LabApto"].ToString();
+                            CSLab.FechaAtencion = dr["FechaAtencion"].ToString();
 
                             Lista.Add(CSLab);
                         }
@@ -734,7 +808,44 @@ namespace VgSalud.Controllers
             }
         }
 
-        
+        //public List<E_CSLaboratorio> Buscar_Y_MostrarDatosCSLaboratorioPorId(int IdLaboratorio)
+        //{
+        //    string CodSede = Session["CodSede"].ToString();
+
+        //    List<E_CSLaboratorio> Lista = new List<E_CSLaboratorio>();
+        //    using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+        //    {
+        //        con.Open();
+        //        using (SqlCommand cmd = new SqlCommand("Usp_Buscar_Y_MostrarDatosCSLaboratorioPorId", con))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@IdLaboratorio", IdLaboratorio);
+        //            cmd.Parameters.AddWithValue("@CodSede", CodSede);
+        //            using (
+        //                SqlDataReader dr = cmd.ExecuteReader())
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    E_CSLaboratorio CSLab = new E_CSLaboratorio();
+
+        //                    CSLab.Id = dr.GetInt32(0);
+        //                    CSLab.MuestraS = dr.GetBoolean(1);
+        //                    CSLab.MuestraH = dr.GetBoolean(2);
+        //                    CSLab.Parasitologico = dr.GetString(3);
+        //                    CSLab.RPR = dr.GetString(4);
+        //                    CSLab.Observacion = dr.GetString(5);
+        //                    CSLab.Apto = dr.GetString(6);
+
+        //                    Lista.Add(CSLab);
+        //                }
+        //                con.Close();
+        //            }
+
+        //        }
+        //        return Lista;
+        //    }
+        //}
+
 
 
     }

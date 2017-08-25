@@ -1,4 +1,8 @@
-﻿<style>
+﻿@{
+    var listadoMedico = (SelectList)ViewBag.listadoMedico;
+ }
+
+<style>
         tr {
             width: 100%;
             display: inline-table;
@@ -52,6 +56,14 @@
                     <fieldset>
 
                         <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>¿Ver todos los servicios?</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="checkbox" name="viewAllServ" id="viewAllServ" style="width:15px;height:15px;" />
+                                </div>
+                            </div>
                             <input type='text' placeholder='Buscar Servicio' id='buscaServicio' class='form-control' />
                             <table id="dataServicio" class="table table-striped" style="height:140px;width:100%;border:1px solid #D8D8D8">
                                 <thead>
@@ -65,8 +77,20 @@
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label>Medico de referencia</label>
+                                </div>
+                                <div class="col-md-9">
+
+                                    @Html.DropDownList("medicoEnvia", listadoMedico, "[NO SELECCIONADO]", new { @class = "form-control select2", @id = "medicoEnvia" })
+
+                                </div>
+                            </div>
+                            <br />
                             <input type='text' placeholder='Buscar Tarifa' id='buscaTarifa' class='form-control' />
                             <div id="buscarTar" style="display:none"></div>
+                            
                             <table id="dataTarifa" class="table table-striped" style="height:140px;width:100%;border:1px solid #D8D8D8">
                                 <thead>
                                     <tr>
@@ -77,7 +101,7 @@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                            </table>
+                            </table>                            
                         </div>
                         <div class="col-md-12">
                             <div class="col-md-3">
@@ -129,6 +153,22 @@
                             <div class="col-md-3">
                                 <div class="row">
                                     <center>
+                                        <div class="col-md-12">
+                                            <div class="col-md-4">
+                                                <label>Monto Recibido</label>
+                                                <input type="text" class="form-control" id="MontoRecibido" value="0" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Vuelto</label>
+                                                <input type="text" class="form-control" id="MontoVuelto" readonly />
+                                            </div>
+                                        </div>
+
+                                    </center>
+                                </div>  
+                                <br />
+                                <div class="row">
+                                    <center>
                                         <h4>Total a pagar: S/.<span id="totalPagar"></span></h4>
                                     </center>
                                 </div>
@@ -167,8 +207,22 @@
         //} else {
         //    $('#DivVentaConsulta').hide();
         //}
-
-
+        $("#MontoRecibido").keyup(function () {
+            debugger;
+            var TotaGeneral = 0;
+            var monto = $("#MontoRecibido").val();
+            if (monto === "") {
+                $("#MontoVuelto").val(0);
+            }
+            else {
+                var montoTotal = $("#totalPagar").text();
+                var descuento = parseFloat(monto) - parseFloat(montoTotal);
+                TotaGeneral = descuento;
+                $("#MontoVuelto").val(TotaGeneral);
+            }
+     
+        });
+        
         $("#inclSus").click(function () {
             if ($("#inclSus").is(':checked')) {
                 $('#DivImprimeHistoria').show('fast');

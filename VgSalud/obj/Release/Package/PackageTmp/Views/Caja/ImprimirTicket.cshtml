@@ -43,6 +43,9 @@
     var NumeroDoc = "";
 
     var Edad = "";
+    var CodAutoriza = "";
+
+    var NumTarjeta = "";
 }
 
 
@@ -88,6 +91,8 @@
             DirecSede = (item.DirecSede).ToString();
             NumeroDoc = (item.NumDoc).ToString();
             Edad= (item.Edad).ToString();
+            CodAutoriza = (item.CodAutoriza).ToString();
+            NumTarjeta= (item.NumTarjeta).ToString();
         }
         foreach (var item in Doc)
         {
@@ -100,13 +105,14 @@
     <div id="imprime" style="width: 300px;font-family: Arial;
             font-size: 12px;margin-left:0px;">
         <p>
-            POLICLINICO SURCO SALUD<br/>
+            GRUPO DAFI ASOCIADOS S.A.C<br/>
             Jr. Ancash cd. 23 S/N El Agustino - Lima<br />
             RUC 20537671506 &nbsp; @fechaemi @horloca<br>
             @sede<br/>
             @*DirecSede<br />*@
+            @*@A. Sunat: @CodAutoriza<br />*@
             @tipoDoc - N°@NumeroDoc<br />
-            H.C.: @historiacli &nbsp;- Usuario: @Cajero<br>
+            H.C.: @NumTarjeta  @*historiacli*@ &nbsp;- Usuario: @Cajero<br>
             Cliente :@nombrepaciente &nbsp;- @Edad<br />
             Sec.: @Secuencia &nbsp;- Cuenta: @CodCue<br>
         </p>

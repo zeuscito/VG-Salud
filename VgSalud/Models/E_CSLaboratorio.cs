@@ -35,6 +35,7 @@ namespace VgSalud.Models
 
         public string Reevaluado { get; set; }
 
-
+        public string FechaAtencion { get; set; }
+        
     }
 }

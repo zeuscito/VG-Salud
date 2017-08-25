@@ -7,7 +7,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using VgSalud.Models;
-
 using System.IO;
 
 namespace VgSalud.Controllers
@@ -1422,7 +1421,6 @@ namespace VgSalud.Controllers
 
         public List<E_Carnet_Sanitario> ListaPacientesPorCodCue(int CodCue)
         {
-
             string sede = Session["CodSede"].ToString();
             List<E_Carnet_Sanitario> listaPaciente = new List<E_Carnet_Sanitario>();
 
@@ -1477,43 +1475,57 @@ namespace VgSalud.Controllers
                 int CodCue = car.CodCue;
                 var ListaPaciente = ListaPacientesPorCodCue(CodCue).FirstOrDefault();
 
-                if (ListaPaciente.Historia != 0)
+                if (ListaPaciente!=null)
                 {
-                    ViewBag.Historia = ListaPaciente.Historia;
+                    if (ListaPaciente.Historia != 0)
+                    {
+                        ViewBag.Historia = ListaPaciente.Historia;
+                    }
+                    else
+                    {
+                        ViewBag.Historia = 0;
+                    }
+
+                    if (ListaPaciente.NombrePaciente != null)
+                    {
+                        ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
+                    }
+                    else
+                    {
+                        ViewBag.NombrePaciente = "";
+                    }
+
+                    if (ListaPaciente.NroDoc != null)
+                    {
+                        ViewBag.NroDocumento = ListaPaciente.NroDoc;
+                    }
+                    else
+                    {
+                        ViewBag.NroDocumento = "";
+                    }
+
+                    if (ListaPaciente.Edad != null)
+                    {
+                        ViewBag.Edad = ListaPaciente.Edad;
+                    }
+                    else
+                    {
+                        ViewBag.Edad = "";
+                    }
+
+                    ViewBag.CodCuenta = CodCue;
                 }
                 else
                 {
                     ViewBag.Historia = 0;
-                }
-
-                if (ListaPaciente.NombrePaciente != null)
-                {
-                    ViewBag.NombrePaciente = ListaPaciente.NombrePaciente;
-                }
-                else
-                {
                     ViewBag.NombrePaciente = "";
-                }
-
-                if (ListaPaciente.NroDoc != null)
-                {
-                    ViewBag.NroDocumento = ListaPaciente.NroDoc;
-                }
-                else
-                {
                     ViewBag.NroDocumento = "";
-                }
-
-                if (ListaPaciente.Edad != null)
-                {
-                    ViewBag.Edad = ListaPaciente.Edad;
-                }
-                else
-                {
                     ViewBag.Edad = "";
+                    ViewBag.CodCuenta = CodCue;
+                    ViewBag.mensaje = "Error: Ya se registro un Carnet Con esta Cuenta";
                 }
 
-                ViewBag.CodCuenta = CodCue;
+                
             }
             else
             {

@@ -41,54 +41,103 @@
 </head>
 
 <body>
-  @foreach (var item in ListaCierre)
-  {
-      Sede = item.NomSede;
-      FechaDia = item.FechaDia;
-      Documento = item.Documento;
-      Serie = item.Serie;
-      DocIni = item.DocIni;
-      DocFin = item.DocFin;
-      SubTotal = Math.Round(item.SubTotal,2);
-      Igv = item.Igv;
-      Total = item.Total;
-  }
-
-
-
     <div id="imprime" style="width: 300px;font-family: Arial;
             font-size: 12px;margin-left:0px;">
-        <p>
-            POLICLINICO SURCO SALUD<br />
-            Jr. Ancash cd. 23 S/N El Agustino - Lima<br />
-            @Sede</p>
-            <p>
-             Resumen del día @FechaDia<br />
-            Serie: @Documento - @Serie <br />
-            DEL @DocIni - AL @DocFin<br />
-            SubTot: @SubTotal <br />
-            Igv: @Igv<br />
-            Total: @Total<br /><br />
-        </p>
-        
-        <br />
-    
+        <table>
+            <tr>
+                <td>POLICLINICO SURCO SALUD</td>
+            </tr>
+            <tr>
+                <td>Jr. Ancash cd. 23 S/N El Agustino - Lima</td>
+            </tr>
+            @foreach (var item in ListaCierre)
+            {
+            <tr>
+                <td>@item.NomSede</td>
+            </tr>
+            <tr>
+                <td>Resumen del día @item.FechaDia</td>
+            </tr>
+            <tr>
+                <td>Serie: @item.Documento - @item.Serie</td>
+            </tr>
+            <tr>
+                <td>DEL @item.DocIni - AL @item.DocFin</td>
+            </tr>
+            <tr>
+                <td>@{ SubTotal=Math.Round(item.SubTotal, 2); }SubTot: @SubTotal</td>
+            </tr>
+            <tr>
+                <td>Igv = @item.Igv</td>
+            </tr>
+            <tr>
+                <td>Total = @item.Total</td>
+            </tr>
+            <br />
+            <br />
+
+                        //Sede = item.NomSede;
+                        //FechaDia = item.FechaDia;
+                        //Documento = item.Documento;
+                        //Serie = item.Serie;
+                        //DocIni = item.DocIni;
+                        //DocFin = item.DocFin;
+                        //SubTotal = Math.Round(item.SubTotal, 2);
+                        //Igv = item.Igv;
+                        //Total = item.Total;
+                    }
+        </table>
     </div>
 
-    <script>
-        $(document).ready(function () {
-                    
+        @*@foreach (var item in ListaCierre)
+        {
 
-            var ancho = $(window).width();
-            var alto = $(window).height();
+            Sede = item.NomSede;
+            FechaDia = item.FechaDia;
+            Documento = item.Documento;
+            Serie = item.Serie;
+            DocIni = item.DocIni;
+            DocFin = item.DocFin;
+            SubTotal = Math.Round(item.SubTotal, 2);
+            Igv = item.Igv;
+            Total = item.Total;
+        }
 
-            var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
-            $("div#imprime").printArea(options);
-            //$("#imprime").fadeOut();
-            window.close();
-            //window.location.href = '../Pacientes/ListaPacientes';
-        });
-    </script>
+        <div id="imprime" style="width: 300px;font-family: Arial;
+            font-size: 12px;margin-left:0px;">
+            <p>
+                POLICLINICO SURCO SALUD<br />
+                Jr. Ancash cd. 23 S/N El Agustino - Lima<br />
+                @Sede
+            </p>
+            <p>
+                Resumen del día @FechaDia<br />
+                Serie: @Documento - @Serie <br />
+                DEL @DocIni - AL @DocFin<br />
+                SubTot: @SubTotal <br />
+                Igv: @Igv<br />
+                Total: @Total<br /><br />
+            </p>
+
+            <br />
+
+        </div>*@
+
+        <script>
+            $(document).ready(function () {
+
+
+                var ancho = $(window).width();
+                var alto = $(window).height();
+
+                var options = { mode: "popup", popHt: alto, popWd: ancho, popX: 0, popY: 0, popTitle: "Ticket", popClose: false };
+                $("div#imprime").printArea(options);
+                //$("#imprime").fadeOut();
+                //window.close();
+                window.location.href = 'ListadoCaja';
+                //window.location.href = '../Pacientes/ListaPacientes';
+            });
+        </script>
 
 
 </body>

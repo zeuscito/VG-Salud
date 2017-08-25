@@ -337,6 +337,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VG_SALUDDataSet11.xsd</DependentUpon>
     </Compile>
+    <Compile Include="VG_saludDataSet123.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VG_saludDataSet123.xsd</DependentUpon>
+    </Compile>
     <Compile Include="VG_SALUDDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1684,6 +1689,17 @@
     <Content Include="VG_SALUDDataSet11.xss">
       <DependentUpon>VG_SALUDDataSet11.xsd</DependentUpon>
     </Content>
+    <Content Include="VG_saludDataSet123.xsc">
+      <DependentUpon>VG_saludDataSet123.xsd</DependentUpon>
+    </Content>
+    <None Include="VG_saludDataSet123.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>VG_saludDataSet123.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="VG_saludDataSet123.xss">
+      <DependentUpon>VG_saludDataSet123.xsd</DependentUpon>
+    </Content>
     <None Include="VG_SALUDDataSet2.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>VG_SALUDDataSet2.Designer.cs</LastGenOutput>
@@ -1809,6 +1825,8 @@
     <Content Include="Views\Alertas\Index.cshtml" />
     <Content Include="Views\Caja\ListadoCorteCaja.cshtml" />
     <Content Include="Views\Caja\ImprimirCierreCajaPorCajera.cshtml" />
+    <Content Include="Views\Caja\ResumenteDelDia.cshtml" />
+    <Content Include="Views\Reportes\ReportePorTarfifa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1828,6 +1846,7 @@
     <EmbeddedResource Include="Reportes\FacturacionXSede.rdlc" />
     <EmbeddedResource Include="Reportes\FacturacionXUsuario.rdlc" />
     <EmbeddedResource Include="Reportes\Liquidacion.rdlc" />
+    <EmbeddedResource Include="Reportes\ReporteVentasxPaciente.rdlc" />
     <EmbeddedResource Include="Reportes\ReporteAtenciones.rdlc" />
     <EmbeddedResource Include="Reportes\ReporteDeGastos.rdlc" />
     <EmbeddedResource Include="Reportes\ReporteFacturacionXMes.rdlc" />

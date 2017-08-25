@@ -2482,6 +2482,42 @@ namespace VgSalud.Controllers
             }
         }
 
+        public List<E_Reporte> Usp_Reporte_VentasxPaciente(int Historia)
+        {
+            List<E_Reporte> Lista = new List<E_Reporte>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_reporteVentasxPaciente", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@historia", Historia);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Reporte ca = new E_Reporte();
+                            ca.NombrePac = dr.GetString(0);
+                            ca.Especialidad = dr.GetString(1).ToUpper();
+                            ca.Servicio = dr.GetString(2).ToString();
+                            ca.Tarifa = dr.GetString(3);
+                            ca.cantidad = dr.GetInt32(4);
+                            ca.total = dr.GetDecimal(5);
+                            ca.FechaAtenReg = dr.GetString(6);
+                            ca.CodCue = dr.GetInt32(7);
+                            ca.Item = dr.GetInt32(8);
+                            ca.ItemCue = dr.GetString(9);
+                            ca.FechaPago = dr.GetDateTime(10).ToShortDateString();
+                            Lista.Add(ca);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
         public ActionResult GeneraReporte_Atenciones(string id, int Historia)
         {
             ServiciosController servicio = new ServiciosController();
@@ -2501,6 +2537,87 @@ namespace VgSalud.Controllers
             string usuarioGenera = Session["UserID"].ToString() + " - " + Session["usuario"].ToString();
 
             List<E_Reporte> cm = Usp_Reporte_Atenciones(Historia);
+
+            ReportDataSource rd = new ReportDataSource("DataSet1", cm);
+
+            lr.DataSources.Add(rd);
+            SedesController se = new SedesController();
+            UtilitarioController u = new UtilitarioController();
+            DocumentoContableController dc = new DocumentoContableController();
+            E_Master ma = u.ListadoHoraServidor().FirstOrDefault();
+            E_Sede us = se.ListadoSedes().Find(x => x.CodSede == sede);
+
+            string nombreCompleto = us.NomSede;
+            var paciente = new PacientesController().ListadoPacientes().Where(x => x.Historia == Historia).FirstOrDefault();
+            var DocumentoIdentidad = new UtilitarioController().ListadoDocumentoIdentidad().Where(x => x.CodDocIdent == paciente.CodDocIdent).FirstOrDefault();
+            var categoriapac = new CategoriaPacienteController().listadoCategoriaCliente().Where(x => x.CodCatPac == paciente.CodCatPac).FirstOrDefault();
+            ReportParameter[] rptParameters = new ReportParameter[] {
+                new ReportParameter("fechaHoy", ma.HoraServidor.ToString("dd/MM/yyyy hh:mm tt")),
+                new ReportParameter("CodSede", sede.ToString()),
+                new ReportParameter("NomSede", nombreCompleto),
+                new ReportParameter("UsuGene", usuarioGenera),
+                new ReportParameter("Documento", DocumentoIdentidad.NomDocIdent.ToUpper()),
+                new ReportParameter("NroDoc",paciente.NumDoc),
+                new ReportParameter("NombrePac",paciente.ApePat + " " + paciente.ApeMat + " " +paciente.NomPac),
+                new ReportParameter("CategoriaPac",categoriapac.DescCatPac),
+                new ReportParameter("FechaNac",paciente.FecNac.ToShortDateString())
+
+            };
+
+            lr.SetParameters(rptParameters);
+
+            string reportType = id;
+            string mimeType;
+            string encoding;
+            string FileNameExtension;
+
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "   <OutputFormat>" + id + "</OutputFormat>" +
+                "   <PageWidth>8in</PageWidth>" +
+                "   <PageHeight>10in</PageHeight>" +
+                "   <MarginTop>0.3in</MarginTop>" +
+                "   <MarginLeft>0in</MarginLeft>" +
+                "   <MarginRight>0in</MarginRight>" +
+                "   <MarginBottom>0.3in</MarginBottom>" +
+                "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] rendereBytes;
+
+            rendereBytes = lr.Render(
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out FileNameExtension,
+                out streams,
+                out warnings);
+
+            return File(rendereBytes, mimeType);
+        }
+
+
+        public ActionResult GeneraReporte_VentasxPaciente(string id, int Historia)
+        {
+            ServiciosController servicio = new ServiciosController();
+            var sede = Session["codSede"].ToString();
+
+            LocalReport lr = new LocalReport();
+            string path = Path.Combine(Server.MapPath("~/Reportes"), "ReporteVentasxPaciente.rdlc");
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+            else
+            {
+                return View("../FichaElectronica/BandejaDeAtenciones");
+            }
+
+            string usuarioGenera = Session["UserID"].ToString() + " - " + Session["usuario"].ToString();
+
+            List<E_Reporte> cm = Usp_Reporte_VentasxPaciente(Historia);
 
             ReportDataSource rd = new ReportDataSource("DataSet1", cm);
 
@@ -2641,5 +2758,128 @@ namespace VgSalud.Controllers
 
 
 
+        public ActionResult ReportePorTarfifa(DateTime? FechaI, DateTime? FechaF,string CodTar=null)
+        {
+            ViewBag.FechaI = FechaI; //DateTime.Parse(FechaI.ToString()).ToShortDateString();
+            ViewBag.FechaF = FechaF; // DateTime.Parse(FechaF.ToString()).ToShortDateString();
+            ViewBag.ListaTarifas = new SelectList(ListarTarifas(), "CodTar", "DescTar");
+            ViewBag.ListaReporteDeTarifas = ReporteDeTarifas(FechaI, FechaF, CodTar);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ReportePorTarfifa(E_Tarifario Tar, DateTime? FechaI, DateTime? FechaF, string CodTar = null)
+        {
+            ViewBag.FechaI = DateTime.Parse(FechaI.ToString()).ToShortDateString();
+            ViewBag.FechaF = DateTime.Parse(FechaF.ToString()).ToShortDateString();
+            ViewBag.ListaTarifas = new SelectList(ListarTarifas(), "CodTar", "DescTar");
+            ViewBag.ListaReporteDeTarifas = ReporteDeTarifas(FechaI, FechaF, CodTar);
+            return View();
+        }
+
+        public List<E_Tarifario> ListarTarifas()
+        {
+            var CodSede = Session["codSede"].ToString();
+
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ListarTarifas", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Tarifario Tar = new E_Tarifario();
+                            
+                            Tar.CodTar = dr["CodTar"].ToString();
+                            Tar.DescTar = dr["DescTar"].ToString();
+                            Lista.Add(Tar);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
+
+        public List<E_Tarifario> ReporteDeTarifas(DateTime? FechaI, DateTime? FechaF, string CodTar = null)
+        {
+            var FechaINew = "";
+            var FechaFNew = "";
+            if (FechaI!=null && FechaF !=null)
+            {
+                FechaINew = DateTime.Parse(FechaI.ToString()).ToShortDateString();
+                FechaFNew = DateTime.Parse(FechaF.ToString()).ToShortDateString();
+            }
+            
+            var CodSede = Session["codSede"].ToString();
+
+            List<E_Tarifario> Lista = new List<E_Tarifario>();
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("Usp_ReportePorTarifas", con))
+                {
+                    try
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if( CodTar != "")
+                        {
+                            cmd.Parameters.AddWithValue("@Tarifa", CodTar);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@Tarifa", System.Data.SqlTypes.SqlString.Null);
+                        }
+
+                        if (FechaI != null)
+                        {
+                            cmd.Parameters.AddWithValue("@FechaInicial", FechaINew);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@FechaInicial", "");
+                        }
+
+                        if (FechaF != null)
+                        {
+                            cmd.Parameters.AddWithValue("@FechaFinal", FechaFNew);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@FechaFinal", "");
+                        }
+                        
+                        cmd.Parameters.AddWithValue("@CodSede", CodSede);
+                        using (SqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                            {
+                                E_Tarifario Tar = new E_Tarifario();
+
+                                //Tar.CodTar = dr["CodTar"].ToString();
+                                Tar.DescTar = dr["DescTar"].ToString();
+                                Tar.Cantidad = Convert.ToInt32(dr["cantidad"].ToString());
+                                Tar.total = Convert.ToDecimal(dr["total"].ToString());
+                                Lista.Add(Tar);
+                            }
+                            con.Close();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+
+                }
+                return Lista;
+            }
+        }
     }
 }

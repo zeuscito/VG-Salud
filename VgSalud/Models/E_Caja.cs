@@ -77,7 +77,8 @@ namespace VgSalud.Models
         public string tipMoneda { get; set; }
         public decimal Monto { get; set; }
         public decimal montoCambio { get; set; }
-
+        public decimal efectivo { get; set; }
+     
         public int CodCajRes { get; set; }
         public DateTime FechaDeposito { get; set; }
         public DateTime FechaCaja { get; set; }
@@ -104,6 +105,10 @@ namespace VgSalud.Models
         public string DocIni { get; set; }
         public string DocFin { get; set; }
 
+        public string CodAutoriza { get; set; }
+        public decimal credito { get; set; }
+
+        public string NumTarjeta { get; set; }
         
 
     }

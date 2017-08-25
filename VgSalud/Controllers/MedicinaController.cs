@@ -41,6 +41,41 @@ namespace VgSalud.Controllers
                 ViewBag.ListaPostergados = Usp_Medicina_Postergados(Cuenta, NumDoc);
                 ViewBag.NumDoc = NumDoc;
                 ViewBag.CodCue = CodCue;
+
+                try
+                {
+                    if (lab.evento == "1")
+                    {
+                        Usp_Mantenimiento(lab.Id, 1);
+                    }
+                    else if (lab.evento == "2")
+                    {
+                        Usp_Mantenimiento(lab.Id, 2);
+                    }
+                    else if (lab.evento == "3")
+                    {
+                        Usp_Mantenimiento(lab.Id, 3);
+                    }
+                    else if (lab.evento == "4")
+                    {
+                        Usp_Mantenimiento(lab.Id, 4);
+                    }
+                    else if (lab.evento == "5")
+                    {
+                        Usp_Mantenimiento(lab.Id, 5);
+                        ViewBag.ListaEspera = ListadoCarnetMedicina_DelDia_EnEspera();
+                        ViewBag.NumDoc = null;
+                        ViewBag.CodCue = null;
+                        return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
+                    }
+                    
+                }
+                catch (Exception)
+                {
+                    ViewBag.mensaje = "Error: No se pudo procesar la Actualizacion Correctamente";
+                    return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
+                }
+
                 return View("ListarCarnet_MedicinaDelDia_EnEspera");
             }
             else
@@ -77,9 +112,10 @@ namespace VgSalud.Controllers
                     return RedirectToAction("ListarCarnet_MedicinaDelDia_EnEspera");
                 }
             }
-            
-
         }
+
+
+
         public bool Usp_Mantenimiento(int id, int evento)
         {
             try

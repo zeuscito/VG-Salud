@@ -57,5 +57,8 @@ namespace VgSalud.Models
         public decimal igv { get; set; }
         public decimal total { get; set; }
         public int procedencia { get; set; }
+
+        public int Cantidad { get; set; }
+        
     }
 }

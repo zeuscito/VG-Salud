@@ -1,0 +1,155 @@
+﻿@{
+
+    var Lista = (List<VgSalud.Models.E_Caja>)ViewBag.resultado;
+    int totalTickets = 0;
+    decimal totalAnulados = 0;
+    decimal totalcredito = 0;
+    decimal totalefectivo = 0;
+    decimal totalsistema = 0;
+    decimal totalusuario = 0;
+    decimal totaldiferencia = 0;
+
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Resumen del Dia</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Caja</a></li>
+            <li class="active">Listado Resumen del Dìa</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div style="float:left; padding:0% 1% 0% 1%">
+                            <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+
+                        <fieldset style="margin-top:2%;">
+                            <legend style="margin-left:3%;width:96%">Filtro</legend>
+                            <div class="box-body">
+                                <div class="col-md-12">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Fecha:</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" style="text-align:center" class="form-control datepicker" name="fecha" value="@ViewBag.fecha" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2" style="margin-top:1%">
+                                        <div class="form-group">
+                                            <center>
+                                                <input style="background-color:#13D003; border:#13D003;margin-top: 11px;" type="submit" value="Consultar" class="btn btn-danger" />
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    }
+
+                    <br />
+
+                    <fieldset>
+
+                        <legend style="margin-left:3%; width:96%">Lista</legend>
+
+                        <div class="box-body">
+                            <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th style="text-align:center">Usuario</th>
+
+                                            <th style="text-align:center">Nro. Tickets</th>
+                                            <th style="text-align:center">Anulados</th>
+                                            <th style="text-align:center">Creditos</th>
+                                            <th style="text-align:center">Efectivo</th>
+                                            <th style="text-align:center">Total Sistema</th>
+                                            <th style="text-align:center">Total Usuario</th>
+                                            <th style="text-align:center">Diferencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                       
+                                        @if (Lista != null)
+                                        {
+
+                                            foreach (var item in Lista)
+                                            {
+
+                                                <tr>
+                                                    <td>@item.Usuario</td>
+
+                                                    <td>@item.nroTickets</td>
+                                                    <td>@item.anuladas</td>
+                                                    <td>@item.credito</td>
+                                                    <td>@item.efectivo</td>
+                                                    <td>@item.TotalSistema</td>
+                                                    <td>@item.TotalUsuario</td>
+                                                    <td>@item.Diferencia</td>
+                                                </tr>
+                                                totalTickets += item.nroTickets;
+                                                totalAnulados += item.anuladas;
+                                                totalcredito += item.credito;
+                                                totalefectivo += item.efectivo;
+                                                totalsistema += item.TotalSistema;
+                                                totalusuario += item.TotalUsuario;
+                                                totaldiferencia += item.Diferencia;
+                                            }
+
+                                        }
+
+                                    </tbody>
+
+                                    <tbody>
+
+                                        <tr>
+
+
+                                            <td></td>
+                                            <td><strong>@totalTickets</strong></td>
+                                            <td><strong>@totalAnulados</strong></td>
+                                            <td><strong>@totalcredito</strong></td>
+                                            <td><strong>@totalefectivo</strong></td>
+                                            <td><strong>@totalsistema</strong></td>
+                                            <td><strong>@totalusuario</strong></td>
+                                            <td><strong>@totaldiferencia</strong></td>
+                                          
+                                        </tr>
+
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="control-sidebar-bg">
+</div>

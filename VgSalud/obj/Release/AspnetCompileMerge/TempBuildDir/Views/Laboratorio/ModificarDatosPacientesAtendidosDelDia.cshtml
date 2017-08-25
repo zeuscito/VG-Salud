@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "ModificarDatosPacientesAtendidosDelDia";
-    var lista = (List<VgSalud.Models.E_CSLaboratorio>)ViewBag.lista;
+    //var lista = (List<VgSalud.Models.E_CSLaboratorio>)ViewBag.lista;
 
     bool MuestraH = (bool)ViewBag.MuestraH;
     bool MuestraS = (bool)ViewBag.MuestraS;
@@ -46,10 +46,11 @@
                             <form method="post">
                                 <fieldset>
                                     <legend style="margin-left:3%;width:96%;">Datos</legend>
-                                    @foreach (var item in lista)
-                                    {
-                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@item.Procedencia" />
-                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@item.Manipulador" />
+                                    @*@foreach (var item in lista)
+                                    {*@
+                                        <input type="hidden" name="Procedencia" id="Procedencia" value="@Model.Procedencia" />
+                                        <input type="hidden" name="Manipulador" id="Manipulador" value="@Model.Manipulador" />
+                                        <input type="hidden" name="hiddenFechaAtencion" id="hiddenFechaAtencion" value="@Model.FechaAtencion" />
                                         <div class="row">
                                             <div class="col-xs-12 ">
                                                 <div class="col-xs-12 col-sm-5 col-sm-offset-1">
@@ -58,7 +59,7 @@
                                                             <label>Paciente: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Paciente</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Paciente</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -68,7 +69,7 @@
                                                             <label>Edad: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Edad</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Edad</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -81,7 +82,7 @@
                                                             <label>Tipo Carnet: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.DesTipoCarnet</label>
+                                                            <label style="font-size:large;color:coral;">@Model.DesTipoCarnet</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -91,7 +92,7 @@
                                                             <label>Manipulador: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.Manipulador</label>
+                                                            <label style="font-size:large;color:coral;">@Model.Manipulador</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -104,14 +105,14 @@
                                                             <label>Nro. Carnet: </label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            <label style="font-size:large;color:coral;">@item.NumeroCarnet</label>
+                                                            <label style="font-size:large;color:coral;">@Model.NumeroCarnet</label>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                    }
+                                    @*}*@
 
                                 </fieldset>
 
@@ -196,7 +197,8 @@
                                             <div class="form-group">
                                                 <div class="col-sm-6 col-sm-offset-6">
                                                     <div class="checkbox" id="IdCheckBoxReevaluado" style="display:none;">
-                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox" value="0" style="width:15px;height:15px;" name="Reevaluado"> Reevaluado</label>
+                                                        <input type="hidden" id="hiddenReev" name="Reevaluado" />
+                                                        <label style="font-size:large;margin-top:3%;"><input type="checkbox" value="0" style="width:15px;height:15px;" id="IdReevaluado" class="Reevaluado"> Reevaluado</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,15 +242,58 @@
 <script>
     $(document).ready(function () {
 
-        $('#hiddenAptoLab').val();
+        debugger;
+        var FechaAtecion = $('#hiddenFechaAtencion').val();
+
+        var Fecha = new Date();
+        var dd = Fecha.getDate();
+        var mm = Fecha.getMonth() + 1; //hoy es 0!
+        var yyyy = Fecha.getFullYear();
+        var FechaSystem = "";
+        if (mm < 10) {
+            FechaSystem = dd + "/0" + mm + "/" + yyyy;
+        }
+        else {
+            FechaSystem = dd + "/" + mm + "/" + yyyy;
+        }
+
+        if (FechaAtecion == FechaSystem) {
+            $('#IdCheckBoxReevaluado').show();
+            $('.Reevaluado').prop('checked', false);
+            $('#hiddenReev').val('NO');
+        }
+        else {
+            debugger;
+            $('#IdCheckBoxReevaluado').show();
+            alert(1);
+            $('.Reevaluado').prop('checked', true);
+            alert(2);
+            $('#hiddenReev').val('SI');
+            alert(3);
+            $('#IdReevaluado').addClass('disabled');
+            alert(4);
+            //$('.Reevaluado').addClass('disabled');
+        }
+
+        //$('#hiddenAptoLab').val();
         var DatoApto = $('#hiddenAptoLab').val();
 
         if (DatoApto=='SI') {
             $('#btnModificarLab').hide();
+            $('#IdCheckBoxReevaluado').hide();
         }
         else if (DatoApto == 'NO') {
             $('#btnModificarLab').show();
         }
+
+        $(".Reevaluado").click(function () {
+            debugger;
+            if ($(".Reevaluado").is(':checked')) {
+                $('#hiddenReev').val('SI');
+            } else {
+                $('#hiddenReev').val('');
+            }
+        });
 
         //validacion para mostrar los checksbox requeridos
         ValidarChecksBoxMuestra();

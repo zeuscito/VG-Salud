@@ -354,36 +354,36 @@ namespace VgSalud.Controllers
                     contador++;
                 }
             }
-            else
-            {
-                E_Tarifario t = new E_Tarifario();
-                List<E_Tarifario> list = new List<E_Tarifario>();
-                List<E_Tarifario> listGeneral = new List<E_Tarifario>();
-                foreach (var a in arrayPrecios)
-                {
-                    E_Tarifario tt = new E_Tarifario();
-                    tt.contenido = a;
-                    listGeneral.Add(tt);
-                    string[] returnData = a.Split(',');
-                    t.CodCatPac = returnData[0].ToString();
-                    list.Add(t);
-                }
-                var listaCatPre = from c in cat.listadoCategoriaCliente().Where(x => x.EstCatPac == true) where !(from o in list select o.CodCatPac).Contains(c.CodCatPac) select c;
-                int contador = arrayPrecios.Length;
-                foreach (var a in listaCatPre)
-                {
-                    E_Tarifario tt = new E_Tarifario();
-                    tt.contenido = a.CodCatPac + "," + a.DescCatPac + "," + 0;
-                    listGeneral.Add(tt);
-                }
-                arrayPrecios = new string[listGeneral.Count];
-                int cuenta = 0;
-                foreach (var a in listGeneral)
-                {
-                    arrayPrecios[cuenta] = a.contenido;
-                    cuenta++;
-                }
-            }
+            //else
+            //{
+            //    E_Tarifario t = new E_Tarifario();
+            //    List<E_Tarifario> list = new List<E_Tarifario>();
+            //    List<E_Tarifario> listGeneral = new List<E_Tarifario>();
+            //    foreach (var a in arrayPrecios)
+            //    {
+            //        E_Tarifario tt = new E_Tarifario();
+            //        tt.contenido = a;
+            //        listGeneral.Add(tt);
+            //        string[] returnData = a.Split(',');
+            //        t.CodCatPac = returnData[0].ToString();
+            //        list.Add(t);
+            //    }
+            //    var listaCatPre = from c in cat.listadoCategoriaCliente().Where(x => x.EstCatPac == true) where !(from o in list select o.CodCatPac).Contains(c.CodCatPac) select c;
+            //    int contador = arrayPrecios.Length;
+            //    foreach (var a in listaCatPre)
+            //    {
+            //        E_Tarifario tt = new E_Tarifario();
+            //        tt.contenido = a.CodCatPac + "," + a.DescCatPac + "," + 0;
+            //        listGeneral.Add(tt);
+            //    }
+            //    arrayPrecios = new string[listGeneral.Count];
+            //    int cuenta = 0;
+            //    foreach (var a in listGeneral)
+            //    {
+            //        arrayPrecios[cuenta] = a.contenido;
+            //        cuenta++;
+            //    }
+            //}
 
 
             string sede = Session["codSede"].ToString();

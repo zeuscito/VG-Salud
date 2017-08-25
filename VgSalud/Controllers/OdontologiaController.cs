@@ -290,8 +290,6 @@ namespace VgSalud.Controllers
 
         public ActionResult ActualizarDatosAtencionOdontologia(int Id)
         {
-            //E_CSOdontologia Odon = new E_CSOdontologia();
-            //Odon.IdOdontologia = Id;
             ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSOdontologia(Id);
             return View();
         }
@@ -497,7 +495,6 @@ namespace VgSalud.Controllers
         public ActionResult ModificarDatosOdontograma_Y_CSOdontologia(int Id)
         {
             var MostraDatos = MostrarDatosDeListaDeCarnetSanidadCSOdontologia_ParaModificar(Id).FirstOrDefault();
-            //ViewBag.lista = MostrarDatosDeListaDeCarnetSanidadCSOdontologia_ParaModificar(Id);
             
             return View(MostraDatos);
         }

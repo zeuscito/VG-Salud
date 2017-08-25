@@ -8,11 +8,17 @@ using System.Data.SqlClient;
 using System.Configuration;
 using VgSalud.Models;
 using System.Text;
+using System.IO;
 
 namespace VgSalud.Controllers
 {
     public class AtencionVariasController : Controller
     {
+        string rutaLog = "";
+        public AtencionVariasController()
+        {
+            rutaLog= AppDomain.CurrentDomain.BaseDirectory + "\\" + ConfigurationManager.AppSettings["rutaLog"];
+        }
         TipoTarifaController tt = new TipoTarifaController();
         EspecialidadController es = new EspecialidadController();
         ServiciosController ser = new ServiciosController();
@@ -1823,9 +1829,32 @@ namespace VgSalud.Controllers
             foreach (var a in listado)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine("<td width='85%'>" + a.Especialidad + "</td>");
+                sb.AppendLine("<td width='85%'>" + a.NomServ + "</td>");
                 sb.AppendLine("<td width='15%'>" +
                     "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + ","+ a.DescTipoTar +"' />" +
+                    "</td>");
+                sb.AppendLine("</tr>");
+            }
+            string result = "";
+            result = sb.ToString();
+
+            return Json(new { result, success = true }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult CargaServiciosAleatorios(int historia, string descripcion)
+        {
+            string sede = Session["codSede"].ToString();
+            var listado = ser.ListadoServiciosAleatoriosVentaRapida(sede, historia, descripcion).ToList();
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var a in listado)
+            {
+                sb.AppendLine("<tr>");
+                sb.AppendLine("<td width='85%'>" + a.NomServ + "</td>");
+                sb.AppendLine("<td width='15%'>" +
+                    "<input type='radio' onclick=generaTarifa('" + a.CodServ + "') name='ckServicio' id='ckServicio' value='" + a.CodServ + "," + a.CodEspec + "," + a.CodTar + "," + a.NomServ + "," + a.precio + "," + a.DescTipoTar + "' />" +
                     "</td>");
                 sb.AppendLine("</tr>");
             }
@@ -2115,7 +2144,7 @@ namespace VgSalud.Controllers
                                                 av.Parameters.AddWithValue("@SubTotal", precio);
                                                 av.Parameters.AddWithValue("@Igv", igvv);
                                                 av.Parameters.AddWithValue("@Total", totalG);
-                                                av.Parameters.AddWithValue("@MedicoEnvia", "");
+                                                av.Parameters.AddWithValue("@MedicoEnvia", valorDetalle[7].ToString());
                                                 av.Parameters.AddWithValue("@EspeciEnvia", "");
                                                 av.Parameters.AddWithValue("@Turno", turno);
                                                 av.Parameters.AddWithValue("@Estado", 'G');
@@ -2147,7 +2176,7 @@ namespace VgSalud.Controllers
                                                     dd.Parameters.AddWithValue("@FechaAten", "");
                                                     dd.Parameters.AddWithValue("@TurnoAten", "");
                                                     dd.Parameters.AddWithValue("@RegMedico", "");
-                                                    dd.Parameters.AddWithValue("@MedicoEnvia", "");
+                                                    dd.Parameters.AddWithValue("@MedicoEnvia", valorDetalle[7].ToString());
                                                     dd.Parameters.AddWithValue("@Crea", Crea);
                                                     dd.Parameters.AddWithValue("@Modifica", "");
                                                     dd.Parameters.AddWithValue("@Elimina", "");
@@ -2202,9 +2231,20 @@ namespace VgSalud.Controllers
                             return Json(new { codigoCaja, success = true }, JsonRequestBehavior.AllowGet);
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
                         tr.Rollback();
+                        using (StreamWriter fs = new StreamWriter(rutaLog, true))
+                        {
+                            fs.WriteLine("------------------------------- LOG -------------------------------");
+                            fs.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString());
+                            fs.WriteLine(this.GetType().FullName);
+                            fs.WriteLine(ex.Message);
+                            fs.WriteLine(ex.StackTrace);
+                            fs.WriteLine(ex.Data);
+                            fs.WriteLine(ex.Source);
+                            fs.WriteLine("----------------------------- FIN LOG -----------------------------");
+                        }
                         return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                     }
                     finally
@@ -2267,7 +2307,8 @@ namespace VgSalud.Controllers
         public ActionResult VentaRapida(int historia)
         {
             string sede = Session["codSede"].ToString();
-            string tarifa = "VG0001";
+            ViewBag.listadoMedico = new SelectList(med.ListadoMedico().Where(x => x.EstMed == true && x.CodSede == sede), "CodMed", "NomMed");
+            string tarifa = System.Configuration.ConfigurationManager.AppSettings[sede].ToString();
             var data = ser.ListadoTarifaEspecial(historia, tarifa).FirstOrDefault();
             ViewBag.tarEspecial = data.CodTar + "," + data.CodEspec + "," + data.CodServ + "," + data.precio + "," + data.DescTipoTar;
             ViewBag.historia = historia;

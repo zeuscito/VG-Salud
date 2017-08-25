@@ -1,6 +1,14 @@
 ﻿@{
     ViewBag.Title = "Lista Cortes Cierre";
     var ListaUsuario = (SelectList)ViewBag.ListaUsuario;
+    int totalTickets = 0;
+    decimal totalAnulados = 0;
+    decimal totalcredito = 0;
+    decimal totalefectivo = 0;
+    decimal totalsistema = 0;
+    decimal totalusuario = 0;
+    decimal totaldiferencia = 0;
+
 }
 
 
@@ -23,7 +31,10 @@
                             <a href="~/Master/Index"><center style="margin-left:25px;"><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
                             <br />
                         </div>
-
+                        <div style="float:left; padding:0% 1% 0% 1%">
+                            <a href="~/Caja/ResumenteDelDia"><center style="margin-left:25px;"><i class="fa fa-calendar" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Resumen del Dia</strong></center></a>
+                            <br />
+                        </div>
                     </div>
                     <br />
                     @using (Html.BeginForm())
@@ -76,7 +87,7 @@
                         <legend style="margin-left:3%; width:96%">Lista</legend>
 
                         <div class="box-body">
-                            <div class="col-md-12 " style="padding-left:44px;padding-right: 115px;">
+                            <div class="col-md-12" style="padding-left:44px;padding-right: 115px;">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr class="headTabla">
@@ -86,6 +97,8 @@
                                             <th style="text-align:center">Corte</th>
                                             <th style="text-align:center">Nro. Tickets</th>
                                             <th style="text-align:center">Anulados</th>
+                                            <th style="text-align:center">Creditos</th>
+                                            <th style="text-align:center">Efectivo</th>
                                             <th style="text-align:center">Total Sistema</th>
                                             <th style="text-align:center">Total Usuario</th>
                                             <th style="text-align:center">Diferencia</th>
@@ -100,23 +113,52 @@
 
                                                 <tr>
                                                     <td>@item.FechaCaja.ToShortDateString()</td>
-                                                    <td>@item.horaInicio</td>
-                                                    <td>@item.horaFin</td>
+                                                    <td>@item.horaInicio.ToString(@"hh\:mm\:ss")</td>
+                                                    <td>@item.horaFin.ToString(@"hh\:mm\:ss")</td>
                                                     <td>@item.corte</td>
                                                     <td>@item.nroTickets</td>
                                                     <td>@item.anuladas</td>
+                                                    <td>@item.credito</td>
+                                                    <td>@item.efectivo</td>
                                                     <td>@item.TotalSistema</td>
                                                     <td>@item.TotalUsuario</td>
                                                     <td>@item.Diferencia</td>
                                                 </tr>
-
+                                                totalTickets += item.nroTickets;
+                                                totalAnulados += item.anuladas;
+                                                totalcredito += item.credito;
+                                                totalefectivo += item.efectivo;
+                                                totalsistema += item.TotalSistema;
+                                                totalusuario += item.TotalUsuario;
+                                                totaldiferencia += item.Diferencia;
                                             }
+                                          
                                         }
-
+                              
                                     </tbody>
+
+                                    <tbody>
+                                       
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@totalTickets</td>
+                                                <td>@totalAnulados</td>
+                                                <td>@totalcredito</td>
+                                                <td>@totalefectivo</td>
+                                                <td>@totalsistema</td>
+                                                <td>@totalusuario</td>
+                                                <td>@totaldiferencia</td>
+                                            </tr>
+                                      
+                                    </tbody>
+
 
                                 </table>
                             </div>
+
                         </div>
                     </fieldset>
                 </div>

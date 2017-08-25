@@ -1,0 +1,56 @@
+------------------------------- LOG -------------------------------
+20/08/2017 11:16:31 p. m.
+VgSalud.Controllers.AtencionVariasController
+Índice fuera de los límites de la matriz.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2124
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+20/08/2017 11:17:29 p. m.
+VgSalud.Controllers.AtencionVariasController
+Índice fuera de los límites de la matriz.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2124
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+20/08/2017 11:18:53 p. m.
+VgSalud.Controllers.AtencionVariasController
+Índice fuera de los límites de la matriz.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2124
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+20/08/2017 11:21:21 p. m.
+VgSalud.Controllers.AtencionVariasController
+Índice fuera de los límites de la matriz.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2124
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+21/08/2017 09:37:51 a. m.
+VgSalud.Controllers.AtencionVariasController
+Referencia a objeto no establecida como instancia de un objeto.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2020
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+21/08/2017 09:39:01 a. m.
+VgSalud.Controllers.AtencionVariasController
+Referencia a objeto no establecida como instancia de un objeto.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2020
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------
+------------------------------- LOG -------------------------------
+24/08/2017 11:34:14 a. m.
+VgSalud.Controllers.AtencionVariasController
+Referencia a objeto no establecida como instancia de un objeto.
+   en VgSalud.Controllers.AtencionVariasController.RegistroVentaRapida(String[] cabecera, String[] detalle) en C:\Users\VG-Dev01\Source\Repos\VG-Salud\VgSalud\Controllers\AtencionVariasController.cs:línea 2020
+System.Collections.ListDictionaryInternal
+VgSalud
+----------------------------- FIN LOG -----------------------------

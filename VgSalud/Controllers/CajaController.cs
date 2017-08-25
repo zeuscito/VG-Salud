@@ -90,6 +90,7 @@ namespace VgSalud.Controllers
                             usu.CodTipMon = dr.GetString(5);
                             usu.TipoCambio = dr.GetDecimal(6);
                             usu.Estado = dr.GetBoolean(7);
+                            usu.NomMedios = dr.GetString(11);
 
                             Lista.Add(usu);
                         }
@@ -638,9 +639,10 @@ namespace VgSalud.Controllers
                             ca.PrecioLetra = dr.GetString(29);
                             ca.Edad = dr.GetInt32(30);
                             ca.FecNac = dr.GetDateTime(31);
-                            ca.Ruc =  dr["Ruc"] is DBNull ? string.Empty : dr["Ruc"].ToString();
+                            ca.Ruc = dr["Ruc"] is DBNull ? string.Empty : dr["Ruc"].ToString();
                             ca.DirecSede = dr.GetString(33);
-
+                            ca.CodAutoriza = dr.GetString(34);
+                            ca.NumTarjeta = dr.GetString(35);
                             Lista.Add(ca);
                         }
                         con.Close();
@@ -690,31 +692,31 @@ namespace VgSalud.Controllers
             }
         }
 
-        public List<E_DocumentoSerie> ListadoCorrelativo(string CodSerie,SqlConnection cnn, SqlTransaction tr)
+        public List<E_DocumentoSerie> ListadoCorrelativo(string CodSerie, SqlConnection cnn, SqlTransaction tr)
         {
             List<E_DocumentoSerie> Lista = new List<E_DocumentoSerie>();
-           
-                using (SqlCommand cmd = new SqlCommand("usp_CorrelativoCaja", cnn, tr))
+
+            using (SqlCommand cmd = new SqlCommand("usp_CorrelativoCaja", cnn, tr))
+            {
+                cmd.Parameters.AddWithValue("@CodSerie", CodSerie);
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    cmd.Parameters.AddWithValue("@CodSerie", CodSerie);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    while (dr.Read())
                     {
-                        while (dr.Read())
-                        {
-                            E_DocumentoSerie usu = new E_DocumentoSerie();
+                        E_DocumentoSerie usu = new E_DocumentoSerie();
 
-                            usu.Serie = dr.GetString(0);
-                            usu.CodDocSerie = dr.GetString(1);
+                        usu.Serie = dr.GetString(0);
+                        usu.CodDocSerie = dr.GetString(1);
 
-                            Lista.Add(usu);
-                        }
-                     
+                        Lista.Add(usu);
                     }
 
                 }
-                return Lista;
-            
+
+            }
+            return Lista;
+
         }
 
         public List<E_DocumentoSerie> ListadoBuscarCorrelativo(string CodSerie)
@@ -1042,7 +1044,7 @@ namespace VgSalud.Controllers
             UtilitarioController ut = new UtilitarioController();
             E_Master hora = ut.ListadoHoraServidor().FirstOrDefault();
             TimeSpan HoraInicialCorte;
-            
+
             var dataCorte = Usp_CorteCajaDiario(usuario, hora.HoraServidor, sede).FirstOrDefault();
             if (dataCorte != null)
             {
@@ -1052,11 +1054,11 @@ namespace VgSalud.Controllers
                 HoraInicialCorte = TimeSpan.Parse("00:00:00");
             }
 
-            
 
 
-            int Resu = 0; 
-            
+
+            int Resu = 0;
+
             UtilitarioController u = new UtilitarioController();
             TipoMonedaController mo = new TipoMonedaController();
             E_Master hor = u.ListadoHoraServidor().FirstOrDefault();
@@ -1073,7 +1075,7 @@ namespace VgSalud.Controllers
             string horaF = horaActual.ToString("H:mm:ss");
 
             E_DocumentoSerie docS = ds.ListarDocumentoSerie().Where(x => x.CodDocSerie == c.Serie).FirstOrDefault();
-         
+
             E_Pacientes paciente = pa.ListadoPacientes().Where(x => x.Historia == c.Historia).FirstOrDefault();
 
             ViewBag.tipoMoneda = new SelectList(mo.ListadoTipoMoneda().ToList(), "CodTipMon", "DescTipMon", c.CodTipMon);
@@ -1131,7 +1133,7 @@ namespace VgSalud.Controllers
 
                                 using (SqlCommand ca = new SqlCommand("Usp_MtoCaja", con, tr))
                                 {
-                                  
+
                                     ca.CommandType = CommandType.StoredProcedure;
                                     E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie, con, tr).FirstOrDefault();
                                     ca.Parameters.AddWithValue("@CodCaja", "");
@@ -1304,7 +1306,7 @@ namespace VgSalud.Controllers
                             {
 
                                 ca.CommandType = CommandType.StoredProcedure;
-                                E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie, con,  tr).FirstOrDefault();
+                                E_DocumentoSerie correlativo = ListadoCorrelativo(c.Serie, con, tr).FirstOrDefault();
                                 ca.Parameters.AddWithValue("@CodCaja", "");
                                 ca.Parameters.AddWithValue("@CodSede", sede);
                                 ca.Parameters.AddWithValue("@CodCue", c.CodCue);
@@ -1434,7 +1436,7 @@ namespace VgSalud.Controllers
 
                                     if (sumaPrecio == c.Total)
                                     {
-                                        
+
                                         tr.Commit();
                                         E_Master horaFin = ut.ListadoHoraServidor().FirstOrDefault();
                                         var valorVendido = Usp_DataCorteCaja(hora.HoraServidor, usuario, HoraInicialCorte, horaFin.HoraServidor.TimeOfDay, sede).FirstOrDefault();
@@ -1855,11 +1857,14 @@ namespace VgSalud.Controllers
             return null;
         }
 
-        public ActionResult AutorizarAnulacion(int? CodCaja = null)
+        public ActionResult AutorizarAnulacion(int? CodCaja = null, string evento = null)
         {
 
+            ViewBag.reemprimir = ValidandoReimpresion(Convert.ToInt32(CodCaja));
             if (CodCaja != null)
             {
+
+
                 ViewBag.listaCabecera = (List<E_Caja>)ListadoCajaCabecera().Where(x => x.CodCaja == CodCaja).ToList();
                 ViewBag.listaDetalle = (List<E_CajaDetalle>)ListadoCajaDetalle().Where(x => x.CodCaja == CodCaja).ToList();
                 ViewBag.CodCaja = CodCaja;
@@ -1871,9 +1876,11 @@ namespace VgSalud.Controllers
                 ViewBag.CodCaja = "";
             }
 
+
+
             return View();
         }
-        
+
         public ActionResult DetalleCaja(int id)
         {
 
@@ -1884,9 +1891,24 @@ namespace VgSalud.Controllers
             return View();
         }
 
+
+        [HttpPost]
         public ActionResult ActivarEliminar(E_Caja c)
         {
+
+
+
             string modifica = Session["usuario"] + " " + DateTime.Now + " " + Environment.MachineName;
+
+            if (c.evento == 3)
+            {
+                bool resultado = Mantenimiento_Impresion(Convert.ToInt32(c.CodCaja), 1);
+            }
+            else if (c.evento == 4)
+            {
+                bool resultado = Mantenimiento_Impresion(Convert.ToInt32(c.CodCaja), 2);
+            }
+
 
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString.ToString()))
             {
@@ -1962,7 +1984,7 @@ namespace VgSalud.Controllers
 
         }
 
-        public ActionResult ListadoCaja(string fechaE = null, string fechaS = null, int? CodCaja = null, int? Elimina = null, int? Evento = null, int? Detalle = null, string moneda = null, decimal? monto = null, decimal[] array = null, string FecDeposito = null)
+        public ActionResult ListadoCaja(DateTime? FechaImpCierre,string fechaE = null, string fechaS = null, int? CodCaja = null, int? Elimina = null, int? Evento = null, int? Detalle = null, string moneda = null, decimal? monto = null, decimal[] array = null, string FecDeposito = null)
         {
             ViewBag.modal = "";
             UtilitarioController ma = new UtilitarioController();
@@ -2018,7 +2040,7 @@ namespace VgSalud.Controllers
                             cp.Parameters.AddWithValue("@Evento", "2");
                             cp.ExecuteNonQuery();
 
-                            ViewBag.mensaje = "Se registro correctamente";
+                            ViewBag.mensaje = "1";
 
 
                         }
@@ -2101,7 +2123,7 @@ namespace VgSalud.Controllers
                                 cp.Parameters.AddWithValue("@Evento", "1");
                                 cp.ExecuteNonQuery();
 
-                                ViewBag.mensaje = "Se registro correctamente";
+                                ViewBag.mensaje = "1";
 
 
                             }
@@ -2348,16 +2370,34 @@ namespace VgSalud.Controllers
             }
             if (fechaE != null && fechaS != null)
             {
-                ViewBag.fechaE = fechaE;
-                ViewBag.fechaS = fechaS;
-                DateTime fec1 = DateTime.Parse(fechaE);
-                DateTime fec2 = DateTime.Parse(fechaS);
-                ViewBag.CajaPreResumen = (List<E_Caja>)CajaPreResumen(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede && x.FechaEmision >= validaFecha).ToList();
-                ViewBag.CajaPreResumenDetalle = (List<E_Caja>)CajaPreResumenDetalle(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
-                ViewBag.listaMediosPago = (List<E_Caja>)ListadoMediosPago(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
-                ViewBag.listaMediosEncabezado = (List<E_Caja>)ListaMediosPagoEncabezado(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
-                return View(ListadoCajaGeneral(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList());
+                if (FechaImpCierre != null)
+                {
+                    
+                    //ViewBag.FechaImpCierre = FechaImpCierre;
+
+                    //DateTime FechaImpr = DateTime.Parse(FechaImpCierre);
+                    return RedirectToAction("ImprimirCierreCajaPorCajera", new { FechaImpCierre = FechaImpCierre });
+                }else
+                {
+                    ViewBag.fechaE = fechaE;
+                    ViewBag.fechaS = fechaS;
+                    DateTime fec1 = DateTime.Parse(fechaE);
+                    DateTime fec2 = DateTime.Parse(fechaS);
+                    ViewBag.CajaPreResumen = (List<E_Caja>)CajaPreResumen(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede && x.FechaEmision >= validaFecha).ToList();
+                    ViewBag.CajaPreResumenDetalle = (List<E_Caja>)CajaPreResumenDetalle(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
+                    ViewBag.listaMediosPago = (List<E_Caja>)ListadoMediosPago(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
+                    ViewBag.listaMediosEncabezado = (List<E_Caja>)ListaMediosPagoEncabezado(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList();
+                    return View(ListadoCajaGeneral(usuario, fec1.ToShortDateString(), fec2.ToShortDateString()).Where(x => x.CodSede == sede).ToList());
+                }
+                
             }
+            //if (FechaImpCierre != null)
+            //{
+            //    ViewBag.FechaImpCierre = FechaImpCierre;
+
+            //    DateTime FechaImpr = DateTime.Parse(FechaImpCierre);
+            //    return RedirectToAction("ImprimirCierreCajaPorCajera", new { FechaImpCierre = FechaImpr });
+            //}
             else
             {
                 string fechaF = hor.HoraServidor.ToString("dd/MM/yyyy");
@@ -2450,7 +2490,7 @@ namespace VgSalud.Controllers
                             cp.Parameters.AddWithValue("@Evento", "2");
                             cp.ExecuteNonQuery();
 
-                            ViewBag.mensaje = "Se registro correctamente";
+                            ViewBag.mensaje = "1";
 
 
                         }
@@ -2533,7 +2573,7 @@ namespace VgSalud.Controllers
                                 cp.Parameters.AddWithValue("@Evento", "1");
                                 cp.ExecuteNonQuery();
 
-                                ViewBag.mensaje = "Se registro correctamente";
+                                ViewBag.mensaje = "1";
 
 
                             }
@@ -3216,12 +3256,14 @@ namespace VgSalud.Controllers
                             ser.corte = dr.GetInt32(4);
                             ser.nroTickets = dr.GetInt32(5);
                             ser.anuladas = dr.GetInt32(6);
-                            ser.TotalSistema = dr.GetDecimal(7);
-                            ser.TotalUsuario = dr.GetDecimal(8);
-                            ser.Diferencia = dr.GetDecimal(9);
-                            ser.UsuCrea = dr.GetString(10);
-                            ser.CodSede = dr.GetString(11);
-                            ser.Estado = dr.GetBoolean(12);
+                            ser.credito = Convert.ToDecimal(dr["credito"]);
+                            ser.efectivo = Convert.ToDecimal(dr["efectivo"]);
+                            ser.TotalSistema = Convert.ToDecimal(dr["TotalSistema"]);
+                            ser.TotalUsuario = Convert.ToDecimal(dr["TotalUsuario"]);
+                            ser.Diferencia = Convert.ToDecimal(dr["Diferencia"]);
+                            ser.UsuCrea = dr["usuario"].ToString();
+                            ser.CodSede = dr["sede"].ToString();
+                            ser.Estado = Convert.ToBoolean(dr["estado"]);
                             Lista.Add(ser);
                         }
                         con.Close();
@@ -3254,7 +3296,8 @@ namespace VgSalud.Controllers
                             E_Caja ser = new E_Caja();
                             ser.Total = dr["total"] is DBNull ? 0 : dr.GetDecimal(0); 
                             ser.nroTickets = dr["nroTickets"] is DBNull ? 0 : dr.GetInt32(1);
-                            ser.anuladas = dr["canceladas"] is DBNull ? 0 : dr.GetInt32(2); 
+                            ser.anuladas = dr["canceladas"] is DBNull ? 0 : dr.GetInt32(2);
+                            ser.credito = dr["credito"] is DBNull ? 0 : dr.GetDecimal(3);
                             Lista.Add(ser);
                         }
                         con.Close();
@@ -3317,7 +3360,7 @@ namespace VgSalud.Controllers
             DateTime fecha = hora.HoraServidor.Date;
             TimeSpan horaFinal = hora.HoraServidor.TimeOfDay;
             var data = Usp_DataCorteCaja(fecha, usuario, horaInicio, horaFinal, sede).FirstOrDefault();
-            decimal diferencia = totalUsuario - data.Total;
+            decimal diferencia = totalUsuario;
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
             {
                 con.Open();
@@ -3333,9 +3376,10 @@ namespace VgSalud.Controllers
                         cp.Parameters.AddWithValue("@corte", corte);
                         cp.Parameters.AddWithValue("@nroTickets", data.nroTickets);
                         cp.Parameters.AddWithValue("@anulados", data.anuladas);
+                        cp.Parameters.AddWithValue("@credito", data.credito); 
                         cp.Parameters.AddWithValue("@totalSistema", data.Total);
                         cp.Parameters.AddWithValue("@totalUsuario", totalUsuario);
-                        cp.Parameters.AddWithValue("diferencia", diferencia);
+                     
                         cp.Parameters.AddWithValue("@usuario", usuario);
                         cp.Parameters.AddWithValue("@sede", sede);
                         cp.ExecuteNonQuery();
@@ -3360,16 +3404,16 @@ namespace VgSalud.Controllers
 
 
 
-        public ActionResult ImprimirCierreCajaPorCajera()
+        public ActionResult ImprimirCierreCajaPorCajera(DateTime FechaImpCierre)
         {
-            ViewBag.ListaCierreCaja = ListaImprimeCierreCajaPorUsuario();
+            ViewBag.ListaCierreCaja = ListaImprimeCierreCajaPorUsuario(FechaImpCierre);
             
             return View();
         }
 
 
 
-        public List<E_Caja> ListaImprimeCierreCajaPorUsuario()
+        public List<E_Caja> ListaImprimeCierreCajaPorUsuario(DateTime FechaImpCierre)
         {
 
             string Usuario = Session["UserID"].ToString();
@@ -3381,6 +3425,7 @@ namespace VgSalud.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Usu", Usuario);
+                    cmd.Parameters.AddWithValue("@Fecha", FechaImpCierre);
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
                         while (dr.Read())
@@ -3406,6 +3451,128 @@ namespace VgSalud.Controllers
                 return Lista;
             }
         }
+
+        public JsonResult ActualizarReempresion(int codcaja)
+        {
+            bool resultado = Mantenimiento_Impresion(codcaja, 2);
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public bool Mantenimiento_Impresion(int CodCaja, int evento)
+        {
+            string Usuario = Session["UserID"].ToString();
+            bool valor = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand("Mantenimiento_Impresion", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CodCaja", CodCaja);
+                        cmd.Parameters.AddWithValue("@UsuarioAutoriza", Usuario);
+                        cmd.Parameters.AddWithValue("@UsuarioImprime",Usuario);
+                        cmd.Parameters.AddWithValue("@Evento", evento);
+                        if (cmd.ExecuteNonQuery() > 0) { valor = true; return valor; } else { return false; }
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public int ValidandoReimpresion(int CodCaja)
+        {
+         
+  
+            try
+            {
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand("ValidandoReimpresion", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CodCaja", CodCaja);
+                        if (Convert.ToInt32(cmd.ExecuteScalar()) == 1) { return 1; } else { return 0; }
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+        }
+
+
+
+        public ActionResult ResumenteDelDia()
+        {
+            UtilitarioController util = new UtilitarioController();
+            ViewBag.fecha = util.ListadoHoraServidor().FirstOrDefault().HoraServidor.ToShortDateString() ;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResumenteDelDia(string fecha)
+        {
+            ViewBag.fecha = fecha; 
+            ViewBag.resultado = usp_CorteCajaDiarioResumen(fecha);
+            return View();
+        }
+
+
+        public List<E_Caja> usp_CorteCajaDiarioResumen(string fecha="")
+        {
+            string sede = Session["CodSede"].ToString();
+            List<E_Caja> Lista = new List<E_Caja>();
+           
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["VG_SALUD"].ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("usp_CorteCajaDiarioResumen", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@fecha",fecha);
+                    cmd.Parameters.AddWithValue("@CodSede", sede);
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            E_Caja ser = new E_Caja();
+                            ser.Usuario = dr["Usuario"].ToString(); 
+          
+                            ser.nroTickets = dr["Ticket"] is DBNull ? 0 : dr.GetInt32(1);
+                            ser.anuladas = dr["Anulados"] is DBNull ? 0 : dr.GetInt32(2);
+                            
+                            ser.credito = dr["Credito"] is DBNull ? 0 : dr.GetDecimal(3);
+                            ser.efectivo=dr["Efectivo"] is DBNull ? 0 : Convert.ToDecimal(dr["Efectivo"]);
+                            ser.TotalSistema = dr["TotalSistema"] is DBNull ? 0 : Convert.ToDecimal(dr["TotalSistema"]);
+                            ser.TotalUsuario = dr["TotalUsuario"] is DBNull ? 0 : Convert.ToDecimal(dr["TotalUsuario"]);
+                            ser.Diferencia = dr["Diferencia"] is DBNull ? 0 : Convert.ToDecimal(dr["Diferencia"]);
+                            Lista.Add(ser);
+                        }
+                        con.Close();
+                    }
+
+                }
+                return Lista;
+            }
+        }
+
 
     }
 }

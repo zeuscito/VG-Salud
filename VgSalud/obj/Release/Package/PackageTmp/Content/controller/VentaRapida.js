@@ -24,7 +24,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: '../AtencionVarias/CargaServicios',
+        url: '../AtencionVarias/CargaServiciosAleatorios',
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
@@ -48,6 +48,50 @@ $(document).ready(function () {
         printTabla();
     });
 
+
+    $("#viewAllServ").click(function () {
+        var inclSus = $('#viewAllServ:checked').val() ? 1 : 0;
+        if (inclSus === 1) {
+            $.ajax({
+                url: '../AtencionVarias/CargaServicios',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'historia': historia,
+                    'descripcion': ''
+                }),
+                success: function (response) {
+                    $('#dataServicio tbody').empty();
+                    $('#dataServicio tbody').html(response.result);
+                },
+                error: function () {
+                    alertaMessage("No se pudo generar los servicios", 0);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: '../AtencionVarias/CargaServiciosAleatorios',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    'historia': historia,
+                    'descripcion': ''
+                }),
+                success: function (response) {
+                    $('#dataServicio tbody').empty();
+                    $('#dataServicio tbody').html(response.result);
+                },
+                error: function () {
+                    alertaMessage("No se pudo generar los servicios", 0);
+                }
+            });
+        }
+    });
+    
+
     $("#inclSus").click(function () {
         var inclSus = $('#inclSus:checked').val() ? 1 : 0;
         if (inclSus === 1) {
@@ -68,6 +112,7 @@ $(document).ready(function () {
         var inclSus = $('#inclSus:checked').val() ? 1 : 0;
         var tarEspecial = $('#tarEspecial').val();
         var espeServ = $('input:radio[name=ckServicio]:checked').val();
+        var medicoEnvia = $("#medicoEnvia").val();
         var valorServicio = espeServ.split(",");
         var valorTarifaEsoecial = tarEspecial.split(",");
 
@@ -89,12 +134,12 @@ $(document).ready(function () {
             {
                 var precioTotal = parseFloat(valorServicio[4]) + parseFloat(valorTarifaEsoecial[3]);
                 oCabecera[oCabecera.length] = historia + "," + precioTotal;
-                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3];
-                oDetalle[oDetalle.length] = valorTarifaEsoecial[0] + "," + 1 + "," + parseFloat(valorTarifaEsoecial[3]) + "," + valorTarifaEsoecial[2] + "," + valorTarifaEsoecial[1] + "," + valorTarifaEsoecial[4];
+                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3] + "," + "" + "," + medicoEnvia;
+                oDetalle[oDetalle.length] = valorTarifaEsoecial[0] + "," + 1 + "," + parseFloat(valorTarifaEsoecial[3]) + "," + valorTarifaEsoecial[2] + "," + valorTarifaEsoecial[1] + "," + valorTarifaEsoecial[4] + "," + "" + "," + "";
             }else
             {
                 oCabecera[oCabecera.length] = historia + "," + parseFloat(valorServicio[4]);
-                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3];
+                oDetalle[oDetalle.length] = valorServicio[2] + "," + 1 + "," + parseFloat(valorServicio[4]) + "," + valorServicio[0] + "," + valorServicio[1] + "," + valorServicio[3] + "," + "" + "," + medicoEnvia;
             }
             $.ajax({
                 url: '../AtencionVarias/RegistroVentaRapida',
@@ -197,6 +242,10 @@ function registraItem(obj) {
     var tarifa = $("#tarifa-" + obj).val();
     var descTrar = $("#descTrar-" + obj).val();
     var espeServ = $('input:radio[name=ckServicio]:checked').val();
+    var medicoEnvia = $("#medicoEnvia").val();
+    if (medicoEnvia === undefined) {
+        medicoEnvia = "";
+    }
     var valorRetorno = espeServ.split(",");
     var flag = 1;
 
@@ -221,7 +270,7 @@ function registraItem(obj) {
             oCabecera[0] = valorCabecera[0] + "," + tot;
             $("#totalPagar").html(tot);
         }    
-        oDetalle[oDetalle.length] = tarifa + "," + cantidad + "," + precio + "," + valorRetorno[0] + "," + valorRetorno[1] + "," + valorRetorno[3] + "," + descTrar;
+        oDetalle[oDetalle.length] = tarifa + "," + cantidad + "," + precio + "," + valorRetorno[0] + "," + valorRetorno[1] + "," + valorRetorno[3] + "," + descTrar + "," + medicoEnvia;
         printTabla();
     }
 }
@@ -251,23 +300,45 @@ $("#buscaTarifa").keyup(function () {
 
 $("#buscaServicio").keyup(function () {
     var value = $(this).val();
-    $.ajax({
-        url: '../AtencionVarias/CargaServicios',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({
-            'historia': historia,
-            'descripcion': value
-        }),
-        success: function (response) {
-
-            $('#dataServicio tbody').html(response.result);
-        },
-        error: function () {
-            alertaMessage("No se pudo generar los servicios", 0);
-        }
-    });
+    var inclSus = $('#viewAllServ:checked').val() ? 1 : 0;
+    if (inclSus === 1) {
+        $.ajax({
+            url: '../AtencionVarias/CargaServicios',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                'historia': historia,
+                'descripcion': value
+            }),
+            success: function (response) {
+                $('#dataServicio tbody').empty();
+                $('#dataServicio tbody').html(response.result);
+            },
+            error: function () {
+                alertaMessage("No se pudo generar los servicios", 0);
+            }
+        });
+    }
+    else {
+        $.ajax({
+            url: '../AtencionVarias/CargaServiciosAleatorios',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                'historia': historia,
+                'descripcion': value
+            }),
+            success: function (response) {
+                $('#dataServicio tbody').empty();
+                $('#dataServicio tbody').html(response.result);
+            },
+            error: function () {
+                alertaMessage("No se pudo generar los servicios", 0);
+            }
+        });
+    }
 });
 
 function eliminaPrecio(e) {

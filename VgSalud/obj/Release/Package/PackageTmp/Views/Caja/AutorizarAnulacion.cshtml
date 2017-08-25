@@ -2,8 +2,15 @@
 
 @{
     ViewBag.Title = "AutorizarAnulacion";
-    var listaCabecera = (List<VgSalud.Models.E_Caja>)ViewBag.listaCabecera;
-    var listaDetalle = (List<VgSalud.Models.E_CajaDetalle>)ViewBag.listaDetalle;
+    var listaCabecera = (List<VgSalud.Models.E_Caja>
+        )ViewBag.listaCabecera;
+    var listaDetalle = (List<VgSalud.Models.E_CajaDetalle>
+        )ViewBag.listaDetalle;
+
+    int reemprimir = (int)ViewBag.reemprimir;
+
+
+
 }
 
 
@@ -39,7 +46,7 @@
             <div class="box-body" style="margin-bottom:3%">
 
                 <fieldset>
-                    <legend  style="margin-left: 29px;">Datos de Caja</legend>
+                    <legend style="margin-left: 29px;">Datos de Caja</legend>
                     <form action="" method="post">
 
                         <div class="col-md-3">
@@ -60,11 +67,11 @@
                     </form>
                 </fieldset>
 
-                
+
             </div>
             @if (listaCabecera != null)
             {
-                <form action="~/Caja/ActivarEliminar" method="post" id="formulario">
+                <form action="../Caja/ActivarEliminar" method="post" id="formulario">
 
                     @foreach (var item in listaCabecera)
                     {
@@ -238,69 +245,77 @@
                             </div>
 
                         </div>
+                            <br /><br /><br />
+
+                            <div class="box-body">
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Tarifa</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Uni.</th>
+                                            <th>Sub Total</th>
+                                            <th>IGV</th>
+                                            <th>Total</th>
+                                            <th>Taza</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
 
-                                <br /><br /><br />
-
-                                <div class="box-body">
-                                    <table id="example3" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Tarifa</th>
-                                                <th>Cantidad</th>
-                                                <th>Precio Uni.</th>
-                                                <th>Sub Total</th>
-                                                <th>IGV</th>
-                                                <th>Total</th>
-                                                <th>Taza</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-
-                                            @foreach (var item1 in listaDetalle)
-                                            {
-                                                <tr>
-                                                    <td>@Html.DisplayFor(modelItem => item1.item)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.NomTar)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.PUnit)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.SubTotal)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.Igv)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.Total)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item1.TazaIgv)</td>
-                                                </tr>
-
-                                            }
-
-                                        </tbody>
-
-                                    </table>
-
-                                    <input type="hidden" name="evento" id="evento" />
-
-                                    <center style="margin-top:3%; margin-bottom:3%">
-
-                                        @if (item.Estado == true)
+                                        @foreach (var item1 in listaDetalle)
                                         {
-
-                                            if (item.PorAnular == true)
-                                            {
-                                                <input id="Desactiva" class="btn btn-info" value="Cancelar autorzacion" />
-                                            }
-                                            else
-                                            {
-                                                <input id="Activa" class="btn btn-danger" value="Autorizar Cancelacion" />
-                                            }
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item1.item)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.NomTar)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Cantidad)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.PUnit)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.SubTotal)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Igv)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.Total)</td>
+                                                <td>@Html.DisplayFor(modelItem => item1.TazaIgv)</td>
+                                            </tr>
 
                                         }
 
+                                    </tbody>
 
-                                    </center>
+                                </table>
 
-                                </div>
+                            
+
+                                <center style="margin-top:3%; margin-bottom:3%">
+
+                                    @if (item.Estado == true)
+                                    {
+
+                                        if (item.PorAnular == true)
+                                        {
+                                            <input id="Desactiva" class="btn btn-info" value="Cancelar autorzacion" />
+                                        }
+                                        else
+                                        {
+                                            <input id="Activa" class="btn btn-danger" value="Autorizar Cancelacion" />
+                                        }
+
+                                    }
+
+                                    @if (reemprimir == 1)
+                                    {
+                                      <input id="DesactivaReemprision" type="submit" class="btn btn-info" value="Cancelar Reempresión" />
+
+                                    }
+                                    else
+                                    {
+                                        <input id="ActivaReemprision" type="submit" class="btn btn-danger" value="Autorizar Reempresión" />
+                                   
+                                    }
+                                </center>
+
+                            </div>
                     }
+                    <input type="hidden" name="evento" id="evento" />
                 </form>
 
             }
@@ -329,6 +344,16 @@
         $("#Desactiva").click(function () {
             $("#evento").val("2");
             $("#formulario").submit();
+        });
+
+        $("#ActivaReemprision").click(function () {
+            $("#evento").val("3");
+         
+        });
+
+        $("#DesactivaReemprision").click(function () {
+            $("#evento").val("4");
+         
         });
 
 

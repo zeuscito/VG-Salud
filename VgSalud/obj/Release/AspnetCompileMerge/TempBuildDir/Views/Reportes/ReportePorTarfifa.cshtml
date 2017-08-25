@@ -1,0 +1,129 @@
+﻿@model VgSalud.Models.E_Reporte
+
+@{
+    ViewBag.Title = "ReportePorTarfifa";
+    var listadoTari = (SelectList)ViewBag.ListaTarifas;
+
+    var listadoTarifas = (List<VgSalud.Models.E_Tarifario>)ViewBag.ListaReporteDeTarifas;
+    int nro = 0;
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Consultorio</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-users"></i>Consultorio</a></li>
+            <li class="active">Consultar Consultorio</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Master/Index"><center><i class="fa fa-home" style="font-size:25px; color:#13D003"></i><br /><strong style="color:black">Home</strong></center></a>
+                            <br />
+                        </div>
+
+                        <div style="float:left; padding:0% 1% 0 1%">
+                            <a href="~/Consultorio/RegistrarConsultorio"><center><i class="fa fa-plus-circle" style="font-size:25px;color:#13D003"></i><br /><strong style="color:black">Nuevo</strong></center></a>
+                        </div>
+
+                    </div>
+
+
+                    <br />
+                    <div class="box-body">
+
+                        <fieldset>
+                            <legend style="width:96%;margin-left:2%;">Filtro</legend>
+                                <form method="post">
+                                    <div class="col-md-10 col-md-offset-1">
+
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <div class="col-md-2">
+                                                    <label>Tarifa</label>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("CodTar", listadoTari, "[TODAS]", new { @class = "form-control select2", @style = "width:100%", @id = "codtar", @value = "CodTar" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                    <label>Fecha Inicio</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" name="FechaI" value="@ViewBag.FechaI" maxlength="10" class="form-control  datepicker" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                    <label>Fecha Final</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" name="FechaF" value="@ViewBag.FechaF" maxlength="10" class="form-control  datepicker" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <center>
+                                                    <button type="submit" class="btn btn-warning"><span class="fa fa-search"></span> Consultar</button>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                    
+                            
+
+                            <legend style="width:96%;margin-left:2%">Lista</legend>
+                            <div class="col-md-10 col-md-offset-1">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="headTabla">
+                                            <th>N°</th>
+                                            <th>Tarifa</th>
+                                            <th>Cantidad</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in listadoTarifas)
+                                        {
+                                            nro++;
+                                        <tr>
+                                            <td>@nro</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DescTar)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.total)</td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </fieldset>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
